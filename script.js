@@ -10,3 +10,38 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const banners = document.querySelectorAll(".banner-image");
+  const dots = document.querySelectorAll(".banner-dots .dot");
+  let currentBanner = 0;
+
+  function showBanner(index) {
+    // ẩn ảnh cũ, bỏ active dot cũ
+    banners[currentBanner].classList.remove("active");
+    dots[currentBanner].classList.remove("active");
+
+    // hiển thị ảnh mới, active dot mới
+    currentBanner = index;
+    banners[currentBanner].classList.add("active");
+    dots[currentBanner].classList.add("active");
+  }
+
+  function nextBanner() {
+    let nextIndex = (currentBanner + 1) % banners.length;
+    showBanner(nextIndex);
+  }
+
+  // tự động chuyển banner mỗi 4 giây
+  let interval = setInterval(nextBanner, 4000);
+
+  // click vào dot
+  dots.forEach(dot => {
+    dot.addEventListener("click", function() {
+      showBanner(parseInt(this.dataset.index));
+      clearInterval(interval); // reset interval
+      interval = setInterval(nextBanner, 4000); // tiếp tục tự động
+    });
+  });
+});
+

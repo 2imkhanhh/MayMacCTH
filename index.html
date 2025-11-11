@@ -124,18 +124,21 @@
     </nav>
 
     <!-- Banner -->
-    <div class="container-fluid bg-warning text-center py-5 position-relative">
-        <h1 class="display-4 fw-bold text-dark">MAY ĐỒNG PHỤC</h1>
-        <h2 class="display-6 fw-bold text-dark">TRỌN GÓI</h2>
-        <p class="lead text-white bg-dark rounded-pill px-3 py-1 d-inline-block">IN QUẦN ÁO - VẢI VÓC</p>
-        <div class="row justify-content-center mt-4">
-            <div class="col-2"><img src="path/to/image1.jpg" class="img-fluid rounded-circle" alt="Image 1"></div>
-            <div class="col-2"><img src="path/to/image2.jpg" class="img-fluid rounded-circle" alt="Image 2"></div>
-            <div class="col-2"><img src="path/to/image3.jpg" class="img-fluid rounded-circle" alt="Image 3"></div>
-            <div class="col-2"><img src="path/to/image4.jpg" class="img-fluid rounded-circle" alt="Image 4"></div>
-            <div class="col-2"><img src="path/to/image5.jpg" class="img-fluid rounded-circle" alt="Image 5"></div>
+    <div class="banner-container position-relative text-center">
+        <img src="asset/images/banner1.png" class="banner-image active" alt="Banner 1">
+        <img src="asset/images/banner2.jpg" class="banner-image" alt="Banner 2">
+        <img src="asset/images/banner3.jpg" class="banner-image" alt="Banner 3">
+        <img src="asset/images/banner4.jpg" class="banner-image" alt="Banner 4">
+        <img src="asset/images/banner5.jpg" class="banner-image" alt="Banner 5">
+
+        <!-- Dot indicators -->
+        <div class="banner-dots position-absolute bottom-0 start-50 translate-middle-x mb-3">
+            <span class="dot active" data-index="0"></span>
+            <span class="dot" data-index="1"></span>
+            <span class="dot" data-index="2"></span>
+            <span class="dot" data-index="3"></span>
+            <span class="dot" data-index="4"></span>
         </div>
-        <img src="path/to/banner-image.jpg" class="position-absolute top-50 start-50 translate-middle" style="max-width: 40%; z-index: -1;" alt="Banner Image">
     </div>
 
     <!-- Sản phẩm -->
@@ -347,5 +350,6 @@
     </footer>
 
     <script src="asset/bootstrap/js/bootstrap.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
