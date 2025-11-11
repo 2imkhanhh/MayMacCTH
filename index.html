@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>May Mặc CTH</title>
+    <link rel="stylesheet" href="asset/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Top Header - KHÔNG CÓ LOGO -->
+   <div class="top-header bg-white border-bottom">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="dropdown me-4">
+                        <button class="btn btn-sm p-0 dropdown-toggle text-muted" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bx bx-globe me-1"></i> Tiếng Việt
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                            <li><a class="dropdown-item" href="#"><i class="bx bx-globe me-1"></i> Tiếng Việt</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="bx bx-globe me-1"></i> English</a></li>
+                        </ul>
+                    </div>
+                    <span class="text-muted me-3"></span>
+                    <!-- <a href="tel:+0783157988" class="text-muted me-4">
+                        <i class="bx bx-phone-call me-1"></i> 0783 157 988
+                    </a> -->
+                    <span class="text-muted me-4">
+                        <i class="bx bx-phone-call me-1"></i> 0783 157 988
+                    </span>
+                </div>
+                <!-- <a href="#" class="text-muted">
+                    <i class="bx bx-git-compare me-1"></i> So sánh
+                </a> -->
+                <span class="text-muted">
+                    <i class="bx bx-git-compare me-1"></i> So sánh
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Bar - CẬP NHẬT Ô TÌM KIẾM MỚI -->
+    <div class="search-bar bg-white py-2">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-between">
+                <!-- Logo -->
+                <img src="asset/images/logo.png" alt="Logo" height="60" class="me-32">
+                
+                <!-- Khối danh mục + tìm kiếm dính liền nhau -->
+                <div class="d-flex align-items-center">
+                    <!-- Category Dropdown -->
+                    <select class="form-select category-select" id="categorySelect">
+                        <option value="">Tất cả</option>
+                        <option value="uniform-shirts">Áo đồng phục</option>
+                        <option value="uniform-pants">Quần đồng phục</option>
+                    </select>
+
+                    <!-- Search Input -->
+                    <div class="search-container">
+                        <input type="text" class="form-control search-input" placeholder="Tìm kiếm sản phẩm..." aria-label="Search">
+                        <button class="search-button" type="button">
+                            <i class='bx bx-search'></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Phone Button -->
+                <a href="tel:+0783157988" class="btn btn-outline-primary px-4">
+                    <i class="bx bx-phone-call me-1"></i> 0783 157 988
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto align-items-center">
+                <!-- Custom dropdown danh mục -->
+                <li class="nav-item dropdown-custom me-4">
+                <a href="#" class="nav-link text-warning d-flex align-items-center">
+                    <i class="bx bx-menu me-2"></i> TẤT CẢ DANH MỤC
+                </a>
+                <ul class="dropdown-menu-custom">
+                    <li><a href="#">Áo đồng phục</a></li>
+                    <li><a href="#">Áo thể thao</a></li>
+                    <li><a href="#">Áo + Logo áo</a></li>
+                    <li><a href="#">BST + Logo áo</a></li>
+                    <li><a href="#">Đồng phục công giáo</a></li>
+                    <li><a href="#">Đồng phục công sở</a></li>
+                    <li><a href="#">Đồng phục học tập</a></li>
+                    <li><a href="#">Đồng phục mùa non</a></li>
+                </ul>
+                </li>
+
+                <!-- Các mục menu khác -->
+                <li class="nav-item"><a class="nav-link" href="#">Trang chủ</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Về chúng tôi</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Sản phẩm</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Hướng dẫn</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Tin tức</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Liên hệ</a></li>
+            </ul>
+
+            <!-- Icon bên phải -->
+            <ul class="navbar-nav ms-3">
+                <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="bx bx-heart"></i>
+                </a>
+                </li>
+            </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Banner -->
+    <div class="container-fluid bg-warning text-center py-5 position-relative">
+        <h1 class="display-4 fw-bold text-dark">MAY ĐỒNG PHỤC</h1>
+        <h2 class="display-6 fw-bold text-dark">TRỌN GÓI</h2>
+        <p class="lead text-white bg-dark rounded-pill px-3 py-1 d-inline-block">IN QUẦN ÁO - VẢI VÓC</p>
+        <div class="row justify-content-center mt-4">
+            <div class="col-2"><img src="path/to/image1.jpg" class="img-fluid rounded-circle" alt="Image 1"></div>
+            <div class="col-2"><img src="path/to/image2.jpg" class="img-fluid rounded-circle" alt="Image 2"></div>
+            <div class="col-2"><img src="path/to/image3.jpg" class="img-fluid rounded-circle" alt="Image 3"></div>
+            <div class="col-2"><img src="path/to/image4.jpg" class="img-fluid rounded-circle" alt="Image 4"></div>
+            <div class="col-2"><img src="path/to/image5.jpg" class="img-fluid rounded-circle" alt="Image 5"></div>
+        </div>
+        <img src="path/to/banner-image.jpg" class="position-absolute top-50 start-50 translate-middle" style="max-width: 40%; z-index: -1;" alt="Banner Image">
+    </div>
+
+    <!-- Sản phẩm -->
+    <div class="container my-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3>SẢN PHẨM / SHOP</h3>
+            <a href="#" class="text-muted">Xem thêm tin tức →</a>
+        </div>
+        <div class="row row-cols-1 row-cols-md-5 g-4">
+            <div class="col">
+                <div class="card h-100">
+                    <img src="path/to/product1.jpg" class="card-img-top" alt="Product 1">
+                    <div class="card-body text-center">
+                        <p class="card-text">Áo đồng phục</p>
+                        <p class="text-muted">CÔNG TY MAY MẶC</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <img src="path/to/product2.jpg" class="card-img-top" alt="Product 2">
+                    <div class="card-body text-center">
+                        <p class="card-text">Áo đồng phục</p>
+                        <p class="text-muted">CÔNG TY MAY MẶC</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <img src="path/to/product3.jpg" class="card-img-top" alt="Product 3">
+                    <div class="card-body text-center">
+                        <p class="card-text">Áo đồng phục</p>
+                        <p class="text-muted">CÔNG TY MAY MẶC</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <img src="path/to/product4.jpg" class="card-img-top" alt="Product 4">
+                    <div class="card-body text-center">
+                        <p class="card-text">Áo đồng phục</p>
+                        <p class="text-muted">CÔNG TY MAY MẶC</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <img src="path/to/product5.jpg" class="card-img-top" alt="Product 5">
+                    <div class="card-body text-center">
+                        <p class="card-text">Áo đồng phục</p>
+                        <p class="text-muted">CÔNG TY MAY MẶC</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hướng dẫn -->
+    <div class="container my-5">
+        <h3 class="text-center mb-4">HƯỚNG DẪN / TRỢ GIÚP</h3>
+        <div class="row row-cols-1 row-cols-md-5 g-4">
+            <div class="col">
+                <a href="#" class="text-decoration-none">
+                    <div class="card text-center bg-primary text-white">
+                        <div class="card-body">
+                            <i class="fas fa-file-alt fa-2x"></i>
+                            <p class="card-text">Hướng dẫn mua hàng</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="#" class="text-decoration-none">
+                    <div class="card text-center bg-primary text-white">
+                        <div class="card-body">
+                            <i class="fas fa-ruler fa-2x"></i>
+                            <p class="card-text">Hướng dẫn chọn size</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="#" class="text-decoration-none">
+                    <div class="card text-center bg-primary text-white">
+                        <div class="card-body">
+                            <i class="fas fa-shipping-fast fa-2x"></i>
+                            <p class="card-text">Chính sách đổi trả</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="#" class="text-decoration-none">
+                    <div class="card text-center bg-primary text-white">
+                        <div class="card-body">
+                            <i class="fas fa-phone fa-2x"></i>
+                            <p class="card-text">Chính sách giao hàng</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="#" class="text-decoration-none">
+                    <div class="card text-center bg-primary text-white">
+                        <div class="card-body">
+                            <i class="fas fa-question-circle fa-2x"></i>
+                            <p class="card-text">FAQ</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tin tức -->
+    <div class="container my-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3>TIN TỨC</h3>
+            <a href="#" class="text-muted">Xem thêm tin tức →</a>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100">
+                    <img src="path/to/news1.jpg" class="card-img-top" alt="News 1">
+                    <div class="card-body">
+                        <p class="card-text">Top 10+ mẫu áo đồng phục đẹp nhất 2025</p>
+                        <p class="text-muted">Ban đang tìm xưởng may áo đồng phục tại Hải Phòng đẹp, giá hợp lý nhất? Chúng tôi sẽ giúp bạn...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <img src="path/to/news2.jpg" class="card-img-top" alt="News 2">
+                    <div class="card-body">
+                        <p class="card-text">Top 10+ mẫu áo đồng phục đẹp nhất 2025</p>
+                        <p class="text-muted">Ban đang tìm xưởng may áo đồng phục tại Hải Phòng đẹp, giá hợp lý nhất? Chúng tôi sẽ giúp bạn...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <img src="path/to/news3.jpg" class="card-img-top" alt="News 3">
+                    <div class="card-body">
+                        <p class="card-text">Top 10+ mẫu áo đồng phục đẹp nhất 2025</p>
+                        <p class="text-muted">Ban đang tìm xưởng may áo đồng phục tại Hải Phòng đẹp, giá hợp lý nhất? Chúng tôi sẽ giúp bạn...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white text-center py-4">
+        <div class="container">
+            <img src="path/to/logo.jpg" alt="Logo" height="40" class="mb-3">
+            <div class="row">
+                <div class="col">
+                    <p>VĨ CHÚNG TÔI</p>
+                    <p>Giới thiệu MAY MẶC CTH</p>
+                    <p>Hướng dẫn mua hàng</p>
+                    <p>Hướng dẫn chọn size</p>
+                    <p>Chính sách đổi trả</p>
+                    <p>Chính sách giao hàng</p>
+                    <p>FAQ</p>
+                </div>
+                <div class="col">
+                    <p>THÔNG TIN LIÊN HỆ</p>
+                    <p>ⓒ 73/202 Mieu Hai Xa, Le Chan, Hai Phong, Viet Nam</p>
+                    <p>ⓔ www.indohaiphong.com</p>
+                    <p>☎ 078315798 - 083435093 - 083919999</p>
+                </div>
+                <div class="col">
+                    <p>SẢN PHẨM</p>
+                    <p>› Áo đồng phục</p>
+                    <p>› Áo the thao</p>
+                    <p>› BST + Logo áo</p>
+                    <p>› Đồng phục công giáo</p>
+                    <p>› Đồng phục công sở</p>
+                    <p>› Đồng phục học tập</p>
+                    <p>› Đồng phục mùa non</p>
+                </div>
+                <div class="col">
+                    <p>TIN TỨC</p>
+                    <p>› Xu hướng thời trang</p>
+                    <p>› Sức khỏe & Đời sống</p>
+                    <p>› Bí mật Gạo House</p>
+                    <p>› Mẹo hay MAY MẶC</p>
+                    <p>› Tin tức</p>
+                </div>
+            </div>
+            <div class="mt-3">
+                <a href="#" class="text-white me-2"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-white"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p class="mt-3">MAY MẶC CTH luôn gần bên bạn!</p>
+            <p>Chúg tôi luông quý trọng và tiếp thu mọi ý kiến đóng góp từ khách hàng, nhầm không ngừng nâng cao chất lượng sản phẩm và dịch vụ, mang lại giá trị cao nhất cho khách hàng.</p>
+            <button class="btn btn-warning text-dark mt-3">ĐÓNG GÓP Ý KIẾN →</button>
+            <p class="mt-3">MÃ SỐ THUẾ: 0202167805</p>
+            <div class="mt-3">
+                <img src="path/to/payment-methods.jpg" alt="Payment Methods" height="30">
+            </div>
+            <div class="mt-3">
+                <a href="https://zalo.me/078315798" class="btn btn-warning btn-sm me-2">ZALO 078315798</a>
+                <a href="tel:+078315798" class="btn btn-warning btn-sm me-2">HOTLINE 078315798</a>
+                <a href="#" class="btn btn-warning btn-sm">XEM VIDEO & MẪU</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="asset/bootstrap/js/bootstrap.js"></script>
+</body>
+</html>

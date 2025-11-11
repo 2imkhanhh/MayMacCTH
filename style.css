@@ -1,0 +1,225 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* TOP HEADER */
+.top-header {
+    background-color: #fff !important;
+    padding: 8px 0;
+    border-bottom: 1px solid #808080 !important;
+}
+
+.top-header .dropdown-toggle {
+    color: #6c757d !important;
+    font-size: 14px;
+    border: none;
+    padding: 4px 8px;
+}
+
+.top-header .dropdown-toggle:hover {
+    color: #003087 !important;
+}
+
+.top-header .dropdown-menu {
+    font-size: 14px;
+}
+
+/* SEARCH BAR - CẬP NHẬT Ô TÌM KIẾM MỚI */
+.search-bar {
+    background-color: #fff !important;
+    padding: 12px 0;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.search-container {
+    position: relative;
+    width: 400px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 40px 8px 16px;
+    border: 1px solid #ced4da;
+    border-radius: 0; /* Vuông góc */
+    font-size: 14px;
+    outline: none;
+    height: 40px;
+}
+
+.search-button {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #6c757d;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    color: #003087;
+}
+
+.search-bar .btn-outline-primary {
+    color: #003087 !important;
+    border-color: #003087 !important;
+    padding: 8px 20px !important;
+    font-size: 14px;
+}
+
+.search-bar .btn-outline-primary:hover {
+    background-color: #003087 !important;
+    color: #fff !important;
+}
+
+/* Style cho select danh mục */
+.category-select {
+    padding: 8px 16px;
+    border: 1px solid #ced4da;
+    border-radius: 0 !important; 
+    font-size: 14px;
+    outline: none;
+    width: 150px;
+    height: 40px;
+    margin-right: -1px; /* Dính sát với ô tìm kiếm */
+    background-color: #fff;
+}
+
+/* Style cho select danh mục */
+.category-select {
+    padding: 8px 16px;
+    border: 1px solid #ced4da;
+    border-radius: 0; /* Vuông góc */
+    font-size: 14px;
+    outline: none;
+    width: 150px;
+    height: 40px;
+    margin-right: -1px; /* Dính sát với ô tìm kiếm */
+}
+
+/* Style cho select danh mục */
+.category-select {
+    padding: 8px 16px;
+    border: 1px solid #ced4da;
+    border-radius: 20px; /* Bo tròn để đồng nhất với ô tìm kiếm */
+    font-size: 14px;
+    outline: none;
+    width: 150px; /* Độ rộng cố định, có thể điều chỉnh */
+}
+
+/* MENU */
+.bg-primary {
+  background-color: #003087 !important;
+}
+
+.text-warning {
+  color: #ffc107 !important;
+}
+
+.nav-link {
+  color: #fff !important;
+  font-size: 14px;
+}
+
+.nav-link:hover {
+  color: #ccc !important;
+}
+
+/* Custom dropdown danh mục */
+.dropdown-custom {
+  position: relative;
+}
+
+.dropdown-custom .nav-link {
+  padding: 6px 12px;
+  border-radius: 0;
+  font-weight: 600;
+}
+
+/* Danh sách dropdown ẩn mặc định */
+.dropdown-menu-custom {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #fff;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: 220px;
+  border: 1px solid #ddd;
+  z-index: 1000;
+}
+
+/* Hiện menu khi hover */
+.dropdown-custom:hover .dropdown-menu-custom {
+  display: block;
+}
+
+/* Style cho từng item trong dropdown */
+.dropdown-menu-custom li a {
+  display: block;
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.dropdown-menu-custom li a:hover {
+  background-color: #f2f2f2;
+}
+
+/* Khoảng cách giữa menu và icon bên phải */
+.navbar-nav.ms-3 {
+  margin-left: 40px !important;
+}
+
+.nav-item.me-4{
+    margin-left: 100px;
+    margin-right: 270px !important;
+}
+
+/* Icon trái tim margin bên phải */
+.navbar-nav .bx-heart {
+  font-size: 20px;
+  margin-right: 80px;
+}
+
+
+/* Banner */
+.bg-warning {
+    background-color: #ffc107 !important;
+    position: relative;
+}
+
+.position-absolute { position: absolute !important; }
+.top-50 { top: 50% !important; }
+.start-50 { left: 50% !important; }
+.translate-middle { transform: translate(-50%, -50%) !important; }
+.d-inline-block { display: inline-block !important; }
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.rounded-circle {
+    border-radius: 50% !important;
+    object-fit: cover;
+    height: 150px;
+    width: 150px;
+}
+
+/* Footer styles giữ nguyên */
+footer .col { text-align: left; }
+footer p { margin-bottom: 0.5rem; }
+footer .btn-warning {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+}
+footer .btn-warning:hover {
+    background-color: #e0a800 !important;
+}
