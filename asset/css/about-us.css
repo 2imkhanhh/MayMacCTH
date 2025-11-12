@@ -133,6 +133,32 @@
     margin-bottom: 5rem; /* Khoảng cách 5rem với footer, có thể điều chỉnh */
 }
 
+.about-us {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hình nền mờ ở dưới */
+.about-us::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/asset/images/background.png") no-repeat center center;
+    background-size: contain; /* hoặc 'cover' nếu muốn ảnh phủ kín */
+    opacity: 0.08; /* Độ mờ ảnh nền */
+    filter: blur(2px); /* Làm mờ nhẹ */
+    z-index: 0;
+}
+
+/* Đảm bảo nội dung hiển thị trên nền */
+.about-us > * {
+    position: relative;
+    z-index: 1;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .page-title {
