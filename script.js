@@ -43,5 +43,19 @@ document.addEventListener("DOMContentLoaded", function () {
       interval = setInterval(nextBanner, 4000); // tiếp tục tự động
     });
   });
+
+  const fadeElements = document.querySelectorAll(".fade-element");
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      } else {
+        entry.target.classList.remove("visible"); // Cho phép fade-out khi cuộn ngược
+      }
+    });
+  }, { threshold: 0.4 }); // 20% phần tử vào khung nhìn thì kích hoạt
+
+  fadeElements.forEach(el => observer.observe(el));
 });
 
