@@ -176,6 +176,26 @@
     transform: translateY(0);
 }
 
+/* Pagination Styles */
+.pagination {
+    margin-top: 2rem;
+}
+
+.pagination .page-link {
+    color: #007bff;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .title-section {
@@ -214,5 +234,14 @@
     .col-md-9 {
         flex: 0 0 100%;
         max-width: 100%;
+    }
+
+    .pagination {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pagination .page-item {
+        margin-bottom: 0.5rem;
     }
 }
