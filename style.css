@@ -413,20 +413,100 @@ body {
   transform: scale(1.05); /* Giữ nguyên hiệu ứng phóng to cho hình ảnh */
 }
 
-/* Footer styles giữ nguyên */
-footer .col {
-  text-align: left;
+/* Footer styles */
+footer.footer {
+    background-color: #003087;
+    color: #fff;
+    font-family: 'Archivo', sans-serif;
 }
 
-footer p {
-  margin-bottom: 0.5rem;
+footer.footer .footer-logo {
+    height: 80px;
+    margin-bottom: 20px;
 }
 
-footer .btn-warning {
-  background-color: #ffc107 !important;
-  color: #000 !important;
+footer.footer .footer-slogan {
+    color: #FFC107;
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 10px;
 }
 
-footer .btn-warning:hover {
-  background-color: #e0a800 !important;
+footer.footer .footer-desc {
+    font-size: 14px;
+    margin-bottom: 15px;
+    line-height: 1.5;
 }
+
+footer.footer .footer-btn {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 600;
+    background-color: #FFC107;
+    color: #003087;
+    border: none;
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+}
+
+footer.footer .footer-btn:hover {
+    background-color: #E0A800;
+}
+
+footer.footer .footer-tax {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+footer.footer .footer-tax .tax-label {
+    font-weight: 600;
+}
+
+footer.footer .footer-title {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 10px;
+    margin-top: 20px; /* Căn ngang với logo */
+}
+
+footer.footer p {
+    font-size: 14px;
+    margin: 2px 0;
+}
+
+footer.footer a.text-white {
+    text-decoration: none;
+}
+
+footer.footer a.text-white:hover {
+    text-decoration: underline;
+}
+
+/* Các nút liên hệ bên phải */
+footer.footer .footer-contact-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+footer.footer .contact-btn {
+    display: inline-block;
+    background-color: #FFC107;
+    color: #003087;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 5px 8px;
+    border-radius: 15px;
+    text-align: center;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+footer.footer .contact-btn:hover {
+    background-color: #E0A800;
+}
+
