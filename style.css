@@ -237,6 +237,57 @@ body {
   background-color: #003087; 
 }
 
+/* SẢN PHẨM */
+/* Tiêu đề sản phẩm / shop */
+.product-title {
+  font-family: 'Poppins', sans-serif; /* hoặc Montserrat nếu bạn thích */
+  font-weight: 700;
+  font-size: 22px;
+  color: #272D37;
+}
+
+/* Link "Xem thêm thông tin" */
+.view-more {
+  color: #003087;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s, transform 0.3s ease;
+  display: inline-block;
+}
+
+.view-more:hover {
+  color: #0056b3;
+  transform: scale(1.1); /*10%*/
+}
+
+/* Icon mũi tên */
+.view-more i {
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+/* Card sản phẩm */
+.card {
+  border: none;
+}
+
+/* Ảnh sản phẩm */
+.card-img-top {
+  transition: transform 0.4s;
+}
+
+.card:hover .card-img-top {
+  transform: scale(1.05);
+}
+
+/* Giá tiền */
+.product-price {
+  font-weight: 600;
+  color: #d9534f;
+  font-size: 15px;
+  margin-top: 5px;
+}
+
 /* Footer styles giữ nguyên */
 footer .col { text-align: left; }
 footer p { margin-bottom: 0.5rem; }
