@@ -288,6 +288,57 @@ body {
   margin-top: 5px;
 }
 
+/* Hướng dẫn */
+.guide-title {
+  font-family: 'Poppins', sans-serif; /* Thay bằng font bạn muốn */
+  font-weight: 700;
+  font-size: 22px;
+  color: #272D37;
+}
+
+.guide-card {
+  border: none;
+  border-radius: 8px;
+  background-color: #003087; /* Màu nền xanh dương */
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.guide-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.guide-card .card-body {
+  padding: 1.5rem;
+}
+
+.guide-card .card-text {
+  margin: 0;
+  font-size: 16px;
+  color: #FFFFFF; /* Văn bản màu trắng */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+}
+
+.guide-image {
+  width: 50px; /* Tăng kích thước hình ảnh */
+  height: 50px;
+  margin-left: 8px; /* Khoảng cách giữa text và hình ảnh */
+  vertical-align: middle;
+  transition: transform 0.3s; /* Hiệu ứng phóng to */
+}
+
+.guide-card:hover .guide-image {
+  transform: scale(1.2); /* Phóng to hình ảnh khi hover */
+}
+
+.guide-card .bx-down-arrow-alt {
+  display: block; /* Đảm bảo icon nằm dưới text */
+  margin-top: 8px; /* Khoảng cách giữa text và icon mũi tên */
+}
+
 /* Footer styles giữ nguyên */
 footer .col { text-align: left; }
 footer p { margin-bottom: 0.5rem; }
