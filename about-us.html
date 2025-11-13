@@ -111,7 +111,7 @@
             </div>
         </div>
         <div class="container">
-            <div class="text-center fade-in">
+            <div class="text-center fade-element">
                 <img src="asset/images/team.png" alt="Team CTH" class="img-fluid rounded" style="max-width: 100%;">
             </div>
             <div class="brand-story-card mt-5 fade-in">
@@ -123,7 +123,7 @@
                 </div>
             </div>
             <div class="row mt-5">
-                <div class="col-12 col-md-4 mb-4 fade-in">
+                <div class="col-12 col-md-4 mb-4 fade-element">
                     <div class="card about-card">
                         <div class="card-body text-center">
                             <h4 class="card-title">Sứ mệnh</h4>
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-4 mb-4 fade-in">
+                <div class="col-12 col-md-4 mb-4 fade-element">
                     <div class="card about-card">
                         <div class="card-body text-center">
                             <h4 class="card-title">Giá trị cốt lõi</h4>
@@ -139,7 +139,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-4 mb-4 fade-in">
+                <div class="col-12 col-md-4 mb-4 fade-element">
                     <div class="card about-card">
                         <div class="card-body text-center">
                             <h4 class="card-title">Tầm nhìn</h4>
@@ -149,7 +149,7 @@
                 </div>
             </div>
             <div class="row mt-5">
-                <div class="col-12 col-md-4 mb-4 fade-in">
+                <div class="col-12 col-md-4 mb-4 fade-element">
                     <div class="card about-card">
                         <div class="card-body text-center">
                             <h4 class="card-title">Năng lực & Quy trình sản xuất</h4>
@@ -157,7 +157,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-4 mb-4 fade-in">
+                <div class="col-12 col-md-4 mb-4 fade-element">
                     <div class="card about-card">
                         <div class="card-body text-center">
                             <h4 class="card-title">Chúng tôi chuyên về</h4>
@@ -165,7 +165,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-4 mb-4 fade-in">
+                <div class="col-12 col-md-4 mb-4 fade-element">
                     <div class="card about-card">
                         <div class="card-body text-center">
                             <h4 class="card-title">Đội ngũ của chúng tôi</h4>
@@ -174,7 +174,7 @@
                     </div>
                 </div>
             </div>
-            <div class="brand-story-card mt-5 fade-in">
+            <div class="brand-story-card mt-5 fade-element">
                 <div class="card about-card brand-card">
                     <div class="card-body text-center">
                         <h4 class="card-title">CAM KẾT CỦA CTH</h4>
@@ -268,6 +268,7 @@
 
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const breadcrumb = document.getElementById('breadcrumb');
@@ -287,7 +288,7 @@
             } else {
                 breadcrumb.innerHTML = `Trang chủ > <a href="${currentPage}">${currentPageName}</a>`;
             }
-
+            /*
             // Hiệu ứng fade-in/fade-out khi cuộn
             const fadeElements = document.querySelectorAll('.fade-in');
 
@@ -320,6 +321,7 @@
 
             window.addEventListener('scroll', handleScroll);
             handleScroll(); // Kiểm tra khi tải trang
+            */
         });
     </script>
 </body>

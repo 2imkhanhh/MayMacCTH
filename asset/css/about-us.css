@@ -93,22 +93,17 @@
     line-height: 1.6; /* Khoảng cách dòng */
 }
 
-/* Hiệu ứng fade-in/fade-out */
-.fade-in {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-    will-change: opacity, transform;
+/* fade-in/fade-out */
+.fade-element {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
 }
 
-.fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.fade-in.hidden {
-    opacity: 0;
-    transform: translateY(30px);
+/* Khi phần tử hiện ra */
+.fade-element.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Hover effect */

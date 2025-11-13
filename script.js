@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
         entry.target.classList.remove("visible"); // Cho phép fade-out khi cuộn ngược
       }
     });
-  }, { threshold: 0.4 }); // 20% phần tử vào khung nhìn thì kích hoạt
+  }, { threshold: 0.5 }); // 20% phần tử vào khung nhìn thì kích hoạt
 
   fadeElements.forEach(el => observer.observe(el));
 });
