@@ -178,8 +178,8 @@
                 <!-- Product Grid -->
                 <div class="col-12 col-md-9">
                     <div class="product-grid">
-                        <div class="row" id="productList">
-                            <div class="col-12 col-md-4 mb-4 fade-element product-item">
+                        <div class="row fade-element" id="productList">
+                            <div class="col-12 col-md-4 mb-4 product-item">
                                 <div class="card product-card">
                                     <a href="product-detail.html" class="product-link">
                                         <div class="image-overlay">
@@ -203,7 +203,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-4 mb-4 fade-element product-item">
+                            <div class="col-12 col-md-4 mb-4 product-item">
                                 <div class="card product-card">
                                     <a href="product-detail.html" class="product-link">
                                         <div class="image-overlay">
@@ -227,7 +227,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-4 mb-4 fade-element product-item">
+                            <div class="col-12 col-md-4 mb-4 product-item">
                                 <div class="card product-card">
                                     <a href="product-detail.html" class="product-link">
                                         <div class="image-overlay">
@@ -251,7 +251,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-4 mb-4 fade-element product-item">
+                            <div class="col-12 col-md-4 mb-4 product-item">
                                 <div class="card product-card">
                                     <a href="product-detail.html" class="product-link">
                                         <div class="image-overlay">
@@ -275,7 +275,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-4 mb-4 fade-element product-item">
+                            <div class="col-12 col-md-4 mb-4 product-item">
                                 <div class="card product-card">
                                     <a href="product-detail.html" class="product-link">
                                         <div class="image-overlay">
@@ -299,7 +299,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-4 mb-4 fade-element product-item">
+                            <div class="col-12 col-md-4 mb-4 product-item">
                                 <div class="card product-card">
                                     <a href="product-detail.html" class="product-link">
                                         <div class="image-overlay">
@@ -323,7 +323,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-4 mb-4 fade-element product-item">
+                            <div class="col-12 col-md-4 mb-4 product-item">
                                 <div class="card product-card">
                                     <a href="product-detail.html" class="product-link">
                                         <div class="image-overlay">
@@ -347,7 +347,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-4 mb-4 fade-element product-item">
+                            <div class="col-12 col-md-4 mb-4 product-item">
                                 <div class="card product-card">
                                     <a href="product-detail.html" class="product-link">
                                         <div class="image-overlay">
@@ -371,7 +371,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-4 mb-4 fade-element product-item">
+                            <div class="col-12 col-md-4 mb-4 product-item">
                                 <div class="card product-card">
                                     <a href="product-detail.html" class="product-link">
                                         <div class="image-overlay">
@@ -395,7 +395,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-4 mb-4 fade-element product-item">
+                            <div class="col-12 col-md-4 mb-4 product-item">
                                 <div class="card product-card">
                                     <a href="product-detail.html" class="product-link">
                                         <div class="image-overlay">
@@ -419,7 +419,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-4 mb-4 fade-element product-item">
+                            <div class="col-12 col-md-4 mb-4 product-item">
                                 <div class="card product-card">
                                     <a href="product-detail.html" class="product-link">
                                         <div class="image-overlay">
@@ -443,7 +443,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-4 mb-4 fade-element product-item">
+                            <div class="col-12 col-md-4 mb-4 product-item">
                                 <div class="card product-card">
                                     <a href="product-detail.html" class="product-link">
                                         <div class="image-overlay">
@@ -592,23 +592,6 @@
     <script src="script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const breadcrumbPage = window.location.pathname.split('/').pop() || 'index.html';
-            const pageMap = {
-                'index.html': 'Trang chủ',
-                'about-us.html': 'Về chúng tôi',
-                'products.html': 'Sản phẩm',
-                'guide.html': 'Hướng dẫn',
-                'news.html': 'Tin tức',
-                'contact.html': 'Liên hệ'
-            };
-
-            const currentPageName = pageMap[breadcrumbPage] || 'Trang chủ';
-            if (breadcrumbPage === 'index.html') {
-                breadcrumb.innerHTML = `${currentPageName}`;
-            } else {
-                breadcrumb.innerHTML = `Trang chủ > <a href="${breadcrumbPage}">${currentPageName}</a>`;
-            }
-
             /*
             // Hiệu ứng fade-in/fade-out khi cuộn
             let lastScrollTop = 0;
@@ -638,6 +621,21 @@
             window.addEventListener('scroll', checkFadeIn);
             checkFadeIn();
             */
+
+            //Hiệu ứng fade-in/fade-out khi cuộn
+            const fadeElements = document.querySelectorAll(".fade-element");
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                } else {
+                    entry.target.classList.remove("visible"); // Cho phép fade-out khi cuộn ngược
+                }
+                });
+            }, { threshold: 0.21 }); // 20% phần tử vào khung nhìn thì kích hoạt
+
+            fadeElements.forEach(el => observer.observe(el));
 
             // Xử lý thanh trượt giá (khoảng từ - đến)
             const priceRangeMin = document.getElementById('priceRangeMin');
