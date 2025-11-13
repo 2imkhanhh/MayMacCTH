@@ -34,12 +34,18 @@ document.addEventListener('DOMContentLoaded', function () {
     'products.html': 'Sản phẩm',
     'guide.html': 'Hướng dẫn',
     'news.html': 'Tin tức',
-    'contact.html': 'Liên hệ'
+    'contact.html': 'Liên hệ',
+    'product-detail.html': 'Áo Đồng Phục' 
   };
 
   const currentPageName = pageMap[breadcrumbPage] || 'Trang chủ';
+  const urlParams = new URLSearchParams(window.location.search);
+  const productName = urlParams.get('name') || 'Áo Đồng Phục'; // Lấy tên sản phẩm từ query parameter, nếu không có thì dùng mặc định
+
   if (breadcrumbPage === 'index.html') {
     breadcrumb.innerHTML = `${currentPageName}`;
+  } else if (breadcrumbPage === 'product-detail.html') {
+    breadcrumb.innerHTML = `Trang chủ > <a href="products.html">Sản phẩm</a> > <a href="#" class="product-link" style="color: #007bff;">${productName}</a>`;
   } else {
     breadcrumb.innerHTML = `Trang chủ > <a href="${breadcrumbPage}">${currentPageName}</a>`;
   }

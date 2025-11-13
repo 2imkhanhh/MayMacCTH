@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Về chúng tôi - May Mặc CTH</title>
+    <title>Chi tiết sản phẩm - May Mặc CTH</title>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="asset/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <link rel="stylesheet" href="asset/css/style.css">
-    <link rel="stylesheet" href="asset/css/about-us.css">
+    <link rel="stylesheet" href="asset/css/product-detail.css">
 </head>
+
 <body>
     <!-- Top Header -->
     <div class="top-header bg-white border-bottom">
@@ -17,12 +19,13 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <div class="dropdown me-4">
-                        <button class="btn btn-sm p-0 dropdown-toggle text-muted" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-sm p-0 dropdown-toggle text-muted" type="button" id="languageDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bx bx-globe me-1"></i> Tiếng Việt
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="languageDropdown">
                             <li><a class="dropdown-item" href="#"><i class="bx bx-globe me-1"></i> Tiếng Việt</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="bx bx-globe me-1"></i> English</a></li>
+                            <li><a class="product-link" href="#"><i class="bx bx-globe me-1"></i> English</a></li>
                         </ul>
                     </div>
                     <span class="text-muted me-4">
@@ -48,7 +51,8 @@
                         <option value="uniform-pants">Quần đồng phục</option>
                     </select>
                     <div class="search-container">
-                        <input type="text" class="form-control search-input" placeholder="Tìm kiếm sản phẩm..." aria-label="Search">
+                        <input type="text" class="form-control search-input" placeholder="Tìm kiếm sản phẩm..."
+                            aria-label="Search">
                         <button class="search-button" type="button">
                             <i class='bx bx-search'></i>
                         </button>
@@ -64,7 +68,8 @@
     <!-- Menu -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -85,7 +90,7 @@
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="about-us.html">Về chúng tôi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about-us.html">Về chúng tôi</a></li>
                     <li class="nav-item"><a class="nav-link" href="products.html">Sản phẩm</a></li>
                     <li class="nav-item"><a class="nav-link" href="guide.html">Hướng dẫn</a></li>
                     <li class="nav-item"><a class="nav-link" href="news.html">Tin tức</a></li>
@@ -101,22 +106,139 @@
             </div>
         </div>
     </nav>
+
+    <!-- Main Content: Product Detail Section -->
+    <section class="product-detail">
+        <div class="title-section">
+            <div class="container d-flex justify-content-between align-items-center flex-wrap">
+                <div class="page-title">ÁO ĐỒNG PHỤC</div>
+                <div class="breadcrumb-nav" id="breadcrumb"></div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row align-items-start">
+                <!-- Hình ảnh sản phẩm -->
+                <div class="col-12 col-md-6 mb-4 mb-md-0">
+                    <div class="product-image">
+                        <a href="product-detail.html" class="product-link">
+                            <img src="asset/images/product2.png" alt="Áo đồng phục" id="main-product-image">
+                        </a>
+                        <!-- Thêm ảnh nhỏ bên dưới, bao gồm ảnh hiện tại -->
+                        <div class="thumbnail-images mt-3">
+                            <img src="asset/images/product2.png" alt="Thumbnail 1" class="thumbnail">
+                            <img src="asset/images/product3.png" alt="Thumbnail 2" class="thumbnail">
+                            <img src="asset/images/product4.png" alt="Thumbnail 2" class="thumbnail">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thông tin sản phẩm -->
+                <div class="col-12 col-md-6">
+                    <div class="product-info">
+                        <!-- Tên + đánh giá -->
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h1 class="product-title mb-0">
+                                <a href="#" class="product-link text-dark text-decoration-none">Áo đồng phục</a>
+                            </h1>
+                            <div class="rating-box text-warning">
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bx-star'></i>
+                                <span class="ms-1 text-muted small">(1)</span>
+                            </div>
+                        </div>
+
+                        <!-- Giá -->
+                        <div class="price-range mb-4">
+                            <span class="price h3 fw-bold">180.000 - 200.000 VNĐ</span>
+                        </div>
+
+                        <!-- Mã sản phẩm + Danh mục -->
+                        <div class="product-meta mb-4 text-muted small">
+                            <div><strong>Mã sản phẩm:</strong> HS-023542123</div>
+                            <div><strong>Danh mục:</strong> Áo đồng phục</div>
+                        </div>
+
+                        <!-- Màu sắc -->
+                        <div class="color-options mb-4">
+                            <h6 class="fw-bold mb-2">Màu sắc</h6>
+                            <div class="color-swatches d-flex gap-2">
+                                <div class="color-swatch active" style="background-color: #008080;" data-color="teal">
+                                </div>
+                                <div class="color-swatch" style="background-color: #000000;" data-color="black"></div>
+                                <div class="color-swatch" style="background-color: #ff4500;" data-color="orange"></div>
+                            </div>
+                        </div>
+
+                        <!-- Kích thước -->
+                        <div class="size-options mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="fw-bold mb-0">Kích thước</h6>
+                                <a href="#" class="size-guide text-primary small">Hướng dẫn chọn size</a>
+                            </div>
+                            <div class="size-buttons d-flex gap-2">
+                                <button class="btn btn-outline-secondary btn-size active" data-size="S">S</button>
+                                <button class="btn btn-outline-secondary btn-size" data-size="M">M</button>
+                                <button class="btn btn-outline-secondary btn-size" data-size="L">L</button>
+                                <button class="btn btn-outline-secondary btn-size" data-size="XL">XL</button>
+                                <button class="btn btn-outline-secondary btn-size" data-size="XXL">XXL</button>
+                            </div>
+                        </div>
+
+                        <!-- Số lượng -->
+                        <div class="quantity mb-4">
+                            <h6 class="fw-bold mb-2">Số lượng</h6>
+                            <div class="input-group w-50">
+                                <button class="btn btn-outline-secondary" type="button" id="decrease">-</button>
+                                <input type="text" class="form-control text-center fw-bold" value="1" readonly>
+                                <button class="btn btn-outline-secondary" type="button" id="increase">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Nút hành động -->
+                        <div class="action-buttons">
+                            <button class="btn btn-add-cart">
+                                Xem Áo Mẫu & Nhận Vải Miễn Phí
+                                <span class="btn-subtext">(Miễn phí giao hàng)</span>
+                            </button>
+
+                            <button class="btn btn-buy">
+                                Nhận báo giá
+                                <span class="btn-subtext">(Xuất VAT theo yêu cầu)</span>
+                            </button>
+
+                            <button class="btn btn-zalo">
+                                <div class="zalo-content">
+                                    <img src="asset/images/zalo-icon.png" alt="Zalo" class="zalo-icon"> Chat qua Zalo
+                                </div>
+                                <span class="btn-subtext">(Báo giá trong 5s)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer bg-primary text-white py-5">
         <div class="container">
-            <div class="row gy-4">
+            <div class="row g-0">
                 <div class="col-12 col-md-4 col-lg-3">
                     <img src="asset/images/logo2.png" alt="Logo" class="footer-logo mb-3">
                     <p class="footer-slogan">MAY MẶC CTH lắng nghe bạn!</p>
                     <p class="footer-desc">
-                        Chúng tôi luôn trân trọng mọi ý kiến đóng góp của khách hàng, 
+                        Chúng tôi luôn trân trọng mọi ý kiến đóng góp của khách hàng,
                         không ngừng cải thiện để mang đến sản phẩm và dịch vụ tốt nhất.
                     </p>
                     <button class="btn btn-warning footer-btn">ĐÓNG GÓP Ý KIẾN →</button>
                     <p class="footer-tax mt-3"><strong>MÃ SỐ THUẾ:</strong> 0202167805</p>
                 </div>
                 <div class="col-6 col-md-4 col-lg-2">
-                    <p class="footer-title">VỀ CHÚNG TÔI</p>    
+                    <p class="footer-title">VỀ CHÚNG TÔI</p>
                     <ul class="footer-links">
                         <li><a href="#">Giới thiệu MAY MẶC CTH</a></li>
                         <li><a href="#">Hướng dẫn mua hàng</a></li>
@@ -150,20 +272,24 @@
                 <div class="col-12 col-md-12 col-lg-3">
                     <p class="footer-title">THÔNG TIN LIÊN HỆ</p>
                     <p>📍 73/202 Miếu Hai Xã, Lê Chân, Hải Phòng, Việt Nam</p>
-                    <p>🌐 <a href="https://www.indohaiphong.com" class="text-white text-decoration-none">www.indohaiphong.com</a></p>
+                    <p>🌐 <a href="https://www.indohaiphong.com"
+                            class="text-white text-decoration-none">www.indohaiphong.com</a></p>
                     <p>☎ 078315798 - 083435093 - 083919999</p>
                     <div class="footer-contact-btns mt-3">
                         <a href="https://zalo.me/078315798" class="contact-card">
                             <div class="contact-icon"><img src="asset/images/zalo.png" alt="Zalo"></div>
-                            <div class="contact-text"><span class="contact-label">TƯ VẤN QUA</span><span class="contact-value">ZALO</span></div>
+                            <div class="contact-text"><span class="contact-label">TƯ VẤN QUA</span><span
+                                    class="contact-value">ZALO</span></div>
                         </a>
                         <a href="tel:+078315798" class="contact-card">
                             <div class="contact-icon"><img src="asset/images/hotline.png" alt="Hotline"></div>
-                            <div class="contact-text"><span class="contact-label">HOTLINE</span><span class="contact-value">0783 157 98</span></div>
+                            <div class="contact-text"><span class="contact-label">HOTLINE</span><span
+                                    class="contact-value">0783 157 98</span></div>
                         </a>
                         <a href="#" class="contact-card">
                             <div class="contact-icon"><img src="asset/images/hotline.png" alt="Mẫu vải"></div>
-                            <div class="contact-text"><span class="contact-label">0783159798</span><span class="contact-value">TẠI CỬA HÀNG</span></div>
+                            <div class="contact-text"><span class="contact-label">0783159798</span><span
+                                    class="contact-value">TẠI CỬA HÀNG</span></div>
                         </a>
                     </div>
                 </div>
@@ -181,3 +307,96 @@
             </div>
         </div>
     </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const fadeElements = document.querySelectorAll(".fade-element");
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                    } else {
+                        entry.target.classList.remove("visible");
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            fadeElements.forEach(el => observer.observe(el));
+
+            // Breadcrumb + tên sản phẩm động
+            const breadcrumb = document.getElementById('breadcrumb');
+            const urlParams = new URLSearchParams(window.location.search);
+            const productName = decodeURIComponent(urlParams.get('name') || 'Áo đồng phục');
+
+            if (window.location.pathname.includes('product-detail.html')) {
+                breadcrumb.innerHTML = `
+                    Trang chủ > 
+                    <a href="products.html">Sản phẩm</a> > 
+                    <a href="#" class="text-primary text-decoration-none fw-bold">${productName}</a>
+                `;
+            }
+
+            // Chọn màu sắc
+            const colorSwatches = document.querySelectorAll('.color-swatches .color-swatch');
+            colorSwatches.forEach(swatch => {
+                swatch.addEventListener('click', function () {
+                    colorSwatches.forEach(s => s.classList.remove('active'));
+                    this.classList.add('active');
+                    console.log('Selected color:', this.getAttribute('data-color'));
+                });
+            });
+
+            // Chọn kích thước
+            const sizeButtons = document.querySelectorAll('.size-buttons .btn-size');
+            sizeButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    sizeButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    console.log('Selected size:', this.getAttribute('data-size'));
+                });
+            });
+
+            // Thay đổi ảnh chính khi nhấp vào thumbnail
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            const mainImage = document.getElementById('main-product-image');
+
+            // Đặt thumbnail đầu tiên là active ban đầu
+            if (thumbnails.length > 0) {
+                thumbnails[0].classList.add('active');
+            }
+
+            thumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', function () {
+                    console.log('Thumbnail clicked:', this.src); // Kiểm tra sự kiện
+                    if (mainImage) {
+                        mainImage.src = this.src;
+                        mainImage.alt = this.alt;
+                        // Xóa class active khỏi tất cả thumbnail và thêm vào thumbnail được chọn
+                        thumbnails.forEach(img => img.classList.remove('active'));
+                        this.classList.add('active');
+                    } else {
+                        console.error('Main image element not found!');
+                    }
+                });
+            });
+
+            // Tăng giảm số lượng
+            document.getElementById('increase')?.addEventListener('click', function () {
+                let input = this.previousElementSibling;
+                input.value = parseInt(input.value) + 1;
+            });
+            document.getElementById('decrease')?.addEventListener('click', function () {
+                let input = this.nextElementSibling;
+                if (parseInt(input.value) > 1) {
+                    input.value = parseInt(input.value) - 1;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
