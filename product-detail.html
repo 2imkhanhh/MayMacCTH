@@ -118,6 +118,7 @@
 
         <div class="container">
             <div class="row align-items-start">
+
                 <div class="col-12 col-md-6 mb-4 mb-md-0">
                     <div class="product-image">
                         <a href="product-detail.html" class="product-link">
@@ -128,6 +129,52 @@
                             <img src="asset/images/product3.png" alt="Thumbnail 2" class="thumbnail">
                             <img src="asset/images/product4.png" alt="Thumbnail 2" class="thumbnail">
                         </div>
+                    </div>
+
+                    <div class="accordion product-info-accordion mt-4" id="productDetailsAccordion">
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingDetails">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseDetails" aria-expanded="true"
+                                    aria-controls="collapseDetails">
+                                    Chi tiết sản phẩm
+                                </button>
+                            </h2>
+                            <div id="collapseDetails" class="accordion-collapse collapse show"
+                                aria-labelledby="headingDetails" data-bs-parent="#productDetailsAccordion">
+                                <div class="accordion-body">
+                                    <p>Nội dung chi tiết về chất liệu, kiểu dáng, công nghệ in...
+                                    </p>
+                                    <ul>
+                                        <li>Chất liệu: Cotton 100%</li>
+                                        <li>Công nghệ in: In lụa cao cấp</li>
+                                        <li>Bảo hành: 6 tháng</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFaq">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseFaq" aria-expanded="false" aria-controls="collapseFaq">
+                                    Câu hỏi thường gặp
+                                </button>
+                            </h2>
+                            <div id="collapseFaq" class="accordion-collapse collapse" aria-labelledby="headingFaq"
+                                data-bs-parent="#productDetailsAccordion">
+                                <div class="accordion-body">
+                                    <strong>Hỏi: Đặt hàng bao lâu thì có?</strong>
+                                    <p>Trả lời: Tùy thuộc vào địa chỉ của bạn, thời gian giao hàng dự kiến từ 2-5 ngày
+                                        làm việc.</p>
+                                    <strong>Hỏi: Chính sách đổi trả như thế nào?</strong>
+                                    <p>Trả lời: Chúng tôi hỗ trợ đổi trả trong 30 ngày cho bất kỳ lý do gì, miễn là sản
+                                        phẩm còn nguyên tem mác.</p>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -195,12 +242,10 @@
                                 Xem Áo Mẫu & Nhận Vải Miễn Phí
                                 <span class="btn-subtext">(Miễn phí giao hàng)</span>
                             </button>
-
                             <button class="btn btn-buy">
                                 Nhận báo giá
                                 <span class="btn-subtext">(Xuất VAT theo yêu cầu)</span>
                             </button>
-
                             <button class="btn btn-zalo">
                                 <div class="zalo-content">
                                     <img src="asset/images/zalo-icon.png" alt="Zalo" class="zalo-icon"> Chat qua Zalo
@@ -214,18 +259,11 @@
                                 <h2 class="section-title">Mô tả sản phẩm</h2>
                                 <div class="title-divider"></div>
                             </div>
-
                             <div class="product-description-content mt-3">
-                                <p>Đây là nơi bạn điền nội dung mô tả chi tiết cho sản phẩm...</p>
-                                <p>Bạn có thể thêm hình ảnh, danh sách, hoặc bất kỳ thông tin nào khác liên quan đến sản
-                                    phẩm tại đây để thu hút khách hàng.</p>
-                                <ul>
-                                    <li>Chất liệu: Cotton 100%</li>
-                                    <li>Công nghệ in: In lụa cao cấp</li>
-                                    <li>Bảo hành: 6 tháng</li>
-                                </ul>
+                                <p>Nội dung mô tả ngắn gọn về sản phẩm.</p>
                             </div>
                         </div>
+
                         <div class="support-features-banner">
                             <div class="feature-item">
                                 <div class="feature-icon icon-text-box">
@@ -236,7 +274,6 @@
                                     <strong>Free ship cho đơn trên 200k</strong>
                                 </div>
                             </div>
-
                             <div class="feature-item">
                                 <div class="feature-icon">
                                     <i class='bx bx-sync'></i>
@@ -245,7 +282,6 @@
                                     <strong>30 ngày đổi trả cho bất kì thứ gì</strong>
                                 </div>
                             </div>
-
                             <div class="feature-item">
                                 <div class="feature-icon">
                                     <i class='bx bxs-phone-call'></i>
@@ -255,7 +291,6 @@
                                     <span>hỗ trợ từ 8h30 - 22h</span>
                                 </div>
                             </div>
-
                             <div class="feature-item">
                                 <div class="feature-icon">
                                     <i class='bx bxs-map'></i>
@@ -264,6 +299,176 @@
                                     <strong>Đến tận nơi nhận trả hàng</strong>
                                     <span>hoàn tiền trong 24h</span>
                                 </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container my-4">
+        <hr class="section-divider">
+    </div>
+
+    <section class="product-reviews-section">
+        <div class="container">
+            <div class="reviews-header">
+                <h2 class="reviews-main-title">Đánh giá sản phẩm</h2>
+                <div class="overall-rating">
+                    <span class="rating-score">4.0</span>
+                    <div class="rating-stars text-warning">
+                        <i class='bx bxs-star'></i>
+                        <i class='bx bxs-star'></i>
+                        <i class='bx bxs-star'></i>
+                        <i class='bx bxs-star'></i>
+                        <i class='bx bx-star'></i>
+                    </div>
+                </div>
+                <span class="review-count-text">Dựa trên 50 khách hàng</span>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12 col-lg-4">
+                    <div class="review-filters">
+                        <h6 class="filter-title">Lọc đánh giá</h6>
+                        <div class="input-group search-reviews mb-4">
+                            <span class="input-group-text">
+                                <i class='bx bx-search'></i>
+                            </span>
+                            <input type="text" class="form-control" placeholder="Tìm kiếm đánh giá">
+                        </div>
+
+                        <h6 class="filter-title">Phân loại xếp hạng</h6>
+                        <ul class="filter-list star-filter-list">
+                            <li>
+                                <button class="btn btn-filter-star active">
+                                    5 <i class='bx bxs-star'></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-filter-star">
+                                    4 <i class='bx bxs-star'></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-filter-star">
+                                    3 <i class='bx bxs-star'></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-filter-star">
+                                    2 <i class='bx bxs-star'></i>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="btn btn-filter-star">
+                                    1 <i class='bx bxs-star'></i>
+                                </button>
+                            </li>
+                        </ul>
+
+                        <h6 class="filter-title mt-4">Lọc phản hồi</h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkHasFeedback">
+                            <label class="form-check-label" for="checkHasFeedback">
+                                Đã phản hồi
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkHasImage">
+                            <label class="form-check-label" for="checkHasImage">
+                                Có hình ảnh
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-8 mt-4 mt-lg-0">
+                    <div class="review-list">
+
+                        <div class="review-item">
+                            <div class="review-author">
+                                <strong>Trần Anh Tùng</strong>
+                                <span class="review-date">20/07/2025</span>
+                            </div>
+                            <div class="review-rating text-warning">
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                            </div>
+                            <div class="review-product-details">
+                                <span>Kích thước: L</span>
+                                <span>Màu sắc: Rêu</span>
+                                <span>Phù hợp với cơ thể: Đúng kích thước</span>
+                            </div>
+                            <p class="review-text">Sp đẹp.</p>
+                            <div class="review-tags">
+                                <span class="tag">Sản phẩm đẹp</span>
+                                <span class="tag">Giá tốt</span>
+                                <span class="tag">Đóng gói đẹp</span>
+                                <span class="tag">Giao hàng nhanh</span>
+                                <span class="tag">Chăm sóc khách hàng tận tình</span>
+                            </div>
+                        </div>
+
+                        <div class="review-item">
+                            <div class="review-author">
+                                <strong>phamngocthang381@gmail.com</strong>
+                                <span class="review-date">12/12/2024</span>
+                            </div>
+                            <div class="review-rating text-warning">
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                            </div>
+                            <div class="review-product-details">
+                                <span>Kích thước: L</span>
+                                <span>Màu sắc: Xanh Colony</span>
+                                <span>Phù hợp với cơ thể: Đúng kích thước</span>
+                            </div>
+                            <p class="review-text">mọi thứ ok và chăm sóc chu đáo</p>
+                            <div class="review-images">
+                                <img src="asset/images/product1.png" alt="Ảnh review 1">
+                                <img src="asset/images/product2.png" alt="Ảnh review 2">
+                                <img src="asset/images/product1.png" alt="Ảnh review 3">
+                                <img src="asset/images/product2.png" alt="Ảnh review 4">
+                                <img src="asset/images/product5.png" alt="Ảnh review 5">
+                            </div>
+                            <div class="review-tags">
+                                <span class="tag">Giao hàng nhanh</span>
+                            </div>
+                        </div>
+
+                        <div class="review-item">
+                            <div class="review-author">
+                                <strong>Trần Anh Tùng</strong>
+                                <span class="review-date">20/07/2025</span>
+                            </div>
+                            <div class="review-rating text-warning">
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                            </div>
+                            <div class="review-product-details">
+                                <span>Kích thước: L</span>
+                                <span>Màu sắc: Rêu</span>
+                                <span>Phù hợp với cơ thể: Đúng kích thước</span>
+                            </div>
+                            <p class="review-text">Sp đẹp.</p>
+                            <div class="review-tags">
+                                <span class="tag">Sản phẩm đẹp</span>
+                                <span class="tag">Giá tốt</span>
+                                <span class="tag">Đóng gói đẹp</span>
+                                <span class="tag">Giao hàng nhanh</span>
+                                <span class="tag">Chăm sóc khách hàng tận tình</span>
                             </div>
                         </div>
 
@@ -444,6 +649,21 @@
                 if (parseInt(input.value) > 1) {
                     input.value = parseInt(input.value) - 1;
                 }
+            });
+
+            const starFilterButtons = document.querySelectorAll('.star-filter-list .btn-filter-star');
+
+            starFilterButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // Xóa class 'active' khỏi tất cả các nút lọc sao
+                    starFilterButtons.forEach(btn => btn.classList.remove('active'));
+
+                    // Thêm class 'active' cho nút vừa được nhấp
+                    this.classList.add('active');
+
+                    // Ghi log để kiểm tra (tùy chọn)
+                    console.log('Đã chọn lọc:', this.innerText.trim());
+                });
             });
         });
     </script>
