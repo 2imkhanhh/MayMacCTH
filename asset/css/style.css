@@ -386,31 +386,34 @@ body {
 
 /* Card tin tức */
 .card-title-link {
-  display: block; 
-  font-weight: 700; 
-  font-size: 16px; 
-  color: #003087; 
-  text-decoration: none; 
-  margin-bottom: 0.5rem; 
-  transition: color 0.3s; 
+  display: block;
+  font-weight: 700;
+  font-size: 16px;
+  color: #003087;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s;
 }
 
 .card-title-link:hover {
-  color: #0056b3; /* Thay đổi màu khi hover */
-  text-decoration: underline; /* Thêm gạch chân khi hover để chỉ là link */
+  color: #0056b3;
+  /* Thay đổi màu khi hover */
+  text-decoration: underline;
+  /* Thêm gạch chân khi hover để chỉ là link */
 }
 
 .news-card {
   border: none;
-  transition: transform 0.3s, box-shadow 0.3s; /* Giữ nguyên transition để không ảnh hưởng đến img */
+  transition: transform 0.3s, box-shadow 0.3s;
+  /* Giữ nguyên transition để không ảnh hưởng đến img */
 }
 
 .news-card img {
-  transition: transform 0.4s ease; 
+  transition: transform 0.4s ease;
 }
 
 .news-card:hover img {
-  transform: scale(1.05); 
+  transform: scale(1.05);
 }
 
 /* Footer styles */
@@ -446,6 +449,7 @@ footer.footer .footer-btn {
   transition: 0.3s;
   border: none;
 }
+
 footer.footer .footer-btn:hover {
   background-color: #E0A800;
 }
@@ -463,14 +467,17 @@ footer.footer .footer-links {
   padding: 0;
   margin: 0;
 }
+
 footer.footer .footer-links li {
   margin-bottom: 6px;
 }
+
 footer.footer .footer-links a {
   color: #ffffffd9;
   text-decoration: none;
   font-size: 14px;
 }
+
 footer.footer .footer-links a:hover {
   text-decoration: underline;
   color: #FFC107;
@@ -502,7 +509,7 @@ footer.footer .footer-links a:hover {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -513,7 +520,7 @@ footer.footer .footer-links a:hover {
 
 .contact-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .contact-icon {
@@ -566,3 +573,182 @@ footer.footer .footer-links a:hover {
   transform: translateY(0);
 }
 
+@media (max-width: 991.98px) {
+
+
+  .nav-item.me-4 {
+    margin-left: 0 !important;
+    margin-right: 1rem !important;
+  }
+
+  /* Điều chỉnh menu danh mục tùy chỉnh khi ở trong bản mobile */
+  .navbar-collapse {
+
+    /* Đảm bảo menu custom hoạt động tốt khi thu gọn */
+    .dropdown-custom {
+      position: static;
+    }
+
+    .dropdown-menu-custom {
+      position: static;
+      display: block;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      min-width: auto;
+      width: 100%;
+    }
+
+    .dropdown-menu-custom li a {
+      color: #b4c8ff;
+      /* Màu nhạt hơn cho menu con */
+      padding-left: 2rem;
+      /* Thụt lề vào trong */
+    }
+
+    .dropdown-menu-custom li a:hover {
+      background: none;
+      color: #fff;
+    }
+  }
+
+  /* Gỡ bỏ margin của icon trái tim */
+  .navbar-nav .bx-heart {
+    margin-right: 0;
+  }
+
+  /* Banner: Bỏ lề và giảm chiều cao */
+  .banner-container {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    height: 450px;
+  }
+}
+
+
+/* --- Di động (Mobile) --- */
+@media (max-width: 767.98px) {
+
+  /* Top Header: Xếp chồng các mục */
+  .top-header .d-flex.justify-content-between {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 5px;
+  }
+
+  /* Ẩn mục "So sánh" không quan trọng trên di động */
+  .top-header .text-muted:last-child {
+    display: none;
+  }
+
+  /* Search Bar: Sắp xếp lại */
+  .search-bar .d-flex.justify-content-between {
+    flex-direction: column;
+    align-items: center;
+    /* Căn giữa logo và nút gọi */
+    gap: 15px;
+    /* Khoảng cách giữa các khối */
+  }
+
+  .search-bar img {
+    height: 50px;
+    /* Giảm kích thước logo */
+    margin-right: 0 !important;
+  }
+
+  /* Khối (Danh mục + Ô tìm kiếm) */
+  .search-bar .d-flex.align-items-center {
+    width: 100%;
+  }
+
+  /* Ô tìm kiếm chiếm hết phần còn lại */
+  .search-container {
+    width: 100%;
+    /* Ghi đè width: 400px */
+    flex-grow: 1;
+    /* Cho phép co giãn */
+  }
+
+  /* Select danh mục */
+  .category-select {
+    width: 130px;
+    /* Giảm nhẹ độ rộng */
+    flex-shrink: 0;
+    /* Không bị co lại */
+  }
+
+  /* Nút gọi điện */
+  .search-bar .btn-outline-primary {
+    width: 100%;
+    /* Nút gọi chiếm toàn bộ chiều rộng */
+  }
+
+  /* Banner: Giảm chiều cao thêm */
+  .banner-container {
+    height: 300px;
+  }
+
+  .banner-dots .dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Tiêu đề các mục (Sản phẩm, Hướng dẫn, Tin tức) */
+  .container .d-flex.justify-content-between.align-items-center {
+    flex-direction: column;
+    align-items: flex-start !important;
+    /* Căn trái tiêu đề và link */
+    gap: 10px;
+    margin-bottom: 1rem !important;
+  }
+
+  .product-title,
+  .guide-title,
+  .news-title {
+    font-size: 20px;
+    /* Giảm cỡ chữ tiêu đề */
+  }
+
+  /* Thẻ Hướng dẫn: Xếp chữ và icon dọc */
+  .guide-card .card-text {
+    flex-direction: column;
+    gap: 10px;
+    font-size: 15px;
+  }
+
+  .guide-image {
+    margin-left: 0;
+  }
+
+  /* Footer: Căn giữa nội dung các cột */
+  footer.footer .row>div[class^="col-"] {
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  /* Căn giữa logo và nút */
+  footer.footer .col-12.col-md-4.col-lg-3 {
+    align-items: center;
+  }
+
+  /* Giữ các link menu căn trái, nhưng khối được căn giữa */
+  footer.footer .footer-links {
+    display: inline-block;
+    /* Cho phép text-align: center hoạt động */
+    text-align: left;
+    /* Giữ chữ bên trong căn trái */
+  }
+
+  /* Căn giữa khối các nút liên hệ */
+  .footer-contact-btns {
+    display: inline-flex;
+    /* Cho phép text-align: center hoạt động */
+    flex-direction: column;
+    align-items: stretch;
+    /* Các nút rộng bằng nhau */
+    width: 100%;
+    max-width: 350px;
+    /* Giới hạn độ rộng tối đa của nút */
+  }
+}
