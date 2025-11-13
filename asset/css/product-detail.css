@@ -379,5 +379,106 @@
     padding-left: 10px; /* Giảm padding-left để gần hơn */
 }
 
+.section-title-container {
+    display: flex; /* Cho tiêu đề và đường kẻ nằm ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    margin-bottom: 1rem; /* Khoảng cách bên dưới */
+}
 
+.section-title {
+    font-family: 'Archivo', sans-serif; /* Dùng font nhất quán */
+    font-size: 1.5rem; /* Kích thước chữ vừa phải cho cột */
+    font-weight: 700; /* Chữ đậm */
+    color: #333;
+    margin: 0;
+    white-space: nowrap; /* Không cho chữ "Mô tả sản phẩm" xuống dòng */
+    padding-right: 1rem; /* Khoảng cách giữa chữ và đường kẻ */
+}
+
+.title-divider {
+    flex-grow: 1; /* Cho đường kẻ lấp đầy không gian còn lại */
+    height: 2px; /* Độ dày đường kẻ */
+    background-color: #ccc; /* Màu đường kẻ giống trong ảnh */
+}
+
+/* Kiểu chữ cho nội dung mô tả (bạn có thể tùy chỉnh) */
+.product-description-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #555;
+}
+
+.support-features-banner {
+    background-color: #EFF1FF; /* Màu xanh rất nhạt (gần giống ảnh) */
+    /* border: 2px solid #0d6efd;  */
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 cột */
+    gap: 1.25rem; /* Khoảng cách giữa các mục */
+    margin-top: 2rem; 
+    margin-bottom: 2rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center; /* Căn giữa icon và text theo chiều dọc */
+    gap: 1rem; /* Khoảng cách giữa icon và text */
+}
+
+.feature-icon {
+    flex-shrink: 0; /* Ngăn icon bị co lại */
+    width: 60px;
+    height: 60px;
+    border: 2px solid #333;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Archivo', sans-serif; /* Dùng font nhất quán (nếu có) */
+    color: #333;
+    text-align: center;
+}
+
+.feature-icon i {
+    font-size: 2.2rem; /* Kích thước icon */
+    color: #333;
+    line-height: 1; /* Đảm bảo icon căn giữa chuẩn */
+}
+
+/* Style đặc biệt cho box "FREE SHIP" (giống trong ảnh) */
+.feature-icon.icon-text-box {
+    flex-direction: column;
+    line-height: 1.1;
+    font-weight: 700;
+}
+
+.icon-text-box strong {
+    font-size: 1rem;
+}
+
+.icon-text-box span {
+    font-size: 0.9rem;
+    margin-top: 2px;
+}
+
+.feature-text {
+    font-size: 0.95rem;
+    color: #333;
+    line-height: 1.4;
+}
+
+.feature-text strong {
+    display: block; /* Dòng chính */
+    font-weight: 600;
+    font-size: 1rem;
+    color: #000;
+}
+
+.feature-text span {
+    display: block; /* Dòng phụ */
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 2px;
+}
 
