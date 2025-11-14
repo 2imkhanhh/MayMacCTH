@@ -438,6 +438,8 @@ footer.footer .footer-slogan {
 footer.footer .footer-desc {
   font-size: 14px;
   opacity: 0.9;
+  padding-top: 5px;
+  padding-right: 50px;
 }
 
 footer.footer .footer-btn {
@@ -722,33 +724,34 @@ footer.footer .footer-links a:hover {
   }
 
   /* Footer: Căn giữa nội dung các cột */
-  footer.footer .row>div[class^="col-"] {
+  footer.footer .row > div[class^="col-"] {
     text-align: center;
     margin-top: 15px;
-  }
+    padding: 0 15px; /* Thêm padding trái/phải để tạo khoảng cách giữa các cột */
+}
 
-  /* Căn giữa logo và nút */
-  footer.footer .col-12.col-md-4.col-lg-3 {
+/* Căn giữa logo và nút, giới hạn chiều rộng để tránh tràn */
+footer.footer .col-12.col-md-4.col-lg-3 {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-  }
+    max-width: 350px; /* Giới hạn chiều rộng tối đa để tránh tràn */
+    margin: 0 auto; /* Căn giữa cột trong hàng */
+}
 
-  /* Giữ các link menu căn trái, nhưng khối được căn giữa */
-  footer.footer .footer-links {
+/* Giữ các link menu căn trái, nhưng khối được căn giữa */
+footer.footer .footer-links {
     display: inline-block;
-    /* Cho phép text-align: center hoạt động */
     text-align: left;
-    /* Giữ chữ bên trong căn trái */
-  }
+}
 
-  /* Căn giữa khối các nút liên hệ */
-  .footer-contact-btns {
-    display: inline-flex;
-    /* Cho phép text-align: center hoạt động */
+/* Căn giữa khối các nút liên hệ */
+footer.footer .footer-contact-btns {
+    display: flex;
     flex-direction: column;
     align-items: stretch;
-    /* Các nút rộng bằng nhau */
     width: 100%;
     max-width: 350px;
-    /* Giới hạn độ rộng tối đa của nút */
-  }
+    margin: 0 auto; /* Căn giữa khối nút liên hệ */
+}
 }
