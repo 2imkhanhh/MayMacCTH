@@ -2,7 +2,7 @@
     border: none;
     border-radius: 8px;
     background-color: #003087; /* Màu nền xanh dương */
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .guide-card:hover {
@@ -17,11 +17,13 @@
 .guide-card .card-text {
     margin: 0;
     font-size: 16px;
+    font-weight: 560;
     color: #FFFFFF; /* Văn bản màu trắng */
     display: flex;
     align-items: center;
     justify-content: center;
     line-height: 1.2;
+    transition: color 0.3s ease;
 }
 
 .guide-image {
@@ -85,4 +87,32 @@
     font-size: 1rem; /* Kích thước text */
     color: #555; /* Màu text */
     line-height: 1.6; /* Khoảng cách dòng */
+}
+
+.guide-card.active-card {
+    background-color: #FFD000;
+}
+
+/* 2. Chữ khi active (màu xanh) */
+.guide-card.active-card .card-text {
+    color: #174DAF;
+}
+
+/* 3. Icon mũi tên khi active (màu xanh) */
+.guide-card.active-card .bx {
+    /* !important là BẮT BUỘC 
+      vì trong HTML bạn đang dùng style inline "color: #FFFFFF" 
+    */
+    color: #174DAF !important; 
+}
+
+/* 3. Hiệu ứng XOAY MŨI TÊN (Quan trọng nhất) */
+.guide-card .bx {
+    transition: transform 0.4s ease, color 0.4s ease !important; /* Làm mượt cả xoay và đổi màu */
+    transform: rotate(0deg); /* Trạng thái ban đầu: 0 độ */
+}
+
+/* 4. Khi card active, xoay mũi tên 180 độ */
+.guide-card.active-card .bx {
+    transform: rotate(180deg); /* Trạng thái active: xoay 180 độ */
 }

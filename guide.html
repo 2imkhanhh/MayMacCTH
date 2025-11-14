@@ -112,12 +112,11 @@
     <section class="guide-section">
         <div class="title-section">
             <div class="container d-flex justify-content-between align-items-center flex-wrap">
-                <div class="page-title">SẢN PHẨM</div>
+                <div class="page-title">HƯỚNG DẪN / TRỢ GIÚP</div>
                 <div class="breadcrumb-nav" id="breadcrumb"></div>
             </div>
         </div>
         <div class="container my-5 fade-element">
-            <h3 class="text-left mb-4 guide-title">HƯỚNG DẪN / TRỢ GIÚP</h3>
             <div class="row row-cols-1 row-cols-md-5 g-4">
                 <div class="col">
                     <a href="#" class="text-decoration-none guide-card-link"
@@ -411,7 +410,7 @@
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
+                    if (entry.isIntersectimg) {
                         entry.target.classList.add("visible");
                     } else {
                         entry.target.classList.remove("visible");
@@ -422,53 +421,80 @@
             fadeElements.forEach(el => observer.observe(el));
 
             // --- LOGIC SỬA LỖI HIỂN THỊ CARD ---
-            const guideCards = document.querySelectorAll('.guide-card-link');
+            const guideCardLinks = document.querySelectorAll('.guide-card-link');
             const guideContentArea = document.querySelector('.guide-content-area');
-            const allGuideContents = document.querySelectorAll('.guide-content'); // Lấy tất cả card nội dung
-            let activeCard = null;
+            const allGuideContents = document.querySelectorAll('.guide-content');
+            
+            const allTriggerCards = document.querySelectorAll('.guide-card');
+            const allGuideImages = document.querySelectorAll('.guide-card .guide-image'); 
+            
+            let activeCardLink = null; 
 
-            // Rất quan trọng: Ẩn tất cả nội dung ngay từ đầu bằng JS
-            // để đảm bảo nó bị ẩn, bất kể file CSS có lỗi hay không.
+            // Ẩn tất cả nội dung ngay từ đầu
             allGuideContents.forEach(content => {
                 content.style.display = 'none';
             });
 
+            guideCardLinks.forEach(cardLink => {
+                cardLink.addEventListener('click', function (e) {
+                    e.preventDefault(); 
 
-            guideCards.forEach(card => {
-                card.addEventListener('click', function (e) {
-                    e.preventDefault(); // Ngăn hành vi mặc định của thẻ <a>
+                    const targetIds = cardLink.getAttribute('data-target').split(',');
+                    const isAlreadyActive = (activeCardLink === cardLink);
 
-                    const targetIds = card.getAttribute('data-target').split(',');
-                    const isAlreadyActive = (activeCard === card);
+                    // --- BƯỚC 1: RESET TẤT CẢ TRẠNG THÁI ---
 
-                    // --- BƯỚC 1: Ẩn TẤT CẢ card nội dung ---
-                    // Chúng ta dùng style.display = 'none' để trực tiếp ẩn element
+                    // 1a. Ẩn tất cả card NỘI DUNG
                     allGuideContents.forEach(content => {
                         content.style.display = 'none';
                     });
 
-                    // --- BƯỚC 2: Quyết định hiển thị hay không ---
+                    // 1b. Bỏ class 'active-card' (màu vàng) khỏi tất cả card ĐIỀU KHIỂN
+                    allTriggerCards.forEach(trigger => {
+                        trigger.classList.remove('active-card');
+                    });
+
+                    // 1c. (ĐÃ XÓA) - Phần đổi mũi tên về 'hướng xuống' đã bị xóa
+                    //             CSS sẽ tự động xoay về 0 độ khi class 'active-card' bị gỡ.
+
+                    // 1d. Reset tất cả HÌNH ẢNH về src gốc
+                    allGuideImages.forEach(image => {
+                        image.src = image.src.replace('-active.png', '.png');
+                    });
+
+                    // --- BƯỚC 2: KÍCH HOẠT CÁI ĐƯỢC CHỌN (nếu có) ---
                     if (isAlreadyActive) {
-                        // Nếu nhấn lại card đang active -> Ẩn cả khu vực container
+                        // Nếu nhấn lại card đang active -> chỉ reset là đủ
                         guideContentArea.style.display = 'none';
-                        activeCard = null;
+                        activeCardLink = null;
                     } else {
                         // Nếu nhấn card mới
-
-                        // 1. Hiển thị khu vực container
+                        
+                        // 2a. Hiển thị khu vực nội dung
                         guideContentArea.style.display = 'flex';
 
-                        // 2. Chỉ hiển thị 2 card nội dung được nhắm mục tiêu
+                        // 2b. Hiển thị 2 card nội dung tương ứng
                         targetIds.forEach(id => {
                             const el = document.getElementById(id);
                             if (el) {
-                                // Hiển thị trực tiếp, không cần class 'active'
                                 el.style.display = 'block';
                             }
                         });
 
-                        // 3. Cập nhật card đang active
-                        activeCard = card;
+                        // Lấy card điều khiển được click
+                        const clickedTriggerCard = cardLink.querySelector('.guide-card');
+
+                        // 2c. Đổi SRC ảnh thành version active
+                        const clickedImage = clickedTriggerCard.querySelector('.guide-image');
+                        if (clickedImage) {
+                            clickedImage.src = clickedImage.src.replace('.png', '-active.png');
+                        }
+
+                        // 2d. Thêm class 'active-card' (màu vàng)
+                        if (clickedTriggerCard) {
+                            clickedTriggerCard.classList.add('active-card');
+                        }
+                        activeCardLink = cardLink;
                     }
                 });
             });
