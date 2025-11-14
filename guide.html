@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hướng dẫn - May Mặc CTH</title>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Sản phẩm - May Mặc CTH</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="asset/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <link rel="stylesheet" href="asset/css/style.css">
+    <link rel="stylesheet" href="asset/css/products.css">
     <link rel="stylesheet" href="asset/css/guide.css">
 </head>
 
@@ -91,8 +92,8 @@
                     </li>
                     <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
                     <li class="nav-item"><a class="nav-link" href="about-us.html">Về chúng tôi</a></li>
-                    <li class="nav-item"><a class="nav-link" href="products.html">Sản phẩm</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="guide.html">Hướng dẫn</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="products.html">Sản phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="guide.html">Hướng dẫn</a></li>
                     <li class="nav-item"><a class="nav-link" href="news.html">Tin tức</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Liên hệ</a></li>
                 </ul>
@@ -107,12 +108,204 @@
         </div>
     </nav>
 
-    
+    <!-- Main Content: Guide Section -->
+    <section class="guide-section">
+        <div class="title-section">
+            <div class="container d-flex justify-content-between align-items-center flex-wrap">
+                <div class="page-title">SẢN PHẨM</div>
+                <div class="breadcrumb-nav" id="breadcrumb"></div>
+            </div>
+        </div>
+        <div class="container my-5 fade-element">
+            <h3 class="text-left mb-4 guide-title">HƯỚNG DẪN / TRỢ GIÚP</h3>
+            <div class="row row-cols-1 row-cols-md-5 g-4">
+                <div class="col">
+                    <a href="#" class="text-decoration-none guide-card-link"
+                        data-target="guide-content-1-1,guide-content-1-2">
+                        <div class="card text-center guide-card">
+                            <div class="card-body">
+                                <p class="card-text">Hướng dẫn mua hàng <img src="asset/images/guide1.png" alt="Guide 1"
+                                        class="guide-image"></p>
+                                <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="text-decoration-none guide-card-link"
+                        data-target="guide-content-2-1,guide-content-2-2">
+                        <div class="card text-center guide-card">
+                            <div class="card-body">
+                                <p class="card-text">Hướng dẫn chọn size <img src="asset/images/guide2.png"
+                                        alt="Guide 2" class="guide-image"></p>
+                                <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="text-decoration-none guide-card-link"
+                        data-target="guide-content-3-1,guide-content-3-2">
+                        <div class="card text-center guide-card">
+                            <div class="card-body">
+                                <p class="card-text">Chính sách đổi trả <img src="asset/images/guide3.png" alt="Guide 3"
+                                        class="guide-image"></p>
+                                <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="text-decoration-none guide-card-link"
+                        data-target="guide-content-4-1,guide-content-4-2">
+                        <div class="card text-center guide-card">
+                            <div class="card-body">
+                                <p class="card-text">Chính sách giao hàng <img src="asset/images/guide4.png"
+                                        alt="Guide 4" class="guide-image"></p>
+                                <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="#" class="text-decoration-none guide-card-link"
+                        data-target="guide-content-5-1,guide-content-5-2">
+                        <div class="card text-center guide-card">
+                            <div class="card-body">
+                                <p class="card-text">FAQ (Câu hỏi thường gặp) <img src="asset/images/guide5.png"
+                                        alt="Guide 5" class="guide-image"></p>
+                                <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!-- Khu vực hiển thị các card nội dung -->
+            <div class="guide-content-area mt-5 row row-cols-1 row-cols-md-2 g-4" style="display: none;">
+                <!-- Nội dung cho Hướng dẫn mua hàng -->
+                <div class="col guide-content" id="guide-content-1-1">
+                    <div class="card about-card">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Hướng dẫn mua hàng - Bước cơ bản</h4>
+                            <p class="card-text">
+                                1. Chọn sản phẩm từ danh mục.<br>
+                                2. Thêm vào giỏ hàng và kiểm tra.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col guide-content" id="guide-content-1-2">
+                    <div class="card about-card">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Hướng dẫn mua hàng - Thanh toán</h4>
+                            <p class="card-text">
+                                1. Nhập thông tin giao hàng.<br>
+                                2. Xác nhận đơn hàng và thanh toán.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Nội dung cho Hướng dẫn chọn size -->
+                <div class="col guide-content" id="guide-content-2-1">
+                    <div class="card about-card">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Hướng dẫn chọn size - Đo cơ thể</h4>
+                            <p class="card-text">
+                                1. Đo kích thước ngực, eo, hông.<br>
+                                2. Ghi lại số đo chính xác.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col guide-content" id="guide-content-2-2">
+                    <div class="card about-card">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Hướng dẫn chọn size - So sánh</h4>
+                            <p class="card-text">
+                                1. So sánh số đo với bảng size.<br>
+                                2. Liên hệ tư vấn nếu cần.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Nội dung cho Chính sách đổi trả -->
+                <div class="col guide-content" id="guide-content-3-1">
+                    <div class="card about-card">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Chính sách đổi trả - Điều kiện</h4>
+                            <p class="card-text">
+                                1. Đổi trả trong 7 ngày.<br>
+                                2. Sản phẩm chưa sử dụng.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col guide-content" id="guide-content-3-2">
+                    <div class="card about-card">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Chính sách đổi trả - Quy trình</h4>
+                            <p class="card-text">
+                                1. Liên hệ hotline.<br>
+                                2. Gửi sản phẩm về cửa hàng.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Nội dung cho Chính sách giao hàng -->
+                <div class="col guide-content" id="guide-content-4-1">
+                    <div class="card about-card">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Chính sách giao hàng - Thời gian</h4>
+                            <p class="card-text">
+                                1. Giao hàng trong 3-5 ngày.<br>
+                                2. Toàn quốc.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col guide-content" id="guide-content-4-2">
+                    <div class="card about-card">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Chính sách giao hàng - Chi phí</h4>
+                            <p class="card-text">
+                                1. Miễn phí cho đơn từ 500.000 VNĐ.<br>
+                                2. Kiểm tra hàng trước thanh toán.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Nội dung cho FAQ -->
+                <div class="col guide-content" id="guide-content-5-1">
+                    <div class="card about-card">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">FAQ - Đặt hàng</h4>
+                            <p class="card-text">
+                                1. Làm thế nào để đặt hàng?<br>
+                                2. Có thể tùy chỉnh thiết kế không?
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col guide-content" id="guide-content-5-2">
+                    <div class="card about-card">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">FAQ - Theo dõi đơn hàng</h4>
+                            <p class="card-text">
+                                1. Kiểm tra trạng thái đơn hàng.<br>
+                                2. Liên hệ hotline để hỗ trợ.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer class="footer bg-primary text-white py-5">
         <div class="container">
             <div class="row gy-4">
+                <!-- Logo + Giới thiệu -->
                 <div class="col-12 col-md-4 col-lg-3">
                     <img src="asset/images/logo2.png" alt="Logo" class="footer-logo mb-3">
                     <p class="footer-slogan">MAY MẶC CTH lắng nghe bạn!</p>
@@ -123,6 +316,8 @@
                     <button class="btn btn-warning footer-btn">ĐÓNG GÓP Ý KIẾN →</button>
                     <p class="footer-tax mt-3"><strong>MÃ SỐ THUẾ:</strong> 0202167805</p>
                 </div>
+
+                <!-- Về chúng tôi -->
                 <div class="col-6 col-md-4 col-lg-2">
                     <p class="footer-title">VỀ CHÚNG TÔI</p>
                     <ul class="footer-links">
@@ -134,6 +329,8 @@
                         <li><a href="#">FAQ</a></li>
                     </ul>
                 </div>
+
+                <!-- Sản phẩm -->
                 <div class="col-6 col-md-4 col-lg-2">
                     <p class="footer-title">SẢN PHẨM</p>
                     <ul class="footer-links">
@@ -143,8 +340,11 @@
                         <li><a href="#">Đồng phục công giáo</a></li>
                         <li><a href="#">Đồng phục công sở</a></li>
                         <li><a href="#">Đồng phục học tập</a></li>
+
                     </ul>
                 </div>
+
+                <!-- Tin tức -->
                 <div class="col-6 col-md-6 col-lg-2">
                     <p class="footer-title">TIN TỨC</p>
                     <ul class="footer-links">
@@ -155,12 +355,16 @@
                         <li><a href="#">Tin tức</a></li>
                     </ul>
                 </div>
+
+                <!-- Thông tin liên hệ + Nút liên hệ -->
                 <div class="col-12 col-md-12 col-lg-3">
                     <p class="footer-title">THÔNG TIN LIÊN HỆ</p>
                     <p>📍 73/202 Miếu Hai Xã, Lê Chân, Hải Phòng, Việt Nam</p>
                     <p>🌐 <a href="https://www.indohaiphong.com"
                             class="text-white text-decoration-none">www.indohaiphong.com</a></p>
                     <p>☎ 078315798 - 083435093 - 083919999</p>
+
+                    <!-- Nút liên hệ (phiên bản đã chỉnh đẹp) -->
                     <div class="footer-contact-btns mt-3">
                         <a href="https://zalo.me/078315798" class="contact-card">
                             <div class="contact-icon"><img src="asset/images/zalo.png" alt="Zalo"></div>
@@ -180,7 +384,10 @@
                     </div>
                 </div>
             </div>
+
             <hr class="footer-divider my-4">
+
+            <!-- Thanh toán -->
             <div class="row">
                 <div class="col text-center">
                     <p class="mb-2 footer-title">PHƯƠNG THỨC THANH TOÁN</p>
@@ -195,25 +402,76 @@
     </footer>
 
     <!-- JavaScript -->
-    <script src="asset/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // const fadeElements = document.querySelectorAll(".fade-element");
+            //Hiệu ứng fade-in/fade-out khi cuộn
+            const fadeElements = document.querySelectorAll(".fade-element");
 
-            // const observer = new IntersectionObserver((entries) => {
-            //     entries.forEach(entry => {
-            //         if (entry.isIntersecting) {
-            //             entry.target.classList.add("visible");
-            //         } else {
-            //             entry.target.classList.remove("visible");
-            //         }
-            //     });
-            // }, { threshold: 0.5 });
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                    } else {
+                        entry.target.classList.remove("visible");
+                    }
+                });
+            }, { threshold: 0.21 });
 
-            // fadeElements.forEach(el => observer.observe(el));
+            fadeElements.forEach(el => observer.observe(el));
 
-            
+            // --- LOGIC SỬA LỖI HIỂN THỊ CARD ---
+            const guideCards = document.querySelectorAll('.guide-card-link');
+            const guideContentArea = document.querySelector('.guide-content-area');
+            const allGuideContents = document.querySelectorAll('.guide-content'); // Lấy tất cả card nội dung
+            let activeCard = null;
+
+            // Rất quan trọng: Ẩn tất cả nội dung ngay từ đầu bằng JS
+            // để đảm bảo nó bị ẩn, bất kể file CSS có lỗi hay không.
+            allGuideContents.forEach(content => {
+                content.style.display = 'none';
+            });
+
+
+            guideCards.forEach(card => {
+                card.addEventListener('click', function (e) {
+                    e.preventDefault(); // Ngăn hành vi mặc định của thẻ <a>
+
+                    const targetIds = card.getAttribute('data-target').split(',');
+                    const isAlreadyActive = (activeCard === card);
+
+                    // --- BƯỚC 1: Ẩn TẤT CẢ card nội dung ---
+                    // Chúng ta dùng style.display = 'none' để trực tiếp ẩn element
+                    allGuideContents.forEach(content => {
+                        content.style.display = 'none';
+                    });
+
+                    // --- BƯỚC 2: Quyết định hiển thị hay không ---
+                    if (isAlreadyActive) {
+                        // Nếu nhấn lại card đang active -> Ẩn cả khu vực container
+                        guideContentArea.style.display = 'none';
+                        activeCard = null;
+                    } else {
+                        // Nếu nhấn card mới
+
+                        // 1. Hiển thị khu vực container
+                        guideContentArea.style.display = 'flex';
+
+                        // 2. Chỉ hiển thị 2 card nội dung được nhắm mục tiêu
+                        targetIds.forEach(id => {
+                            const el = document.getElementById(id);
+                            if (el) {
+                                // Hiển thị trực tiếp, không cần class 'active'
+                                el.style.display = 'block';
+                            }
+                        });
+
+                        // 3. Cập nhật card đang active
+                        activeCard = card;
+                    }
+                });
+            });
         });
     </script>
 </body>

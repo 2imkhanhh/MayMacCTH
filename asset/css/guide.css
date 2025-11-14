@@ -1,0 +1,88 @@
+.guide-card {
+    border: none;
+    border-radius: 8px;
+    background-color: #003087; /* Màu nền xanh dương */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.guide-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.guide-card .card-body {
+    padding: 1.5rem;
+}
+
+.guide-card .card-text {
+    margin: 0;
+    font-size: 16px;
+    color: #FFFFFF; /* Văn bản màu trắng */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+}
+
+.guide-image {
+    width: 50px; /* Tăng kích thước hình ảnh */
+    height: 50px;
+    margin-left: 8px; /* Khoảng cách giữa text và hình ảnh */
+    vertical-align: middle;
+    transition: transform 0.3s; /* Hiệu ứng phóng to */
+}
+
+.guide-card:hover .guide-image {
+    transform: scale(1.2); /* Phóng to hình ảnh khi hover */
+}
+
+.guide-card .bx-down-arrow-alt {
+    display: block; /* Đảm bảo icon nằm dưới text */
+    margin-top: 8px; /* Khoảng cách giữa text và icon mũi tên */
+}
+
+.guide-content-area {
+    transition: all 0.3s ease; /* Hiệu ứng mượt mà khi hiển thị/ẩn */
+    max-width: 800px; /* Giới hạn chiều rộng để căn giữa */
+    margin-left: auto; /* Căn giữa */
+    margin-right: auto;
+}
+
+.guide-content {
+    display: none; /* Ẩn tất cả guide-content ban đầu */
+}
+
+.guide-content.active {
+    display: block; /* Hiển thị khi được kích hoạt */
+}
+
+.guide-content .about-card {
+    border: 1px solid #ddd; /* Viền mỏng */
+    border-radius: 8px; /* Góc bo tròn */
+    background-color: #EFF1FF; /* Màu background từ about-us.css */
+    transition: transform 0.3s, box-shadow 0.3s; /* Thêm transition cho cả box-shadow */
+    height: 100%;
+}
+
+.guide-content .about-card:hover {
+    transform: translateY(-5px); /* Hiệu ứng nâng card */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Thêm box-shadow TỪ about-us.css */
+}
+
+.guide-content .about-card .card-body {
+    padding: 1.5rem; /* Padding giống about-us.css */
+}
+
+.guide-content .about-card .card-title {
+    font-family: 'Archivo', sans-serif; /* Font giống about-us.css */
+    font-weight: 700; /* Chữ đậm */
+    font-size: 1.25rem; /* Kích thước tiêu đề */
+    color: #333; /* Màu tiêu đề */
+    margin-bottom: 1rem;
+}
+
+.guide-content .about-card .card-text {
+    font-size: 1rem; /* Kích thước text */
+    color: #555; /* Màu text */
+    line-height: 1.6; /* Khoảng cách dòng */
+}
