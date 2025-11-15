@@ -406,19 +406,19 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             //Hiệu ứng fade-in/fade-out khi cuộn
-            const fadeElements = document.querySelectorAll(".fade-element");
+            // const fadeElements = document.querySelectorAll(".fade-element");
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersectimg) {
-                        entry.target.classList.add("visible");
-                    } else {
-                        entry.target.classList.remove("visible");
-                    }
-                });
-            }, { threshold: 0.21 });
+            // const observer = new IntersectionObserver((entries) => {
+            //     entries.forEach(entry => {
+            //         if (entry.isIntersectimg) {
+            //             entry.target.classList.add("visible");
+            //         } else {
+            //             entry.target.classList.remove("visible");
+            //         }
+            //     });
+            // }, { threshold: 0.21 });
 
-            fadeElements.forEach(el => observer.observe(el));
+            // fadeElements.forEach(el => observer.observe(el));
 
             // --- LOGIC SỬA LỖI HIỂN THỊ CARD ---
             const guideCardLinks = document.querySelectorAll('.guide-card-link');

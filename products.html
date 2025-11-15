@@ -114,7 +114,7 @@
             <div class="row">
                 <!-- Sidebar (Filter) -->
                 <div class="col-12 col-md-3">
-                    <div class="sidebar fade-element">
+                    <div class="sidebar fade-elementt">
                         <h5 class="sidebar-title">BỘ LỌC</h5>
                         <!-- Danh mục với checkbox -->
                         <div class="filter-group">
@@ -178,7 +178,7 @@
                 <!-- Product Grid -->
                 <div class="col-12 col-md-9">
                     <div class="product-grid">
-                        <div class="row fade-element" id="productList">
+                        <div class="row fade-elementt" id="productList">
                             <div class="col-12 col-md-4 mb-4 product-item">
                                 <div class="card product-card">
                                     <a href="product-detail.html?name=Áo+Đồng+Phục+Công+Sở" class="product-link">
@@ -623,19 +623,19 @@
             */
 
             //Hiệu ứng fade-in/fade-out khi cuộn
-            const fadeElements = document.querySelectorAll(".fade-element");
+            // const fadeElements = document.querySelectorAll(".fade-element");
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("visible");
-                } else {
-                    entry.target.classList.remove("visible"); // Cho phép fade-out khi cuộn ngược
-                }
-                });
-            }, { threshold: 0.01 }); // 20% phần tử vào khung nhìn thì kích hoạt
+            // const observer = new IntersectionObserver((entries) => {
+            //     entries.forEach(entry => {
+            //     if (entry.isIntersecting) {
+            //         entry.target.classList.add("visible");
+            //     } else {
+            //         entry.target.classList.remove("visible"); // Cho phép fade-out khi cuộn ngược
+            //     }
+            //     });
+            // }, { threshold: 0.01 }); // 20% phần tử vào khung nhìn thì kích hoạt
 
-            fadeElements.forEach(el => observer.observe(el));
+            // fadeElements.forEach(el => observer.observe(el));
 
             // Xử lý thanh trượt giá (khoảng từ - đến)
             const priceRangeMin = document.getElementById('priceRangeMin');

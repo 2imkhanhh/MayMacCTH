@@ -290,17 +290,17 @@
 } */
 
 /* fade-in/fade-out */
-.fade-element {
+/* .fade-element {
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s ease-out;
-}
+} */
 
 /* Khi phần tử hiện ra */
-.fade-element.visible {
+/* .fade-element.visible {
   opacity: 1;
   transform: translateY(0);
-}
+} */
 
 /* Pagination Styles */
 .pagination {
