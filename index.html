@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,19 +10,40 @@
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <link rel="stylesheet" href="asset/css/style.css">
 </head>
+
 <body>
     <!-- Top Header -->
-   <div class="top-header bg-white border-bottom">
+    <div class="top-header bg-white border-bottom">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <div class="dropdown me-4">
-                        <button class="btn btn-sm p-0 dropdown-toggle text-muted" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bx bx-globe me-1"></i> Tiếng Việt
+                        <button class="btn btn-sm p-0 dropdown-toggle text-muted d-flex align-items-center"
+                            type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+
+                            <img src="asset/images/vietnam-flag.png" id="currentFlag"
+                                style="width: 20px; height: 20px; object-fit: cover; border-radius: 3px;">
+                            <span id="currentLang" class="ms-1">VN</span>
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
-                            <li><a class="dropdown-item" href="#"><i class="bx bx-globe me-1"></i> Tiếng Việt</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="bx bx-globe me-1"></i> English</a></li>
+
+                        <ul class="dropdown-menu" aria-labelledby="languageDropdown" style="min-width: 120px;">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center choose-lang" data-lang="VN"
+                                    data-flag="asset/images/vietnam-flag.png" href="#">
+                                    <img src="asset/images/vietnam-flag.png"
+                                        style="width: 22px; height: 22px; object-fit: cover; border-radius: 3px;">
+                                    <span class="ms-2">VN</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center choose-lang" data-lang="EN"
+                                    data-flag="asset/images/us-flag.png" href="#">
+                                    <img src="asset/images/us-flag.png"
+                                        style="width: 22px; height: 22px; object-fit: cover; border-radius: 3px;">
+                                    <span class="ms-2">EN</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                     <span class="text-muted me-3"></span>
@@ -46,28 +68,24 @@
     <div class="search-bar bg-white py-2">
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
-                <!-- Logo -->
-                <img src="asset/images/logo.png" alt="Logo" height="60" class="me-32">
-                
-                <!-- Khối danh mục + tìm kiếm dính liền nhau -->
+
+                <a href="index.html"> <img src="asset/images/logo.png" alt="Logo" height="60" class="me-32"></a>
                 <div class="d-flex align-items-center">
-                    <!-- Category Dropdown -->
                     <select class="form-select category-select" id="categorySelect">
                         <option value="">Tất cả</option>
                         <option value="uniform-shirts">Áo đồng phục</option>
                         <option value="uniform-pants">Quần đồng phục</option>
                     </select>
 
-                    <!-- Search Input -->
                     <div class="search-container">
-                        <input type="text" class="form-control search-input" placeholder="Tìm kiếm sản phẩm..." aria-label="Search">
+                        <input type="text" class="form-control search-input" placeholder="Tìm kiếm sản phẩm..."
+                            aria-label="Search">
                         <button class="search-button" type="button">
                             <i class='bx bx-search'></i>
                         </button>
                     </div>
                 </div>
-                
-                <!-- Phone Button -->
+
                 <a href="tel:+0783157988" class="btn btn-outline-primary px-4">
                     <i class="bx bx-phone-call me-1"></i> 0783 157 988
                 </a>
@@ -78,48 +96,47 @@
     <!-- Menu -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto align-items-center">
-                <!-- Custom dropdown danh mục -->
-                <li class="nav-item dropdown-custom me-4">
-                <a href="#" class="nav-link text-warning d-flex align-items-center">
-                    <i class="bx bx-menu me-2"></i> TẤT CẢ DANH MỤC
-                </a>
-                <ul class="dropdown-menu-custom">
-                    <li><a href="#">Áo đồng phục</a></li>
-                    <li><a href="#">Áo thể thao</a></li>
-                    <li><a href="#">Áo + Logo áo</a></li>
-                    <li><a href="#">BST + Logo áo</a></li>
-                    <li><a href="#">Đồng phục công giáo</a></li>
-                    <li><a href="#">Đồng phục công sở</a></li>
-                    <li><a href="#">Đồng phục học tập</a></li>
-                    <li><a href="#">Đồng phục mùa non</a></li>
+                <ul class="navbar-nav me-auto align-items-center">
+                    <!-- Custom dropdown danh mục -->
+                    <li class="nav-item dropdown-custom me-4">
+                        <a href="#" class="nav-link text-warning d-flex align-items-center">
+                            <i class="bx bx-menu me-2"></i> TẤT CẢ DANH MỤC
+                        </a>
+                        <ul class="dropdown-menu-custom">
+                            <li><a href="#">Áo đồng phục</a></li>
+                            <li><a href="#">Áo thể thao</a></li>
+                            <li><a href="#">Áo + Logo áo</a></li>
+                            <li><a href="#">BST + Logo áo</a></li>
+                            <li><a href="#">Đồng phục công giáo</a></li>
+                            <li><a href="#">Đồng phục công sở</a></li>
+                            <li><a href="#">Đồng phục học tập</a></li>
+                            <li><a href="#">Đồng phục mùa non</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Các mục menu khác -->
+                    <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about-us.html">Về chúng tôi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="products.html">Sản phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="guide.html">Hướng dẫn</a></li>
+                    <li class="nav-item"><a class="nav-link" href="news.html">Tin tức</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Liên hệ</a></li>
                 </ul>
-                </li>
 
-                <!-- Các mục menu khác -->
-                <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
-                <li class="nav-item"><a class="nav-link" href="about-us.html">Về chúng tôi</a></li>
-                <li class="nav-item"><a class="nav-link" href="products.html">Sản phẩm</a></li>
-                <li class="nav-item"><a class="nav-link" href="guide.html">Hướng dẫn</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Tin tức</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Liên hệ</a></li>
-            </ul>
-
-            <!-- Icon bên phải -->
-            <ul class="navbar-nav ms-3">
-                <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="bx bx-heart"></i>
-                </a>
-                </li>
-            </ul>
+                <!-- Icon bên phải -->
+                <ul class="navbar-nav ms-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="bx bx-heart"></i>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -208,7 +225,8 @@
                 <a href="#" class="text-decoration-none">
                     <div class="card text-center guide-card">
                         <div class="card-body">
-                            <p class="card-text">Hướng dẫn mua hàng <img src="asset/images/guide1.png" alt="Guide 1" class="guide-image"></p>
+                            <p class="card-text">Hướng dẫn mua hàng <img src="asset/images/guide1.png" alt="Guide 1"
+                                    class="guide-image"></p>
                             <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i>
                         </div>
                     </div>
@@ -218,7 +236,8 @@
                 <a href="#" class="text-decoration-none">
                     <div class="card text-center guide-card">
                         <div class="card-body">
-                            <p class="card-text">Hướng dẫn chọn size <img src="asset/images/guide2.png" alt="Guide 2" class="guide-image"></p>
+                            <p class="card-text">Hướng dẫn chọn size <img src="asset/images/guide2.png" alt="Guide 2"
+                                    class="guide-image"></p>
                             <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i>
                         </div>
                     </div>
@@ -228,7 +247,8 @@
                 <a href="#" class="text-decoration-none">
                     <div class="card text-center guide-card">
                         <div class="card-body">
-                            <p class="card-text">Chính sách đổi trả <img src="asset/images/guide3.png" alt="Guide 3" class="guide-image"></p>
+                            <p class="card-text">Chính sách đổi trả <img src="asset/images/guide3.png" alt="Guide 3"
+                                    class="guide-image"></p>
                             <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i>
                         </div>
                     </div>
@@ -238,7 +258,8 @@
                 <a href="#" class="text-decoration-none">
                     <div class="card text-center guide-card">
                         <div class="card-body">
-                            <p class="card-text">Chính sách giao hàng <img src="asset/images/guide4.png" alt="Guide 4" class="guide-image"></p>
+                            <p class="card-text">Chính sách giao hàng <img src="asset/images/guide4.png" alt="Guide 4"
+                                    class="guide-image"></p>
                             <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i>
                         </div>
                     </div>
@@ -248,7 +269,8 @@
                 <a href="#" class="text-decoration-none">
                     <div class="card text-center guide-card">
                         <div class="card-body">
-                            <p class="card-text">FAQ (Câu hỏi thường gặp) <img src="asset/images/guide5.png" alt="Guide 5" class="guide-image"></p>
+                            <p class="card-text">FAQ (Câu hỏi thường gặp) <img src="asset/images/guide5.png"
+                                    alt="Guide 5" class="guide-image"></p>
                             <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i>
                         </div>
                     </div>
@@ -272,7 +294,8 @@
                     <div class="card-body">
                         <a href="#" class="card-title-link">Top 10+ mẫu áo đồng phục đẹp nhất 2025</a>
                         <p class="text-muted">
-                            Bạn đang tìm xưởng may áo đồng phục tại Hải Phòng đẹp, giá hợp lý nhất? Chúng tôi sẽ giúp bạn...
+                            Bạn đang tìm xưởng may áo đồng phục tại Hải Phòng đẹp, giá hợp lý nhất? Chúng tôi sẽ giúp
+                            bạn...
                         </p>
                     </div>
                 </div>
@@ -283,7 +306,8 @@
                     <div class="card-body">
                         <a href="#" class="card-title-link">Top 10+ mẫu áo đồng phục đẹp nhất 2025</a>
                         <p class="text-muted">
-                            Bạn đang tìm xưởng may áo đồng phục tại Hải Phòng đẹp, giá hợp lý nhất? Chúng tôi sẽ giúp bạn...
+                            Bạn đang tìm xưởng may áo đồng phục tại Hải Phòng đẹp, giá hợp lý nhất? Chúng tôi sẽ giúp
+                            bạn...
                         </p>
                     </div>
                 </div>
@@ -294,7 +318,8 @@
                     <div class="card-body">
                         <a href="#" class="card-title-link">Top 10+ mẫu áo đồng phục đẹp nhất 2025</a>
                         <p class="text-muted">
-                            Bạn đang tìm xưởng may áo đồng phục tại Hải Phòng đẹp, giá hợp lý nhất? Chúng tôi sẽ giúp bạn...
+                            Bạn đang tìm xưởng may áo đồng phục tại Hải Phòng đẹp, giá hợp lý nhất? Chúng tôi sẽ giúp
+                            bạn...
                         </p>
                     </div>
                 </div>
@@ -306,103 +331,123 @@
     <footer class="footer bg-primary text-white py-5">
         <div class="container">
             <div class="row gy-4">
-            <!-- Logo + Giới thiệu -->
-            <div class="col-12 col-md-4 col-lg-3">
-                <img src="asset/images/logo2.png" alt="Logo" class="footer-logo mb-3">
-                <p class="footer-slogan">MAY MẶC CTH lắng nghe bạn!</p>
-                <p class="footer-desc">
-                Chúng tôi luôn trân trọng mọi ý kiến đóng góp của khách hàng, 
-                không ngừng cải thiện để mang đến sản phẩm và dịch vụ tốt nhất.
-                </p>
-                <button class="btn btn-warning footer-btn">ĐÓNG GÓP Ý KIẾN →</button>
-                <p class="footer-tax mt-3"><strong>MÃ SỐ THUẾ:</strong> 0202167805</p>
-            </div>
-
-            <!-- Về chúng tôi -->
-            <div class="col-6 col-md-4 col-lg-2">
-                <p class="footer-title">VỀ CHÚNG TÔI</p>
-                <ul class="footer-links">
-                <li><a href="#">Giới thiệu MAY MẶC CTH</a></li>
-                <li><a href="#">Hướng dẫn mua hàng</a></li>
-                <li><a href="#">Hướng dẫn chọn size</a></li>
-                <li><a href="#">Chính sách đổi trả</a></li>
-                <li><a href="#">Chính sách giao hàng</a></li>
-                <li><a href="#">FAQ</a></li>
-                </ul>
-            </div>
-
-            <!-- Sản phẩm -->
-            <div class="col-6 col-md-4 col-lg-2">
-                <p class="footer-title">SẢN PHẨM</p>
-                <ul class="footer-links">
-                <li><a href="#">Áo đồng phục</a></li>
-                <li><a href="#">Áo thể thao</a></li>
-                <li><a href="#">BST + Logo áo</a></li>
-                <li><a href="#">Đồng phục công giáo</a></li>
-                <li><a href="#">Đồng phục công sở</a></li>
-                <li><a href="#">Đồng phục học tập</a></li>
-                </ul>
-            </div>
-
-            <!-- Tin tức -->
-            <div class="col-6 col-md-6 col-lg-2">
-                <p class="footer-title">TIN TỨC</p>
-                <ul class="footer-links">
-                <li><a href="#">Xu hướng thời trang</a></li>
-                <li><a href="#">Sức khỏe & Đời sống</a></li>
-                <li><a href="#">Bí mật Gạo House</a></li>
-                <li><a href="#">Mẹo hay MAY MẶC</a></li>
-                <li><a href="#">Tin tức</a></li>
-                </ul>
-            </div>
-
-            <!-- Thông tin liên hệ + Nút liên hệ -->
-            <div class="col-12 col-md-12 col-lg-3">
-                <p class="footer-title">THÔNG TIN LIÊN HỆ</p>
-                <p>📍 73/202 Miếu Hai Xã, Lê Chân, Hải Phòng, Việt Nam</p>
-                <p>🌐 <a href="https://www.indohaiphong.com" class="text-white text-decoration-none">www.indohaiphong.com</a></p>
-                <p>☎ 078315798 - 083435093 - 083919999</p>
-
-                <!-- Nút liên hệ (phiên bản đã chỉnh đẹp) -->
-                <div class="footer-contact-btns mt-3">
-                <a href="https://zalo.me/078315798" class="contact-card">
-                    <div class="contact-icon"><img src="asset/images/zalo.png" alt="Zalo"></div>
-                    <div class="contact-text"><span class="contact-label">TƯ VẤN QUA</span><span class="contact-value">ZALO</span></div>
-                </a>
-                <a href="tel:+078315798" class="contact-card">
-                    <div class="contact-icon"><img src="asset/images/hotline.png" alt="Hotline"></div>
-                    <div class="contact-text"><span class="contact-label">HOTLINE</span><span class="contact-value">0783 157 98</span></div>
-                </a>
-                <a href="#" class="contact-card">
-                    <div class="contact-icon"><img src="asset/images/hotline.png" alt="Mẫu vải"></div>
-                    <div class="contact-text"><span class="contact-label">0783159798</span><span class="contact-value">TẠI CỬA HÀNG</span></div>
-                </a>
+                <!-- Logo + Giới thiệu -->
+                <div class="col-12 col-md-4 col-lg-3">
+                    <img src="asset/images/logo2.png" alt="Logo" class="footer-logo mb-3">
+                    <p class="footer-slogan">MAY MẶC CTH lắng nghe bạn!</p>
+                    <p class="footer-desc">
+                        Chúng tôi luôn trân trọng mọi ý kiến đóng góp của khách hàng,
+                        không ngừng cải thiện để mang đến sản phẩm và dịch vụ tốt nhất.
+                    </p>
+                    <button class="btn btn-warning footer-btn">ĐÓNG GÓP Ý KIẾN →</button>
+                    <p class="footer-tax mt-3"><strong>MÃ SỐ THUẾ:</strong> 0202167805</p>
                 </div>
-            </div>
+
+                <!-- Về chúng tôi -->
+                <div class="col-6 col-md-4 col-lg-2">
+                    <p class="footer-title">VỀ CHÚNG TÔI</p>
+                    <ul class="footer-links">
+                        <li><a href="#">Giới thiệu MAY MẶC CTH</a></li>
+                        <li><a href="#">Hướng dẫn mua hàng</a></li>
+                        <li><a href="#">Hướng dẫn chọn size</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Chính sách giao hàng</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <!-- Sản phẩm -->
+                <div class="col-6 col-md-4 col-lg-2">
+                    <p class="footer-title">SẢN PHẨM</p>
+                    <ul class="footer-links">
+                        <li><a href="#">Áo đồng phục</a></li>
+                        <li><a href="#">Áo thể thao</a></li>
+                        <li><a href="#">BST + Logo áo</a></li>
+                        <li><a href="#">Đồng phục công giáo</a></li>
+                        <li><a href="#">Đồng phục công sở</a></li>
+                        <li><a href="#">Đồng phục học tập</a></li>
+                    </ul>
+                </div>
+
+                <!-- Tin tức -->
+                <div class="col-6 col-md-6 col-lg-2">
+                    <p class="footer-title">TIN TỨC</p>
+                    <ul class="footer-links">
+                        <li><a href="#">Xu hướng thời trang</a></li>
+                        <li><a href="#">Sức khỏe & Đời sống</a></li>
+                        <li><a href="#">Bí mật Gạo House</a></li>
+                        <li><a href="#">Mẹo hay MAY MẶC</a></li>
+                        <li><a href="#">Tin tức</a></li>
+                    </ul>
+                </div>
+
+                <!-- Thông tin liên hệ + Nút liên hệ -->
+                <div class="col-12 col-md-12 col-lg-3">
+                    <p class="footer-title">THÔNG TIN LIÊN HỆ</p>
+                    <p>📍 73/202 Miếu Hai Xã, Lê Chân, Hải Phòng, Việt Nam</p>
+                    <p>🌐 <a href="https://www.indohaiphong.com"
+                            class="text-white text-decoration-none">www.indohaiphong.com</a></p>
+                    <p>☎ 078315798 - 083435093 - 083919999</p>
+
+                    <!-- Nút liên hệ (phiên bản đã chỉnh đẹp) -->
+                    <div class="footer-contact-btns mt-3">
+                        <a href="https://zalo.me/078315798" class="contact-card">
+                            <div class="contact-icon"><img src="asset/images/zalo.png" alt="Zalo"></div>
+                            <div class="contact-text"><span class="contact-label">TƯ VẤN QUA</span><span
+                                    class="contact-value">ZALO</span></div>
+                        </a>
+                        <a href="tel:+078315798" class="contact-card">
+                            <div class="contact-icon"><img src="asset/images/hotline.png" alt="Hotline"></div>
+                            <div class="contact-text"><span class="contact-label">HOTLINE</span><span
+                                    class="contact-value">0783 157 98</span></div>
+                        </a>
+                        <a href="#" class="contact-card">
+                            <div class="contact-icon"><img src="asset/images/hotline.png" alt="Mẫu vải"></div>
+                            <div class="contact-text"><span class="contact-label">0783159798</span><span
+                                    class="contact-value">TẠI CỬA HÀNG</span></div>
+                        </a>
+                    </div>
+                </div>
             </div>
 
             <hr class="footer-divider my-4">
 
             <!-- Thanh toán -->
             <div class="row">
-            <div class="col text-center">
-                <p class="mb-2 footer-title">PHƯƠNG THỨC THANH TOÁN</p>
-                <div class="d-flex justify-content-center align-items-center gap-3">
-                <img src="asset/images/cash.png" height="30" alt="Cash">
-                <img src="asset/images/mastercard.png" height="30" alt="Mastercard">
-                <img src="asset/images/visa.png" height="30" alt="Visa">
+                <div class="col text-center">
+                    <p class="mb-2 footer-title">PHƯƠNG THỨC THANH TOÁN</p>
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        <img src="asset/images/cash.png" height="30" alt="Cash">
+                        <img src="asset/images/mastercard.png" height="30" alt="Mastercard">
+                        <img src="asset/images/visa.png" height="30" alt="Visa">
+                    </div>
                 </div>
-            </div>
             </div>
 
             <!-- <p class="text-center mt-4 small mb-0">&copy; 2025 MAY MẶC CTH. All rights reserved.</p> -->
         </div>
     </footer>
 
-    <script src="asset/bootstrap/js/bootstrap.js"></script>
+    <!-- <script src="asset/bootstrap/js/bootstrap.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
+            const langButtons = document.querySelectorAll(".choose-lang");
+            const currentFlag = document.getElementById("currentFlag");
+            const currentLang = document.getElementById("currentLang");
+
+            langButtons.forEach(btn => {
+                btn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const lang = this.getAttribute("data-lang");
+                    const flag = this.getAttribute("data-flag");
+
+                    currentFlag.src = flag;
+                    currentLang.textContent = lang;
+                });
+            });
+
             const banners = document.querySelectorAll(".banner-image");
             const dots = document.querySelectorAll(".banner-dots .dot");
             let currentBanner = 0;
@@ -428,10 +473,10 @@
 
             // click vào dot
             dots.forEach(dot => {
-                dot.addEventListener("click", function() {
-                showBanner(parseInt(this.dataset.index));
-                clearInterval(interval); // reset interval
-                interval = setInterval(nextBanner, 4000); // tiếp tục tự động
+                dot.addEventListener("click", function () {
+                    showBanner(parseInt(this.dataset.index));
+                    clearInterval(interval); // reset interval
+                    interval = setInterval(nextBanner, 4000); // tiếp tục tự động
                 });
             });
 
@@ -440,11 +485,11 @@
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("visible");
-                } else {
-                    entry.target.classList.remove("visible"); // Cho phép fade-out khi cuộn ngược
-                }
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible");
+                    } else {
+                        entry.target.classList.remove("visible"); // Cho phép fade-out khi cuộn ngược
+                    }
                 });
             }, { threshold: 0.4 }); // 20% phần tử vào khung nhìn thì kích hoạt
 
@@ -452,4 +497,5 @@
         });
     </script>
 </body>
+
 </html>
