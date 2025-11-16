@@ -76,6 +76,10 @@ body {
   color: #fff !important;
 }
 
+.category-select:focus {
+  z-index: 10; /* Nâng lên cao nhất khi focus */
+}
+
 /* Style cho select danh mục */
 .category-select {
   padding: 8px 16px;
@@ -179,6 +183,7 @@ body {
 }
 
 /* Khoảng cách giữa menu và icon bên phải */
+
 .navbar-nav.ms-3 {
   margin-left: 40px !important;
 }
@@ -563,17 +568,17 @@ footer.footer .footer-links a:hover {
   margin-top: 1px;
 }
 
-.fade-element {
+/* .fade-element {
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s ease-out;
-}
+} */
 
 /* Khi phần tử hiện ra */
-.fade-element.visible {
+/* .fade-element.visible {
   opacity: 1;
   transform: translateY(0);
-}
+} */
 
 @media (max-width: 991.98px) {
 

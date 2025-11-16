@@ -35,7 +35,8 @@ document.addEventListener('DOMContentLoaded', function () {
     'guide.html': 'Hướng dẫn',
     'news.html': 'Tin tức',
     'contact.html': 'Liên hệ',
-    'product-detail.html': 'Áo Đồng Phục'
+    'product-detail.html': 'Áo Đồng Phục',
+    'cart.html': 'Giỏ hàng'
   };
 
   const currentPageName = pageMap[breadcrumbPage] || 'Trang chủ';
