@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi tiết sản phẩm - May Mặc CTH</title>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="asset/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
-    <link rel="stylesheet" href="asset/css/style.css">
-    <link rel="stylesheet" href="asset/css/product-detail.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/product-detail.css">
 </head>
 
 <body>
@@ -22,7 +22,7 @@
                         <button class="btn btn-sm p-0 text-muted d-flex align-items-center"
                             type="button" aria-expanded="false">
 
-                            <img src="asset/images/vietnam-flag.png" id="currentFlag"
+                            <img src="../assets/images/vietnam-flag.png" id="currentFlag"
                                 style="width: 20px; height: 20px; object-fit: cover; border-radius: 3px;">
                             <span id="currentLang" class="ms-1">VN</span>
                         </button>
@@ -70,7 +70,7 @@
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
 
-                <a href="index.html"> <img src="asset/images/logo.png" alt="Logo" height="60" class="me-32"></a>
+                <a href="../views/index.html"> <img src="../assets/images/logo.png" alt="Logo" height="60" class="me-32"></a>
                 <div class="d-flex align-items-center">
                     <select class="form-select category-select" id="categorySelect">
                         <option value="">Tất cả</option>
@@ -101,8 +101,10 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto align-items-center">
+                    <!-- Custom dropdown danh mục -->
                     <li class="nav-item dropdown-custom me-4">
                         <a href="#" class="nav-link text-warning d-flex align-items-center">
                             <i class="bx bx-menu me-2"></i> TẤT CẢ DANH MỤC
@@ -118,16 +120,20 @@
                             <li><a href="#">Đồng phục mùa non</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about-us.html">Về chúng tôi</a></li>
-                    <li class="nav-item"><a class="nav-link" href="products.html">Sản phẩm</a></li>
-                    <li class="nav-item"><a class="nav-link" href="guide.html">Hướng dẫn</a></li>
-                    <li class="nav-item"><a class="nav-link" href="news.html">Tin tức</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Liên hệ</a></li>
+
+                    <!-- Các mục menu khác -->
+                    <li class="nav-item"><a class="nav-link" href="../views/index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/about-us.html">Về chúng tôi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/products.html">Sản phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/guide.html">Hướng dẫn</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/news.html">Tin tức</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/contact.html">Liên hệ</a></li>
                 </ul>
+
+                <!-- Icon bên phải -->
                 <ul class="navbar-nav ms-3">
                     <li class="nav-item">
-                        <a class="nav-link" href="cart.html">
+                        <a class="nav-link" href="../views/cart.html">
                             <i class="bx bx-cart"></i>
                         </a>
                     </li>
@@ -150,13 +156,13 @@
 
                 <div class="col-12 col-md-6 mb-4 mb-md-0">
                     <div class="product-image">
-                        <a href="product-detail.html" class="product-link">
-                            <img src="asset/images/product2.png" alt="Áo đồng phục" id="main-product-image">
+                        <a href="../views/product-detail.html" class="product-link">
+                            <img src="../assets/images/product2.png" alt="Áo đồng phục" id="main-product-image">
                         </a>
                         <div class="thumbnail-images mt-3">
-                            <img src="asset/images/product2.png" alt="Thumbnail 1" class="thumbnail">
-                            <img src="asset/images/product3.png" alt="Thumbnail 2" class="thumbnail">
-                            <img src="asset/images/product4.png" alt="Thumbnail 2" class="thumbnail">
+                            <img src="../assets/images/product2.png" alt="Thumbnail 1" class="thumbnail">
+                            <img src="../assets/images/product3.png" alt="Thumbnail 2" class="thumbnail">
+                            <img src="../assets/images/product4.png" alt="Thumbnail 2" class="thumbnail">
                         </div>
                     </div>
 
@@ -384,7 +390,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="text-center">
-                    <img src="asset/images/size-table.png" alt="Bảng size" class="img-fluid rounded shadow">
+                    <img src="../assets/images/size-table.png" alt="Bảng size" class="img-fluid rounded shadow">
                 </div>
             </div>
         </div>
@@ -516,11 +522,11 @@
                             </div>
                             <p class="review-text">mọi thứ ok và chăm sóc chu đáo</p>
                             <div class="review-images">
-                                <img src="asset/images/product1.png" alt="Ảnh review 1">
-                                <img src="asset/images/product2.png" alt="Ảnh review 2">
-                                <img src="asset/images/product1.png" alt="Ảnh review 3">
-                                <img src="asset/images/product2.png" alt="Ảnh review 4">
-                                <img src="asset/images/product5.png" alt="Ảnh review 5">
+                                <img src="../assets/images/product1.png" alt="Ảnh review 1">
+                                <img src="../assets/images/product2.png" alt="Ảnh review 2">
+                                <img src="../assets/images/product3.png" alt="Ảnh review 3">
+                                <img src="../assets/images/product4.png" alt="Ảnh review 4">
+                                <img src="../assets/images/product5.png" alt="Ảnh review 5">
                             </div>
                             <div class="review-tags">
                                 <span class="tag">Giao hàng nhanh</span>
@@ -600,11 +606,11 @@
                             </div>
                             <p class="review-text">mọi thứ ok và chăm sóc chu đáo</p>
                             <div class="review-images">
-                                <img src="asset/images/product1.png" alt="Ảnh review 1">
-                                <img src="asset/images/product2.png" alt="Ảnh review 2">
-                                <img src="asset/images/product1.png" alt="Ảnh review 3">
-                                <img src="asset/images/product2.png" alt="Ảnh review 4">
-                                <img src="asset/images/product5.png" alt="Ảnh review 5">
+                                <img src="../assets/images/product1.png" alt="Ảnh review 1">
+                                <img src="../assets/images/product2.png" alt="Ảnh review 2">
+                                <img src="../assets/images/product3.png" alt="Ảnh review 3">
+                                <img src="../assets/images/product4.png" alt="Ảnh review 4">
+                                <img src="../assets/images/product5.png" alt="Ảnh review 5">
                             </div>
                             <div class="review-tags">
                                 <span class="tag">Giao hàng nhanh</span>
@@ -720,7 +726,7 @@
 
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
+    <script src="../js/script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Breadcrumb + tên sản phẩm động

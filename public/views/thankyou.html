@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cảm ơn - May Mặc CTH</title>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="asset/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
-    <link rel="stylesheet" href="asset/css/style.css">
-    <link rel="stylesheet" href="asset/css/thankyou.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/thankyou.css">
 </head>
 
 <body>
@@ -22,7 +22,7 @@
                         <button class="btn btn-sm p-0 text-muted d-flex align-items-center"
                             type="button" aria-expanded="false">
 
-                            <img src="asset/images/vietnam-flag.png" id="currentFlag"
+                            <img src="../assets/images/vietnam-flag.png" id="currentFlag"
                                 style="width: 20px; height: 20px; object-fit: cover; border-radius: 3px;">
                             <span id="currentLang" class="ms-1">VN</span>
                         </button>
@@ -65,17 +65,19 @@
         </div>
     </div>
 
-    <!-- Search Bar -->
+    <!-- Search Bar - CẬP NHẬT Ô TÌM KIẾM MỚI -->
     <div class="search-bar bg-white py-2">
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
-                <a href="index.html"> <img src="asset/images/logo.png" alt="Logo" height="60" class="me-32"></a>
+
+                <a href="../views/index.html"> <img src="../assets/images/logo.png" alt="Logo" height="60" class="me-32"></a>
                 <div class="d-flex align-items-center">
                     <select class="form-select category-select" id="categorySelect">
                         <option value="">Tất cả</option>
                         <option value="uniform-shirts">Áo đồng phục</option>
                         <option value="uniform-pants">Quần đồng phục</option>
                     </select>
+
                     <div class="search-container">
                         <input type="text" class="form-control search-input" placeholder="Tìm kiếm sản phẩm..."
                             aria-label="Search">
@@ -84,6 +86,7 @@
                         </button>
                     </div>
                 </div>
+
                 <a href="tel:+0783157988" class="btn btn-outline-primary px-4">
                     <i class="bx bx-phone-call me-1"></i> 0783 157 988
                 </a>
@@ -98,8 +101,10 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto align-items-center">
+                    <!-- Custom dropdown danh mục -->
                     <li class="nav-item dropdown-custom me-4">
                         <a href="#" class="nav-link text-warning d-flex align-items-center">
                             <i class="bx bx-menu me-2"></i> TẤT CẢ DANH MỤC
@@ -115,16 +120,20 @@
                             <li><a href="#">Đồng phục mùa non</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="index.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about-us.html">Về chúng tôi</a></li>
-                    <li class="nav-item"><a class="nav-link" href="products.html">Sản phẩm</a></li>
-                    <li class="nav-item"><a class="nav-link" href="guide.html">Hướng dẫn</a></li>
-                    <li class="nav-item"><a class="nav-link" href="news.html">Tin tức</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Liên hệ</a></li>
+
+                    <!-- Các mục menu khác -->
+                    <li class="nav-item"><a class="nav-link" href="../views/index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/about-us.html">Về chúng tôi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/products.html">Sản phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/guide.html">Hướng dẫn</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/news.html">Tin tức</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../views/contact.html">Liên hệ</a></li>
                 </ul>
+
+                <!-- Icon bên phải -->
                 <ul class="navbar-nav ms-3">
                     <li class="nav-item">
-                        <a class="nav-link" href="cart.html">
+                        <a class="nav-link" href="../views/cart.html">
                             <i class="bx bx-cart"></i>
                         </a>
                     </li>
@@ -164,10 +173,10 @@
                 </div>
 
                 <div class="thankyou-actions d-flex flex-column flex-md-row gap-3 justify-content-center">
-                    <a href="index.html" class="btn btn-outline-primary px-5 py-3">
+                    <a href="../views/index.html" class="btn btn-outline-primary px-5 py-3">
                         <i class='bx bx-home me-2'></i> VỀ TRANG CHỦ
                     </a>
-                    <a href="products.html" class="btn btn-warning px-5 py-3 text-dark fw-bold">
+                    <a href="../views/products.html" class="btn btn-warning px-5 py-3 text-dark fw-bold">
                         <i class='bx bx-shopping-bag me-2'></i> TIẾP TỤC MUA SẮM
                     </a>
                 </div>
