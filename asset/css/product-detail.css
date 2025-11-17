@@ -376,6 +376,10 @@
 }
 
 .action-buttons .btn {
+    display: inline-flex;         /* Flexbox cho icon + text */
+    align-items: center;          /* Căn giữa theo chiều dọc */
+    justify-content: center;      /* Căn giữa theo chiều ngang */
+    gap: 8px;                     /* Khoảng cách giữa icon và chữ */
     height: 52px;
     border-radius: 8px;
     font-size: 16px;
@@ -384,6 +388,7 @@
     padding: 0 20px;
 }
 
+/* Nút Thêm vào giỏ hàng */
 .btn-add-cart {
     border: 2px solid #007bff;
     color: #007bff;
@@ -396,6 +401,7 @@
     color: white;
 }
 
+/* Nút Mua ngay */
 .btn-buy {
     background: #ffc107;
     border: none;
@@ -406,6 +412,13 @@
 .btn-buy:hover {
     background: #ffca2c;
     color: #000;
+}
+
+/* Icon trong nút */
+.action-buttons .btn i {
+    font-size: 1.25em;       
+    display: inline-flex;
+    align-items: center;
 }
 
 .support-info i {

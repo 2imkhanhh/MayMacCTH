@@ -305,20 +305,20 @@
                         </div>
 
                         <div class="action-buttons">
-                            <button class="btn btn-add-cart">
-                                Xem Áo Mẫu & Nhận Vải Miễn Phí
-                                <span class="btn-subtext">(Miễn phí giao hàng)</span>
+                            <button class="btn btn-add-cart" id="addToCartBtn"><i class='bx bx-cart-add me-1'></i>
+                                Thêm vào giỏ hàng
+                                <!-- <span class="btn-subtext">(Miễn phí giao hàng)</span> -->
                             </button>
-                            <button class="btn btn-buy">
-                                Nhận báo giá
-                                <span class="btn-subtext">(Xuất VAT theo yêu cầu)</span>
+                            <button class="btn btn-buy"><i class='bx bx-shopping-bag me-1'></i>
+                                Mua ngay
+                                <!-- <span class="btn-subtext">(Xuất VAT theo yêu cầu)</span> -->
                             </button>
-                            <button class="btn btn-zalo">
+                            <!-- <button class="btn btn-zalo">
                                 <div class="zalo-content">
                                     <img src="asset/images/zalo-icon.png" alt="Zalo" class="zalo-icon"> Chat qua Zalo
                                 </div>
                                 <span class="btn-subtext">(Báo giá trong 5s)</span>
-                            </button>
+                            </button> -->
                         </div>
 
                         <div class="product-description-wrapper mt-4 pt-3">
@@ -893,6 +893,13 @@
 
             // Không cuộn khi trang tải
             showReviewPage(1, false);
+
+            document.getElementById('addToCartBtn').addEventListener('click', function () {
+                // Có thể thêm code lưu sản phẩm vào localStorage / server ở đây
+
+                // Chuyển sang trang đơn hàng
+                window.location.href = 'cart.html';
+            });
         });
     </script>
 </body>
