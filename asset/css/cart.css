@@ -5,13 +5,13 @@
     overflow: hidden;
 }
 
-.cart-section::before {
+.cart-section::before{
     content: "";
     position: absolute;
     inset: 0;
     background: url("../images/background.png") no-repeat center center;
     background-size: 50%;
-    opacity: 0.1;
+    opacity: 0.2;
     filter: blur(2px);
     z-index: 0;
 }
@@ -70,94 +70,273 @@
     color: #333;
 }
 
+.cart-items {
+    background-color: #ffffff; /* Thêm nền trắng cho khu vực sản phẩm */
+    padding: 1.5rem; /* Thêm padding */
+    border-radius: 12px; /* Bo góc */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Bóng nhẹ */
+}
+
 .cart-item {
     background-color: #fff;
+    border: 1px solid #e9ecef; /* Viền nhẹ hơn */
+    border-radius: 12px; /* Bo góc mềm mại hơn */
     transition: all 0.3s ease;
+    padding: 1.25rem; /* Tăng padding bên trong */
 }
 
 .cart-item:hover {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1); /* Bóng đậm hơn khi hover */
+    transform: translateY(-3px); /* Nâng nhẹ khi hover */
 }
 
 .cart-item-img {
-    width: 80px;
-    height: 80px;
+    width: 100px; /* Tăng kích thước ảnh */
+    height: 100px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 10px; /* Bo góc ảnh */
+    border: 1px solid #dee2e6; /* Viền nhẹ cho ảnh */
 }
 
 .cart-item-name {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
-    font-size: 1rem;
-    color: #333;
-    margin-bottom: 0.5rem;
+    font-size: 1.1rem; /* Tăng kích thước tên sản phẩm */
+    color: #272D37;
+    margin-bottom: 0.75rem;
+    transition: color 0.3s ease;
+}
+
+.cart-item-name:hover {
+    color: #003087; /* Đổi màu khi hover, khớp với navbar */
 }
 
 .cart-item-price {
     font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    font-size: 1rem;
+    font-weight: 700; /* Giá in đậm hơn */
+    font-size: 1.1rem;
+    color: #d9534f; /* Màu đỏ nổi bật hơn */
 }
 
 .cart-item-quantity {
-    max-width: 150px;
+    max-width: 200px; /* Tăng kích thước để phù hợp với w-50 */
+}
+
+.input-group {
+    align-items: center; /* Căn giữa các phần tử trong input-group */
+}
+
+.input-group .btn-outline-secondary {
+    background-color: #f8f9fa; /* Nền nhẹ */
+    border-color: #ced4da; /* Viền khớp với input */
+    font-weight: 600; /* Chữ đậm */
+    font-size: 1rem; /* Kích thước chữ */
+    width: 40px; /* Chiều rộng nút */
+    height: 38px; /* Chiều cao khớp với input */
+    padding: 0; /* Loại bỏ padding thừa */
+    transition: all 0.3s ease; /* Hiệu ứng mượt */
+}
+
+.input-group .btn-outline-secondary:hover {
+    background-color: #003087; /* Màu xanh khi hover */
+    color: #fff; /* Chữ trắng */
+    border-color: #003087; /* Viền khớp với hover */
 }
 
 .quantity-input {
-    width: 60px;
+    width: auto; /* Tự động điều chỉnh chiều rộng */
     text-align: center;
-    border-radius: 8px;
-}
-
-.quantity-decrease, .quantity-increase {
-    width: 30px;
-    height: 30px;
-    line-height: 1;
-    padding: 0;
+    border-radius: 0; /* Loại bỏ bo góc riêng để khớp với input-group */
+    border: 1px solid #ced4da;
+    font-size: 0.95rem;
+    height: 38px;
+    -webkit-appearance: none !important;
+    -moz-appearance: textfield !important;
+    appearance: none !important;
+    font-weight: 700; /* Giữ chữ đậm như fw-bold */
+    padding: 0 0.5rem; /* Thêm padding bên trong */
 }
 
 .cart-item-remove {
     border-radius: 8px;
+    padding: 0.5rem 0.75rem; /* Tăng kích thước nút xóa */
+    background-color: #dc3545; /* Màu đỏ đậm */
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.cart-item-remove:hover {
+    background-color: #c82333; /* Màu đỏ tối hơn khi hover */
+    transform: scale(1.05); /* Phóng to nhẹ */
+}
+
+.cart-item-remove i {
+    font-size: 1.2rem; /* Tăng kích thước icon */
 }
 
 .cart-summary {
-    background-color: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    background-color: #ffffff;
+    padding: 2rem; /* Tăng padding */
+    border-radius: 12px; /* Bo góc */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Bóng nhẹ */
+    position: sticky; /* Giữ cố định khi cuộn */
+    top: 190px; /* Điều chỉnh dựa trên chiều cao title-section */
+}
+
+.cart-summary .cart-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.cart-summary .d-flex {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: #333;
+    padding: 0.5rem 0; /* Thêm padding cho các dòng */
 }
 
 .cart-summary .fw-bold {
-    font-size: 1.1rem;
-    color: #333;
+    font-size: 1.2rem; /* Tăng kích thước chữ tổng cộng */
+    color: #272D37;
+}
+
+.cart-summary hr {
+    margin: 1rem 0; /* Tăng khoảng cách */
+    border-color: #e9ecef; /* Viền nhẹ */
 }
 
 .btn-checkout {
-    background-color: #FFC107;
+    background-color: #FFC107; /* Màu vàng nổi bật */
     border: none;
     color: #212529;
     font-weight: 600;
-    padding: 0.75rem;
-    border-radius: 8px;
+    font-size: 1.1rem; /* Tăng kích thước chữ */
+    padding: 1rem; /* Tăng padding */
+    border-radius: 10px;
     transition: all 0.3s ease;
+    text-transform: uppercase; /* Chữ in hoa */
 }
 
 .btn-checkout:hover {
     background-color: #FFCA2C;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3);
+    transform: translateY(-3px); /* Nâng nhẹ khi hover */
+    box-shadow: 0 6px 12px rgba(255, 193, 7, 0.3); /* Bóng đậm hơn */
+}
+
+.btn-outline-primary {
+    border-color: #003087; /* Khớp màu với navbar */
+    color: #003087;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem; /* Tăng kích thước nút */
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: #003087;
+    color: #fff;
+    transform: scale(1.05); /* Phóng to nhẹ */
+}
+
+/* Pagination Styles */
+.pagination {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination .page-link {
+    color: #174DAF;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+.pagination .page-link:hover {
+    color: #0056b3;
+    background-color: #e9ecef;
+    text-decoration: none;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #174DAF;
+    border-color: #174DAF;
+    color: #fff;
+    font-weight: 600;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #f8f9fa;
+}
+
+.pagination .page-item .page-link {
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+    margin-right: 10px;
+}
+
+.pagination .page-item#prevPage .page-link::before {
+    content: "\e900"; /* Icon mũi tên trái từ Boxicons */
+    font-family: 'boxicons' !important;
+}
+
+.pagination .page-item#nextPage .page-link::after {
+    content: "\e901"; /* Icon mũi tên phải từ Boxicons */
+    font-family: 'boxicons' !important;
 }
 
 /* Responsive */
+@media (max-width: 991.98px) {
+    .cart-summary {
+        position: static; /* Tắt sticky trên tablet */
+        margin-top: 2rem; /* Thêm khoảng cách */
+    }
+}
+
 @media (max-width: 767.98px) {
+    .cart-section {
+        padding: 1rem 0; /* Giảm padding trên mobile */
+    }
+
+    .title-section {
+        padding: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+    }
+
+    .cart-items {
+        padding: 1rem;
+    }
+
     .cart-item {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
+        padding: 1rem;
     }
 
     .cart-item-img {
         width: 100%;
-        height: 150px;
+        height: 200px; /* Tăng chiều cao ảnh trên mobile */
+        border-radius: 8px;
+    }
+
+    .cart-item-name {
+        font-size: 1rem;
+    }
+
+    .cart-item-price {
+        font-size: 1rem;
     }
 
     .cart-item-quantity {
@@ -166,5 +345,20 @@
 
     .quantity-input {
         width: 80px;
+        height: 36px;
+    }
+
+    .quantity-decrease, .quantity-increase {
+        width: 36px;
+        height: 36px;
+    }
+
+    .cart-summary {
+        padding: 1.5rem;
+    }
+
+    .btn-checkout {
+        font-size: 1rem;
+        padding: 0.75rem;
     }
 }
