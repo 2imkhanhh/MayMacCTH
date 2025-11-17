@@ -1,0 +1,78 @@
+.thankyou-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+}
+
+.thankyou-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    max-width: 700px;
+    margin: 0 auto;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.check-icon i {
+    font-size: 4.5rem;
+    color: #28a745;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.thankyou-title {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    color: #003087;
+    font-size: 1.8rem;
+}
+
+.thankyou-text {
+    color: #555;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.order-info-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+}
+
+.order-info-card strong {
+    color: #333;
+}
+
+.thankyou-actions .btn {
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    min-width: 200px;
+}
+
+.thankyou-actions .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+    .thankyou-title {
+        font-size: 1.5rem;
+    }
+    .check-icon i {
+        font-size: 3.5rem;
+    }
+    .thankyou-actions .btn {
+        min-width: 100%;
+    }
+}
