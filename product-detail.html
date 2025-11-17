@@ -309,7 +309,7 @@
                                 Thêm vào giỏ hàng
                                 <!-- <span class="btn-subtext">(Miễn phí giao hàng)</span> -->
                             </button>
-                            <button class="btn btn-buy"><i class='bx bx-shopping-bag me-1'></i>
+                            <button class="btn btn-buy" id="orderBtn"><i class='bx bx-shopping-bag me-1'></i>
                                 Mua ngay
                                 <!-- <span class="btn-subtext">(Xuất VAT theo yêu cầu)</span> -->
                             </button>
@@ -899,6 +899,13 @@
 
                 // Chuyển sang trang đơn hàng
                 window.location.href = 'cart.html';
+            });
+
+            document.getElementById('orderBtn').addEventListener('click', function () {
+                // Có thể thêm code lưu sản phẩm vào localStorage / server ở đây
+
+                // Chuyển sang trang đơn hàng
+                window.location.href = 'order.html';
             });
         });
     </script>
