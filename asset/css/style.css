@@ -1,5 +1,6 @@
 body {
   font-family: Arial, sans-serif;
+  /* min-height:100vh; */
 }
 
 /* TOP HEADER */
@@ -871,3 +872,11 @@ footer.footer .footer-links a:hover {
     font-size: 14px; /* Giảm nhẹ để cân đối */
   }
 }
+
+footer.footer .footer-phone {
+    font-size: 12px;
+    color: #ffffffd9;
+    text-decoration: none !important;
+    pointer-events: none;
+    -webkit-text-decoration: none;
+  }
