@@ -158,6 +158,7 @@
                             </div>
                         </div>
                     </a>
+                    <div class="guide-content-wrapper"></div>
                 </div>
                 <div class="col">
                     <a href="#" class="text-decoration-none guide-card-link"
@@ -170,6 +171,7 @@
                             </div>
                         </div>
                     </a>
+                    <div class="guide-content-wrapper"></div>
                 </div>
                 <div class="col">
                     <a href="#" class="text-decoration-none guide-card-link"
@@ -182,6 +184,7 @@
                             </div>
                         </div>
                     </a>
+                    <div class="guide-content-wrapper"></div>
                 </div>
                 <div class="col">
                     <a href="#" class="text-decoration-none guide-card-link"
@@ -194,6 +197,7 @@
                             </div>
                         </div>
                     </a>
+                    <div class="guide-content-wrapper"></div>
                 </div>
                 <div class="col">
                     <a href="#" class="text-decoration-none guide-card-link"
@@ -206,6 +210,7 @@
                             </div>
                         </div>
                     </a>
+                    <div class="guide-content-wrapper"></div>
                 </div>
             </div>
             <!-- Khu vực hiển thị các card nội dung -->
@@ -335,7 +340,7 @@
             <div class="row gy-4">
                 <!-- Logo + Giới thiệu -->
                 <div class="col-12 col-md-4 col-lg-3">
-                    <img src="asset/images/logo2.png" alt="Logo" class="footer-logo mb-3">
+                    <a href="index.html"><img src="asset/images/logo2.png" alt="Logo" class="footer-logo mb-3"></a>
                     <p class="footer-slogan">MAY MẶC CTH lắng nghe bạn!</p>
                     <p class="footer-desc">
                         Chúng tôi luôn trân trọng mọi ý kiến đóng góp của khách hàng,
@@ -468,11 +473,11 @@
             const guideCardLinks = document.querySelectorAll('.guide-card-link');
             const guideContentArea = document.querySelector('.guide-content-area');
             const allGuideContents = document.querySelectorAll('.guide-content');
-            
+
             const allTriggerCards = document.querySelectorAll('.guide-card');
-            const allGuideImages = document.querySelectorAll('.guide-card .guide-image'); 
-            
-            let activeCardLink = null; 
+            const allGuideImages = document.querySelectorAll('.guide-card .guide-image');
+
+            let activeCardLink = null;
 
             // Ẩn tất cả nội dung ngay từ đầu
             allGuideContents.forEach(content => {
@@ -481,65 +486,80 @@
 
             guideCardLinks.forEach(cardLink => {
                 cardLink.addEventListener('click', function (e) {
-                    e.preventDefault(); 
+                    e.preventDefault();
 
                     const targetIds = cardLink.getAttribute('data-target').split(',');
                     const isAlreadyActive = (activeCardLink === cardLink);
 
-                    // --- BƯỚC 1: RESET TẤT CẢ TRẠNG THÁI ---
+                    // Là desktop hay mobile?
+                    const isMobile = window.innerWidth < 768;
 
-                    // 1a. Ẩn tất cả card NỘI DUNG
-                    allGuideContents.forEach(content => {
-                        content.style.display = 'none';
-                    });
+                    // RESET TRẠNG THÁI CHUNG
+                    allGuideContents.forEach(c => c.style.display = 'none');
+                    allTriggerCards.forEach(t => t.classList.remove('active-card'));
+                    allGuideImages.forEach(img => img.src = img.src.replace('-active.png', '.png'));
 
-                    // 1b. Bỏ class 'active-card' (màu vàng) khỏi tất cả card ĐIỀU KHIỂN
-                    allTriggerCards.forEach(trigger => {
-                        trigger.classList.remove('active-card');
-                    });
-
-                    // 1c. (ĐÃ XÓA) - Phần đổi mũi tên về 'hướng xuống' đã bị xóa
-                    //             CSS sẽ tự động xoay về 0 độ khi class 'active-card' bị gỡ.
-
-                    // 1d. Reset tất cả HÌNH ẢNH về src gốc
-                    allGuideImages.forEach(image => {
-                        image.src = image.src.replace('-active.png', '.png');
-                    });
-
-                    // --- BƯỚC 2: KÍCH HOẠT CÁI ĐƯỢC CHỌN (nếu có) ---
                     if (isAlreadyActive) {
-                        // Nếu nhấn lại card đang active -> chỉ reset là đủ
-                        guideContentArea.style.display = 'none';
+                        // Nếu click lại chính nó => tắt tất cả
+                        if (isMobile) {
+                            // Xóa nội dung dưới card trên mobile
+                            const oldWrapper = cardLink.parentElement.querySelector('.guide-content-wrapper');
+                            if (oldWrapper) oldWrapper.remove();
+                        } else {
+                            // Ẩn khu vực nội dung trên desktop
+                            guideContentArea.style.display = 'none';
+                        }
                         activeCardLink = null;
-                    } else {
-                        // Nếu nhấn card mới
-                        
-                        // 2a. Hiển thị khu vực nội dung
+                        return;
+                    }
+
+                    // Kích hoạt mới
+                    activeCardLink = cardLink;
+                    const clickedCard = cardLink.querySelector('.guide-card');
+
+                    // Đổi icon active
+                    const img = clickedCard.querySelector('.guide-image');
+                    img.src = img.src.replace('.png', '-active.png');
+
+                    clickedCard.classList.add('active-card');
+
+                    // --------------------------------------
+                    // DESKTOP MODE ( >= 768px )
+                    // --------------------------------------
+                    if (!isMobile) {
                         guideContentArea.style.display = 'flex';
 
-                        // 2b. Hiển thị 2 card nội dung tương ứng
                         targetIds.forEach(id => {
                             const el = document.getElementById(id);
-                            if (el) {
-                                el.style.display = 'block';
-                            }
+                            if (el) el.style.display = 'block';
                         });
 
-                        // Lấy card điều khiển được click
-                        const clickedTriggerCard = cardLink.querySelector('.guide-card');
-
-                        // 2c. Đổi SRC ảnh thành version active
-                        const clickedImage = clickedTriggerCard.querySelector('.guide-image');
-                        if (clickedImage) {
-                            clickedImage.src = clickedImage.src.replace('.png', '-active.png');
-                        }
-
-                        // 2d. Thêm class 'active-card' (màu vàng)
-                        if (clickedTriggerCard) {
-                            clickedTriggerCard.classList.add('active-card');
-                        }
-                        activeCardLink = cardLink;
+                        return; // Dừng ở đây, không chạy phần mobile
                     }
+
+                    // --------------------------------------
+                    // MOBILE MODE ( < 768px )
+                    // --------------------------------------
+
+                    // Xóa wrapper cũ nếu có
+                    const oldWrapper = cardLink.parentElement.querySelector('.guide-content-wrapper');
+                    if (oldWrapper) oldWrapper.remove();
+
+                    // Tạo wrapper mới
+                    const wrapper = document.createElement('div');
+                    wrapper.classList.add('guide-content-wrapper');
+
+                    targetIds.forEach(id => {
+                        const content = document.getElementById(id);
+                        if (content) {
+                            const clone = content.cloneNode(true);
+                            clone.style.display = 'block';
+                            wrapper.appendChild(clone);
+                        }
+                    });
+
+                    // Chèn vào sau card
+                    cardLink.parentElement.appendChild(wrapper);
                 });
             });
         });

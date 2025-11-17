@@ -116,3 +116,14 @@
 .guide-card.active-card .bx {
     transform: rotate(180deg); /* Trạng thái active: xoay 180 độ */
 }
+
+.guide-content-wrapper {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.guide-content-wrapper .guide-content {
+    display: block !important;
+}
