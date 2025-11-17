@@ -143,6 +143,10 @@
     border-color: #003087; /* Viền khớp với hover */
 }
 
+.input-group.quantity-group {
+    width: 20%;
+}
+
 .quantity-input {
     width: auto; /* Tự động điều chỉnh chiều rộng */
     text-align: center;
@@ -360,5 +364,19 @@
     .btn-checkout {
         font-size: 1rem;
         padding: 0.75rem;
+    }
+
+    .input-group.quantity-group {
+        width: 100% !important;
+        max-width: 200px; /* Giúp input-group không quá to nhưng vẫn 1 hàng */
+    }
+
+    .quantity-input {
+        width: 60px !important;
+    }
+
+    .decrease, .increase {
+        width: 40px;
+        flex-shrink: 0; /* Ngăn nút bị ép nhỏ */
     }
 }

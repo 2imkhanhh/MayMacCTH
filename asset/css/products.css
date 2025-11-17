@@ -357,51 +357,51 @@
 }
 
 /* Responsive Adjustments */
+@media (max-width: 991.98px) {
+  .pagination {
+    gap: 6px; /* Giảm khoảng cách */
+  }
+
+  .page-link {
+    min-width: 36px;
+    height: 36px;
+    padding: 6px 10px;
+    font-size: 14px; /* Chữ nhỏ hơn */
+  }
+
+  .page-link i {
+    font-size: 16px; /* Giảm kích thước chevron */
+  }
+}
+
+/* Di động (max-width: 768px) */
 @media (max-width: 768px) {
-    .title-section {
-        flex-direction: column;
-        text-align: center;
-    }
+  .pagination {
+    flex-direction: row; /* Xếp ngang thay vì dọc */
+    flex-wrap: wrap; /* Cho phép xuống dòng nếu nhiều trang */
+    justify-content: center;
+    gap: 6px;
+    margin: 15px 0; /* Giảm margin trên/dưới */
+  }
 
-    .breadcrumb-nav {
-        margin-top: 1rem;
-        font-size: 0.9rem;
-    }
+  .page-item {
+    margin-bottom: 0; /* Xóa margin-bottom */
+  }
 
-    .sidebar {
-        padding: 1rem;
-    }
+  .page-link {
+    min-width: 44px; /* Vùng chạm theo chuẩn UX */
+    height: 44px;
+    padding: 8px 10px;
+    font-size: 13px; /* Chữ nhỏ hơn cho di động */
+    border-radius: 6px; /* Bo góc lớn hơn cho thẩm mỹ */
+  }
 
-    .category-options .form-check-inline,
-    .size-options .form-check {
-        display: block;
-        margin-bottom: 0.5rem;
-    }
+  .page-link i {
+    font-size: 14px; /* Giảm kích thước chevron */
+  }
 
-    .product-card .card-title {
-        font-size: 1.1rem;
-    }
-
-    .product-card .card-body {
-        padding: 1rem;
-    }
-
-    .product-grid {
-        padding-left: 0;
-    }
-
-    .col-md-3,
-    .col-md-9 {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-
-    .pagination {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .pagination .page-item {
-        margin-bottom: 0.5rem;
-    }
+  /* Ẩn bớt số trang nếu quá nhiều */
+  .page-item:not(.active):not(#prevPage):not(#nextPage):nth-child(n+6) {
+    display: none; /* Ẩn trang từ 6 trở lên, chỉ giữ 5 trang gần nhất */
+  }
 }

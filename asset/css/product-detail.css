@@ -927,3 +927,57 @@
     content: "\e901"; /* Icon mũi tên phải từ Boxicons */
     font-family: 'boxicons' !important;
 }
+
+@media (max-width: 991.98px) {
+  .action-buttons {
+    gap: 12px; /* Giảm khoảng cách */
+    justify-content: center;
+  }
+
+  .action-buttons .btn {
+    min-width: 180px; /* Giảm độ rộng */
+    min-height: 52px; /* Giảm chiều cao */
+    padding: 8px 16px;
+    font-size: 14px; /* Chữ nhỏ hơn */
+  }
+
+  .action-buttons .btn-subtext {
+    font-size: 11px;
+  }
+
+  .action-buttons .zalo-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Di động (max-width: 768px) */
+@media (max-width: 768px) {
+  .action-buttons {
+    flex-direction: column; /* Xếp dọc */
+    align-items: stretch; /* Nút chiếm toàn chiều rộng */
+    gap: 10px;
+    margin: 15px 0;
+  }
+
+  .action-buttons .btn {
+    min-width: 100%; /* Chiếm toàn chiều rộng */
+    min-height: 48px; /* Đủ lớn để chạm */
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 6px; /* Bo góc nhỏ hơn */
+  }
+
+  .action-buttons .btn-subtext {
+    font-size: 10px;
+  }
+
+  .action-buttons .zalo-content {
+    gap: 6px;
+  }
+
+  .action-buttons .zalo-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
