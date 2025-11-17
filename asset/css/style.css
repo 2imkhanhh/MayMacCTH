@@ -78,7 +78,8 @@ body {
 }
 
 .category-select:focus {
-  z-index: 10; /* Nâng lên cao nhất khi focus */
+  z-index: 10;
+  /* Nâng lên cao nhất khi focus */
 }
 
 /* Style cho select danh mục */
@@ -95,30 +96,11 @@ body {
   background-color: #fff;
 }
 
-/* Style cho select danh mục */
-.category-select {
-  padding: 8px 16px;
-  border: 1px solid #ced4da;
-  border-radius: 0;
-  /* Vuông góc */
+.category-select option {
+  padding: 10px 12px;
+  background-color: #fff;
+  color: #333;
   font-size: 14px;
-  outline: none;
-  width: 150px;
-  height: 40px;
-  margin-right: -1px;
-  /* Dính sát với ô tìm kiếm */
-}
-
-/* Style cho select danh mục */
-.category-select {
-  padding: 8px 16px;
-  border: 1px solid #ced4da;
-  border-radius: 20px;
-  /* Bo tròn để đồng nhất với ô tìm kiếm */
-  font-size: 14px;
-  outline: none;
-  width: 150px;
-  /* Độ rộng cố định, có thể điều chỉnh */
 }
 
 /* MENU */
@@ -151,9 +133,9 @@ body {
 }
 
 .dropdown-custom .nav-link .bx-menu {
-    font-size: 20px; 
-    line-height: 1; 
-    margin-right: 8px; 
+  font-size: 20px;
+  line-height: 1;
+  margin-right: 8px;
 }
 
 /* Danh sách dropdown ẩn mặc định */
@@ -321,6 +303,12 @@ body {
   background-color: #003087;
   /* Màu nền xanh dương */
   transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.guide-card a,
+.guide-card-link,
+.container a {
+  text-decoration: none !important;
 }
 
 .guide-card:hover {
@@ -601,12 +589,14 @@ footer.footer .footer-links a:hover {
     .dropdown-menu-custom {
       position: static;
       display: none;
-      background: #003087; /* Nền xanh đồng bộ với navbar */
+      background: #003087;
+      /* Nền xanh đồng bộ với navbar */
       border: none;
       box-shadow: none;
       min-width: auto;
       width: 100%;
-      padding-left: 1.5rem; /* Tăng thụt lề */
+      padding-left: 1.5rem;
+      /* Tăng thụt lề */
     }
 
     .dropdown-custom.active .dropdown-menu-custom {
@@ -614,13 +604,16 @@ footer.footer .footer-links a:hover {
     }
 
     .dropdown-menu-custom li a {
-      color: #fff; /* Màu trắng cho nổi bật */
+      color: #fff;
+      /* Màu trắng cho nổi bật */
       padding: 8px 15px;
-      font-size: 14px; /* Tăng cỡ chữ */
+      font-size: 14px;
+      /* Tăng cỡ chữ */
     }
 
     .dropdown-menu-custom li a:hover {
-      background: #004aad; /* Nền xanh đậm khi hover */
+      background: #004aad;
+      /* Nền xanh đậm khi hover */
       color: #fff;
     }
   }
@@ -633,17 +626,20 @@ footer.footer .footer-links a:hover {
     width: 100%;
     margin-left: 0;
     margin-right: 0;
-    height: 400px; /* Giảm chiều cao */
+    height: 400px;
+    /* Giảm chiều cao */
   }
 
   .banner-dots .dot {
-    width: 12px; /* Tăng kích thước dot */
+    width: 12px;
+    /* Tăng kích thước dot */
     height: 12px;
   }
 
   .row-cols-md-5 {
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px; /* Tăng khoảng cách */
+    gap: 20px;
+    /* Tăng khoảng cách */
   }
 
   .row-cols-md-3 {
@@ -656,35 +652,42 @@ footer.footer .footer-links a:hover {
     width: 100%;
   }
 
-  .product-title, .guide-title, .news-title {
+  .product-title,
+  .guide-title,
+  .news-title {
     font-size: 22px;
   }
 
   .search-container {
-    width: 300px; /* Giảm độ rộng để vừa tablet */
+    width: 300px;
+    /* Giảm độ rộng để vừa tablet */
   }
 
   .category-select {
-    width: 140px; /* Tăng nhẹ độ rộng */
+    width: 140px;
+    /* Tăng nhẹ độ rộng */
   }
 }
 
 /* Di động (max-width: 767.98px) */
 @media (max-width: 767.98px) {
   .container {
-    padding-left: 20px; /* Tăng padding container */
+    padding-left: 20px;
+    /* Tăng padding container */
     padding-right: 20px;
   }
 
   /* Top Header */
   .top-header {
-    padding: 12px 0; /* Tăng padding */
+    padding: 12px 0;
+    /* Tăng padding */
   }
 
   .top-header .d-flex.justify-content-between {
     flex-direction: column;
     align-items: flex-start !important;
-    gap: 10px; /* Tăng gap */
+    gap: 10px;
+    /* Tăng gap */
   }
 
   .top-header .text-muted:last-child {
@@ -699,7 +702,8 @@ footer.footer .footer-links a:hover {
   .search-bar .d-flex.justify-content-between {
     flex-direction: column;
     align-items: center;
-    gap: 15px; /* Tăng gap */
+    gap: 15px;
+    /* Tăng gap */
   }
 
   .search-bar img {
@@ -719,19 +723,22 @@ footer.footer .footer-links a:hover {
   }
 
   .category-select {
-    width: 130px; /* Tăng độ rộng */
+    width: 130px;
+    /* Tăng độ rộng */
     font-size: 13px;
   }
 
   .search-bar .btn-outline-primary {
     width: 100%;
     font-size: 13px;
-    padding: 6px; /* Giảm padding */
+    padding: 6px;
+    /* Giảm padding */
   }
 
   /* Navbar */
   .dropdown-custom .nav-link .bx-menu {
-    font-size: 22px; /* Giảm nhẹ để gọn */
+    font-size: 22px;
+    /* Giảm nhẹ để gọn */
     margin-right: 6px;
   }
 
@@ -745,7 +752,8 @@ footer.footer .footer-links a:hover {
   }
 
   .banner-dots .dot {
-    width: 12px; /* Tăng kích thước dot */
+    width: 12px;
+    /* Tăng kích thước dot */
     height: 12px;
   }
 
@@ -757,18 +765,23 @@ footer.footer .footer-links a:hover {
     margin-bottom: 1.5rem !important;
   }
 
-  .product-title, .guide-title, .news-title {
+  .product-title,
+  .guide-title,
+  .news-title {
     font-size: 20px;
   }
 
-  .view-more, .news-view-more {
-    font-size: 14px; /* Tăng cỡ chữ */
+  .view-more,
+  .news-view-more {
+    font-size: 14px;
+    /* Tăng cỡ chữ */
   }
 
   /* Sản phẩm */
   .row-cols-md-5 {
     grid-template-columns: 1fr;
-    gap: 25px; /* Tăng khoảng cách */
+    gap: 25px;
+    /* Tăng khoảng cách */
   }
 
   .card-img-top {
@@ -776,19 +789,23 @@ footer.footer .footer-links a:hover {
   }
 
   .product-price {
-    font-size: 17px; /* Tăng cỡ chữ */
+    font-size: 17px;
+    /* Tăng cỡ chữ */
   }
 
   /* Hướng dẫn */
   .guide-card .card-text {
     flex-direction: column;
-    gap: 12px; /* Tăng gap */
-    font-size: 15px; /* Tăng cỡ chữ */
+    gap: 12px;
+    /* Tăng gap */
+    font-size: 15px;
+    /* Tăng cỡ chữ */
   }
 
   .guide-image {
     margin-left: 0;
-    width: 30px; /* Tăng kích thước ảnh */
+    width: 30px;
+    /* Tăng kích thước ảnh */
     height: 30px;
   }
 
@@ -799,21 +816,25 @@ footer.footer .footer-links a:hover {
   /* Tin tức */
   .row-cols-md-3 {
     grid-template-columns: 1fr;
-    gap: 25px; /* Tăng khoảng cách */
+    gap: 25px;
+    /* Tăng khoảng cách */
   }
 
   .news-card .card-title-link {
-    font-size: 16px; /* Tăng cỡ chữ */
+    font-size: 16px;
+    /* Tăng cỡ chữ */
   }
 
   .news-card .text-muted {
-    font-size: 14px; /* Tăng cỡ chữ */
+    font-size: 14px;
+    /* Tăng cỡ chữ */
   }
 
   /* Footer */
-  footer.footer .row > div[class^="col-"] {
+  footer.footer .row>div[class^="col-"] {
     text-align: center;
-    margin-top: 25px; /* Tăng margin */
+    margin-top: 25px;
+    /* Tăng margin */
     padding: 0 15px;
   }
 
@@ -840,16 +861,19 @@ footer.footer .footer-links a:hover {
   }
 
   .contact-card {
-    padding: 8px 12px; /* Giảm padding */
+    padding: 8px 12px;
+    /* Giảm padding */
   }
 
   .contact-icon {
-    width: 40px; /* Giảm kích thước */
+    width: 40px;
+    /* Giảm kích thước */
     height: 40px;
   }
 
   .footer-slogan {
-    font-size: 15px; /* Tăng cỡ chữ */
+    font-size: 15px;
+    /* Tăng cỡ chữ */
   }
 
   .footer-desc {
@@ -857,26 +881,30 @@ footer.footer .footer-links a:hover {
   }
 
   .footer-title {
-    font-size: 16px; /* Tăng cỡ chữ */
+    font-size: 16px;
+    /* Tăng cỡ chữ */
   }
 
   .footer-links li a {
-    font-size: 14px; /* Tăng cỡ chữ */
+    font-size: 14px;
+    /* Tăng cỡ chữ */
   }
 
   .contact-label {
-    font-size: 12px; /* Tăng cỡ chữ */
+    font-size: 12px;
+    /* Tăng cỡ chữ */
   }
 
   .contact-value {
-    font-size: 14px; /* Giảm nhẹ để cân đối */
+    font-size: 14px;
+    /* Giảm nhẹ để cân đối */
   }
 }
 
 footer.footer .footer-phone {
-    font-size: 12px;
-    color: #ffffffd9;
-    text-decoration: none !important;
-    pointer-events: none;
-    -webkit-text-decoration: none;
-  }
+  font-size: 12px;
+  color: #ffffffd9;
+  text-decoration: none !important;
+  pointer-events: none;
+  -webkit-text-decoration: none;
+}
