@@ -18,8 +18,8 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <div class="dropdown me-4">
-                        <button class="btn btn-sm p-0 text-muted d-flex align-items-center"
-                            type="button" aria-expanded="false">
+                        <button class="btn btn-sm p-0 text-muted d-flex align-items-center" type="button"
+                            aria-expanded="false">
 
                             <img src="../../assets/images/vietnam-flag.png" id="currentFlag"
                                 style="width: 20px; height: 20px; object-fit: cover; border-radius: 3px;">
@@ -69,7 +69,8 @@
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
 
-                <a href="../../views/client/index.html"> <img src="../../assets/images/logo.png" alt="Logo" height="60" class="me-32"></a>
+                <a href="../../views/client/index.html"> <img src="../../assets/images/logo.png" alt="Logo" height="60"
+                        class="me-32"></a>
                 <div class="d-flex align-items-center">
                     <select class="form-select category-select" id="categorySelect">
                         <option value="">Tất cả</option>
@@ -122,7 +123,8 @@
 
                     <!-- Các mục menu khác -->
                     <li class="nav-item"><a class="nav-link" href="../../views/client/index.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../../views/client/about-us.html">Về chúng tôi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../../views/client/about-us.html">Về chúng tôi</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/products.html">Sản phẩm</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/guide.html">Hướng dẫn</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/news.html">Tin tức</a></li>
@@ -142,21 +144,9 @@
     </nav>
 
     <!-- Banner -->
-    <div class="banner-container position-relative text-center fade-element">
-        <img src="../../assets/images/banner1.png" class="banner-image active" alt="Banner 1">
-        <img src="../../assets/images/banner2.jpg" class="banner-image" alt="Banner 2">
-        <img src="../../assets/images/banner3.jpg" class="banner-image" alt="Banner 3">
-        <img src="../../assets/images/banner4.jpg" class="banner-image" alt="Banner 4">
-        <img src="../../assets/images/banner5.jpg" class="banner-image" alt="Banner 5">
-
-        <!-- Dot indicators -->
-        <div class="banner-dots position-absolute bottom-0 start-50 translate-middle-x mb-3">
-            <span class="dot active" data-index="0"></span>
-            <span class="dot" data-index="1"></span>
-            <span class="dot" data-index="2"></span>
-            <span class="dot" data-index="3"></span>
-            <span class="dot" data-index="4"></span>
-        </div>
+    <div class="banner-container position-relative text-center fade-element" id="bannerContainer">
+        <!-- Banner sẽ được load vào đây -->
+        <div class="banner-dots" id="bannerDots"></div>
     </div>
 
     <!-- Sản phẩm -->
@@ -225,9 +215,11 @@
                 <a href="#" class="text-decoration-none">
                     <div class="card text-center guide-card">
                         <div class="card-body">
-                            <a href="../../views/client/guide.html"><p class="card-text">Hướng dẫn mua hàng <img src="../../assets/images/guide1.png" alt="Guide 1"
-                                    class="guide-image"></p>
-                            <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i></a>
+                            <a href="../../views/client/guide.html">
+                                <p class="card-text">Hướng dẫn mua hàng <img src="../../assets/images/guide1.png"
+                                        alt="Guide 1" class="guide-image"></p>
+                                <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i>
+                            </a>
                         </div>
                     </div>
                 </a>
@@ -236,9 +228,11 @@
                 <a href="#" class="text-decoration-none">
                     <div class="card text-center guide-card">
                         <div class="card-body">
-                            <a href="../../views/client/guide.html"><p class="card-text">Hướng dẫn chọn size <img src="../../assets/images/guide2.png" alt="Guide 2"
-                                    class="guide-image"></p>
-                            <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i></a>
+                            <a href="../../views/client/guide.html">
+                                <p class="card-text">Hướng dẫn chọn size <img src="../../assets/images/guide2.png"
+                                        alt="Guide 2" class="guide-image"></p>
+                                <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i>
+                            </a>
                         </div>
                     </div>
                 </a>
@@ -247,9 +241,11 @@
                 <a href="#" class="text-decoration-none">
                     <div class="card text-center guide-card">
                         <div class="card-body">
-                            <a href="../../views/client/guide.html"><p class="card-text">Chính sách đổi trả <img src="../../assets/images/guide3.png" alt="Guide 3"
-                                    class="guide-image"></p>
-                            <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i></a>
+                            <a href="../../views/client/guide.html">
+                                <p class="card-text">Chính sách đổi trả <img src="../../assets/images/guide3.png"
+                                        alt="Guide 3" class="guide-image"></p>
+                                <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i>
+                            </a>
                         </div>
                     </div>
                 </a>
@@ -258,9 +254,11 @@
                 <a href="#" class="text-decoration-none">
                     <div class="card text-center guide-card">
                         <div class="card-body">
-                            <a href="../../views/client/guide.html"><p class="card-text">Chính sách giao hàng <img src="../../assets/images/guide4.png" alt="Guide 4"
-                                    class="guide-image"></p>
-                            <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i></a>
+                            <a href="../../views/client/guide.html">
+                                <p class="card-text">Chính sách giao hàng <img src="../../assets/images/guide4.png"
+                                        alt="Guide 4" class="guide-image"></p>
+                                <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i>
+                            </a>
                         </div>
                     </div>
                 </a>
@@ -269,9 +267,11 @@
                 <a href="#" class="text-decoration-none">
                     <div class="card text-center guide-card">
                         <div class="card-body">
-                            <a href="../../views/client/guide.html"><p class="card-text">FAQ (Câu hỏi thường gặp) <img src="../../assets/images/guide5.png"
-                                    alt="Guide 5" class="guide-image"></p>
-                            <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i></a>
+                            <a href="../../views/client/guide.html">
+                                <p class="card-text">FAQ (Câu hỏi thường gặp) <img src="../../assets/images/guide5.png"
+                                        alt="Guide 5" class="guide-image"></p>
+                                <i class='bx bx-down-arrow-alt' style="color: #FFFFFF; font-size: 1.5em;"></i>
+                            </a>
                         </div>
                     </div>
                 </a>
@@ -333,7 +333,8 @@
             <div class="row gy-4">
                 <!-- Logo + Giới thiệu -->
                 <div class="col-12 col-md-4 col-lg-3">
-                    <a href="../../views/client/index.html"><img src="../../assets/images/logo2.png" alt="Logo" class="footer-logo mb-3"></a>
+                    <a href="../../views/client/index.html"><img src="../../assets/images/logo2.png" alt="Logo"
+                            class="footer-logo mb-3"></a>
                     <p class="footer-slogan">MAY MẶC CTH lắng nghe bạn!</p>
                     <p class="footer-desc">
                         Chúng tôi luôn trân trọng mọi ý kiến đóng góp của khách hàng,
@@ -447,7 +448,7 @@
                     currentLang.textContent = lang;
                 });
             });
-
+            /*
             const banners = document.querySelectorAll(".banner-image");
             const dots = document.querySelectorAll(".banner-dots .dot");
             let currentBanner = 0;
@@ -479,6 +480,7 @@
                     interval = setInterval(nextBanner, 4000); // tiếp tục tự động
                 });
             });
+            */
 
             // Hiệu ứng fade-in/fade-out khi cuộn
             const fadeElements = document.querySelectorAll(".fade-element");
@@ -495,6 +497,84 @@
 
             fadeElements.forEach(el => observer.observe(el));
         });
+        document.addEventListener('DOMContentLoaded', async () => {
+            const bannerContainer = document.getElementById("bannerContainer");
+            const dotsContainer = document.getElementById("bannerDots");
+            let banners = [];
+            let dots = [];
+            let currentBanner = 0;
+            let interval;
+
+            async function loadBanners() {
+                try {
+                    const res = await fetch('http://localhost:81/MayMacCTH/api/banner/get_banner.php');
+                    const data = await res.json();
+                    if (!data.success || !data.data.length) return;
+
+                    // Xóa cũ
+                    bannerContainer.querySelectorAll(".banner-image").forEach(img => img.remove());
+                    dotsContainer.innerHTML = '';
+
+                    let activeIndex = 0;
+                    data.data.forEach(banner => {
+                        if (banner.is_active != 1) return;
+
+                        // tạo ảnh
+                        const img = document.createElement('img');
+                        img.src = `../../assets/images/upload/${banner.image}`;
+                        img.alt = banner.title;
+                        img.className = 'banner-image';
+                        if (activeIndex === 0) img.classList.add('active');
+                        bannerContainer.appendChild(img);
+
+                        // tạo dot
+                        const dot = document.createElement('span');
+                        dot.className = 'dot';
+                        dot.dataset.index = activeIndex;
+                        if (activeIndex === 0) dot.classList.add('active');
+                        dotsContainer.appendChild(dot);
+
+                        dot.addEventListener('click', () => {
+                            showBanner(activeIndex);
+                            resetInterval();
+                        });
+
+                        activeIndex++;
+                    });
+
+                    banners = bannerContainer.querySelectorAll(".banner-image");
+                    dots = dotsContainer.querySelectorAll(".dot");
+
+                    if (banners.length > 1) {
+                        interval = setInterval(nextBanner, 4000);
+                    }
+                } catch (err) {
+                    console.error('Lỗi load banner:', err);
+                }
+            }
+
+            function showBanner(index) {
+                if (!banners.length) return;
+                banners[currentBanner].classList.remove("active");
+                dots[currentBanner].classList.remove("active");
+
+                currentBanner = index;
+                banners[currentBanner].classList.add("active");
+                dots[currentBanner].classList.add("active");
+            }
+
+            function nextBanner() {
+                showBanner((currentBanner + 1) % banners.length);
+            }
+
+            function resetInterval() {
+                clearInterval(interval);
+                interval = setInterval(nextBanner, 4000);
+            }
+
+            await loadBanners();
+        });
+
     </script>
 </body>
 

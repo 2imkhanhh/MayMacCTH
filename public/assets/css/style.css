@@ -186,6 +186,7 @@ body {
 .navbar-nav .bx-cart {
   font-size: 20px;
   margin-right: 80px;
+  width: calc(100% - 200px);
 }
 
 
@@ -218,10 +219,14 @@ body {
 }
 
 .banner-dots {
+  position: absolute;       
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   justify-content: center;
   gap: 10px;
-  z-index: 10;
+  z-index: 9999;     
 }
 
 .banner-dots .dot {
