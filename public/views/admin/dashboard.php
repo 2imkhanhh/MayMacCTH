@@ -26,7 +26,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
     <div class="topbar">
         <div>
             <h1 class="page-title">DASHBOARD QUẢN TRỊ</h1>
-            <small class="text-muted">Chào mừng trở lại, <strong><?php echo htmlspecialchars($_SESSION['admin_name']); ?></strong></small>
+            <!-- <small class="text-muted">Chào mừng trở lại, <strong><?php echo htmlspecialchars($_SESSION['admin_name']); ?></strong></small> -->
         </div>
         <button class="btn logout-btn text-white" id="logoutBtnTop">
             <i class="bi bi-box-arrow-right"></i> Đăng xuất
@@ -38,20 +38,20 @@ if (!isset($_SESSION['admin_logged_in'])) {
         <div class="col-lg-3 col-md-6">
             <div class="card card-stat bg-primary text-white">
                 <div class="card-body">
-                    <h3>2,845</h3>
-                    <p class="mb-0">Tổng đơn hàng</p>
+                    <h3>Tổng đơn hàng</h3>
+                    <p class="mb-0">2,845</p>
                 </div>
             </div>
         </div>
         <div class="col-lg-3 col-md-6">
             <div class="card card-stat bg-success text-white">
                 <div class="card-body">
-                    <h3>₫148,520,000</h3>
-                    <p class="mb-0">Doanh thu tháng</p>
+                    <h3>Doanh thu tháng</h3>
+                    <p class="mb-0">₫148,520,000</p>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6">
+        <!-- <div class="col-lg-3 col-md-6">
             <div class="card card-stat bg-warning text-white">
                 <div class="card-body">
                     <h3>892</h3>
@@ -66,18 +66,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
                     <p class="mb-0">Sản phẩm sắp hết</p>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="row mt-5">
-        <div class="col-12">
-            <div class="card border-0 shadow">
-                <div class="card-body text-center py-5">
-                    <h4>Bạn đã sẵn sàng quản lý quán Mì Cay 7 Cấp Độ chưa?</h4>
-                    <p class="text-muted">Hệ thống đang hoạt động ổn định • Cập nhật lúc: <?php echo date('H:i d/m/Y'); ?></p>
-                </div>
-            </div>
-        </div>
+        </div> -->
     </div>
 </div>
 

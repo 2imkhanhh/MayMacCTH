@@ -1,6 +1,4 @@
 <?php
-// app/models/Account.php
-
 require_once __DIR__ . '/../../config/connect.php';
 
 class Account {
@@ -8,7 +6,7 @@ class Account {
 
     public function __construct() {
         $database = new Database();
-        $this->conn = $database->getConnection();  // <-- LẤY PDO ĐÚNG CÁCH
+        $this->conn = $database->getConnection();  
     }
 
     public function findByName($name) {
