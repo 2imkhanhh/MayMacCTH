@@ -1,7 +1,7 @@
 <?php
 header("Content-Type: application/json");
 
-require_once '../../app/controllers/AccountController.php';
+require_once __DIR__ . '/../../app/controllers/AccountController.php';
 
 $controller = new AccountController();
 

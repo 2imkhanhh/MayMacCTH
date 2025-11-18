@@ -6,7 +6,7 @@
     <title>Đăng nhập Admin</title>
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
-    <link rel="stylesheet" href="../../assets/css/login.css"> <!-- CSS riêng -->
+    <link rel="stylesheet" href="../../assets/css/login.css"> 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="admin-login-body">
@@ -28,10 +28,10 @@
                 <input type="password" class="form-control" id="password" required placeholder="Nhập mật khẩu">
             </div>
 
-            <!-- <div class="mb-3 form-check">
+            <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="remember">
                 <label class="form-check-label" for="remember">Ghi nhớ đăng nhập</label>
-            </div> -->
+            </div>
 
             <button type="submit" class="btn btn-danger w-100 fw-bold" id="btnLogin">
                 <span class="btn-text">ĐĂNG NHẬP</span>
