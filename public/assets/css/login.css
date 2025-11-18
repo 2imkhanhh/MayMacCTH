@@ -1,0 +1,122 @@
+/* ================== BACKGROUND CHỈ DÀNH CHO ADMIN ================== */
+.admin-login-body {
+    background: #174DAF; /* Màu chính bạn yêu cầu */
+    background: linear-gradient(135deg, #0f3a8c 0%, #174DAF 50%, #1e5fcf 100%);
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hiệu ứng nền nhẹ (tùy chọn, rất đẹp) */
+.admin-login-body::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(23, 77, 175, 0.1);
+    backdrop-filter: blur(1px);
+}
+
+/* ================== CARD ĐĂNG NHẬP ================== */
+.login-container {
+    width: 100%;
+    max-width: 520px;
+    padding: 20px;
+    z-index: 10;
+}
+
+.login-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    padding: 50px 40px;
+    animation: fadeInUp 0.7s ease-out;
+    border: 1px solid rgba(23, 77, 175, 0.1);
+}
+
+.login-card h3 {
+    color: #174DAF !important;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif !important;
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: 1.5px;
+    margin: 10px 0 8px;
+}
+
+.login-card p.text-muted {
+    font-family: Arial, sans-serif;
+    font-size: 0.95rem;
+}
+
+/* Logo */
+.admin-logo {
+    width: 180px;                    /* Rộng hơn để phù hợp logo chữ nhật */
+    height: 90px;                    /* Chiều cao hợp lý */
+    object-fit: contain;             /* Giữ nguyên tỷ lệ logo */
+    border-radius: 12px;             /* Bo góc nhẹ, hiện đại */
+    border: 4px solid #174DAF;       /* Viền cùng màu chủ đạo */
+    padding: 12px 5px;              /* Khoảng cách bên trong */
+    background: white;
+    box-shadow: 0 8px 25px rgba(23, 77, 175, 0.25);
+    transition: all 0.3s ease;
+}
+
+/* Form */
+.form-control {
+    border-radius: 10px;
+    padding: 12px 15px;
+    border: 1.5px solid #ced4da;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    border-color: #174DAF;
+    box-shadow: 0 0 0 0.2rem rgba(23, 77, 175, 0.25);
+}
+
+/* Nút đăng nhập */
+#btnLogin {
+    background: #174DAF;
+    border: none;
+    color: white;
+    height: 54px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    border-radius: 12px;
+    letter-spacing: 1px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#btnLogin:hover {
+    background: #0f3a8c;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(23, 77, 175, 0.4);
+}
+
+#btnLogin:active {
+    transform: translateY(-1px);
+}
+
+/* Hiệu ứng loading */
+#btnLogin .spinner-border {
+    width: 1.3rem;
+    height: 1.3rem;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
