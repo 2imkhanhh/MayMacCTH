@@ -12,7 +12,6 @@ class ProductController {
     public function get() {
         $category_id = $_GET['category_id'] ?? null;
         $name = $_GET['name'] ?? null;
-
         $products = $this->product->get($category_id, $name);
 
         return [
@@ -25,106 +24,115 @@ class ProductController {
     public function getById($id) {
         $product = $this->product->getById($id);
         if (!$product) {
-            return ["success" => false, "message" => "Không tìm thấy sản phẩm", "status" => 404];
+            return ["success" => false, "message" => "Không tìm thấy", "status" => 404];
         }
-        return ["success" => true, "message" => "Chi tiết sản phẩm", "data" => [$product]];
+        return ["success" => true, "data" => [$product]];
     }
 
     public function create() {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            return ["success" => false, "message" => "Method not allowed", "status" => 405];
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') return ["success" => false, "message" => "Method not allowed"];
+
+        $data = [
+            'name' => $_POST['name'] ?? '',
+            'description' => $_POST['description'] ?? '',
+            'category_id' => $_POST['category_id'] ?? 0,
+            'is_active' => isset($_POST['is_active']) ? 1 : 0
+        ];
+
+        if (empty($data['name']) || empty($data['category_id'])) {
+            return ["success" => false, "message" => "Thiếu thông tin bắt buộc"];
         }
 
-        if (empty($_POST['name']) || empty($_POST['category_id']) || empty($_POST['price'])) {
-            return ["success" => false, "message" => "Vui lòng điền đầy đủ thông tin bắt buộc", "status" => 400];
-        }
-
-        if (!isset($_FILES['image']) || $_FILES['image']['error'] !== 0) {
-            return ["success" => false, "message" => "Vui lòng chọn ảnh sản phẩm", "status" => 400];
-        }
-
-        $uploadDir = __DIR__ . '/../../public/assets/images/upload/';
-        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-
-        $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-        $imageName = 'product_' . time() . '_' . rand(1000,9999) . '.' . strtolower($ext);
-        $uploadPath = $uploadDir . $imageName;
-
-        if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-            return ["success" => false, "message" => "Upload ảnh thất bại", "status" => 500];
-        }
-
-        $this->product->category_id = (int)$_POST['category_id'];
-        $this->product->name = $_POST['name'];
-        $this->product->color = $_POST['color'] ?? null;
-        $this->product->size = $_POST['size'] ?? null;
-        $this->product->price = $_POST['price'];
-        $this->product->image = $imageName;
-        $this->product->is_active = isset($_POST['is_active']) ? 1 : 0;
-
-        return $this->product->create()
-            ? ["success" => true, "message" => "Thêm sản phẩm thành công!"]
-            : ["success" => false, "message" => "Thêm sản phẩm thất bại"];
-    }
-
-    public function update($id) {
-        $product = $this->product->getById($id);
-        if (!$product) {
-            return ["success" => false, "message" => "Không tìm thấy sản phẩm", "status" => 404];
-        }
-
-        if (empty($_POST['name']) || empty($_POST['category_id']) || empty($_POST['price'])) {
-            return ["success" => false, "message" => "Vui lòng điền đầy đủ thông tin bắt buộc", "status" => 400];
-        }
-
-        $uploadDir = __DIR__ . '/../../public/assets/images/upload/';
-        $imageName = $product['image']; // giữ ảnh cũ
-
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
-            // Xóa ảnh cũ
-            $oldPath = $uploadDir . $product['image'];
-            if (file_exists($oldPath)) @unlink($oldPath);
-
-            $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-            $imageName = 'product_' . time() . '_' . rand(1000,9999) . '.' . strtolower($ext);
-            $uploadPath = $uploadDir . $imageName;
-
-            if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadPath)) {
-                return ["success" => false, "message" => "Upload ảnh mới thất bại"];
+        // Lấy màu từ form: colors[0][name], colors[0][sizes], ...
+        $colors = [];
+        foreach ($_POST['colors'] ?? [] as $c) {
+            if (!empty($c['name'])) {
+                $colors[] = [
+                    'name' => $c['name'],
+                    'code' => $c['code'] ?? '#000000',
+                    'sizes' => $c['sizes'] ?? ''
+                ];
             }
         }
 
-        $this->product->product_id = $id;
-        $this->product->category_id = (int)$_POST['category_id'];
-        $this->product->name = $_POST['name'];
-        $this->product->color = $_POST['color'] ?? null;
-        $this->product->size = $_POST['size'] ?? null;
-        $this->product->price = $_POST['price'];
-        $this->product->image = $imageName;
-        $this->product->is_active = isset($_POST['is_active']) ? 1 : 0;
+        $primaryIndex = (int)($_POST['primary_image'] ?? 0);
 
-        return $this->product->update()
-            ? ["success" => true, "message" => "Cập nhật sản phẩm thành công!"]
+        if (empty($colors) || empty($_FILES['images']['name'][0] ?? null)) {
+            return ["success" => false, "message" => "Phải có ít nhất 1 màu và 1 ảnh"];
+        }
+
+        $uploadedFiles = [];
+        foreach ($_FILES['images']['tmp_name'] as $key => $tmp) {
+            $uploadedFiles[] = [
+                'name' => $_FILES['images']['name'][$key],
+                'tmp_name' => $tmp,
+                'error' => $_FILES['images']['error'][$key]
+            ];
+        }
+
+        return $this->product->create($data, $colors, $uploadedFiles, $primaryIndex)
+            ? ["success" => true, "message" => "Thêm sản phẩm thành công!"]
+            : ["success" => false, "message" => "Thêm thất bại. Vui lòng thử lại."];
+    }
+
+    public function update($id) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return ["success" => false, "message" => "Method not allowed"];
+        }
+
+        $data = [
+            'name' => $_POST['name'] ?? '',
+            'description' => $_POST['description'] ?? '',
+            'category_id' => $_POST['category_id'] ?? 0,
+            'is_active' => isset($_POST['is_active']) ? 1 : 0
+        ];
+
+        if (empty($data['name']) || empty($data['category_id'])) {
+            return ["success" => false, "message" => "Thiếu thông tin bắt buộc"];
+        }
+
+        // Lấy danh sách ảnh hiện tại muốn giữ lại (image_id)
+        $existingImages = [];
+        if (isset($_POST['existing_images']) && is_array($_POST['existing_images'])) {
+            $existingImages = array_map('intval', $_POST['existing_images']);
+        }
+
+        // Xử lý màu
+        $colors = [];
+        foreach ($_POST['colors'] ?? [] as $c) {
+            if (!empty($c['name'])) {
+                $colors[] = [
+                    'name' => $c['name'],
+                    'code' => $c['code'] ?? '#000000',
+                    'sizes' => $c['sizes'] ?? ''
+                ];
+            }
+        }
+
+        $primaryIndex = (int)($_POST['primary_image'] ?? 0);
+
+        // Xử lý file ảnh mới
+        $uploadedFiles = [];
+        if (isset($_FILES['images']) && is_array($_FILES['images']['name'])) {
+            foreach ($_FILES['images']['tmp_name'] as $key => $tmp) {
+                if ($_FILES['images']['error'][$key] === 0) {
+                    $uploadedFiles[] = [
+                        'name' => $_FILES['images']['name'][$key],
+                        'tmp_name' => $tmp,
+                        'error' => 0
+                    ];
+                }
+            }
+        }
+
+        return $this->product->update($id, $data, $colors, $uploadedFiles, $primaryIndex, $existingImages)
+            ? ["success" => true, "message" => "Cập nhật thành công!"]
             : ["success" => false, "message" => "Cập nhật thất bại"];
     }
 
     public function delete($id) {
-        if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
-            return ["success" => false, "message" => "Method not allowed", "status" => 405];
-        }
-
-        $product = $this->product->getById($id);
-        if (!$product) {
-            return ["success" => false, "message" => "Không tìm thấy sản phẩm"];
-        }
-
-        // Xóa ảnh
-        $uploadDir = __DIR__ . '/../../public/assets/images/upload/';
-        $imagePath = $uploadDir . $product['image'];
-        if (file_exists($imagePath)) @unlink($imagePath);
-
         return $this->product->delete($id)
-            ? ["success" => true, "message" => "Xóa sản phẩm thành công!"]
+            ? ["success" => true, "message" => "Xóa thành công!"]
             : ["success" => false, "message" => "Xóa thất bại"];
     }
 }

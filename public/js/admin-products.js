@@ -1,96 +1,82 @@
 const BASE_URL = '/MayMacCTH';
+let colorIndex = 1;
+let imageIndex = 1;
+let currentEditId = null; // Để biết đang sửa sản phẩm nào
 
 document.addEventListener('DOMContentLoaded', () => {
     loadCategories();
     loadProducts();
 
-    document.getElementById('btnAdd').addEventListener('click', () => openModal());
-    document.getElementById('btnSearch').addEventListener('click', () => loadProducts());
+    // Nút thêm + sửa
+    document.getElementById('btnAdd').onclick = () => openModal();
+    document.getElementById('btnSearch').onclick = loadProducts;
     document.getElementById('searchName').addEventListener('keypress', e => e.key === 'Enter' && loadProducts());
 
-    // Preview ảnh
-    document.querySelector('#productForm input[name="image"]').addEventListener('change', function (e) {
-        const file = e.target.files[0];
-        const img = document.getElementById('currentImage');
-        if (file) {
-            img.src = URL.createObjectURL(file);
-            img.style.display = 'block';
-        } else {
-            img.style.display = 'none';
-        }
-    });
+    // Thêm màu + ảnh
+    document.getElementById('addColor').onclick = addColorField;
+    document.getElementById('addImage').onclick = addImageField;
+
+    // Submit form
+    document.getElementById('productForm').onsubmit = handleSubmit;
 });
 
+// ==================== LOAD DATA ====================
 async function loadCategories() {
     try {
         const res = await fetch(`${BASE_URL}/api/category/get_category.php`);
         const data = await res.json();
-        const selects = document.querySelectorAll('select[name="category_id"]');
-        const filterSelect = document.getElementById('filterCategory');
-
+        const selects = document.querySelectorAll('select[name="category_id"], #filterCategory');
         selects.forEach(sel => {
-            sel.innerHTML = '<option value="">Chọn danh mục</option>';
+            sel.innerHTML = sel.id === 'filterCategory'
+                ? '<option value="">Tất cả danh mục</option>'
+                : '<option value="">Chọn danh mục</option>';
             if (data.success) {
                 data.data.forEach(cat => {
                     sel.innerHTML += `<option value="${cat.category_id}">${cat.name}</option>`;
                 });
             }
         });
-
-        filterSelect.innerHTML = '<option value="">Tất cả danh mục</option>';
-        if (data.success) {
-            data.data.forEach(cat => {
-                filterSelect.innerHTML += `<option value="${cat.category_id}">${cat.name}</option>`;
-            });
-        }
     } catch (err) {
-        console.error('Lỗi tải danh mục:', err);
+        console.error('Lỗi load danh mục:', err);
     }
 }
 
-// Load danh sách sản phẩm
 async function loadProducts() {
     const categoryId = document.getElementById('filterCategory').value;
     const name = document.getElementById('searchName').value.trim();
-
     let url = `${BASE_URL}/api/product/get_product.php`;
-    const params = new URLSearchParams();
-    if (categoryId) params.append('category_id', categoryId);
-    if (name) params.append('name', name);
-    if (params.toString()) url += `?${params.toString()}`;
+    if (categoryId || name) {
+        url += '?' + new URLSearchParams({ category_id: categoryId, name });
+    }
 
     try {
         const res = await fetch(url);
-        const data = await res.json();
+        const result = await res.json();
         const container = document.getElementById('productList');
         container.innerHTML = '';
 
-        if (data.success && data.data.length > 0) {
-            data.data.forEach(p => {
+        if (result.success && result.data.length > 0) {
+            result.data.forEach(p => {
                 const col = document.createElement('div');
                 col.className = 'col-md-6 col-lg-4 mb-4';
 
-                // Badge trạng thái giống hệt Banner
-                const statusBadge = p.is_active == 1
-                    ? '<span class="position-absolute top-0 end-0 bg-success text-white px-3 py-1 rounded-start shadow-sm fw-semibold" style="font-size:0.75rem; z-index:2;">Hiển thị</span>'
-                    : '<span class="position-absolute top-0 end-0 bg-secondary text-white px-3 py-1 rounded-start shadow-sm fw-semibold" style="font-size:0.75rem; z-index:2;">Ẩn</span>';
+                const status = p.is_active == 1
+                    ? '<span class="badge bg-success position-absolute top-0 start-0 m-2 z-3">Hiển thị</span>'
+                    : '<span class="badge bg-secondary position-absolute top-0 start-0 m-2 z-3">Ẩn</span>';
+
+                const star = '★'.repeat(Math.floor(p.star || 5)) + '☆'.repeat(5 - Math.floor(p.star || 5));
 
                 col.innerHTML = `
-                    <div class="card h-100 product-card position-relative overflow-hidden">
-                        ${statusBadge}
-                        <img src="../../assets/images/upload/${p.image}" 
-                             class="card-img-top" 
-                             alt="${p.name}" 
-                             style="height:200px; object-fit:cover;">
+                    <div class="card h-100 position-relative shadow-sm hover-shadow">
+                        ${status}
+                        <img src="../../assets/images/upload/${p.primary_image || 'no-image.jpg'}" 
+                             class="card-img-top" style="height:200px; object-fit:cover;" onerror="this.src='../../assets/images/no-image.jpg'">
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">${p.name}</h5>
-                            <p class="text-muted small">Danh mục: ${p.category_name || 'Chưa có'}</p>
-                            <p class="text-primary fw-bold">${parseInt(p.price).toLocaleString('vi-VN')}đ</p>
-                            ${p.color || p.size
-                        ? `<p class="text-secondary small">${p.color ? 'Màu: ' + p.color : ''} ${p.size ? '· Size: ' + p.size : ''}</p>`
-                        : ''
-                    }
-                            <div class="mt-auto d-flex gap-2">
+                            <h5 class="card-title fs-6 fw-bold">${p.name}</h5>
+                            <p class="text-muted small">${p.category_name || 'Chưa có danh mục'}</p>
+                            <p class="text-primary fw-bold">${p.price ? parseInt(p.price).toLocaleString() + 'đ' : 'Liên hệ'}</p>
+                            <small class="text-warning">${star} (${p.review_count || 0} đánh giá)</small>
+                            <div class="mt-auto d-flex gap-2 pt-3">
                                 <button class="btn btn-sm btn-outline-primary flex-fill edit-btn" data-id="${p.product_id}">
                                     <i class="bi bi-pencil"></i> Sửa
                                 </button>
@@ -104,16 +90,15 @@ async function loadProducts() {
                 container.appendChild(col);
             });
 
-            // Gắn sự kiện cho các nút
+            // Gắn sự kiện nút Sửa + Xóa
             document.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', () => editProduct(btn.dataset.id));
+                btn.onclick = () => editProduct(btn.dataset.id);
             });
             document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', () => deleteProduct(btn.dataset.id));
+                btn.onclick = () => deleteProduct(btn.dataset.id);
             });
-
         } else {
-            container.innerHTML = '<div class="col-12 text-center text-muted py-5"><h5>Chưa có sản phẩm nào.</h5></div>';
+            container.innerHTML = '<div class="col-12 text-center py-5 text-muted"><h5>Chưa có sản phẩm nào</h5></div>';
         }
     } catch (err) {
         alert('Lỗi tải sản phẩm');
@@ -121,72 +106,129 @@ async function loadProducts() {
     }
 }
 
-// Mở modal thêm/sửa
+// ==================== MODAL & FORM ====================
 function openModal(product = null) {
+    currentEditId = product ? product.product_id : null;
     const modal = new bootstrap.Modal(document.getElementById('productModal'));
     const form = document.getElementById('productForm');
     const title = document.getElementById('modalTitle');
-    const img = document.getElementById('currentImage');
 
     form.reset();
-    img.style.display = 'none';
+    document.getElementById('colorContainer').innerHTML = '';
+    document.getElementById('imageContainer').innerHTML = '';
+    colorIndex = 0;
+    imageIndex = 0;
 
     if (product) {
         title.textContent = 'Sửa sản phẩm';
-        document.getElementById('product_id').value = product.product_id;
         form.name.value = product.name;
         form.category_id.value = product.category_id;
-        form.color.value = product.color || '';
-        form.size.value = product.size || '';
-        form.price.value = product.price;
+        document.getElementById('isActiveCheckbox').checked = product.is_active == 1;
 
-        // Chỉ cần set checked = true/false → FormData sẽ tự xử lý
-        document.getElementById('isActiveCheckbox').checked = (product.is_active == 1);
+        // Load màu + size
+        product.colors.forEach((color, i) => {
+            addColorField(color.color_name, color.color_code, color.sizes.join(', '));
+        });
 
-        if (product.image) {
-            img.src = `../../assets/images/upload/${product.image}`;
-            img.style.display = 'block';
-        }
+        // Load ảnh
+        product.images.forEach((img, i) => {
+            addImageField(img.image, img.is_primary == 1, img.image_id);
+        });
     } else {
         title.textContent = 'Thêm sản phẩm mới';
-        document.getElementById('product_id').value = '';
-        document.getElementById('isActiveCheckbox').checked = true; // mặc định hiển thị
+        document.getElementById('isActiveCheckbox').checked = true;
+        addColorField();
+        addImageField();
     }
 
     modal.show();
 }
 
-// Sửa sản phẩm
+function addColorField(name = '', code = '#000000', sizes = '') {
+    const container = document.getElementById('colorContainer');
+    const div = document.createElement('div');
+    div.className = 'color-item';
+    div.innerHTML = `
+        <button type="button" class="btn btn-sm btn-danger remove-color">×</button>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label>Tên màu</label>
+                <input type="text" class="form-control" name="colors[${colorIndex}][name]" value="${name}" placeholder="VD: Đen">
+            </div>
+            <div class="col-md-3">
+                <label>Mã màu</label>
+                <input type="color" class="form-control form-control-color" name="colors[${colorIndex}][code]" value="${code}">
+            </div>
+            <div class="col-md-5">
+                <label>Giá (VNĐ)</label>
+                <input type="number" class="form-control" name="colors[${colorIndex}][price]" value="0">
+            </div>
+        </div>
+        <div class="mt-3">
+            <label>Kích thước (cách nhau bởi dấu phẩy)</label>
+            <input type="text" class="form-control" name="colors[${colorIndex}][sizes]" value="${sizes}" placeholder="S, M, L, XL">
+        </div>
+    `;
+    container.appendChild(div);
+    div.querySelector('.remove-color').onclick = () => div.remove();
+    colorIndex++;
+}
+
+function addImageField(imageUrl = '', isPrimary = false, imageId = null) {
+    const container = document.getElementById('imageContainer');
+    const div = document.createElement('div');
+    div.className = 'image-item';
+    div.innerHTML = `
+        <button type="button" class="btn btn-sm btn-danger remove-image">×</button>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="primary_image" value="${imageIndex}" ${isPrimary ? 'checked' : ''}>
+            <label class="form-check-label">Ảnh chính</label>
+        </div>
+        <input type="file" class="form-control mt-2" name="images[]" accept="image/*">
+        ${imageId ? `<input type="hidden" name="existing_images[]" value="${imageId}">` : ''}
+        <img src="${imageUrl ? '../../assets/images/upload/' + imageUrl : ''}" class="img-thumbnail mt-2" style="max-height:150px; ${imageUrl ? '' : 'display:none;'}">
+    `;
+    container.appendChild(div);
+    div.querySelector('.remove-image').onclick = () => div.remove();
+    div.querySelector('input[type="file"]').onchange = function(e) {
+        if (e.target.files[0]) {
+            div.querySelector('img').src = URL.createObjectURL(e.target.files[0]);
+            div.querySelector('img').style.display = 'block';
+        }
+    };
+    imageIndex++;
+}
+
+// ==================== SỬA & XÓA ====================
 async function editProduct(id) {
     try {
         const res = await fetch(`${BASE_URL}/api/product/get_product.php?id=${id}`);
-        const data = await res.json();
-        if (data.success && data.data[0]) {
-            openModal(data.data[0]);
+        const result = await res.json();
+        if (result.success && result.data[0]) {
+            openModal(result.data[0]);
         }
     } catch (err) {
         alert('Lỗi tải thông tin sản phẩm');
     }
 }
 
-// Xóa sản phẩm
 async function deleteProduct(id) {
-    if (!confirm('Xóa sản phẩm này? Không thể khôi phục!')) return;
+    if (!confirm('Xóa sản phẩm này? Tất cả màu, ảnh, size sẽ bị xóa!')) return;
     try {
         const res = await fetch(`${BASE_URL}/api/product/delete_product.php?id=${id}`, { method: 'DELETE' });
         const data = await res.json();
-        alert(data.message || (data.success ? 'Xóa thành công' : 'Xóa thất bại'));
+        alert(data.message || (data.success ? 'Xóa thành công!' : 'Xóa thất bại'));
         if (data.success) loadProducts();
     } catch (err) {
-        alert('Lỗi xóa sản phẩm');
+        alert('Lỗi kết nối');
     }
 }
 
-// Submit form
-document.getElementById('productForm').addEventListener('submit', async function (e) {
+// ==================== SUBMIT FORM ====================
+async function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(this);
-    const id = document.getElementById('product_id').value;
+    const id = currentEditId;
 
     const url = id
         ? `${BASE_URL}/api/product/update_product.php?id=${id}`
@@ -198,13 +240,13 @@ document.getElementById('productForm').addEventListener('submit', async function
             body: formData
         });
         const data = await res.json();
-        alert(data.message || (data.success ? 'Thành công!' : 'Thất bại'));
+        alert(data.message || (data.success ? 'Thành công!' : 'Thất bại!'));
         if (data.success) {
             bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
             loadProducts();
         }
     } catch (err) {
-        alert('Lỗi kết nối');
+        alert('Lỗi kết nối server');
         console.error(err);
     }
-});
+}

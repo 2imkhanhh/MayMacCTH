@@ -3,125 +3,295 @@ class Product {
     private $conn;
     private $table = "products";
 
-    public $product_id;
-    public $category_id;
-    public $name;
-    public $color;
-    public $size;
-    public $price;
-    public $image;
-    public $is_active;
-
     public function __construct($db) {
         $this->conn = $db;
     }
 
-    // Lấy danh sách + hỗ trợ tìm kiếm & lọc danh mục
+    // Lấy danh sách sản phẩm + JOIN colors, variants, images
     public function get($category_id = null, $name = null) {
-        $query = "SELECT p.*, c.name as category_name 
-                  FROM " . $this->table . " p 
-                  LEFT JOIN categories c ON p.category_id = c.category_id 
-                  WHERE 1=1";
+        $query = "SELECT 
+                    p.*,
+                    c.name as category_name,
+                    pc.color_id, pc.color_name, pc.color_code,
+                    pv.size,
+                    pi.image, pi.is_primary, pi.sort_order
+                  FROM products p
+                  LEFT JOIN categories c ON p.category_id = c.category_id
+                  LEFT JOIN product_colors pc ON pc.product_id = p.product_id
+                  LEFT JOIN product_variants pv ON pv.color_id = pc.color_id
+                  LEFT JOIN product_images pi ON pi.product_id = p.product_id AND pi.is_primary = 1
+                  WHERE p.is_active = 1";
 
-        if ($category_id) {
-            $query .= " AND p.category_id = :category_id";
-        }
-        if ($name) {
-            $query .= " AND p.name LIKE :name";
-        }
+        if ($category_id) $query .= " AND p.category_id = :category_id";
+        if ($name) $query .= " AND p.name LIKE :name";
 
         $query .= " ORDER BY p.product_id DESC";
 
         $stmt = $this->conn->prepare($query);
-
         if ($category_id) $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
         if ($name) $stmt->bindValue(':name', '%' . $name . '%', PDO::PARAM_STR);
-
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->groupProductData($results);
     }
 
-    // Lấy 1 sản phẩm theo ID
     public function getById($id) {
-        $query = "SELECT p.*, c.name as category_name 
-                  FROM " . $this->table . " p 
-                  LEFT JOIN categories c ON p.category_id = c.category_id 
+        $query = "SELECT 
+                    p.*, c.name as category_name,
+                    pc.color_id, pc.color_name, pc.color_code,
+                    pv.variant_id, pv.size,
+                    pi.image_id, pi.image, pi.is_primary, pi.sort_order
+                  FROM products p
+                  LEFT JOIN categories c ON p.category_id = c.category_id
+                  LEFT JOIN product_colors pc ON pc.product_id = p.product_id
+                  LEFT JOIN product_variants pv ON pv.color_id = pc.color_id
+                  LEFT JOIN product_images pi ON pi.product_id = p.product_id
                   WHERE p.product_id = :id";
+
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (empty($results)) return null;
+
+        return $this->groupProductData($results)[0] ?? null;
     }
 
-    public function create() {
-        $query = "INSERT INTO " . $this->table . "
-                  SET category_id = :category_id,
-                      name = :name,
-                      color = :color,
-                      size = :size,
-                      price = :price,
-                      image = :image,
-                      is_active = :is_active";
-                      
+    // Gom nhóm dữ liệu theo sản phẩm (1 sản phẩm → nhiều màu → nhiều size → nhiều ảnh)
+    private function groupProductData($rows) {
+        $products = [];
+        foreach ($rows as $row) {
+            if (!isset($products[$row['product_id']])) {
+                $products[$row['product_id']] = [
+                    'product_id' => $row['product_id'],
+                    'name' => $row['name'],
+                    'description' => $row['description'],
+                    'category_id' => $row['category_id'],
+                    'category_name' => $row['category_name'],
+                    'star' => $row['star'] ?? 5.0,
+                    'review_count' => $row['review_count'] ?? 0,
+                    'is_active' => $row['is_active'],
+                    'created_at' => $row['created_at'],
+                    'updated_at' => $row['updated_at'],
+                    'primary_image' => null,
+                    'images' => [],
+                    'colors' => []
+                ];
+            }
 
-        $stmt = $this->conn->prepare($query);
+            // Ảnh chính
+            if ($row['is_primary'] == 1 && !$products[$row['product_id']]['primary_image']) {
+                $products[$row['product_id']]['primary_image'] = $row['image'];
+            }
 
-        $this->name = htmlspecialchars(strip_tags($this->name));
-        $this->color = htmlspecialchars(strip_tags($this->color));
-        $this->size = htmlspecialchars(strip_tags($this->size));
-        $this->price = $this->price;
-        $this->image = htmlspecialchars(strip_tags($this->image));
-        $this->is_active = ($this->is_active == 1) ? 1 : 0;
+            // Tất cả ảnh
+            if ($row['image'] && !in_array($row['image'], array_column($products[$row['product_id']]['images'], 'image'))) {
+                $products[$row['product_id']]['images'][] = [
+                    'image_id' => $row['image_id'],
+                    'image' => $row['image'],
+                    'is_primary' => $row['is_primary'],
+                    'sort_order' => $row['sort_order']
+                ];
+            }
 
-        $stmt->bindParam(':category_id', $this->category_id, PDO::PARAM_INT);
-        $stmt->bindParam(':name', $this->name);
-        $stmt->bindParam(':color', $this->color);
-        $stmt->bindParam(':size', $this->size);
-        $stmt->bindParam(':price', $this->price);
-        $stmt->bindParam(':image', $this->image);
-        $stmt->bindParam(':is_active', $this->is_active, PDO::PARAM_INT);
-
-        return $stmt->execute();
+            // Màu
+            if ($row['color_id']) {
+                $colorKey = $row['color_id'];
+                if (!isset($products[$row['product_id']]['colors'][$colorKey])) {
+                    $products[$row['product_id']]['colors'][$colorKey] = [
+                        'color_id' => $row['color_id'],
+                        'color_name' => $row['color_name'],
+                        'color_code' => $row['color_code'],
+                        'sizes' => []
+                    ];
+                }
+                if ($row['size'] && !in_array($row['size'], $products[$row['product_id']]['colors'][$colorKey]['sizes'])) {
+                    $products[$row['product_id']]['colors'][$colorKey]['sizes'][] = $row['size'];
+                }
+            }
+        }
+        return array_values($products);
     }
 
-    public function update() {
-        $query = "UPDATE " . $this->table . "
-                  SET category_id = :category_id,
-                      name = :name,
-                      color = :color,
-                      size = :size,
-                      price = :price,
-                      image = :image,
-                      is_active = :is_active
-                  WHERE product_id = :product_id";
+    // Tạo sản phẩm + màu + size + ảnh
+    public function create($data, $colors, $images, $primaryIndex) {
+        $this->conn->beginTransaction();
+        try {
+            // 1. Tạo sản phẩm chính
+            $query = "INSERT INTO products SET name = :name, description = :description, category_id = :category_id, star = 5, review_count = 0, is_active = :is_active";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([
+                ':name' => $data['name'],
+                ':description' => $data['description'] ?? '',
+                ':category_id' => $data['category_id'],
+                ':is_active' => $data['is_active'] ?? 1
+            ]);
+            $productId = $this->conn->lastInsertId();
 
-        $stmt = $this->conn->prepare($query);
+            // 2. Thêm màu
+            foreach ($colors as $c) {
+                if (empty($c['name'])) continue;
+                $stmt = $this->conn->prepare("INSERT INTO product_colors (product_id, color_name, color_code) VALUES (?, ?, ?)");
+                $stmt->execute([$productId, $c['name'], $c['code'] ?? '#000000']);
+                $colorId = $this->conn->lastInsertId();
 
-        $this->name = htmlspecialchars(strip_tags($this->name));
-        $this->color = htmlspecialchars(strip_tags($this->color));
-        $this->size = htmlspecialchars(strip_tags($this->size));
-        $this->price = $this->price;
-        $this->image = htmlspecialchars(strip_tags($this->image));
-        $this->product_id = htmlspecialchars(strip_tags($this->product_id));
-        $this->is_active = $this->is_active ? 1 : 0;
+                // 3. Thêm size cho màu
+                if (!empty($c['sizes'])) {
+                    $sizes = array_map('trim', explode(',', $c['sizes']));
+                    foreach ($sizes as $size) {
+                        if ($size) {
+                            $stmt = $this->conn->prepare("INSERT INTO product_variants (product_id, color_id, size) VALUES (?, ?, ?)");
+                            $stmt->execute([$productId, $colorId, strtoupper($size)]);
+                        }
+                    }
+                }
+            }
 
-        $stmt->bindParam(':product_id', $this->product_id, PDO::PARAM_INT);
-        $stmt->bindParam(':category_id', $this->category_id, PDO::PARAM_INT);
-        $stmt->bindParam(':name', $this->name);
-        $stmt->bindParam(':color', $this->color);
-        $stmt->bindParam(':size', $this->size);
-        $stmt->bindParam(':price', $this->price);
-        $stmt->bindParam(':image', $this->image);
-        $stmt->bindParam(':is_active', $this->is_active, PDO::PARAM_INT);
+            // 4. Thêm ảnh
+            $uploadDir = __DIR__ . '/../../../public/assets/images/upload/';
+            foreach ($images as $index => $file) {
+                if ($file['error'] !== 0) continue;
 
-        return $stmt->execute();
+                $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $filename = 'product_' . $productId . '_' . time() . '_' . $index . '.' . strtolower($ext);
+                $path = $uploadDir . $filename;
+
+                if (move_uploaded_file($file['tmp_name'], $path)) {
+                    $isPrimary = ($index == $primaryIndex) ? 1 : 0;
+                    $stmt = $this->conn->prepare("INSERT INTO product_images (product_id, image, is_primary, sort_order) VALUES (?, ?, ?, ?)");
+                    $stmt->execute([$productId, $filename, $isPrimary, $index]);
+                }
+            }
+
+            $this->conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            error_log("Create product error: " . $e->getMessage());
+            return false;
+        }
     }
 
+    public function update($productId, $data, $colors, $images, $primaryIndex, $existingImages = []) {
+        $this->conn->beginTransaction();
+        try {
+            // 1. Cập nhật thông tin chính
+            $query = "UPDATE products SET 
+                        name = :name,
+                        description = :description,
+                        category_id = :category_id,
+                        is_active = :is_active
+                      WHERE product_id = :product_id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([
+                ':name' => $data['name'],
+                ':description' => $data['description'] ?? '',
+                ':category_id' => $data['category_id'],
+                ':is_active' => $data['is_active'] ?? 1,
+                ':product_id' => $productId
+            ]);
+
+            // 2. XÓA hết màu + size cũ
+            $this->conn->prepare("DELETE FROM product_variants WHERE product_id = ?")->execute([$productId]);
+            $this->conn->prepare("DELETE FROM product_colors WHERE product_id = ?")->execute([$productId]);
+
+            // 3. Thêm lại màu + size mới
+            foreach ($colors as $c) {
+                if (empty($c['name'])) continue;
+                $stmt = $this->conn->prepare("INSERT INTO product_colors (product_id, color_name, color_code) VALUES (?, ?, ?)");
+                $stmt->execute([$productId, $c['name'], $c['code'] ?? '#000000']);
+                $colorId = $this->conn->lastInsertId();
+
+                if (!empty($c['sizes'])) {
+                    $sizes = array_map('trim', explode(',', $c['sizes']));
+                    foreach ($sizes as $size) {
+                        if ($size) {
+                            $this->conn->prepare("INSERT INTO product_variants (product_id, color_id, size) VALUES (?, ?, ?)")
+                                       ->execute([$productId, $colorId, strtoupper($size)]);
+                        }
+                    }
+                }
+            }
+
+            // 4. Xử lý ảnh
+            $uploadDir = __DIR__ . '/../../../public/assets/images/upload/';
+
+            // Xóa ảnh cũ nếu không còn trong danh sách giữ lại
+            $stmt = $this->conn->prepare("SELECT image_id, image FROM product_images WHERE product_id = ?");
+            $stmt->execute([$productId]);
+            $oldImages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($oldImages as $img) {
+                if (!in_array($img['image_id'], $existingImages)) {
+                    $path = $uploadDir . $img['image'];
+                    if (file_exists($path)) @unlink($path);
+                    $this->conn->prepare("DELETE FROM product_images WHERE image_id = ?")->execute([$img['image_id']]);
+                }
+            }
+
+            // Thêm ảnh mới
+            $sortOrder = 0;
+            foreach ($images as $index => $file) {
+                if ($file['error'] !== 0) continue;
+
+                $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $filename = 'product_' . $productId . '_' . time() . '_' . $index . '.' . strtolower($ext);
+                $path = $uploadDir . $filename;
+
+                if (move_uploaded_file($file['tmp_name'], $path)) {
+                    $isPrimary = ($index == $primaryIndex) ? 1 : 0;
+                    $this->conn->prepare("INSERT INTO product_images (product_id, image, is_primary, sort_order) VALUES (?, ?, ?, ?)")
+                               ->execute([$productId, $filename, $isPrimary, $sortOrder++]);
+                }
+            }
+
+            // Cập nhật lại ảnh chính nếu cần (trong trường hợp không upload ảnh mới)
+            if (empty($images) && $primaryIndex >= 0 && isset($existingImages[$primaryIndex])) {
+                $this->conn->prepare("UPDATE product_images SET is_primary = 0 WHERE product_id = ?")->execute([$productId]);
+                $this->conn->prepare("UPDATE product_images SET is_primary = 1 WHERE image_id = ?")->execute([$existingImages[$primaryIndex]]);
+            }
+
+            $this->conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            error_log("Update product error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // Tương tự cho update() và delete() - mình có thể gửi nếu bạn cần
     public function delete($id) {
-        $query = "DELETE FROM " . $this->table . " WHERE product_id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        return $stmt->execute();
+        $this->conn->beginTransaction();
+        try {
+            // 1. Lấy danh sách ảnh để xóa file
+            $stmt = $this->conn->prepare("SELECT image FROM product_images WHERE product_id = ?");
+            $stmt->execute([$id]);
+            $images = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+            // 2. Xóa file ảnh vật lý
+            $uploadDir = __DIR__ . '/../../../public/assets/images/upload/';
+            foreach ($images as $img) {
+                $path = $uploadDir . $img;
+                if (file_exists($path)) @unlink($path);
+            }
+
+            // 3. Xóa dữ liệu trong DB (có CASCADE nên chỉ cần xóa product là đủ)
+            // Nhưng để an toàn, xóa thủ công theo thứ tự
+            $this->conn->prepare("DELETE FROM product_images WHERE product_id = ?")->execute([$id]);
+            $this->conn->prepare("DELETE FROM product_variants WHERE product_id = ?")->execute([$id]);
+            $this->conn->prepare("DELETE FROM product_colors WHERE product_id = ?")->execute([$id]);
+            $this->conn->prepare("DELETE FROM products WHERE product_id = ?")->execute([$id]);
+
+            $this->conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            error_log("Delete product error: " . $e->getMessage());
+            return false;
+        }
     }
 }
 ?>
