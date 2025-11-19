@@ -1,14 +1,17 @@
 <?php
-class Product {
+class Product
+{
     private $conn;
     private $table = "products";
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
     // Lấy danh sách sản phẩm + JOIN colors, variants, images
-    public function get($category_id = null, $name = null) {
+    public function get($category_id = null, $name = null)
+    {
         $query = "SELECT 
                     p.*,
                     c.name as category_name,
@@ -36,7 +39,8 @@ class Product {
         return $this->groupProductData($results);
     }
 
-    public function getById($id) {
+    public function getById($id)
+    {
         $query = "SELECT 
                     p.*, c.name as category_name,
                     pc.color_id, pc.color_name, pc.color_code,
@@ -60,71 +64,98 @@ class Product {
     }
 
     // Gom nhóm dữ liệu theo sản phẩm (1 sản phẩm → nhiều màu → nhiều size → nhiều ảnh)
-    private function groupProductData($rows) {
+    private function groupProductData($rows)
+    {
         $products = [];
+
         foreach ($rows as $row) {
-            if (!isset($products[$row['product_id']])) {
-                $products[$row['product_id']] = [
-                    'product_id' => $row['product_id'],
-                    'name' => $row['name'],
-                    'description' => $row['description'],
-                    'category_id' => $row['category_id'],
+            $pid = $row['product_id'];
+
+            if (!isset($products[$pid])) {
+                $products[$pid] = [
+                    'product_id'    => $pid,
+                    'name'          => $row['name'],
+                    'description'   => $row['description'] ?? '',
+                    'price'         => $row['price'] ?? 0,    // FIX OK
+                    'category_id'   => $row['category_id'],
                     'category_name' => $row['category_name'],
-                    'star' => $row['star'] ?? 5.0,
-                    'review_count' => $row['review_count'] ?? 0,
-                    'is_active' => $row['is_active'],
-                    'created_at' => $row['created_at'],
-                    'updated_at' => $row['updated_at'],
+                    'star'          => floatval($row['star'] ?? 5),
+                    'review_count'  => intval($row['review_count'] ?? 0),
+                    'is_active'     => $row['is_active'],
+                    'created_at'    => $row['created_at'],
+                    'updated_at'    => $row['updated_at'],
                     'primary_image' => null,
-                    'images' => [],
-                    'colors' => []
+                    'images'        => [],
+                    'colors'        => []   // FIX key bị lỗi
                 ];
             }
 
             // Ảnh chính
-            if ($row['is_primary'] == 1 && !$products[$row['product_id']]['primary_image']) {
-                $products[$row['product_id']]['primary_image'] = $row['image'];
+            if (($row['is_primary'] ?? 0) == 1 && !$products[$pid]['primary_image']) {
+                $products[$pid]['primary_image'] = $row['image'];
             }
 
-            // Tất cả ảnh
-            if ($row['image'] && !in_array($row['image'], array_column($products[$row['product_id']]['images'], 'image'))) {
-                $products[$row['product_id']]['images'][] = [
-                    'image_id' => $row['image_id'],
-                    'image' => $row['image'],
-                    'is_primary' => $row['is_primary'],
-                    'sort_order' => $row['sort_order']
-                ];
-            }
+            // Danh sách ảnh (tránh trùng)
+            if (!empty($row['image'])) {
+                $found = false;
+                foreach ($products[$pid]['images'] as $img) {
+                    if ($img['image'] === $row['image']) {
+                        $found = true;
+                        break;
+                    }
+                }
 
-            // Màu
-            if ($row['color_id']) {
-                $colorKey = $row['color_id'];
-                if (!isset($products[$row['product_id']]['colors'][$colorKey])) {
-                    $products[$row['product_id']]['colors'][$colorKey] = [
-                        'color_id' => $row['color_id'],
-                        'color_name' => $row['color_name'],
-                        'color_code' => $row['color_code'],
-                        'sizes' => []
+                if (!$found) {
+                    $products[$pid]['images'][] = [
+                        'image_id'   => $row['image_id'] ?? null,
+                        'image'      => $row['image'],
+                        'is_primary' => $row['is_primary'] ?? 0,
+                        'sort_order' => $row['sort_order'] ?? 0
                     ];
                 }
-                if ($row['size'] && !in_array($row['size'], $products[$row['product_id']]['colors'][$colorKey]['sizes'])) {
-                    $products[$row['product_id']]['colors'][$colorKey]['sizes'][] = $row['size'];
+            }
+
+            // Màu + size
+            if (!empty($row['color_id'])) {
+
+                if (!isset($products[$pid]['colors'][$row['color_id']])) {
+                    $products[$pid]['colors'][$row['color_id']] = [
+                        'color_id'   => $row['color_id'],
+                        'color_name' => $row['color_name'],
+                        'color_code' => $row['color_code'] ?? '#000000',
+                        'sizes'      => []
+                    ];
+                }
+
+                if (!empty($row['size']) && !in_array($row['size'], $products[$pid]['colors'][$row['color_id']]['sizes'])) {
+                    $products[$pid]['colors'][$row['color_id']]['sizes'][] = $row['size'];
                 }
             }
         }
+
         return array_values($products);
     }
 
+
     // Tạo sản phẩm + màu + size + ảnh
-    public function create($data, $colors, $images, $primaryIndex) {
+    public function create($data, $colors, $images, $primaryIndex)
+    {
         $this->conn->beginTransaction();
         try {
             // 1. Tạo sản phẩm chính
-            $query = "INSERT INTO products SET name = :name, description = :description, category_id = :category_id, star = 5, review_count = 0, is_active = :is_active";
+            $query = "INSERT INTO products SET 
+                        name = :name, 
+                        description = :description,
+                        price = :price,                    
+                        category_id = :category_id, 
+                        star = 5, 
+                        review_count = 0, 
+                        is_active = :is_active";
             $stmt = $this->conn->prepare($query);
             $stmt->execute([
                 ':name' => $data['name'],
                 ':description' => $data['description'] ?? '',
+                ':price'       => $data['price'] ?? 0,
                 ':category_id' => $data['category_id'],
                 ':is_active' => $data['is_active'] ?? 1
             ]);
@@ -150,7 +181,7 @@ class Product {
             }
 
             // 4. Thêm ảnh
-            $uploadDir = __DIR__ . '/../../../public/assets/images/upload/';
+            $uploadDir = __DIR__ . '/../../public/assets/images/upload/';
             foreach ($images as $index => $file) {
                 if ($file['error'] !== 0) continue;
 
@@ -174,20 +205,23 @@ class Product {
         }
     }
 
-    public function update($productId, $data, $colors, $images, $primaryIndex, $existingImages = []) {
+    public function update($productId, $data, $colors, $images, $primaryIndex, $existingImages = [])
+    {
         $this->conn->beginTransaction();
         try {
             // 1. Cập nhật thông tin chính
             $query = "UPDATE products SET 
                         name = :name,
                         description = :description,
+                        price = :price,                         
                         category_id = :category_id,
                         is_active = :is_active
-                      WHERE product_id = :product_id";
+                    WHERE product_id = :product_id";
             $stmt = $this->conn->prepare($query);
             $stmt->execute([
                 ':name' => $data['name'],
                 ':description' => $data['description'] ?? '',
+                ':price'       => $data['price'] ?? 0,
                 ':category_id' => $data['category_id'],
                 ':is_active' => $data['is_active'] ?? 1,
                 ':product_id' => $productId
@@ -209,14 +243,14 @@ class Product {
                     foreach ($sizes as $size) {
                         if ($size) {
                             $this->conn->prepare("INSERT INTO product_variants (product_id, color_id, size) VALUES (?, ?, ?)")
-                                       ->execute([$productId, $colorId, strtoupper($size)]);
+                                ->execute([$productId, $colorId, strtoupper($size)]);
                         }
                     }
                 }
             }
 
             // 4. Xử lý ảnh
-            $uploadDir = __DIR__ . '/../../../public/assets/images/upload/';
+            $uploadDir = __DIR__ . '/../../public/assets/images/upload/';
 
             // Xóa ảnh cũ nếu không còn trong danh sách giữ lại
             $stmt = $this->conn->prepare("SELECT image_id, image FROM product_images WHERE product_id = ?");
@@ -243,7 +277,7 @@ class Product {
                 if (move_uploaded_file($file['tmp_name'], $path)) {
                     $isPrimary = ($index == $primaryIndex) ? 1 : 0;
                     $this->conn->prepare("INSERT INTO product_images (product_id, image, is_primary, sort_order) VALUES (?, ?, ?, ?)")
-                               ->execute([$productId, $filename, $isPrimary, $sortOrder++]);
+                        ->execute([$productId, $filename, $isPrimary, $sortOrder++]);
                 }
             }
 
@@ -263,7 +297,8 @@ class Product {
     }
 
     // Tương tự cho update() và delete() - mình có thể gửi nếu bạn cần
-    public function delete($id) {
+    public function delete($id)
+    {
         $this->conn->beginTransaction();
         try {
             // 1. Lấy danh sách ảnh để xóa file
@@ -272,7 +307,7 @@ class Product {
             $images = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
             // 2. Xóa file ảnh vật lý
-            $uploadDir = __DIR__ . '/../../../public/assets/images/upload/';
+            $uploadDir = __DIR__ . '/../../public/assets/images/upload/';
             foreach ($images as $img) {
                 $path = $uploadDir . $img;
                 if (file_exists($path)) @unlink($path);
@@ -294,4 +329,3 @@ class Product {
         }
     }
 }
-?>

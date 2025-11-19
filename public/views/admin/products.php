@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,31 +10,56 @@
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        .color-item, .image-item { border: 1px dashed #ccc; padding: 15px; border-radius: 8px; margin-bottom: 15px; position: relative; }
-        .remove-color, .remove-image { position: absolute; top: 5px; right: 5px; }
-        .size-item { margin: 5px 0; }
+        .color-item,
+        .image-item {
+            border: 1px dashed #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .remove-color,
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+
+        .size-item {
+            margin: 5px 0;
+        }
     </style>
 </head>
+
 <body class="d-flex">
     <?php include 'partials/sidebar.php'; ?>
 
     <div class="main-content flex-grow-1 p-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Quản lý Sản phẩm</h2>
-            <button class="btn btn-primary" id="btnAdd">Thêm sản phẩm mới</button>
+        <div class="d-flex justify-content-between align-items-end mb-4 product-header">
+            <div>
+                <h2>Quản lý Sản phẩm</h2>
+                <button class="btn btn-primary mt-2" id="btnAdd">Thêm sản phẩm mới</button>
+            </div>
         </div>
 
-        <div class="card mb-4">
+        <div class="card mb-4 admin-search-card">
             <div class="card-body">
-                <div class="row g-3">
+                <div class="row g-3 align-items-end">
                     <div class="col-md-4">
-                        <select class="form-select" id="filterCategory"><option value="">Tất cả danh mục</option></select>
+                        <label class="form-label small fw-bold text-muted">Lọc theo Danh mục</label>
+                        <select class="form-select admin-select" id="filterCategory">
+                            <option value="">Tất cả danh mục</option>
+                        </select>
                     </div>
-                    <div class="col-md-4">
-                        <input type="text" class="form-control" id="searchName" placeholder="Tìm theo tên...">
+                    <div class="col-md-5">
+                        <label class="form-label small fw-bold text-muted">Tìm kiếm theo Tên</label>
+                        <input type="text" class="form-control admin-input-search" id="searchName" placeholder="Tìm theo tên...">
                     </div>
-                    <div class="col-md-4">
-                        <button class="btn btn-outline-primary w-100" id="btnSearch">Tìm kiếm</button>
+                    <div class="col-md-3">
+                        <button class="btn btn-primary w-100 admin-search-btn" id="btnSearch">
+                            <i class="bi bi-search"></i> Tìm kiếm
+                        </button>
                     </div>
                 </div>
             </div>
@@ -64,6 +90,16 @@
                                     <option value="">Chọn danh mục</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <label>Giá sản phẩm (VNĐ) <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" name="price" min="0" value="0" required>
+                        </div>
+
+                        <div class="mt-3">
+                            <label>Mô tả sản phẩm</label>
+                            <textarea class="form-control" name="description" rows="4" placeholder="Nhập mô tả chi tiết..."></textarea>
                         </div>
 
                         <hr>
@@ -126,4 +162,5 @@
     <script src="../../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/admin-products.js"></script>
 </body>
+
 </html>

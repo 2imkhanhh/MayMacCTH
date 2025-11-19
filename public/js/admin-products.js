@@ -1,7 +1,7 @@
 const BASE_URL = '/MayMacCTH';
 let colorIndex = 1;
 let imageIndex = 1;
-let currentEditId = null; // Để biết đang sửa sản phẩm nào
+let currentEditId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     loadCategories();
@@ -70,17 +70,18 @@ async function loadProducts() {
                     <div class="card h-100 position-relative shadow-sm hover-shadow">
                         ${status}
                         <img src="../../assets/images/upload/${p.primary_image || 'no-image.jpg'}" 
-                             class="card-img-top" style="height:200px; object-fit:cover;" onerror="this.src='../../assets/images/no-image.jpg'">
+                             class="card-img-top" style="height:200px; object-fit:cover;" 
+                             onerror="this.src='../../assets/images/no-image.jpg'">
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title fs-6 fw-bold">${p.name}</h5>
                             <p class="text-muted small">${p.category_name || 'Chưa có danh mục'}</p>
-                            <p class="text-primary fw-bold">${p.price ? parseInt(p.price).toLocaleString() + 'đ' : 'Liên hệ'}</p>
+                            <p class="text-primary fw-bold fs-5">${parseInt(p.price || 0).toLocaleString()}đ</p>
                             <small class="text-warning">${star} (${p.review_count || 0} đánh giá)</small>
                             <div class="mt-auto d-flex gap-2 pt-3">
-                                <button class="btn btn-sm btn-outline-primary flex-fill edit-btn" data-id="${p.product_id}">
+                                <button class="btn btn-category btn-edit" data-id="${p.product_id}">
                                     <i class="bi bi-pencil"></i> Sửa
                                 </button>
-                                <button class="btn btn-sm btn-outline-danger flex-fill delete-btn" data-id="${p.product_id}">
+                                <button class="btn btn-category btn-delete" data-id="${p.product_id}">
                                     <i class="bi bi-trash"></i> Xóa
                                 </button>
                             </div>
@@ -90,7 +91,6 @@ async function loadProducts() {
                 container.appendChild(col);
             });
 
-            // Gắn sự kiện nút Sửa + Xóa
             document.querySelectorAll('.edit-btn').forEach(btn => {
                 btn.onclick = () => editProduct(btn.dataset.id);
             });
@@ -123,19 +123,30 @@ function openModal(product = null) {
         title.textContent = 'Sửa sản phẩm';
         form.name.value = product.name;
         form.category_id.value = product.category_id;
+        form.price.value = product.price || 0; // Giá chung
         document.getElementById('isActiveCheckbox').checked = product.is_active == 1;
 
-        // Load màu + size
-        product.colors.forEach((color, i) => {
-            addColorField(color.color_name, color.color_code, color.sizes.join(', '));
-        });
+        // Load màu
+        if (product.colors && product.colors.length > 0) {
+            product.colors.forEach(c => {
+                const sizesStr = c.sizes ? c.sizes.join(', ') : '';
+                addColorField(c.color_name || '', c.color_code || '#000000', sizesStr);
+            });
+        } else {
+            addColorField();
+        }
 
         // Load ảnh
-        product.images.forEach((img, i) => {
-            addImageField(img.image, img.is_primary == 1, img.image_id);
-        });
+        if (product.images && product.images.length > 0) {
+            product.images.forEach(img => {
+                addImageField(img.image || '', img.is_primary == 1, img.image_id);
+            });
+        } else {
+            addImageField();
+        }
     } else {
         title.textContent = 'Thêm sản phẩm mới';
+        form.price.value = 0;
         document.getElementById('isActiveCheckbox').checked = true;
         addColorField();
         addImageField();
@@ -151,7 +162,7 @@ function addColorField(name = '', code = '#000000', sizes = '') {
     div.innerHTML = `
         <button type="button" class="btn btn-sm btn-danger remove-color">×</button>
         <div class="row g-3">
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <label>Tên màu</label>
                 <input type="text" class="form-control" name="colors[${colorIndex}][name]" value="${name}" placeholder="VD: Đen">
             </div>
@@ -159,14 +170,10 @@ function addColorField(name = '', code = '#000000', sizes = '') {
                 <label>Mã màu</label>
                 <input type="color" class="form-control form-control-color" name="colors[${colorIndex}][code]" value="${code}">
             </div>
-            <div class="col-md-5">
-                <label>Giá (VNĐ)</label>
-                <input type="number" class="form-control" name="colors[${colorIndex}][price]" value="0">
+            <div class="col-md-4">
+                <label>Kích thước</label>
+                <input type="text" class="form-control" name="colors[${colorIndex}][sizes]" value="${sizes}" placeholder="S, M, L">
             </div>
-        </div>
-        <div class="mt-3">
-            <label>Kích thước (cách nhau bởi dấu phẩy)</label>
-            <input type="text" class="form-control" name="colors[${colorIndex}][sizes]" value="${sizes}" placeholder="S, M, L, XL">
         </div>
     `;
     container.appendChild(div);
@@ -186,7 +193,8 @@ function addImageField(imageUrl = '', isPrimary = false, imageId = null) {
         </div>
         <input type="file" class="form-control mt-2" name="images[]" accept="image/*">
         ${imageId ? `<input type="hidden" name="existing_images[]" value="${imageId}">` : ''}
-        <img src="${imageUrl ? '../../assets/images/upload/' + imageUrl : ''}" class="img-thumbnail mt-2" style="max-height:150px; ${imageUrl ? '' : 'display:none;'}">
+        <img src="${imageUrl ? '../../assets/images/upload/' + imageUrl : ''}" 
+             class="img-thumbnail mt-2" style="max-height:150px; ${imageUrl ? '' : 'display:none;'}">
     `;
     container.appendChild(div);
     div.querySelector('.remove-image').onclick = () => div.remove();
@@ -202,18 +210,21 @@ function addImageField(imageUrl = '', isPrimary = false, imageId = null) {
 // ==================== SỬA & XÓA ====================
 async function editProduct(id) {
     try {
-        const res = await fetch(`${BASE_URL}/api/product/get_product.php?id=${id}`);
+        const res = await fetch(`${BASE_URL}/api/product/get_product_by_id.php?id=${id}`);
         const result = await res.json();
         if (result.success && result.data[0]) {
             openModal(result.data[0]);
+        } else {
+            alert('Không tìm thấy sản phẩm');
         }
     } catch (err) {
         alert('Lỗi tải thông tin sản phẩm');
+        console.error(err);
     }
 }
 
 async function deleteProduct(id) {
-    if (!confirm('Xóa sản phẩm này? Tất cả màu, ảnh, size sẽ bị xóa!')) return;
+    if (!confirm('Xóa sản phẩm này? Tất cả màu, ảnh, size sẽ bị xóa vĩnh viễn!')) return;
     try {
         const res = await fetch(`${BASE_URL}/api/product/delete_product.php?id=${id}`, { method: 'DELETE' });
         const data = await res.json();
@@ -230,6 +241,10 @@ async function handleSubmit(e) {
     const formData = new FormData(this);
     const id = currentEditId;
 
+    // Đảm bảo gửi price và description
+    // formData.append('price', this.price.value);
+    // formData.append('description', this.description.value);
+
     const url = id
         ? `${BASE_URL}/api/product/update_product.php?id=${id}`
         : `${BASE_URL}/api/product/create_product.php`;
@@ -239,14 +254,24 @@ async function handleSubmit(e) {
             method: 'POST',
             body: formData
         });
-        const data = await res.json();
-        alert(data.message || (data.success ? 'Thành công!' : 'Thất bại!'));
+
+        const text = await res.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            console.error("Lỗi server:", text);
+            alert("Lỗi server! Kiểm tra console (F12)");
+            return;
+        }
+
+        alert(data.message || (data.success ? 'Thành công!' : 'Lỗi!'));
         if (data.success) {
             bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
             loadProducts();
         }
     } catch (err) {
-        alert('Lỗi kết nối server');
+        alert('Lỗi kết nối');
         console.error(err);
     }
 }

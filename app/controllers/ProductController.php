@@ -30,26 +30,29 @@ class ProductController {
     }
 
     public function create() {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') return ["success" => false, "message" => "Method not allowed"];
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return ["success" => false, "message" => "Method not allowed"];
+        }
 
+        // ĐÃ THÊM PRICE VÀO ĐÂY – QUAN TRỌNG NHẤT!
         $data = [
-            'name' => $_POST['name'] ?? '',
+            'name'        => $_POST['name'] ?? '',
             'description' => $_POST['description'] ?? '',
-            'category_id' => $_POST['category_id'] ?? 0,
-            'is_active' => isset($_POST['is_active']) ? 1 : 0
+            'price'       => (int)($_POST['price'] ?? 0),        // THÊM DÒNG NÀY
+            'category_id' => (int)($_POST['category_id'] ?? 0),
+            'is_active'   => isset($_POST['is_active']) ? 1 : 0
         ];
 
         if (empty($data['name']) || empty($data['category_id'])) {
-            return ["success" => false, "message" => "Thiếu thông tin bắt buộc"];
+            return ["success" => false, "message" => "Thiếu tên hoặc danh mục"];
         }
 
-        // Lấy màu từ form: colors[0][name], colors[0][sizes], ...
         $colors = [];
         foreach ($_POST['colors'] ?? [] as $c) {
             if (!empty($c['name'])) {
                 $colors[] = [
-                    'name' => $c['name'],
-                    'code' => $c['code'] ?? '#000000',
+                    'name'  => $c['name'],
+                    'code'  => $c['code'] ?? '#000000',
                     'sizes' => $c['sizes'] ?? ''
                 ];
             }
@@ -57,22 +60,31 @@ class ProductController {
 
         $primaryIndex = (int)($_POST['primary_image'] ?? 0);
 
-        if (empty($colors) || empty($_FILES['images']['name'][0] ?? null)) {
-            return ["success" => false, "message" => "Phải có ít nhất 1 màu và 1 ảnh"];
+        if (empty($colors)) {
+            return ["success" => false, "message" => "Phải có ít nhất 1 màu"];
         }
 
         $uploadedFiles = [];
-        foreach ($_FILES['images']['tmp_name'] as $key => $tmp) {
-            $uploadedFiles[] = [
-                'name' => $_FILES['images']['name'][$key],
-                'tmp_name' => $tmp,
-                'error' => $_FILES['images']['error'][$key]
-            ];
+        if (isset($_FILES['images']['tmp_name'])) {
+            foreach ($_FILES['images']['tmp_name'] as $key => $tmp) {
+                if ($_FILES['images']['error'][$key] === 0) {
+                    $uploadedFiles[] = [
+                        'name'     => $_FILES['images']['name'][$key],
+                        'tmp_name' => $tmp,
+                        'error'    => 0
+                    ];
+                }
+            }
         }
 
-        return $this->product->create($data, $colors, $uploadedFiles, $primaryIndex)
+        if (empty($uploadedFiles)) {
+            return ["success" => false, "message" => "Phải có ít nhất 1 ảnh"];
+        }
+
+        $result = $this->product->create($data, $colors, $uploadedFiles, $primaryIndex);
+        return $result
             ? ["success" => true, "message" => "Thêm sản phẩm thành công!"]
-            : ["success" => false, "message" => "Thêm thất bại. Vui lòng thử lại."];
+            : ["success" => false, "message" => "Thêm thất bại!"];
     }
 
     public function update($id) {
@@ -80,30 +92,29 @@ class ProductController {
             return ["success" => false, "message" => "Method not allowed"];
         }
 
+        // ĐÃ THÊM PRICE VÀO CẬP NHẬT
         $data = [
-            'name' => $_POST['name'] ?? '',
+            'name'        => $_POST['name'] ?? '',
             'description' => $_POST['description'] ?? '',
-            'category_id' => $_POST['category_id'] ?? 0,
-            'is_active' => isset($_POST['is_active']) ? 1 : 0
+            'price'       => (int)($_POST['price'] ?? 0),        // THÊM DÒNG NÀY
+            'category_id' => (int)($_POST['category_id'] ?? 0),
+            'is_active'   => isset($_POST['is_active']) ? 1 : 0
         ];
 
         if (empty($data['name']) || empty($data['category_id'])) {
             return ["success" => false, "message" => "Thiếu thông tin bắt buộc"];
         }
 
-        // Lấy danh sách ảnh hiện tại muốn giữ lại (image_id)
-        $existingImages = [];
-        if (isset($_POST['existing_images']) && is_array($_POST['existing_images'])) {
-            $existingImages = array_map('intval', $_POST['existing_images']);
-        }
+        $existingImages = $_POST['existing_images'] ?? [];
+        if (is_string($existingImages)) $existingImages = [$existingImages];
+        $existingImages = array_map('intval', $existingImages);
 
-        // Xử lý màu
         $colors = [];
         foreach ($_POST['colors'] ?? [] as $c) {
             if (!empty($c['name'])) {
                 $colors[] = [
-                    'name' => $c['name'],
-                    'code' => $c['code'] ?? '#000000',
+                    'name'  => $c['name'],
+                    'code'  => $c['code'] ?? '#000000',
                     'sizes' => $c['sizes'] ?? ''
                 ];
             }
@@ -111,27 +122,28 @@ class ProductController {
 
         $primaryIndex = (int)($_POST['primary_image'] ?? 0);
 
-        // Xử lý file ảnh mới
         $uploadedFiles = [];
-        if (isset($_FILES['images']) && is_array($_FILES['images']['name'])) {
+        if (isset($_FILES['images']['tmp_name'])) {
             foreach ($_FILES['images']['tmp_name'] as $key => $tmp) {
                 if ($_FILES['images']['error'][$key] === 0) {
                     $uploadedFiles[] = [
-                        'name' => $_FILES['images']['name'][$key],
+                        'name'     => $_FILES['images']['name'][$key],
                         'tmp_name' => $tmp,
-                        'error' => 0
+                        'error'    => 0
                     ];
                 }
             }
         }
 
-        return $this->product->update($id, $data, $colors, $uploadedFiles, $primaryIndex, $existingImages)
+        $result = $this->product->update($id, $data, $colors, $uploadedFiles, $primaryIndex, $existingImages);
+        return $result
             ? ["success" => true, "message" => "Cập nhật thành công!"]
             : ["success" => false, "message" => "Cập nhật thất bại"];
     }
 
     public function delete($id) {
-        return $this->product->delete($id)
+        $result = $this->product->delete($id);
+        return $result
             ? ["success" => true, "message" => "Xóa thành công!"]
             : ["success" => false, "message" => "Xóa thất bại"];
     }
