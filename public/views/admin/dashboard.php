@@ -20,7 +20,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
 <body>
 
 <!-- Sidebar -->
-<?php include __DIR__ . '/partials/sidebar.html'; ?>
+<?php include __DIR__ . '/partials/sidebar.php'; ?>
 
 <div class="main-content">
     <div class="topbar">

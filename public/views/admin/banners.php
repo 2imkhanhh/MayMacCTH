@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Banner</title>
     <link rel="stylesheet" href="../../assets/css/admin-style.css">
+    <link rel="stylesheet" href="../../assets/css/admin-banner.css">
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body class="d-flex">
-    <?php include 'partials/sidebar.html'; ?>
+    <?php include 'partials/sidebar.php'; ?>
 
     <div class="main-content flex-grow-1 p-4">
         <h2 class="mb-4">Quản lý Banner</h2>

@@ -33,24 +33,36 @@ body {
 }
 
 .sidebar .nav-link {
-    color: #cfd8ff;
-    padding: 14px 20px;
-    border-radius: 8px;
-    margin: 8px 15px;
-    transition: all 0.3s;
-    font-weight: 500;
+    padding: 12px 20px;
+    margin: 5px 15px;
+    border-radius: 10px;
+    color: #ddd;
+    transition: all 0.3s ease;
+    position: relative;
 }
 
-.sidebar .nav-link:hover, .sidebar .nav-link.active {
-    background: rgba(255,255,255,0.15);
+.sidebar .nav-link:hover {
+    background-color: rgba(255,255,255,0.1);
     color: white;
-    transform: translateX(8px);
 }
 
-.sidebar .nav-link i {
-    width: 24px;
-    text-align: center;
-    margin-right: 12px;
+.sidebar .nav-link.active {
+    background: linear-gradient(135deg, #003087, #0050b3);
+    color: white !important;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 48, 135, 0.3);
+}
+
+.sidebar .nav-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 30px;
+    background: #fff;
+    border-radius: 0 5px 5px 0;
 }
 
 .main-content {
@@ -88,15 +100,6 @@ body {
     position: relative;
     border: 1px solid rgba(23, 77, 175, 0.08);
 }
-
-/* .card-stat::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 8px;
-    background: linear-gradient(90deg, #174DAF, #1e5fcf, #0d3980);
-    border-radius: 20px 20px 0 0;
-} */
 
 .card-stat:hover {
     transform: translateY(-15px);

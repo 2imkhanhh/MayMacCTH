@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:81/MayMacCTH';
+const BASE_URL = '/MayMacCTH';
 
 // Khi DOM load xong
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,22 +21,30 @@ document.addEventListener('DOMContentLoaded', () => {
     addPreviewImg.className = 'img-thumbnail mt-2';
     addPreviewImg.style.maxHeight = '200px';
     addPreviewImg.style.display = 'none';
-    addImageInput.parentNode.appendChild(addPreviewImg);
+    
+    // Thêm element ảnh vào sau input
+    if(addImageInput && addImageInput.parentNode) {
+        addImageInput.parentNode.appendChild(addPreviewImg);
+    }
 
-    addImageInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if(file){
-            addPreviewImg.src = URL.createObjectURL(file);
-            addPreviewImg.style.display = 'block';
-        } else {
-            addPreviewImg.src = '';
-            addPreviewImg.style.display = 'none';
-        }
-    });
+    if(addImageInput){
+        addImageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if(file){
+                addPreviewImg.src = URL.createObjectURL(file);
+                addPreviewImg.style.display = 'block';
+            } else {
+                addPreviewImg.src = '';
+                addPreviewImg.style.display = 'none';
+            }
+        });
+    }
 
     // Submit thêm banner
     const addForm = document.getElementById('addBannerForm');
-    addForm.addEventListener('submit', addBanner);
+    if(addForm){
+        addForm.addEventListener('submit', addBanner);
+    }
 });
 
 // ==================== Load danh sách banner ====================
@@ -49,33 +57,46 @@ async function loadBanners(){
         grid.innerHTML = '';
 
         if(data.success && data.data.length){
-            const row = document.createElement('div');
-            row.className = 'row';
-
+            
+            // Không cần tạo div row bao ngoài vì #bannerList bản thân nó đã là row (trong HTML: <div id="bannerList" class="row"></div>)
+            // Nếu trong HTML chưa có class row thì bạn thêm vào, nhưng thường layout lưới sẽ render trực tiếp col vào row.
+            
             data.data.forEach(b => {
-                const card = document.createElement('div');
-                card.className = 'col-md-4 mb-4';
-                card.innerHTML = `
-                    <div class="card h-100">
-                        <img src="../../assets/images/upload/${b.image}" class="card-img-top" style="height:200px; object-fit:cover;">
-                        <div class="card-body">
-                            <h5 class="card-title">${b.title}</h5>
-                            <span class="badge bg-${b.is_active ? 'success' : 'secondary'}">
-                                ${b.is_active ? 'Hiển thị' : 'Ẩn'}
-                            </span>
+                const col = document.createElement('div');
+                col.className = 'col-md-6 col-lg-4 mb-4'; // Responsive column
+                
+                // Xác định trạng thái để gán class CSS tương ứng
+                const statusClass = (b.is_active == 1) ? 'status-active' : 'status-inactive';
+                const statusText = (b.is_active == 1) ? 'Hiển thị' : 'Ẩn';
+
+                // --- ĐOẠN NÀY ĐÃ ĐƯỢC SỬA ĐỂ KHỚP VỚI CSS MỚI ---
+                col.innerHTML = `
+                    <div class="banner-card">
+                        <div class="banner-img-wrapper">
+                            <img src="../../assets/images/upload/${b.image}" alt="${b.title}">
+                            <span class="banner-status ${statusClass}">${statusText}</span>
                         </div>
-                        <div class="card-footer text-center">
-                            <button class="btn btn-warning btn-sm edit-banner-btn" data-id="${b.banner_id}">Sửa</button>
-                            <button class="btn btn-danger btn-sm delete-banner-btn" data-id="${b.banner_id}">Xóa</button>
+                        <div class="banner-body">
+                            <h5 class="banner-title" title="${b.title}">${b.title}</h5>
+                            
+                            <div class="banner-actions">
+                                <button class="btn btn-action btn-edit edit-banner-btn" data-id="${b.banner_id}">
+                                    <i class="bi bi-pencil-square"></i> Sửa
+                                </button>
+
+                                <button class="btn btn-action btn-delete delete-banner-btn" data-id="${b.banner_id}">
+                                    <i class="bi bi-trash"></i> Xóa
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
-                row.appendChild(card);
+                // --------------------------------------------------
+
+                grid.appendChild(col);
             });
 
-            grid.appendChild(row);
-
-            // Gắn sự kiện sửa / xóa
+            // Gắn sự kiện sau khi render xong
             document.querySelectorAll('.edit-banner-btn').forEach(btn => {
                 btn.addEventListener('click', () => editBanner(btn.dataset.id));
             });
@@ -84,7 +105,7 @@ async function loadBanners(){
             });
 
         } else {
-            grid.innerHTML = '<p class="text-muted">Chưa có banner nào.</p>';
+            grid.innerHTML = '<div class="col-12"><p class="text-muted text-center">Chưa có banner nào.</p></div>';
         }
 
     } catch(err){
@@ -105,12 +126,16 @@ async function addBanner(e){
             body: formData
         });
         const data = await res.json();
-        alert(data.message);
+        
         if(data.success){
+            alert(data.message); // Hoặc dùng toast/notify đẹp hơn
             bootstrap.Modal.getInstance(document.getElementById('addBannerModal')).hide();
             form.reset();
-            document.getElementById('addPreviewImg').style.display = 'none';
+            const preview = document.getElementById('addPreviewImg');
+            if(preview) preview.style.display = 'none';
             loadBanners();
+        } else {
+            alert(data.message || 'Thêm thất bại');
         }
     } catch(err){
         alert('Lỗi kết nối API');
@@ -121,6 +146,7 @@ async function addBanner(e){
 // ==================== Sửa Banner ====================
 async function editBanner(id){
     try{
+        // Cách tốt nhất là gọi API get detail 1 banner, ở đây dùng lại list cho tiện nhưng cẩn thận hiệu năng
         const res = await fetch(`${BASE_URL}/api/banner/get_banner.php`);
         const data = await res.json();
         const banner = data.data.find(b => b.banner_id == id);
@@ -134,23 +160,37 @@ async function editBanner(id){
         const form = document.getElementById('editBannerForm');
         document.getElementById('editBannerId').value = banner.banner_id;
         document.getElementById('editTitle').value = banner.title;
-        document.getElementById('editIsActive').checked = banner.is_active == 1;
-        document.getElementById('currentImage').src = `../../assets/images/banners/${banner.image}`;
+        document.getElementById('editIsActive').checked = (banner.is_active == 1);
+        
+        // Hiển thị ảnh cũ
+        const currentImg = document.getElementById('currentImage');
+        if(currentImg) {
+            currentImg.src = `../../assets/images/upload/${banner.image}`;
+            currentImg.style.display = 'block';
+        }
 
-        // Submit sửa banner
+        // Xử lý khi submit form sửa
+        // Lưu ý: Cần gỡ bỏ event listener cũ nếu có để tránh submit nhiều lần, 
+        // hoặc dùng onsubmit gán trực tiếp như dưới đây (đơn giản nhất cho code hiện tại)
         form.onsubmit = async (e) => {
             e.preventDefault();
             const formData = new FormData(form);
+            
+            // Laravel/PHP đôi khi cần _method=PUT hoặc POST form-data bình thường
+            // Ở đây giữ nguyên logic POST update của bạn
             try{
                 const res = await fetch(`${BASE_URL}/api/banner/update_banner.php?id=${banner.banner_id}`, {
                     method: 'POST',
                     body: formData
                 });
                 const data = await res.json();
-                alert(data.message);
+                
                 if(data.success){
+                    alert(data.message);
                     bootstrap.Modal.getInstance(modalEl).hide();
                     loadBanners();
+                } else {
+                    alert(data.message || 'Cập nhật thất bại');
                 }
             } catch(err){
                 alert('Lỗi kết nối API');
@@ -166,12 +206,17 @@ async function editBanner(id){
 
 // ==================== Xóa Banner ====================
 async function deleteBanner(id){
-    if(!confirm('Xóa banner này? Không thể khôi phục!')) return;
+    if(!confirm('Bạn có chắc chắn muốn xóa banner này không? Hành động này không thể khôi phục!')) return;
     try{
         const res = await fetch(`${BASE_URL}/api/banner/delete_banner.php?id=${id}`, { method: 'DELETE' });
         const data = await res.json();
-        alert(data.message);
-        loadBanners();
+        
+        if(data.success){
+            alert(data.message);
+            loadBanners();
+        } else {
+            alert(data.message || 'Xóa thất bại');
+        }
     } catch(err){
         alert('Lỗi xóa banner');
         console.error(err);
@@ -181,7 +226,8 @@ async function deleteBanner(id){
 // ==================== Reset form thêm banner ====================
 function clearAddForm(){
     const form = document.getElementById('addBannerForm');
-    form.reset();
+    if(form) form.reset();
+    
     const preview = document.getElementById('addPreviewImg');
     if(preview){
         preview.src = '';
