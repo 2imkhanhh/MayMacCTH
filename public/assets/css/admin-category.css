@@ -1,0 +1,177 @@
+/* ============================================================= */
+/*                ADMIN - QUẢN LÝ DANH MỤC                        */
+/* ============================================================= */
+
+#btnAdd {
+    background: linear-gradient(135deg, #174DAF, #003087);
+    border: none;
+    padding: 12px 28px;
+    font-weight: 600;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(23, 77, 175, 0.3);
+    transition: all 0.3s ease;
+}
+
+#btnAdd:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(23, 77, 175, 0.4);
+}
+
+/* Card danh mục */
+.category-card {
+    background: #fff;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    transition: all 0.4s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.category-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(23, 77, 175, 0.18);
+}
+
+/* Icon danh mục (tùy chọn màu ngẫu nhiên) */
+.category-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto 15px;
+    font-size: 2rem;
+    color: white;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+/* Màu ngẫu nhiên cho từng danh mục (có thể mở rộng) */
+.category-card:nth-child(6n+1) .category-icon { background: linear-gradient(135deg, #174DAF, #003087); }
+.category-card:nth-child(6n+2) .category-icon { background: linear-gradient(135deg, #28a745, #1e7e34); }
+.category-card:nth-child(6n+3) .category-icon { background: linear-gradient(135deg, #ffc107, #e0a800); }
+.category-card:nth-child(6n+4) .category-icon { background: linear-gradient(135deg, #dc3545, #c82333); }
+.category-card:nth-child(6n+5) .category-icon { background: linear-gradient(135deg, #6f42c1, #5a32a3); }
+.category-card:nth-child(6n+6) .category-icon { background: linear-gradient(135deg, #fd7e14, #e9680b); }
+
+/* Tên danh mục */
+.category-name {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 10px;
+    padding: 0 15px;
+}
+
+/* Số sản phẩm trong danh mục */
+.category-count {
+    text-align: center;
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+}
+
+/* Nút hành động */
+.category-actions {
+    padding: 15px;
+    background: #f8f9fa;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.btn-category {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-edit {
+    background: #e7f1ff;
+    color: #174DAF;
+    border: 1.5px solid #174DAF;
+}
+
+.btn-edit:hover {
+    background: #174DAF;
+    color: white;
+}
+
+.btn-delete {
+    background: #ffecec;
+    color: #e63946;
+    border: 1.5px solid #e63946;
+}
+
+.btn-delete:hover {
+    background: #e63946;
+    color: white;
+}
+
+/* Modal */
+#categoryModal .modal-content {
+    border-radius: 18px;
+    border: none;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+}
+
+#categoryModal .modal-header {
+    background: linear-gradient(135deg, #174DAF, #003087);
+    color: white;
+    padding: 20px 25px;
+    border: none;
+}
+
+#categoryModal .modal-title {
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+#categoryModal .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+#categoryModal .modal-body {
+    padding: 30px;
+}
+
+#categoryModal .form-control {
+    border-radius: 10px;
+    padding: 12px 15px;
+    border: 1.5px solid #ddd;
+    font-size: 1rem;
+}
+
+#categoryModal .form-control:focus {
+    border-color: #174DAF;
+    box-shadow: 0 0 0 0.25rem rgba(23, 77, 175, 0.15);
+}
+
+#categoryModal .btn-success {
+    background: linear-gradient(135deg, #28a745, #1e7e34);
+    border: none;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* Khi không có danh mục */
+#categoryList:empty + .col-12,
+.text-center h5 {
+    font-weight: 500;
+    color: #888;
+    font-size: 1.4rem;
+}

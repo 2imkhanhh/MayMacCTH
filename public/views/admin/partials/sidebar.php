@@ -15,6 +15,14 @@ $currentPage = basename($_SERVER['PHP_SELF']);
            class="nav-link d-flex align-items-center <?php echo $currentPage == 'banners.php' ? 'active' : ''; ?>">
             <i class="bi bi-images"></i><span>Banner</span>
         </a>
+        <a href="products.php" 
+           class="nav-link d-flex align-items-center <?php echo $currentPage == 'products.php' ? 'active' : ''; ?>">
+            <i class="bi bi-images"></i><span>Sản phẩm</span>
+        </a>
+        <a href="categories.php" 
+           class="nav-link d-flex align-items-center <?php echo $currentPage == 'categories.php' ? 'active' : ''; ?>">
+            <i class="bi bi-images"></i><span>Danh mục</span>
+        </a>
         <a href="orders.php" 
            class="nav-link d-flex align-items-center <?php echo in_array($currentPage, ['orders.php', 'order-detail.php']) ? 'active' : ''; ?>">
             <i class="bi bi-cart-check"></i><span>Đơn hàng</span>

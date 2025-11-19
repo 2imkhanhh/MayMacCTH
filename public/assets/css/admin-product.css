@@ -1,0 +1,241 @@
+/* 1. Nút "Thêm sản phẩm mới" */
+#btnAdd {
+    background: linear-gradient(135deg, #174DAF, #003087);
+    border: none;
+    padding: 12px 28px;
+    font-weight: 600;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(23, 77, 175, 0.3);
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+#btnAdd:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(23, 77, 175, 0.4);
+}
+
+/* 2. Card sản phẩm */
+.product-card {
+    background: #fff;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    transition: all 0.4s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(23, 77, 175, 0.18);
+}
+
+/* Ảnh sản phẩm */
+.product-card .card-img-top {
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.product-card:hover .card-img-top {
+    transform: scale(1.08);
+}
+
+/* Nội dung card */
+.product-card .card-body {
+    padding: 20px;
+    background: #fff;
+}
+
+.product-card .card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+}
+
+/* Giá tiền nổi bật */
+.product-card .text-primary {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #174DAF !important;
+}
+
+/* Thông tin phụ (màu, size, danh mục) */
+.product-card .text-muted,
+.product-card .text-secondary {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+/* 3. Nút hành động (Sửa / Xóa) */
+.product-card .btn {
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 8px 14px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+}
+
+.product-card .btn-outline-primary {
+    color: #174DAF;
+    border-color: #174DAF;
+}
+
+.product-card .btn-outline-primary:hover {
+    background: #174DAF;
+    border-color: #174DAF;
+    color: white;
+    box-shadow: 0 4px 12px rgba(23, 77, 175, 0.3);
+}
+
+.product-card .btn-outline-danger {
+    color: #e63946;
+    border-color: #e63946;
+}
+
+.product-card .btn-outline-danger:hover {
+    background: #e63946;
+    border-color: #e63946;
+    color: white;
+    box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+}
+
+/* Icon trong nút */
+.product-card .btn i {
+    font-size: 1.1em;
+}
+
+/* 4. Bộ lọc & tìm kiếm */
+#filterCategory,
+#searchName {
+    border-radius: 10px;
+    border: 1.5px solid #ddd;
+    padding: 10px 15px;
+    font-size: 0.95rem;
+}
+
+#filterCategory:focus,
+#searchName:focus {
+    border-color: #174DAF;
+    box-shadow: 0 0 0 0.2rem rgba(23, 77, 175, 0.15);
+}
+
+#btnSearch {
+    background: #174DAF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+#btnSearch:hover {
+    background: #003087;
+}
+
+/* 5. Modal thêm/sửa sản phẩm */
+#productModal .modal-content {
+    border-radius: 18px;
+    border: none;
+    overflow: hidden;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+
+#productModal .modal-header {
+    background: linear-gradient(135deg, #174DAF, #003087);
+    color: white;
+    padding: 20px 25px;
+    border: none;
+}
+
+#productModal .modal-title {
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+#productModal .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+    opacity: 0.9;
+}
+
+#productModal .modal-body {
+    padding: 30px;
+}
+
+#productModal .form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+#productModal .form-control,
+#productModal .form-select {
+    border-radius: 10px;
+    padding: 12px 15px;
+    border: 1.5px solid #ddd;
+}
+
+#productModal .form-control:focus,
+#productModal .form-select:focus {
+    border-color: #174DAF;
+    box-shadow: 0 0 0 0.25rem rgba(23, 77, 175, 0.15);
+}
+
+/* Ảnh preview trong modal */
+#currentImage {
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    object-fit: cover;
+    max-height: 250px;
+    width: 100%;
+    margin-top: 10px;
+    border: 3px solid #f0f2f5;
+}
+
+/* Nút lưu trong modal */
+#productModal .btn-success {
+    background: linear-gradient(135deg, #28a745, #1e7e34);
+    border: none;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+#productModal .btn-success:hover {
+    background: #1e7e34;
+    transform: translateY(-2px);
+}
+
+/* Thông báo "Chưa có sản phẩm" */
+#productList:empty + .col-12,
+.text-center h5 {
+    font-weight: 500;
+    color: #888;
+    font-size: 1.4rem;
+}
+
+/* Responsive tinh chỉnh */
+@media (max-width: 768px) {
+    .product-card .card-title {
+        font-size: 1rem;
+    }
+    .product-card .text-primary {
+        font-size: 1.2rem;
+    }
+    #btnAdd {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}

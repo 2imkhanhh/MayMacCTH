@@ -4,7 +4,6 @@ const BASE_URL = '/MayMacCTH';
 document.addEventListener('DOMContentLoaded', () => {
     loadBanners();
 
-    // Mở modal thêm Banner
     const btnAdd = document.getElementById('btnAdd');
     if (btnAdd) {
         btnAdd.addEventListener('click', () => {
@@ -56,20 +55,14 @@ async function loadBanners(){
         if(!grid) return;
         grid.innerHTML = '';
 
-        if(data.success && data.data.length){
-            
-            // Không cần tạo div row bao ngoài vì #bannerList bản thân nó đã là row (trong HTML: <div id="bannerList" class="row"></div>)
-            // Nếu trong HTML chưa có class row thì bạn thêm vào, nhưng thường layout lưới sẽ render trực tiếp col vào row.
-            
+        if(data.success && data.data.length){   
             data.data.forEach(b => {
                 const col = document.createElement('div');
                 col.className = 'col-md-6 col-lg-4 mb-4'; // Responsive column
                 
-                // Xác định trạng thái để gán class CSS tương ứng
                 const statusClass = (b.is_active == 1) ? 'status-active' : 'status-inactive';
                 const statusText = (b.is_active == 1) ? 'Hiển thị' : 'Ẩn';
 
-                // --- ĐOẠN NÀY ĐÃ ĐƯỢC SỬA ĐỂ KHỚP VỚI CSS MỚI ---
                 col.innerHTML = `
                     <div class="banner-card">
                         <div class="banner-img-wrapper">
@@ -170,8 +163,6 @@ async function editBanner(id){
         }
 
         // Xử lý khi submit form sửa
-        // Lưu ý: Cần gỡ bỏ event listener cũ nếu có để tránh submit nhiều lần, 
-        // hoặc dùng onsubmit gán trực tiếp như dưới đây (đơn giản nhất cho code hiện tại)
         form.onsubmit = async (e) => {
             e.preventDefault();
             const formData = new FormData(form);
@@ -204,9 +195,8 @@ async function editBanner(id){
     }
 }
 
-// ==================== Xóa Banner ====================
 async function deleteBanner(id){
-    if(!confirm('Bạn có chắc chắn muốn xóa banner này không? Hành động này không thể khôi phục!')) return;
+    if(!confirm('Bạn có chắc chắn muốn xóa banner này không?')) return;
     try{
         const res = await fetch(`${BASE_URL}/api/banner/delete_banner.php?id=${id}`, { method: 'DELETE' });
         const data = await res.json();
@@ -223,7 +213,6 @@ async function deleteBanner(id){
     }
 }
 
-// ==================== Reset form thêm banner ====================
 function clearAddForm(){
     const form = document.getElementById('addBannerForm');
     if(form) form.reset();
