@@ -10,6 +10,7 @@ class Product {
     public $size;
     public $price;
     public $image;
+    public $is_active;
 
     public function __construct($db) {
         $this->conn = $db;
@@ -59,7 +60,9 @@ class Product {
                       color = :color,
                       size = :size,
                       price = :price,
-                      image = :image";
+                      image = :image,
+                      is_active = :is_active";
+                      
 
         $stmt = $this->conn->prepare($query);
 
@@ -68,6 +71,7 @@ class Product {
         $this->size = htmlspecialchars(strip_tags($this->size));
         $this->price = $this->price;
         $this->image = htmlspecialchars(strip_tags($this->image));
+        $this->is_active = ($this->is_active == 1) ? 1 : 0;
 
         $stmt->bindParam(':category_id', $this->category_id, PDO::PARAM_INT);
         $stmt->bindParam(':name', $this->name);
@@ -75,6 +79,7 @@ class Product {
         $stmt->bindParam(':size', $this->size);
         $stmt->bindParam(':price', $this->price);
         $stmt->bindParam(':image', $this->image);
+        $stmt->bindParam(':is_active', $this->is_active, PDO::PARAM_INT);
 
         return $stmt->execute();
     }
@@ -86,7 +91,8 @@ class Product {
                       color = :color,
                       size = :size,
                       price = :price,
-                      image = :image
+                      image = :image,
+                      is_active = :is_active
                   WHERE product_id = :product_id";
 
         $stmt = $this->conn->prepare($query);
@@ -97,6 +103,7 @@ class Product {
         $this->price = $this->price;
         $this->image = htmlspecialchars(strip_tags($this->image));
         $this->product_id = htmlspecialchars(strip_tags($this->product_id));
+        $this->is_active = $this->is_active ? 1 : 0;
 
         $stmt->bindParam(':product_id', $this->product_id, PDO::PARAM_INT);
         $stmt->bindParam(':category_id', $this->category_id, PDO::PARAM_INT);
@@ -105,6 +112,7 @@ class Product {
         $stmt->bindParam(':size', $this->size);
         $stmt->bindParam(':price', $this->price);
         $stmt->bindParam(':image', $this->image);
+        $stmt->bindParam(':is_active', $this->is_active, PDO::PARAM_INT);
 
         return $stmt->execute();
     }

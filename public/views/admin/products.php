@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 </head>
+
 <body class="d-flex">
     <?php include 'partials/sidebar.php'; ?>
 
@@ -85,6 +87,11 @@
                             <input type="file" class="form-control" name="image" accept="image/*">
                             <img id="currentImage" src="" class="img-thumbnail mt-2" style="max-height:200px; display:none;">
                         </div>
+
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" name="is_active" id="isActiveCheckbox" checked>
+                            <label class="form-check-label" for="isActiveCheckbox">Hiển thị trên trang chủ</label>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
@@ -98,4 +105,5 @@
     <script src="../../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/admin-products.js"></script>
 </body>
+
 </html>

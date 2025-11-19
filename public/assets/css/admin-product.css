@@ -226,6 +226,14 @@
     font-size: 1.4rem;
 }
 
+.product-card .bg-success,
+.product-card .bg-secondary {
+    font-size: 0.75rem !important;
+    padding: 0.35rem 0.8rem !important;
+    border-radius: 0 0 0 12px !important;
+    backdrop-filter: blur(4px);
+}
+
 /* Responsive tinh chỉnh */
 @media (max-width: 768px) {
     .product-card .card-title {

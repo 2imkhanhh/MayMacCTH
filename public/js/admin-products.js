@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('searchName').addEventListener('keypress', e => e.key === 'Enter' && loadProducts());
 
     // Preview ảnh
-    document.querySelector('#productForm input[name="image"]').addEventListener('change', function(e) {
+    document.querySelector('#productForm input[name="image"]').addEventListener('change', function (e) {
         const file = e.target.files[0];
         const img = document.getElementById('currentImage');
         if (file) {
@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Load danh mục vào select
 async function loadCategories() {
     try {
         const res = await fetch(`${BASE_URL}/api/category/get_category.php`);
@@ -70,19 +69,32 @@ async function loadProducts() {
             data.data.forEach(p => {
                 const col = document.createElement('div');
                 col.className = 'col-md-6 col-lg-4 mb-4';
+
+                // Badge trạng thái giống hệt Banner
+                const statusBadge = p.is_active == 1
+                    ? '<span class="position-absolute top-0 end-0 bg-success text-white px-3 py-1 rounded-start shadow-sm fw-semibold" style="font-size:0.75rem; z-index:2;">Hiển thị</span>'
+                    : '<span class="position-absolute top-0 end-0 bg-secondary text-white px-3 py-1 rounded-start shadow-sm fw-semibold" style="font-size:0.75rem; z-index:2;">Ẩn</span>';
+
                 col.innerHTML = `
-                    <div class="card h-100 product-card">
-                        <img src="../../assets/images/upload/${p.image}" class="card-img-top" alt="${p.name}" style="height:200px; object-fit:cover;">
+                    <div class="card h-100 product-card position-relative overflow-hidden">
+                        ${statusBadge}
+                        <img src="../../assets/images/upload/${p.image}" 
+                             class="card-img-top" 
+                             alt="${p.name}" 
+                             style="height:200px; object-fit:cover;">
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title">${p.name}</h5>
                             <p class="text-muted small">Danh mục: ${p.category_name || 'Chưa có'}</p>
                             <p class="text-primary fw-bold">${parseInt(p.price).toLocaleString('vi-VN')}đ</p>
-                            ${p.color || p.size ? `<p class="text-secondary small">${p.color ? 'Màu: ' + p.color : ''} ${p.size ? '· Size: ' + p.size : ''}</p>` : ''}
-                            <div class="mt-auto">
-                                <button class="btn btn-sm btn-outline-primary me-2 edit-btn" data-id="${p.product_id}">
+                            ${p.color || p.size
+                        ? `<p class="text-secondary small">${p.color ? 'Màu: ' + p.color : ''} ${p.size ? '· Size: ' + p.size : ''}</p>`
+                        : ''
+                    }
+                            <div class="mt-auto d-flex gap-2">
+                                <button class="btn btn-sm btn-outline-primary flex-fill edit-btn" data-id="${p.product_id}">
                                     <i class="bi bi-pencil"></i> Sửa
                                 </button>
-                                <button class="btn btn-sm btn-outline-danger delete-btn" data-id="${p.product_id}">
+                                <button class="btn btn-sm btn-outline-danger flex-fill delete-btn" data-id="${p.product_id}">
                                     <i class="bi bi-trash"></i> Xóa
                                 </button>
                             </div>
@@ -92,6 +104,7 @@ async function loadProducts() {
                 container.appendChild(col);
             });
 
+            // Gắn sự kiện cho các nút
             document.querySelectorAll('.edit-btn').forEach(btn => {
                 btn.addEventListener('click', () => editProduct(btn.dataset.id));
             });
@@ -126,6 +139,10 @@ function openModal(product = null) {
         form.color.value = product.color || '';
         form.size.value = product.size || '';
         form.price.value = product.price;
+
+        // Chỉ cần set checked = true/false → FormData sẽ tự xử lý
+        document.getElementById('isActiveCheckbox').checked = (product.is_active == 1);
+
         if (product.image) {
             img.src = `../../assets/images/upload/${product.image}`;
             img.style.display = 'block';
@@ -133,6 +150,7 @@ function openModal(product = null) {
     } else {
         title.textContent = 'Thêm sản phẩm mới';
         document.getElementById('product_id').value = '';
+        document.getElementById('isActiveCheckbox').checked = true; // mặc định hiển thị
     }
 
     modal.show();
@@ -165,7 +183,7 @@ async function deleteProduct(id) {
 }
 
 // Submit form
-document.getElementById('productForm').addEventListener('submit', async function(e) {
+document.getElementById('productForm').addEventListener('submit', async function (e) {
     e.preventDefault();
     const formData = new FormData(this);
     const id = document.getElementById('product_id').value;

@@ -60,6 +60,7 @@ class ProductController {
         $this->product->size = $_POST['size'] ?? null;
         $this->product->price = $_POST['price'];
         $this->product->image = $imageName;
+        $this->product->is_active = isset($_POST['is_active']) ? 1 : 0;
 
         return $this->product->create()
             ? ["success" => true, "message" => "Thêm sản phẩm thành công!"]
@@ -100,6 +101,7 @@ class ProductController {
         $this->product->size = $_POST['size'] ?? null;
         $this->product->price = $_POST['price'];
         $this->product->image = $imageName;
+        $this->product->is_active = isset($_POST['is_active']) ? 1 : 0;
 
         return $this->product->update()
             ? ["success" => true, "message" => "Cập nhật sản phẩm thành công!"]

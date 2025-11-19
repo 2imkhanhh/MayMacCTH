@@ -158,50 +158,11 @@
             </a>
         </div>
 
-        <div class="row row-cols-1 row-cols-md-5 g-4">
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../../assets/images/product1.png" class="card-img-top" alt="Product 1">
-                    <div class="card-body text-center">
-                        <p class="card-text">Áo đồng phục</p>
-                        <p class="product-price">250.000₫</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../../assets/images/product2.png" class="card-img-top" alt="Product 2">
-                    <div class="card-body text-center">
-                        <p class="card-text">Áo đồng phục</p>
-                        <p class="product-price">250.000₫</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../../assets/images/product3.png" class="card-img-top" alt="Product 3">
-                    <div class="card-body text-center">
-                        <p class="card-text">Áo đồng phục</p>
-                        <p class="product-price">250.000₫</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../../assets/images/product4.png" class="card-img-top" alt="Product 4">
-                    <div class="card-body text-center">
-                        <p class="card-text">Áo đồng phục</p>
-                        <p class="product-price">250.000₫</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../../assets/images/product5.png" class="card-img-top" alt="Product 5">
-                    <div class="card-body text-center">
-                        <p class="card-text">Áo đồng phục</p>
-                        <p class="product-price">250.000₫</p>
-                    </div>
+        <div class="row row-cols-1 row-cols-md-5 g-4" id="homeProductList">
+            <!-- Loading spinner đẹp -->
+            <div class="col-12 text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Đang tải sản phẩm...</span>
                 </div>
             </div>
         </div>
@@ -542,6 +503,85 @@
             }
 
             await loadBanners();
+
+            //load products
+            const productList = document.getElementById('homeProductList');
+
+async function loadHomeProducts() {
+    try {
+        const res = await fetch('/MayMacCTH/api/product/get_product.php');
+        const result = await res.json();
+
+        // Xóa nội dung cũ + loading
+        productList.innerHTML = '';
+
+        if (!result.success || !result.data || result.data.length === 0) {
+            productList.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <p class="text-muted fs-5">Chưa có sản phẩm nào được hiển thị</p>
+                </div>
+            `;
+            return;
+        }
+
+        // === LỌC CHỈ LẤY SẢN PHẨM CÓ is_active = 1 ===
+        const activeProducts = result.data.filter(product => product.is_active == 1);
+
+        if (activeProducts.length === 0) {
+            productList.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <p class="text-muted fs-5">Chưa có sản phẩm nào được bật hiển thị</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Hiển thị tối đa 10 sản phẩm (hoặc bạn có thể để 5, 8 tùy ý)
+        activeProducts.slice(0, 10).forEach(product => {
+            const price = parseInt(product.price).toLocaleString('vi-VN');
+            const imagePath = product.image
+                ? `/MayMacCTH/public/assets/images/upload/${product.image}`
+                : `/MayMacCTH/public/assets/images/no-image.jpg`;
+
+            const col = document.createElement('div');
+            col.className = 'col';
+
+            col.innerHTML = `
+                <div class="card h-100 product-card border-0 shadow-sm overflow-hidden">
+                    <a href="product-detail.php?id=${product.product_id}" class="text-decoration-none text-dark">
+                        <div class="product-image-container">
+                            <img src="${imagePath}" 
+                                 class="card-img-top" 
+                                 alt="${product.name}"
+                                 onerror="this.src='/MayMacCTH/public/assets/images/no-image.jpg'">
+                        </div>
+                    </a>
+                    <div class="card-body text-center p-3">
+                        <p class="card-text mb-2 text-truncate" title="${product.name}">
+                            ${product.name}
+                        </p>
+                        <p class="product-price text-danger fw-bold fs-5 mb-0">
+                            ${price}<span class="currency-symbol">đ</span>
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            productList.appendChild(col);
+        });
+
+    } catch (err) {
+        console.error('Lỗi tải sản phẩm:', err);
+        productList.innerHTML = `
+            <div class="col-12 text-center py-5 text-danger">
+                Không thể tải sản phẩm. Vui lòng thử lại!
+            </div>
+        `;
+    }
+}
+
+// Gọi load ngay khi trang mở
+loadHomeProducts();
         });
 
     </script>
