@@ -323,7 +323,7 @@ body {
   color: #272D37 !important;
 
   /* Ghi đè margin. Dùng 6px thay vì 0.5rem (mb-2) để gọn hơn */
-  margin-bottom: 6px !important;
+  margin-bottom: 0 !important;
 
   /* Đảm bảo cắt chữ 2 dòng được ưu tiên */
   height: 42px;

@@ -77,7 +77,7 @@ async function loadProducts() {
                             <p class="text-muted small">${p.category_name || 'Chưa có danh mục'}</p>
                             <p class="text-primary fw-bold fs-5">${parseInt(p.price || 0).toLocaleString()}đ</p>
                             <small class="text-warning">${star} (${p.review_count || 0} đánh giá)</small>
-                            <div class="mt-auto d-flex gap-2 pt-3">
+                            <div class="category-actions">
                                 <button class="btn btn-category btn-edit" data-id="${p.product_id}">
                                     <i class="bi bi-pencil"></i> Sửa
                                 </button>
@@ -91,10 +91,10 @@ async function loadProducts() {
                 container.appendChild(col);
             });
 
-            document.querySelectorAll('.edit-btn').forEach(btn => {
+            document.querySelectorAll('.btn-edit').forEach(btn => {
                 btn.onclick = () => editProduct(btn.dataset.id);
             });
-            document.querySelectorAll('.delete-btn').forEach(btn => {
+            document.querySelectorAll('.btn-delete').forEach(btn => {
                 btn.onclick = () => deleteProduct(btn.dataset.id);
             });
         } else {

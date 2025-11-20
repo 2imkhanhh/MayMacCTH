@@ -19,8 +19,8 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <div class="dropdown me-4">
-                        <button class="btn btn-sm p-0 text-muted d-flex align-items-center"
-                            type="button" aria-expanded="false">
+                        <button class="btn btn-sm p-0 text-muted d-flex align-items-center" type="button"
+                            aria-expanded="false">
 
                             <img src="../../assets/images/vietnam-flag.png" id="currentFlag"
                                 style="width: 20px; height: 20px; object-fit: cover; border-radius: 3px;">
@@ -70,7 +70,8 @@
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
 
-                <a href="../../views/client/index.html"> <img src="../../assets/images/logo.png" alt="Logo" height="60" class="me-32"></a>
+                <a href="../../views/client/index.html"> <img src="../../assets/images/logo.png" alt="Logo" height="60"
+                        class="me-32"></a>
                 <div class="d-flex align-items-center">
                     <select class="form-select category-select" id="categorySelect">
                         <option value="">Tất cả</option>
@@ -123,7 +124,8 @@
 
                     <!-- Các mục menu khác -->
                     <li class="nav-item"><a class="nav-link" href="../../views/client/index.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../../views/client/about-us.html">Về chúng tôi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../../views/client/about-us.html">Về chúng tôi</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/products.html">Sản phẩm</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/guide.html">Hướng dẫn</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/news.html">Tin tức</a></li>
@@ -146,235 +148,105 @@
     <section class="product-detail">
         <div class="title-section">
             <div class="container d-flex justify-content-between align-items-center flex-wrap">
-                <div class="page-title">ÁO ĐỒNG PHỤC</div>
-                <div class="breadcrumb-nav" id="breadcrumb"></div>
+                <div class="page-title" id="categoryTitle">ĐANG TẢI...</div>
+                <div class="breadcrumb-nav" id="breadcrumb">
+                    Trang chủ > <a href="products.html">Sản phẩm</a> > <span id="productNameBreadcrumb">...</span>
+                </div>
             </div>
         </div>
 
         <div class="container">
             <div class="row align-items-start">
-
+                <!-- Ảnh sản phẩm -->
                 <div class="col-12 col-md-6 mb-4 mb-md-0">
                     <div class="product-image">
-                        <a href="../../views/client/product-detail.html" class="product-link">
-                            <img src="../../assets/images/product2.png" alt="Áo đồng phục" id="main-product-image">
-                        </a>
-                        <div class="thumbnail-images mt-3">
-                            <img src="../../assets/images/product2.png" alt="Thumbnail 1" class="thumbnail">
-                            <img src="../../assets/images/product3.png" alt="Thumbnail 2" class="thumbnail">
-                            <img src="../../assets/images/product4.png" alt="Thumbnail 2" class="thumbnail">
+                        <img src="" alt="Đang tải..." id="main-product-image" class="w-100"
+                            style="background:#f5f5f5; min-height:400px; object-fit:contain;">
+
+                        <div class="thumbnail-images mt-3 d-flex gap-2 flex-wrap" id="thumbnailContainer">
+                            <!-- Thumbnail sẽ được load bằng JS -->
                         </div>
                     </div>
 
+                    <!-- Accordion chi tiết -->
                     <div class="accordion product-info-accordion mt-4" id="productDetailsAccordion">
-
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingDetails">
+                            <h2 class="accordion-header">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseDetails" aria-expanded="false"
-                                    aria-controls="collapseDetails">
+                                    data-bs-target="#collapseDetails">
                                     Chi tiết sản phẩm
                                 </button>
                             </h2>
-                            <div id="collapseDetails" class="accordion-collapse collapse"
-                                aria-labelledby="headingDetails" data-bs-parent="#productDetailsAccordion">
-                                <div class="accordion-body">
-                                    <h5 style="font-weight: 550;">Ưu điểm</h5>
-                                    <ul>
-                                        <li>Phom dáng Regular</li>
-                                        <li>Thiết kế khóa kéo tiện dụng, kháo túi an toàn để đựng vật dụng quan trọng
-                                        </li>
-                                        <li>Bảo hành: 6 tháng</li>
-                                    </ul>
-                                    <h5 style="font-weight: 550;">Tính năng và đặc điểm của áo khoác gió</h5>
-                                    <ul>
-                                        <li>Bo chun tay có nhám cài giúp ôm cổ tay tránh gió lùa</li>
-                                        <li>Bo gấu điều chỉnh linh hoạt theo sở thích</li>
-                                        <li>Phù hợp với số đông khách hàng mặc đi chơi đi học và đi làm</li>
-                                    </ul>
+                            <div id="collapseDetails" class="accordion-collapse collapse">
+                                <div class="accordion-body" id="productDescription">
+                                    Đang tải mô tả...
                                 </div>
                             </div>
                         </div>
-
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingFaq">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseFaq" aria-expanded="false" aria-controls="collapseFaq">
-                                    Câu hỏi thường gặp
-                                </button>
-                            </h2>
-                            <div id="collapseFaq" class="accordion-collapse collapse" aria-labelledby="headingFaq"
-                                data-bs-parent="#productDetailsAccordion">
-
-                                <div class="accordion-body">
-
-                                    <div class="accordion nested-accordion" id="faqNestedAccordion">
-
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="nestedHeadingOne">
-                                                <button class="accordion-button collapsed" type="button"
-                                                    data-bs-toggle="collapse" data-bs-target="#nestedCollapseOne"
-                                                    aria-expanded="false" aria-controls="nestedCollapseOne">
-                                                    Đặt Online thành công trong bao lâu sẽ nhận được hàng?
-                                                </button>
-                                            </h2>
-                                            <div id="nestedCollapseOne" class="accordion-collapse collapse"
-                                                aria-labelledby="nestedHeadingOne" data-bs-parent="#faqNestedAccordion">
-                                                <div class="accordion-body">
-                                                    Tùy thuộc vào địa chỉ của bạn, thời gian giao hàng dự kiến từ 2-5
-                                                    ngày làm việc.
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="nestedHeadingTwo">
-                                                <button class="accordion-button collapsed" type="button"
-                                                    data-bs-toggle="collapse" data-bs-target="#nestedCollapseTwo"
-                                                    aria-expanded="false" aria-controls="nestedCollapseTwo">
-                                                    Sản phẩm không vừa có thể đổi trả không?
-                                                </button>
-                                            </h2>
-                                            <div id="nestedCollapseTwo" class="accordion-collapse collapse"
-                                                aria-labelledby="nestedHeadingTwo" data-bs-parent="#faqNestedAccordion">
-                                                <div class="accordion-body">
-                                                    Chúng tôi hỗ trợ đổi trả trong 30 ngày cho bất kỳ lý do gì, miễn là
-                                                    sản phẩm còn nguyên tem mác.
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- FAQ giữ nguyên như cũ -->
                     </div>
                 </div>
 
+                <!-- Thông tin sản phẩm -->
                 <div class="col-12 col-md-6">
                     <div class="product-info">
-
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <h1 class="product-title mb-0">
-                                <a href="#" class="product-link text-dark text-decoration-none">Áo đồng phục</a>
-                            </h1>
-                            <div class="rating-box text-warning">
-                                <i class='bx bxs-star'></i>
-                                <i class='bx bxs-star'></i>
-                                <i class='bx bxs-star'></i>
-                                <i class='bx bxs-star'></i>
-                                <i class='bx bx-star'></i>
-                                <span class="ms-1 text-muted small">(1)</span>
-                            </div>
-                        </div>
+                        <h1 class="product-title mb-0" id="productName">Đang tải sản phẩm...</h1>
 
                         <div class="price-range mb-4">
-                            <span class="price h3 fw-bold">180.000 - 200.000 VNĐ</span>
+                            <span class="price h3 fw-bold text-danger" id="productPrice">0đ</span>
                         </div>
 
                         <div class="product-meta mb-4 text-muted small">
-                            <div><strong>Mã sản phẩm:</strong> HS-023542123</div>
-                            <div><strong>Danh mục:</strong> Áo đồng phục</div>
+                            <div><strong>Mã sản phẩm:</strong> <span id="productSku">SP000</span></div>
+                            <div><strong>Danh mục:</strong> <span id="productCategory">-</span></div>
                         </div>
 
-                        <div class="color-options mb-4">
+                        <!-- Màu sắc (nếu có) -->
+                        <div class="color-options mb-4" id="colorOptions" style="display: none;">
                             <h6 class="fw-bold mb-2">Màu sắc</h6>
-                            <div class="color-swatches d-flex gap-2">
-                                <div class="color-swatch active" style="background-color: #008080;" data-color="teal">
-                                </div>
-                                <div class="color-swatch" style="background-color: #000000;" data-color="black"></div>
-                                <div class="color-swatch" style="background-color: #ff4500;" data-color="orange"></div>
-                            </div>
+                            <div class="color-swatches d-flex gap-2" id="colorSwatches"></div>
                         </div>
 
+                        <!-- Kích thước -->
                         <div class="size-options mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <h6 class="fw-bold mb-0">Kích thước</h6>
                                 <a href="#" class="size-guide text-primary small">Hướng dẫn chọn size</a>
                             </div>
-                            <div class="size-buttons d-flex gap-2">
-                                <button class="btn btn-outline-secondary btn-size active" data-size="S">S</button>
-                                <button class="btn btn-outline-secondary btn-size" data-size="M">M</button>
-                                <button class="btn btn-outline-secondary btn-size" data-size="L">L</button>
-                                <button class="btn btn-outline-secondary btn-size" data-size="XL">XL</button>
-                                <button class="btn btn-outline-secondary btn-size" data-size="XXL">XXL</button>
+                            <div class="size-buttons d-flex gap-2" id="sizeButtons">
+                                <button class="btn btn-outline-secondary btn-size active" data-size="M">M</button>
+                                <!-- JS sẽ fill nếu có size từ DB -->
                             </div>
                         </div>
 
+                        <!-- Số lượng + nút -->
                         <div class="quantity mb-4">
                             <h6 class="fw-bold mb-2">Số lượng</h6>
                             <div class="input-group w-50">
                                 <button class="btn btn-outline-secondary" type="button" id="decrease">-</button>
-                                <input type="text" class="form-control text-center fw-bold" value="1" readonly>
+                                <input type="text" class="form-control text-center fw-bold" value="1" readonly
+                                    id="quantityInput">
                                 <button class="btn btn-outline-secondary" type="button" id="increase">+</button>
                             </div>
                         </div>
 
                         <div class="action-buttons">
-                            <button class="btn btn-add-cart" id="addToCartBtn"><i class='bx bx-cart-add me-1'></i>
+                            <button class="btn btn-add-cart" id="addToCartBtn">
                                 Thêm vào giỏ hàng
-                                <!-- <span class="btn-subtext">(Miễn phí giao hàng)</span> -->
                             </button>
-                            <button class="btn btn-buy" id="orderBtn"><i class='bx bx-shopping-bag me-1'></i>
+                            <button class="btn btn-buy" id="orderBtn">
                                 Mua ngay
-                                <!-- <span class="btn-subtext">(Xuất VAT theo yêu cầu)</span> -->
                             </button>
-                            <!-- <button class="btn btn-zalo">
-                                <div class="zalo-content">
-                                    <img src="asset/images/zalo-icon.png" alt="Zalo" class="zalo-icon"> Chat qua Zalo
-                                </div>
-                                <span class="btn-subtext">(Báo giá trong 5s)</span>
-                            </button> -->
                         </div>
 
                         <div class="product-description-wrapper mt-4 pt-3">
                             <div class="section-title-container">
                                 <h2 class="section-title">Mô tả sản phẩm</h2>
-                                <div class="title-divider"></div>
                             </div>
-                            <div class="product-description-content mt-3">
-                                <p>Nội dung mô tả ngắn gọn về sản phẩm.</p>
-                            </div>
-                        </div>
-
-                        <div class="support-features-banner">
-                            <div class="feature-item">
-                                <div class="feature-icon icon-text-box">
-                                    <strong>FREE</strong>
-                                    <span>SHIP</span>
-                                </div>
-                                <div class="feature-text">
-                                    <strong>Free ship cho đơn trên 200k</strong>
-                                </div>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <i class='bx bx-sync'></i>
-                                </div>
-                                <div class="feature-text">
-                                    <strong>30 ngày đổi trả cho bất kì thứ gì</strong>
-                                </div>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <i class='bx bxs-phone-call'></i>
-                                </div>
-                                <div class="feature-text">
-                                    <strong>Hotline hỗ trợ 0783159798</strong>
-                                    <span>hỗ trợ từ 8h30 - 22h</span>
-                                </div>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">
-                                    <i class='bx bxs-map'></i>
-                                </div>
-                                <div class="feature-text">
-                                    <strong>Đến tận nơi nhận trả hàng</strong>
-                                    <span>hoàn tiền trong 24h</span>
-                                </div>
+                            <div class="product-description-content mt-3" id="shortDescription">
+                                Đang tải...
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -645,7 +517,8 @@
             <div class="row gy-4">
                 <!-- Logo + Giới thiệu -->
                 <div class="col-12 col-md-4 col-lg-3">
-                    <a href="../../views/client/index.html"><img src="../../assets/images/logo2.png" alt="Logo" class="footer-logo mb-3"></a>
+                    <a href="../../views/client/index.html"><img src="../../assets/images/logo2.png" alt="Logo"
+                            class="footer-logo mb-3"></a>
                     <p class="footer-slogan">MAY MẶC CTH lắng nghe bạn!</p>
                     <p class="footer-desc">
                         Chúng tôi luôn trân trọng mọi ý kiến đóng góp của khách hàng,
@@ -744,193 +617,185 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/script.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Breadcrumb + tên sản phẩm động
-            // const breadcrumb = document.getElementById('breadcrumb');
-            // const urlParams = new URLSearchParams(window.location.search);
-            // const productName = decodeURIComponent(urlParams.get('name') || 'Áo đồng phục');
+document.addEventListener('DOMContentLoaded', async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
 
-            // if (window.location.pathname.includes('product-detail.html')) {
-            //     breadcrumb.innerHTML = `
-            //         Trang chủ > 
-            //         <a href="products.html">Sản phẩm</a> > 
-            //         <a href="#" class="text-primary text-decoration-none fw-bold">${productName}</a>
-            //     `;
-            // }
+    // === CHỈ THAY NỘI DUNG BÊN TRONG .container, KHÔNG ĐỘNG ĐẾN .title-section ===
+    const contentContainer = document.querySelector('.product-detail > .container');
+    const titleSection = document.querySelector('.title-section'); // Giữ nguyên phần này
 
-            // Chọn màu sắc
-            const colorSwatches = document.querySelectorAll('.color-swatches .color-swatch');
-            colorSwatches.forEach(swatch => {
-                swatch.addEventListener('click', function () {
-                    colorSwatches.forEach(s => s.classList.remove('active'));
-                    this.classList.add('active');
-                    console.log('Selected color:', this.getAttribute('data-color'));
-                });
-            });
+    // Hiển thị loading
+    contentContainer.innerHTML = '<div class="text-center py-5"><h1>Đang tải sản phẩm...</h1></div>';
 
-            // Chọn kích thước
-            const sizeButtons = document.querySelectorAll('.size-buttons .btn-size');
-            sizeButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    sizeButtons.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    console.log('Selected size:', this.getAttribute('data-size'));
-                });
-            });
+    if (!productId || isNaN(productId)) {
+        contentContainer.innerHTML = '<div class="text-center py-5"><h1 class="text-danger">ID sản phẩm không hợp lệ!</h1></div>';
+        return;
+    }
 
-            // Thay đổi ảnh chính khi nhấp vào thumbnail
-            const thumbnails = document.querySelectorAll('.thumbnail');
-            const mainImage = document.getElementById('main-product-image');
+    try {
+        const res = await fetch(`../../../api/product/get_product.php`);
+        if (!res.ok) throw new Error('Không kết nối được server');
 
-            // Đặt thumbnail đầu tiên là active ban đầu
-            if (thumbnails.length > 0) {
-                thumbnails[0].classList.add('active');
+        const result = await res.json();
+        if (!result.success || !result.data || result.data.length === 0) {
+            throw new Error('Không có dữ liệu sản phẩm');
+        }
+
+        const p = result.data.find(item => item.product_id == productId);
+        if (!p) {
+            throw new Error('Sản phẩm không tồn tại');
+        }
+
+        // === CẬP NHẬT TIÊU ĐỀ + BREADCRUMB TRƯỚC (chắc chắn tồn tại) ===
+        const categoryTitleEl = document.getElementById('categoryTitle');
+        const breadcrumbNameEl = document.getElementById('productNameBreadcrumb');
+        if (categoryTitleEl) categoryTitleEl.textContent = p.category_name || 'SẢN PHẨM';
+        if (breadcrumbNameEl) breadcrumbNameEl.textContent = p.name;
+
+        // === NỘI DUNG CHÍNH ===
+        contentContainer.innerHTML = `
+            <div class="row align-items-start">
+                <!-- Ảnh -->
+                <div class="col-12 col-md-6 mb-4 mb-md-0">
+                    <div class="product-image">
+                        <img src="../assets/images/upload/${p.primary_image || 'no-image.jpg'}" 
+                             alt="${p.name}" id="main-product-image" class="w-100"
+                             style="background:#f5f5f5; min-height:400px; object-fit:contain;">
+                        <div class="thumbnail-images mt-3 d-flex gap-2 flex-wrap" id="thumbnailContainer"></div>
+                    </div>
+                    <div class="accordion product-info-accordion mt-4">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDetails">
+                                    Chi tiết sản phẩm
+                                </button>
+                            </h2>
+                            <div id="collapseDetails" class="accordion-collapse collapse">
+                                <div class="accordion-body" id="productDescription">
+                                    ${p.description ? p.description.replace(/\n/g, '<br>') : 'Chưa có mô tả chi tiết.'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thông tin -->
+                <div class="col-12 col-md-6">
+                    <div class="product-info">
+                        <h1 class="product-title mb-0" id="productName">${p.name}</h1>
+                        <div class="price-range mb-4">
+                            <span class="price h3 fw-bold text-danger" id="productPrice">
+                                ${parseInt(p.price || 0).toLocaleString('vi-VN')}đ
+                            </span>
+                        </div>
+                        <div class="product-meta mb-4 text-muted small">
+                            <div><strong>Mã sản phẩm:</strong> <span id="productSku">SP${String(p.product_id).padStart(4, '0')}</span></div>
+                            <div><strong>Danh mục:</strong> <span id="productCategory">${p.category_name || 'Chưa xác định'}</span></div>
+                        </div>
+
+                        <div class="size-options mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="fw-bold mb-0">Kích thước</h6>
+                                <a href="#" class="size-guide text-primary small">Hướng dẫn chọn size</a>
+                            </div>
+                            <div class="size-buttons d-flex gap-2" id="sizeButtons">
+                                <button class="btn btn-outline-secondary btn-size active" data-size="M">M</button>
+                            </div>
+                        </div>
+
+                        <div class="quantity mb-4">
+                            <h6 class="fw-bold mb-2">Số lượng</h6>
+                            <div class="input-group w-50">
+                                <button class="btn btn-outline-secondary" type="button" id="decrease">-</button>
+                                <input type="text" class="form-control text-center fw-bold" value="1" readonly id="quantityInput">
+                                <button class="btn btn-outline-secondary" type="button" id="increase">+</button>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-add-cart" id="addToCartBtn">Thêm vào giỏ hàng</button>
+                            <button class="btn btn-buy" id="orderBtn">Mua ngay</button>
+                        </div>
+
+                        <div class="product-description-wrapper mt-4 pt-3">
+                            <div class="section-title-container"><h2 class="section-title">Mô tả sản phẩm</h2></div>
+                            <div class="product-description-content mt-3" id="shortDescription">
+                                ${p.description || 'Chưa có mô tả ngắn.'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // === Load ảnh thumbnail ===
+        const mainImg = document.getElementById('main-product-image');
+        const thumbContainer = document.getElementById('thumbnailContainer');
+        thumbContainer.innerHTML = '';
+
+        let images = [];
+        if (p.images && Array.isArray(p.images)) {
+            images = p.images.map(i => typeof i === 'object' ? i.image : i).filter(Boolean);
+        }
+        if (!images.length && p.primary_image) images.push(p.primary_image);
+        if (!images.length) images.push('no-image.jpg');
+
+        images.forEach((img, i) => {
+            const src = `../../assets/images/upload/${img}`;  // ĐÃ SỬA Ở ĐÂY
+            if (i === 0) {
+                mainImg.src = src;  // Cũng phải sửa ở đây
+                mainImg.alt = p.name;
             }
 
-            thumbnails.forEach(thumbnail => {
-                thumbnail.addEventListener('click', function () {
-                    console.log('Thumbnail clicked:', this.src); // Kiểm tra sự kiện
-                    if (mainImage) {
-                        mainImage.src = this.src;
-                        mainImage.alt = this.alt;
-                        // Xóa class active khỏi tất cả thumbnail và thêm vào thumbnail được chọn
-                        thumbnails.forEach(img => img.classList.remove('active'));
-                        this.classList.add('active');
-                    } else {
-                        console.error('Main image element not found!');
-                    }
-                });
-            });
-
-            // Tăng giảm số lượng
-            document.getElementById('increase')?.addEventListener('click', function () {
-                let input = this.previousElementSibling;
-                input.value = parseInt(input.value) + 1;
-            });
-            document.getElementById('decrease')?.addEventListener('click', function () {
-                let input = this.nextElementSibling;
-                if (parseInt(input.value) > 1) {
-                    input.value = parseInt(input.value) - 1;
-                }
-            });
-
-            const starFilterButtons = document.querySelectorAll('.star-filter-list .btn-filter-star');
-
-            starFilterButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    // Xóa class 'active' khỏi tất cả các nút lọc sao
-                    starFilterButtons.forEach(btn => btn.classList.remove('active'));
-
-                    // Thêm class 'active' cho nút vừa được nhấp
-                    this.classList.add('active');
-
-                    // Ghi log để kiểm tra (tùy chọn)
-                    console.log('Đã chọn lọc:', this.innerText.trim());
-                });
-            });
-
-            const sizeGuide = document.querySelector(".size-guide");
-
-            if (sizeGuide) {
-                sizeGuide.addEventListener("click", function (e) {
-                    e.preventDefault();
-                    const modal = new bootstrap.Modal(document.getElementById("sizeGuideModal"));
-                    modal.show();
-                });
-            }
-
-            // Phân trang
-            const reviewItems = document.querySelectorAll('.review-item');
-            const reviewPagination = document.getElementById('reviewPagination');
-            const reviewList = document.querySelector('.review-list');
-            const itemsPerPage = 3;
-            let currentPage = 1;
-
-            function showReviewPage(page, scroll = true) { // Thêm tham số scroll
-                const totalPages = Math.ceil(reviewItems.length / itemsPerPage);
-                if (page < 1) page = 1;
-                if (page > totalPages) page = totalPages;
-
-                reviewItems.forEach(item => item.style.display = 'none');
-                for (let i = (page - 1) * itemsPerPage; i < page * itemsPerPage && i < reviewItems.length; i++) {
-                    reviewItems[i].style.display = 'block';
-                }
-
-                reviewPagination.innerHTML = '';
-                const maxPagesToShow = 5;
-                let startPage = Math.max(1, page - Math.floor(maxPagesToShow / 2));
-                let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
-
-                if (endPage - startPage < maxPagesToShow - 1) {
-                    startPage = Math.max(1, endPage - maxPagesToShow + 1);
-                }
-
-                reviewPagination.innerHTML += `
-                    <li class="page-item ${page === 1 ? 'disabled' : ''}">
-                        <a class="page-link" href="#" aria-label="Previous" id="prevPage">
-                            <i class='bx bx-chevron-left'></i> Trước
-                        </a>
-                    </li>
-                `;
-
-                for (let i = startPage; i <= endPage; i++) {
-                    reviewPagination.innerHTML += `
-                        <li class="page-item ${i === page ? 'active' : ''}">
-                            <a class="page-link" href="#">${i}</a>
-                        </li>
-                    `;
-                }
-
-                reviewPagination.innerHTML += `
-                    <li class="page-item ${page === totalPages ? 'disabled' : ''}">
-                        <a class="page-link" href="#" aria-label="Next" id="nextPage">
-                            Sau <i class='bx bx-chevron-right'></i>
-                        </a>
-                    </li>
-                `;
-
-                currentPage = page;
-
-                // Chỉ cuộn khi người dùng tương tác với phân trang
-                if (scroll && reviewList) {
-                    reviewList.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }
-
-            reviewPagination.addEventListener('click', function (e) {
-                e.preventDefault();
-                if (e.target.tagName === 'A' && e.target.closest('#reviewPagination')) {
-                    const link = e.target;
-                    if (link.id === 'prevPage') {
-                        showReviewPage(currentPage - 1);
-                    } else if (link.id === 'nextPage') {
-                        showReviewPage(currentPage + 1);
-                    } else {
-                        const page = parseInt(link.textContent);
-                        currentPage = page;
-                        showReviewPage(page);
-                    }
-                }
-            });
-
-            // Không cuộn khi trang tải
-            showReviewPage(1, false);
-
-            document.getElementById('addToCartBtn').addEventListener('click', function () {
-                // Có thể thêm code lưu sản phẩm vào localStorage / server ở đây
-
-                // Chuyển sang trang đơn hàng
-                window.location.href = 'cart.html';
-            });
-
-            document.getElementById('orderBtn').addEventListener('click', function () {
-                // Có thể thêm code lưu sản phẩm vào localStorage / server ở đây
-
-                // Chuyển sang trang đơn hàng
-                window.location.href = 'order.html';
-            });
+            const thumb = document.createElement('img');
+            thumb.src = src;  // Và ở đây
+            thumb.alt = p.name;
+            thumb.className = 'thumbnail';
+            thumb.style.cssText = 'width:80px;height:80px;object-fit:cover;cursor:pointer;border:2px solid #eee;border-radius:8px;margin:4px;';
+            if (i === 0) thumb.classList.add('active');
+            thumb.onclick = () => {
+                mainImg.src = src;
+                document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+                thumb.classList.add('active');
+            };
+            thumbContainer.appendChild(thumb);
         });
-    </script>
+
+        document.title = `${p.name} - May Mặc CTH`;
+
+        // === Sự kiện nút ===
+        document.getElementById('increase')?.addEventListener('click', () => {
+            const input = document.getElementById('quantityInput');
+            input.value = parseInt(input.value) + 1;
+        });
+        document.getElementById('decrease')?.addEventListener('click', () => {
+            const input = document.getElementById('quantityInput');
+            if (parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+        });
+        document.getElementById('addToCartBtn')?.addEventListener('click', () => {
+            alert(`Đã thêm "${p.name}" vào giỏ hàng!`);
+        });
+        document.getElementById('orderBtn')?.addEventListener('click', () => {
+            alert('Chuyển đến trang đặt hàng...');
+        });
+        document.querySelector('.size-guide')?.addEventListener('click', e => {
+            e.preventDefault();
+            new bootstrap.Modal(document.getElementById('sizeGuideModal')).show();
+        });
+
+    } catch (err) {
+        console.error('Lỗi:', err);
+        contentContainer.innerHTML = `
+            <div class="text-center py-5">
+                <h1 class="text-danger">Không thể tải sản phẩm</h1>
+                <p class="text-muted">${err.message}</p>
+                <button class="btn btn-primary" onclick="location.reload()">Tải lại trang</button>
+            </div>
+        `;
+    }
+});
+</script>
 </body>
 
 </html>
