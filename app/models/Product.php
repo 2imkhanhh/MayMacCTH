@@ -22,7 +22,7 @@ class Product
                   LEFT JOIN categories c ON p.category_id = c.category_id
                   LEFT JOIN product_colors pc ON pc.product_id = p.product_id
                   LEFT JOIN product_variants pv ON pv.color_id = pc.color_id
-                  LEFT JOIN product_images pi ON pi.product_id = p.product_id AND pi.is_primary = 1
+                  LEFT JOIN product_images pi ON pi.product_id = p.product_id
                   WHERE p.is_active = 1";
 
         if ($category_id) $query .= " AND p.category_id = :category_id";
@@ -71,66 +71,82 @@ class Product
         foreach ($rows as $row) {
             $pid = $row['product_id'];
 
+            // Khởi tạo sản phẩm nếu chưa có
             if (!isset($products[$pid])) {
                 $products[$pid] = [
-                    'product_id'    => $pid,
-                    'name'          => $row['name'],
-                    'description'   => $row['description'] ?? '',
-                    'price'         => $row['price'] ?? 0,    // FIX OK
-                    'category_id'   => $row['category_id'],
-                    'category_name' => $row['category_name'],
-                    'star'          => floatval($row['star'] ?? 5),
-                    'review_count'  => intval($row['review_count'] ?? 0),
-                    'is_active'     => $row['is_active'],
-                    'created_at'    => $row['created_at'],
-                    'updated_at'    => $row['updated_at'],
-                    'primary_image' => null,
-                    'images'        => [],
-                    'colors'        => []   // FIX key bị lỗi
+                    'product_id'     => $pid,
+                    'name'           => $row['name'],
+                    'description'    => $row['description'] ?? '',
+                    'price'          => $row['price'] ?? 0,
+                    'category_id'    => $row['category_id'],
+                    'category_name'  => $row['category_name'],
+                    'star'           => floatval($row['star'] ?? 5),
+                    'review_count'   => intval($row['review_count'] ?? 0),
+                    'is_active'      => $row['is_active'],
+                    'created_at'     => $row['created_at'],
+                    'updated_at'     => $row['updated_at'],
+                    'primary_image'  => null,
+                    'images'         => [],
+                    'colors'         => []
                 ];
             }
 
-            // Ảnh chính
-            if (($row['is_primary'] ?? 0) == 1 && !$products[$pid]['primary_image']) {
-                $products[$pid]['primary_image'] = $row['image'];
-            }
-
-            // Danh sách ảnh (tránh trùng)
+            // === XỬ LÝ ẢNH ===
             if (!empty($row['image'])) {
-                $found = false;
+                // Kiểm tra xem ảnh đã tồn tại chưa
+                $exists = false;
                 foreach ($products[$pid]['images'] as $img) {
                     if ($img['image'] === $row['image']) {
-                        $found = true;
+                        $exists = true;
                         break;
                     }
                 }
-
-                if (!$found) {
+                if (!$exists) {
                     $products[$pid]['images'][] = [
                         'image_id'   => $row['image_id'] ?? null,
                         'image'      => $row['image'],
-                        'is_primary' => $row['is_primary'] ?? 0,
-                        'sort_order' => $row['sort_order'] ?? 0
+                        'is_primary' => (int)($row['is_primary'] ?? 0),
+                        'sort_order' => (int)($row['sort_order'] ?? 0)
                     ];
+
+                    // Cập nhật ảnh chính (ưu tiên is_primary = 1, nếu không có thì lấy ảnh đầu)
+                    if (($row['is_primary'] ?? 0) == 1) {
+                        $products[$pid]['primary_image'] = $row['image'];
+                    } elseif ($products[$pid]['primary_image'] === null && count($products[$pid]['images']) === 1) {
+                        $products[$pid]['primary_image'] = $row['image'];
+                    }
                 }
             }
 
-            // Màu + size
+            // === XỬ LÝ MÀU + SIZE ===
             if (!empty($row['color_id'])) {
+                $colorId = $row['color_id'];
 
-                if (!isset($products[$pid]['colors'][$row['color_id']])) {
-                    $products[$pid]['colors'][$row['color_id']] = [
-                        'color_id'   => $row['color_id'],
+                if (!isset($products[$pid]['colors'][$colorId])) {
+                    $products[$pid]['colors'][$colorId] = [
+                        'color_id'   => $colorId,
                         'color_name' => $row['color_name'],
                         'color_code' => $row['color_code'] ?? '#000000',
                         'sizes'      => []
                     ];
                 }
 
-                if (!empty($row['size']) && !in_array($row['size'], $products[$pid]['colors'][$row['color_id']]['sizes'])) {
-                    $products[$pid]['colors'][$row['color_id']]['sizes'][] = $row['size'];
+                if (!empty($row['size'])) {
+                    $size = trim(strtoupper($row['size']));
+                    if (!in_array($size, $products[$pid]['colors'][$colorId]['sizes'])) {
+                        $products[$pid]['colors'][$colorId]['sizes'][] = $size;
+                    }
                 }
             }
+        }
+
+        // Chuyển colors từ object → array (để frontend dễ dùng)
+        foreach ($products as &$p) {
+            $p['colors'] = array_values($p['colors']);
+            // Sắp xếp ảnh theo sort_order
+            usort($p['images'], function ($a, $b) {
+                return ($a['sort_order'] ?? 0) <=> ($b['sort_order'] ?? 0);
+            });
         }
 
         return array_values($products);
