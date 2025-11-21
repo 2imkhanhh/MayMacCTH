@@ -1,0 +1,160 @@
+/* ============================================= */
+/*          ADMIN - QUẢN LÝ TRANG GIỚI THIỆU      */
+/* ============================================= */
+
+.main-content {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+    min-height: 100vh;
+}
+
+/* Tiêu đề trang */
+.main-content h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 32px;
+    background: #007bff;
+    border-radius: 3px;
+}
+
+/* Nút thêm mới */
+#btnAdd {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    border: none;
+    padding: 12px 28px;
+    font-weight: 600;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+#btnAdd:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+}
+
+/* Danh sách card */
+#aboutList {
+    margin-top: 20px;
+}
+
+.about-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    margin-bottom: 25px;
+    border: 1px solid #e9ecef;
+}
+
+.about-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.about-card .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    position: relative;
+}
+
+.about-card .card-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 2px;
+}
+
+.about-card .card-body {
+    padding: 1.8rem;
+}
+
+.about-card img {
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    margin: 15px 0;
+    width: 100%;
+}
+
+.about-card .content-preview {
+    color: #555;
+    line-height: 1.7;
+    font-size: 0.95rem;
+    max-height: 100px;
+    overflow: hidden;
+    position: relative;
+}
+
+.about-card .content-preview::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background: linear-gradient(transparent, white);
+}
+
+.about-card .section-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.badge-banner   { background: #e3f2fd; color: #1976d2; }
+.badge-header   { background: #f3e5f5; color: #7b1fa2; }
+.badge-grid     { background: #e8f5e8; color: #2e7d32; }
+.badge-footer   { background: #fff3e0; color: #f57c00; }
+
+/* Nút hành động */
+.about-card .actions {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px dashed #dee2e6;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.about-card .btn {
+    border-radius: 50px;
+    padding: 8px 20px;
+    font-weight: 500;
+}
+
+/* Preview ảnh trong modal */
+#previewImage {
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-card {
+        margin: 0 10px 25px;
+    }
+    
+    .about-card .actions {
+        flex-direction: column;
+    }
+    
+    .about-card .btn {
+        text-align: center;
+    }
+}

@@ -143,54 +143,55 @@
     font-size: 1.1rem;
     font-weight: 700;
     color: #174DAF;
-    margin-bottom: 10px;
+    margin-bottom: 0 !important;
 }
 
 /* Action buttons */
 .product-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: auto;
-}
-
-.btn-action {
-    flex: 1;
-    padding: 10px 12px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: .9rem;
+    flex: 1; 
     border: none;
-    display: flex;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 5px; /* Khoảng cách giữa icon và chữ */
+    transition: all 0.3s ease;
     cursor: pointer;
-    transition: .25s ease;
 }
 
 .btn-edit {
-    background: #e7f1ff !important;
+    background-color: #e7f1ff !important; /* !important để đè bootstrap nếu cần */
     color: #174DAF !important;
 }
+
 .btn-edit:hover {
-    background: #174DAF !important;
-    color: #fff !important;
-    box-shadow: 0 4px 10px rgba(23, 77, 175, .3);
+    background-color: #174DAF !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(23, 77, 175, 0.3);
 }
 
 .btn-delete {
-    background: #ffecec !important;
+    background-color: #ffecec !important;
     color: #e63946 !important;
 }
+
 .btn-delete:hover {
-    background: #e63946 !important;
-    color: #fff !important;
-    box-shadow: 0 4px 10px rgba(230, 57, 70, .3);
+    background-color: #e63946 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(230, 57, 70, 0.3);
 }
 
 .btn-action i {
     font-size: 1.1em;
 }
 
+/* Hiệu ứng khi hover cả card */
+.product-card:hover .btn-action {
+    transform: translateY(-2px);
+}
 /* 4. Bộ lọc & tìm kiếm */
 #filterCategory,
 #searchName {

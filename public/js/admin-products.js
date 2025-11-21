@@ -77,12 +77,12 @@ async function loadProducts() {
                             <p class="text-muted small">${p.category_name || 'Chưa có danh mục'}</p>
                             <p class="text-primary fw-bold fs-5">${parseInt(p.price || 0).toLocaleString()}đ</p>
                             <small class="text-warning">${star} (${p.review_count || 0} đánh giá)</small>
-                            <div class="category-actions">
-                                <button class="btn btn-category btn-edit" data-id="${p.product_id}">
-                                    <i class="bi bi-pencil"></i> Sửa
+                            <div class="product-actions mt-auto">
+                                <button class="btn-action btn-edit w-100 d-flex align-items-center justify-content-center gap-2" data-id="${p.product_id}">
+                                    <i class="bi bi-pencil-square"></i> Sửa sản phẩm
                                 </button>
-                                <button class="btn btn-category btn-delete" data-id="${p.product_id}">
-                                    <i class="bi bi-trash"></i> Xóa
+                                <button class="btn-action btn-delete w-100 d-flex align-items-center justify-content-center gap-2" data-id="${p.product_id}">
+                                    <i class="bi bi-trash"></i> Xóa sản phẩm
                                 </button>
                             </div>
                         </div>

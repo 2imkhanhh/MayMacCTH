@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Giới thiệu</title>
+    <link rel="stylesheet" href="../../assets/css/admin-about.css">
     <link rel="stylesheet" href="../../assets/css/admin-style.css">
     <link rel="stylesheet" href="../../assets/css/admin-banner.css">
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.css">
@@ -15,7 +16,7 @@
     <?php include 'partials/sidebar.php'; ?>
 
     <div class="main-content flex-grow-1 p-4">
-        <h2 class="mb-4">Quản lý trang Giới thiệu</h2>
+        <h2 class="mb-4">Về chúng tôi</h2>
         <button class="btn btn-primary mb-3" id="btnAdd">Thêm nội dung mới</button>
         <div id="aboutList" class="row"></div>
     </div>
