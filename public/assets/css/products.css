@@ -261,11 +261,10 @@
     justify-content: space-between;
 }
 
-/* Tên sản phẩm ngắn gọn, đẹp */
 .product-card .card-title {
     font-size: 15px;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 0;
     color: #222;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -275,7 +274,6 @@
     height: 40px;
 }
 
-/* Giá nổi bật */
 .product-card .price {
     font-size: 18px;
     font-weight: 700;
@@ -283,7 +281,6 @@
     margin: 8px 0;
 }
 
-/* Đánh giá nhỏ xinh */
 .product-card .rating {
     font-size: 13px;
     color: #f39c12;
