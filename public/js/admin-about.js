@@ -64,11 +64,11 @@ async function loadAbout() {
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title mb-2">${decodeHtml(item.title)}</h5>
                             <p class="text-muted small mb-3"><strong>${typeText}</strong></p>
-                            <div class="mt-auto d-flex gap-2">
-                                <button class="btn btn-sm btn-warning flex-fill" onclick="editItem(${item.about_id})">
-                                    <i class="bi bi-pencil"></i> Sửa
+                            <div class="banner-actions">
+                                <button class="btn btn-action btn-edit edit-banner-btn" onclick="editItem(${item.about_id})">
+                                    <i class="bi bi-pencil-square"></i> Sửa
                                 </button>
-                                <button class="btn btn-sm btn-danger flex-fill" onclick="deleteItem(${item.about_id})">
+                                <button class="btn btn-action btn-delete delete-banner-btn" onclick="deleteItem(${item.about_id})">
                                     <i class="bi bi-trash"></i> Xóa
                                 </button>
                             </div>
