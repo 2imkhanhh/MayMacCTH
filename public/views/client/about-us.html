@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/about-us.css">
 </head>
+
 <body>
     <!-- Top Header -->
     <div class="top-header bg-white border-bottom">
@@ -17,8 +19,8 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <div class="dropdown me-4">
-                        <button class="btn btn-sm p-0 text-muted d-flex align-items-center"
-                            type="button" aria-expanded="false">
+                        <button class="btn btn-sm p-0 text-muted d-flex align-items-center" type="button"
+                            aria-expanded="false">
 
                             <img src="../../assets/images/vietnam-flag.png" id="currentFlag"
                                 style="width: 20px; height: 20px; object-fit: cover; border-radius: 3px;">
@@ -68,7 +70,8 @@
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
 
-                <a href="../../views/client/index.html"> <img src="../../assets/images/logo.png" alt="Logo" height="60" class="me-32"></a>
+                <a href="../../views/client/index.html"> <img src="../../assets/images/logo.png" alt="Logo" height="60"
+                        class="me-32"></a>
                 <div class="d-flex align-items-center">
                     <select class="form-select category-select" id="categorySelect">
                         <option value="">Tất cả</option>
@@ -121,7 +124,8 @@
 
                     <!-- Các mục menu khác -->
                     <li class="nav-item"><a class="nav-link" href="../../views/client/index.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="../../views/client/about-us.html">Về chúng tôi</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="../../views/client/about-us.html">Về chúng
+                            tôi</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/products.html">Sản phẩm</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/guide.html">Hướng dẫn</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/news.html">Tin tức</a></li>
@@ -149,74 +153,80 @@
             </div>
         </div>
         <div class="container">
-            <div class="text-center fade-element">
-                <img src="../../assets/images/team.png" alt="Team CTH" class="img-fluid rounded" style="max-width: 100%;">
+            <!-- BANNER từ DB → hiển thị ảnh team -->
+            <div class="text-center fade-element" id="bannerImageSection">
+                <img src="../../assets/images/team.png" alt="Team CTH" class="img-fluid rounded"
+                    style="max-width: 100%;">
             </div>
-            <div class="brand-story-card mt-5 fade-in">
+
+            <!-- HEADER từ DB → Câu chuyện thương hiệu -->
+            <div class="brand-story-card mt-5 fade-in" id="headerStorySection">
                 <div class="card about-card brand-card">
                     <div class="card-body text-center">
                         <h4 class="card-title">CÂU CHUYỆN THƯƠNG HIỆU</h4>
-                        <p class="card-text">CTH được thành lập với khát vọng mang đến những sản phẩm may mặc chất lượng cao, tinh tế trong từng đường kim mũi chỉ. Chúng tôi tin rằng thời trang không chỉ là vẻ bề ngoài – mà còn là sự tự tin, phong thái và phong cách sống của mỗi người. Từ những ngày đầu, CTH đã định hướng trở thành đối tác sản xuất và cung cấp sản phẩm may mặc đáng tin cậy cho các thương hiệu trong và ngoài nước, với tiêu chí “Chất lượng – Uy tín – Tận tâm” làm kim chỉ nam trong mọi hoạt động.</p>
+                        <p class="card-text">CTH được thành lập với khát vọng...</p>
                     </div>
                 </div>
             </div>
+
+            <!-- GRID_ITEM từ DB → 6 card nhỏ -->
             <div class="row mt-5">
-                <div class="col-12 col-md-4 mb-4 fade-element">
+                <div class="col-12 col-md-4 mb-4 fade-element" data-grid="1">
                     <div class="card about-card">
                         <div class="card-body text-center">
                             <h4 class="card-title">Sứ mệnh</h4>
-                            <p class="card-text">Sứ mệnh của chúng tôi là: Tạo ra sản phẩm may mặc bền đẹp, tinh tế, chuẩn form và thân thiện với người mặc. Mang lại giá trị bền vững cho khách hàng, đối tác và người lao động. Góp phần nâng tầm thương hiệu thời trang Việt trên thị trường quốc tế.</p>
+                            <p class="card-text">...</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-4 mb-4 fade-element">
+                <div class="col-12 col-md-4 mb-4 fade-element" data-grid="2">
                     <div class="card about-card">
                         <div class="card-body text-center">
                             <h4 class="card-title">Giá trị cốt lõi</h4>
-                            <p class="card-text">Chất lượng: Kiểm soát nghiêm công đoạn, chọn vải đến đường may.Tận tâm: Lắng nghe, đáp ứng mọi yêu cầu riêng biệt của khách hàng.Sáng tạo: Không ngừng đổi mới mẫu mã, quy trình và công nghệ.Uy tín: Giữ lời hứa – đúng tiến độ – đúng tiêu chuẩn.Phát triển bền vững: Tôn trọng con người, môi trường và cộng đồng.</p>
+                            <p class="card-text">...</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-4 mb-4 fade-element">
+                <div class="col-12 col-md-4 mb-4 fade-element" data-grid="3">
                     <div class="card about-card">
                         <div class="card-body text-center">
                             <h4 class="card-title">Tầm nhìn</h4>
-                            <p class="card-text">Trở  thành một trong những doanh nghiệp may mặc hàng đầu Việt Nam, được khách hàng trong và ngoài nước tin cậy lựa chọn nhờ chất lượng sản phẩm, quy trình minh bạch và dịch vụ chuyên nghiệp.</p>
+                            <p class="card-text">...</p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row mt-5">
-                <div class="col-12 col-md-4 mb-4 fade-element">
+                <div class="col-12 col-md-4 mb-4 fade-element" data-grid="4">
                     <div class="card about-card">
                         <div class="card-body text-center">
                             <h4 class="card-title">Năng lực & Quy trình sản xuất</h4>
-                            <p class="card-text">Với hệ thống xưởng may hiện đại, đội ngũ công nhân lành nghề và quy trình kiểm soát chất lượng đạt chuẩn ISO, CTH tự tin đáp ứng linh hoạt đơn hàng từ nhỏ đến lớn.</p>
+                            <p class="card-text">...</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-4 mb-4 fade-element">
+                <div class="col-12 col-md-4 mb-4 fade-element" data-grid="5">
                     <div class="card about-card">
                         <div class="card-body text-center">
                             <h4 class="card-title">Chúng tôi chuyên về</h4>
-                            <p class="card-text">Gia công hàng thời trang nam, nữ, trẻ em. Đồng phục công sở, áo thun, jacket, quần tây, váy, sơ mi. Thiết kế & sản xuất theo yêu cầu thương hiệu (ODM/OEM).</p>
+                            <p class="card-text">...</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-4 mb-4 fade-element">
+                <div class="col-12 col-md-4 mb-4 fade-element" data-grid="6">
                     <div class="card about-card">
                         <div class="card-body text-center">
                             <h4 class="card-title">Đội ngũ của chúng tôi</h4>
-                            <p class="card-text">Đội ngũ CTH gồm những con người giàu kinh nghiệm trong ngành may mặc – từ thiết kế, kỹ thuật, quản lý sản xuất đến chăm sóc khách hàng – luôn đặt chất lượng và uy tín lên hàng đầu.</p>
+                            <p class="card-text">...</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="brand-story-card mt-5 fade-element">
+            <div class="brand-story-card mt-5 fade-element" id="footerSection">
                 <div class="card about-card brand-card">
                     <div class="card-body text-center">
                         <h4 class="card-title">CAM KẾT CỦA CTH</h4>
-                        <p class="card-text">Nguyên liệu rõ nguồn gốc, vải đạt tiêu chuẩn an toàn. Đường may chắc chắn, mẫu mã cập nhật xu hướng. Giao hàng đúng hẹn, hỗ trợ đổi trả khi có lỗi kỹ thuật.</p>
+                        <p class="card-text">Nguyên liệu rõ nguồn gốc...</p>
                     </div>
                 </div>
             </div>
@@ -229,7 +239,8 @@
             <div class="row gy-4">
                 <!-- Logo + Giới thiệu -->
                 <div class="col-12 col-md-4 col-lg-3">
-                    <a href="../../views/client/index.html"><img src="../../assets/images/logo2.png" alt="Logo" class="footer-logo mb-3"></a>
+                    <a href="../../views/client/index.html"><img src="../../assets/images/logo2.png" alt="Logo"
+                            class="footer-logo mb-3"></a>
                     <p class="footer-slogan">MAY MẶC CTH lắng nghe bạn!</p>
                     <p class="footer-desc">
                         Chúng tôi luôn trân trọng mọi ý kiến đóng góp của khách hàng,
@@ -328,71 +339,94 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/script.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            /*
-            // Hiệu ứng fade-in/fade-out khi cuộn
-            const fadeElements = document.querySelectorAll('.fade-in');
+        // Hàm giải mã HTML entities ( &amp; → &, &quot; → ", v.v. )
+        function decodeHtml(text) {
+            const div = document.createElement('div');
+            div.innerHTML = text || '';
+            return div.textContent || div.innerText || '';
+        }
 
-            function handleScroll() {
-                const windowHeight = window.innerHeight;
-                const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // Đường dẫn chính xác từ public/views/client/ → ra thư mục gốc
+                const res = await fetch('../../../api/about/get_about.php');
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-                fadeElements.forEach(element => {
-                    const elementTop = element.getBoundingClientRect().top + scrollTop;
-                    const elementBottom = elementTop + element.offsetHeight;
-
-                    const isVisible = element.classList.contains('visible');
-
-                    // Khi phần tử tiến vào trong khung nhìn
-                    if (scrollTop + windowHeight > elementTop + 100 && scrollTop < elementBottom - 100) {
-                        if (!isVisible) {
-                            element.classList.add('visible');
-                            element.classList.remove('hidden');
-                        }
-                    }
-                    // Khi cuộn lên hoặc ra khỏi vùng nhìn
-                    else {
-                        if (isVisible) {
-                            element.classList.add('hidden');
-                            element.classList.remove('visible');
-                        }
-                    }
-                });
-            }
-
-            window.addEventListener('scroll', handleScroll);
-            handleScroll(); // Kiểm tra khi tải trang
-            */
-           const langButtons = document.querySelectorAll(".choose-lang");
-            const currentFlag = document.getElementById("currentFlag");
-            const currentLang = document.getElementById("currentLang");
-
-            langButtons.forEach(btn => {
-                btn.addEventListener("click", function (e) {
-                    e.preventDefault();
-                    const lang = this.getAttribute("data-lang");
-                    const flag = this.getAttribute("data-flag");
-
-                    currentFlag.src = flag;
-                    currentLang.textContent = lang;
-                });
-            });
-
-            //Hiệu ứng fade-in/fade-out khi cuộn
-            const fadeElements = document.querySelectorAll(".fade-element");
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("visible");
-                } else {
-                    entry.target.classList.remove("visible"); // Cho phép fade-out khi cuộn ngược
+                const result = await res.json();
+                if (!result.success || !result.data || result.data.length === 0) {
+                    console.log('Chưa có dữ liệu trang Giới thiệu');
+                    return;
                 }
-                });
-            }, { threshold: 0.3 }); // 20% phần tử vào khung nhìn thì kích hoạt
 
-            fadeElements.forEach(el => observer.observe(el));
+                const data = result.data;
+
+                // Lấy từng phần
+                const bannerItem = data.find(i => i.section_type === 'banner');
+                const headerItem = data.find(i => i.section_type === 'header');
+                const footerItem = data.find(i => i.section_type === 'footer');
+                const gridItems = data.filter(i => i.section_type === 'grid_item'); 
+
+                // 1. BANNER → Ảnh đội ngũ (phần đầu trang)
+                if (bannerItem?.image) {
+                    const img = document.querySelector('#bannerImageSection img');
+                    if (img) {
+                        img.src = bannerItem.image;
+                        img.alt = decodeHtml(bannerItem.title) || 'Đội ngũ CTH';
+                    }
+                }
+
+                // 2. HEADER → Câu chuyện thương hiệu
+                if (headerItem) {
+                    const el = document.getElementById('headerStorySection');
+                    el.querySelector('.card-title').textContent = decodeHtml(headerItem.title) || 'CÂU CHUYỆN THƯƠNG HIỆU';
+                    el.querySelector('.card-text').textContent = decodeHtml(headerItem.content || '');
+                }
+
+                // 3. GRID ITEM 
+                gridItems.forEach((item, index) => {
+                    const col = document.querySelector(`[data-grid="${index + 1}"]`);
+                    if (!col) return; 
+
+                    col.querySelector('.card-title').textContent = decodeHtml(item.title || 'Tiêu đề');
+                    col.querySelector('.card-text').textContent = decodeHtml(item.content || '');
+
+                    // Nếu card có ảnh
+                    if (item.image) {
+                        let img = col.querySelector('img');
+                        if (!img) {
+                            img = document.createElement('img');
+                            img.className = 'mt-3 img-fluid rounded';
+                            img.style.cssText = 'max-height:180px; object-fit:cover; width:100%;';
+                            col.querySelector('.card-body').appendChild(img);
+                        }
+                        img.src = item.image;
+                        img.alt = decodeHtml(item.title);
+                    }
+                });
+
+                // 4. FOOTER → Cam kết cuối trang
+                if (footerItem) {
+                    const el = document.getElementById('footerSection');
+                    el.querySelector('.card-title').textContent = decodeHtml(footerItem.title) || 'CAM KẾT CỦA CTH';
+                    el.querySelector('.card-text').textContent = decodeHtml(footerItem.content || '');
+                }
+
+                // Hiệu ứng fade khi scroll
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        entry.target.classList.toggle('visible', entry.isIntersecting);
+                    });
+                }, { threshold: 0.15 });
+
+                document.querySelectorAll('.fade-element, .fade-in').forEach(el => observer.observe(el));
+
+            } catch (err) {
+                console.error('Lỗi tải trang Giới thiệu:', err);
+                // Có thể hiện thông báo nhẹ nhàng cho người dùng nếu muốn
+                // document.querySelector('.container').innerHTML += '<p class="text-danger text-center">Tạm thời không tải được nội dung.</p>';
+            }
         });
     </script>
 </body>
+
 </html>

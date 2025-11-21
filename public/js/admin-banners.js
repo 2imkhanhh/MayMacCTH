@@ -58,7 +58,7 @@ async function loadBanners(){
         if(data.success && data.data.length){   
             data.data.forEach(b => {
                 const col = document.createElement('div');
-                col.className = 'col-md-6 col-lg-4 mb-4'; // Responsive column
+                col.className = 'col-md-6 col-lg-4 mb-4'; 
                 
                 const statusClass = (b.is_active == 1) ? 'status-active' : 'status-inactive';
                 const statusText = (b.is_active == 1) ? 'Hiển thị' : 'Ẩn';
@@ -84,7 +84,6 @@ async function loadBanners(){
                         </div>
                     </div>
                 `;
-                // --------------------------------------------------
 
                 grid.appendChild(col);
             });

@@ -43,24 +43,16 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <!-- Vị trí hiển thị -->
                                 <div class="mb-3">
                                     <label>Vị trí hiển thị <span class="text-danger">*</span></label>
                                     <select class="form-select" name="section_type" id="sectionTypeSelect">
-                                        <option value="header">Header - Tiêu đề trang</option>
-                                        <option value="banner">Banner chính</option>
+                                        <option value="banner">Banner - Ảnh đội ngũ (trên cùng)</option>
+                                        <option value="header">Header - Câu chuyện thương hiệu</option>
                                         <option value="grid_item">Grid Item - Card nhỏ 3 cột</option>
-                                        <option value="footer">Footer - Card dài cuối trang</option>
+                                        <option value="footer">Footer - Cam kết cuối trang</option>
                                     </select>
                                 </div>
 
-                                <!-- Ô thứ tự - mặc định ẨN, chỉ hiện khi chọn grid_item -->
-                                <div class="mb-3" id="orderWrapper" style="display:none;">
-                                    <label>Thứ tự hiển thị</label>
-                                    <input type="number" class="form-control" name="display_order" value="999" min="0">
-                                </div>
-
-                                <!-- Ảnh -->
                                 <div class="mb-3">
                                     <label>Ảnh (nếu có)</label>
                                     <input type="file" class="form-control" name="image" accept="image/*">
