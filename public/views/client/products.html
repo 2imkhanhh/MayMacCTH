@@ -303,33 +303,41 @@
 
                 <!-- Thông tin liên hệ + Nút liên hệ -->
                 <div class="col-12 col-md-12 col-lg-3">
-                    <p class="footer-title">THÔNG TIN LIÊN HỆ</p>
-                    <p>📍 73/202 Miếu Hai Xã, Lê Chân, Hải Phòng, Việt Nam</p>
-                    <p>🌐 <a href="https://www.indohaiphong.com"
-                            class="text-white text-decoration-none">www.indohaiphong.com</a></p>
-                    <p>☎ 078315798 - 083435093 - 083919999</p>
+                    <p class="footer-title mb-3">THÔNG TIN LIÊN HỆ</p>
 
-                    <!-- Nút liên hệ (phiên bản đã chỉnh đẹp) -->
+                    <!-- Dùng flex để icon và chữ luôn thẳng hàng -->
+                    <div class="d-flex align-items-start mb-2">
+                        <i class='bx bx-map text-warning me-3' style="font-size: 1.4rem; min-width: 26px;"></i>
+                        <span id="footerAddress" class="text-white">Đang tải địa chỉ...</span>
+                    </div>
+
+                    <div class="d-flex align-items-start mb-2">
+                        <i class='bx bx-globe text-success me-3' style="font-size: 1.4rem; min-width: 26px;"></i>
+                        <span id="footerWebsite" class="text-white">Đang tải website...</span>
+                    </div>
+
+                    <div class="d-flex align-items-start mb-4">
+                        <i class='bx bx-phone text-danger me-3' style="font-size: 1.4rem; min-width: 26px;"></i>
+                        <span id="footerPhone" class="text-white">Đang tải số điện thoại...</span>
+                    </div>
+
+                    <!-- Nút liên hệ giữ nguyên -->
                     <div class="footer-contact-btns mt-3">
                         <a href="https://zalo.me/078315798" class="contact-card">
                             <div class="contact-icon"><img src="../../assets/images/zalo.png" alt="Zalo"></div>
-                            <div class="contact-text"><span class="contact-label">TƯ VẤN QUA</span><span
-                                    class="contact-value">ZALO</span></div>
+                            <div class="contact-text"><span class="contact-label">TƯ VẤN QUA</span><span class="contact-value">ZALO</span></div>
                         </a>
                         <a href="tel:+078315798" class="contact-card">
                             <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Hotline"></div>
-                            <div class="contact-text"><span class="contact-label">HOTLINE</span><span
-                                    class="contact-value">0783 157 98</span></div>
+                            <div class="contact-text"><span class="contact-label">HOTLINE</span><span class="contact-value">0783 157 98</span></div>
                         </a>
-                        <a href="#" class="contact-card">
-                            <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Mẫu vải"></div>
-                            <div class="contact-text"><span class="contact-label">0783159798</span><span
-                                    class="contact-value">TẠI CỬA HÀNG</span></div>
+                        <a href="tel:+078315798" class="contact-card">
+                            <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Tại cửa hàng"></div>
+                            <div class="contact-text"><span class="contact-label">TẠI CỬA HÀNG</span><span class="contact-value">078315798</span></div>
                         </a>
                     </div>
                 </div>
             </div>
-
             <hr class="footer-divider my-4">
 
             <!-- Thanh toán -->
@@ -367,7 +375,7 @@
                     const res = await fetch('/MayMacCTH/api/product/get_product.php');
                     const result = await res.json();
                     if (result.success && result.data) {
-                        allProducts = result.data; // Backend đã trả về đúng cấu trúc gom nhóm
+                        allProducts = result.data; 
                         currentProducts = [...allProducts];
                         renderProducts(currentProducts);
                     }
@@ -519,11 +527,11 @@
                 // Nút "Trước"
                 const prevDisabled = currentPage === 1 ? 'disabled' : '';
                 pagination.innerHTML += `
-        <li class="page-item ${prevDisabled}">
-            <a class="page-link" href="#">
-                <i class='bx bx-chevron-left'></i> Trước
-            </a>
-        </li>`;
+                <li class="page-item ${prevDisabled}">
+                    <a class="page-link" href="#">
+                        <i class='bx bx-chevron-left'></i> Trước
+                    </a>
+                </li>`;
 
                 // Các số trang
                 for (let i = 1; i <= totalPages; i++) {
@@ -531,9 +539,9 @@
                     if (i < startPage || i > endPage) continue;
 
                     pagination.innerHTML += `
-            <li class="page-item ${i === currentPage ? 'active' : ''}">
-                <a class="page-link" href="#">${i}</a>
-            </li>`;
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#">${i}</a>
+                    </li>`;
                 }
 
                 // Nếu có nhiều hơn 5 trang thì thêm dấu ...
@@ -545,11 +553,11 @@
                 // Nút "Sau"
                 const nextDisabled = currentPage === totalPages ? 'disabled' : '';
                 pagination.innerHTML += `
-        <li class="page-item ${nextDisabled}">
-            <a class="page-link" href="#">
-                Sau <i class='bx bx-chevron-right'></i>
-            </a>
-        </li>`;
+                <li class="page-item ${nextDisabled}">
+                    <a class="page-link" href="#">
+                        Sau <i class='bx bx-chevron-right'></i>
+                    </a>
+                </li>`;
 
                 // Thêm dòng chữ nhỏ bên dưới: Trang 1 trong tổng 5
                 // const info = document.createElement('div');
@@ -620,6 +628,44 @@
             // Khởi chạy
             await loadCategories();
             await loadProducts();
+        });
+
+        const BASE_URL = '/MayMacCTH';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const addressEl = document.getElementById('footerAddress');
+            const websiteEl = document.getElementById('footerWebsite');
+            const phoneEl   = document.getElementById('footerPhone');
+
+            if (!addressEl && !websiteEl && !phoneEl) return;
+
+            try {
+                const res = await fetch(`${BASE_URL}/api/contact/get_contact.php?t=${Date.now()}`);
+                const data = await res.json();
+
+                if (data.success && data.data && data.data.length > 0) {
+                    const c = data.data[0];
+
+                    if (addressEl) {
+                        addressEl.textContent = c.address || 'Chưa cập nhật địa chỉ';
+                    }
+
+                    if (websiteEl) {
+                        if (c.website && c.website.trim()) {
+                            const url = c.website.match(/^https?:\/\//i) ? c.website : 'https://' + c.website;
+                            websiteEl.outerHTML = `<a href="${url}" target="_blank" class="text-white text-decoration-none">${c.website}</a>`;
+                        } else {
+                            websiteEl.textContent = 'Chưa có website';
+                        }
+                    }
+
+                    if (phoneEl) {
+                        phoneEl.textContent = c.phone_number || 'Chưa cập nhật số điện thoại';
+                    }
+                }
+            } catch (err) {
+                console.error('Lỗi load footer contact:', err);
+            }
         });
     </script>
 </body>

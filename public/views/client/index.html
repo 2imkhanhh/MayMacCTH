@@ -593,50 +593,41 @@
         });
 
         const BASE_URL = '/MayMacCTH';
+        document.addEventListener('DOMContentLoaded', async () => {
+            const addressEl = document.getElementById('footerAddress');
+            const websiteEl = document.getElementById('footerWebsite');
+            const phoneEl   = document.getElementById('footerPhone');
 
-document.addEventListener('DOMContentLoaded', async () => {
-    const addressSpan = document.getElementById('footerAddress');
-    const websiteSpan = document.getElementById('footerWebsite');
-    const phoneSpan   = document.getElementById('footerPhone');
+            if (!addressEl && !websiteEl && !phoneEl) return;
 
-    // Nếu không có footer thì bỏ qua
-    if (!addressSpan && !websiteSpan && !phoneSpan) return;
+            try {
+                const res = await fetch(`${BASE_URL}/api/contact/get_contact.php?t=${Date.now()}`);
+                const data = await res.json();
 
-    try {
-        const res = await fetch(`${BASE_URL}/api/contact/get_contact.php?t=${Date.now()}`);
-        const data = await res.json();
+                if (data.success && data.data && data.data.length > 0) {
+                    const c = data.data[0];
 
-        if (data.success && data.data && data.data.length > 0) {
-            const c = data.data[0];
+                    if (addressEl) {
+                        addressEl.textContent = c.address || 'Chưa cập nhật địa chỉ';
+                    }
 
-            // Địa chỉ
-            if (addressSpan) {
-                addressSpan.textContent = c.address || 'Chưa cập nhật địa chỉ';
-            }
+                    if (websiteEl) {
+                        if (c.website && c.website.trim()) {
+                            const url = c.website.match(/^https?:\/\//i) ? c.website : 'https://' + c.website;
+                            websiteEl.outerHTML = `<a href="${url}" target="_blank" class="text-white text-decoration-none">${c.website}</a>`;
+                        } else {
+                            websiteEl.textContent = 'Chưa có website';
+                        }
+                    }
 
-            // Website - tự động thêm link
-            if (websiteSpan) {
-                if (c.website && c.website.trim()) {
-                    const url = c.website.match(/^https?:\/\//i) ? c.website : 'https://' + c.website;
-                    websiteSpan.outerHTML = `<a href="${url}" target="_blank" class="text-white text-decoration-none">${c.website}</a>`;
-                } else {
-                    websiteSpan.textContent = 'Chưa có website';
+                    if (phoneEl) {
+                        phoneEl.textContent = c.phone_number || 'Chưa cập nhật số điện thoại';
+                    }
                 }
+            } catch (err) {
+                console.error('Lỗi load footer contact:', err);
             }
-
-            // Số điện thoại
-            if (phoneSpan) {
-                phoneSpan.textContent = c.phone_number || 'Chưa cập nhật số điện thoại';
-            }
-        }
-    } catch (err) {
-        console.error('Lỗi load footer contact:', err);
-        // Vẫn đẹp dù lỗi
-        if (addressSpan) addressSpan.textContent = 'Không tải được';
-        if (websiteSpan) websiteSpan.textContent = 'Không tải được';
-        if (phoneSpan) phoneSpan.textContent = 'Không tải được';
-    }
-});
+        });
     </script>
 </body>
 
