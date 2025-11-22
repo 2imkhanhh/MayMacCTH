@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sản phẩm - May Mặc CTH</title>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.css">
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&family=Poppins:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&family=Poppins:wght@400&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
     <link rel="stylesheet" href="../../assets/css/contact.css">
 </head>
+
 <body>
     <!-- Top Header -->
     <div class="top-header bg-white border-bottom">
@@ -18,8 +21,8 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <div class="dropdown me-4">
-                        <button class="btn btn-sm p-0 text-muted d-flex align-items-center"
-                            type="button" aria-expanded="false">
+                        <button class="btn btn-sm p-0 text-muted d-flex align-items-center" type="button"
+                            aria-expanded="false">
 
                             <img src="../../assets/images/vietnam-flag.png" id="currentFlag"
                                 style="width: 20px; height: 20px; object-fit: cover; border-radius: 3px;">
@@ -69,7 +72,8 @@
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
 
-                <a href="../../views/client/index.html"> <img src="../../assets/images/logo.png" alt="Logo" height="60" class="me-32"></a>
+                <a href="../../views/client/index.html"> <img src="../../assets/images/logo.png" alt="Logo" height="60"
+                        class="me-32"></a>
                 <div class="d-flex align-items-center">
                     <select class="form-select category-select" id="categorySelect">
                         <option value="">Tất cả</option>
@@ -122,7 +126,8 @@
 
                     <!-- Các mục menu khác -->
                     <li class="nav-item"><a class="nav-link" href="../../views/client/index.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../../views/client/about-us.html">Về chúng tôi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../../views/client/about-us.html">Về chúng tôi</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/products.html">Sản phẩm</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/guide.html">Hướng dẫn</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/news.html">Tin tức</a></li>
@@ -149,26 +154,26 @@
                 <div class="breadcrumb-nav" id="breadcrumb"></div>
             </div>
         </div>
-        
+
         <div class="contact-info-blocks py-5">
             <div class="container">
                 <div class="row g-4">
                     <div class="col-lg-4 col-md-6">
                         <div class="contact-info-box">
                             <i class='bx bx-map-alt'></i>
-                            <p>73/202 Miếu Hai Xã, Lê Chân, Hải Phòng, Việt Nam</p>
+                            <p id="contactAddress">Đang tải...</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <div class="contact-info-box">
                             <i class='bx bx-envelope'></i>
-                            <p>www.indohaiphong.com</p>
+                            <p id="contactWebsite">Đang tải...</p>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 col-lg-4">
                         <div class="contact-info-box">
                             <i class='bx bx-phone'></i>
-                            <p>078315798 - 083435093 - 083919999</p>
+                            <p id="contactPhone">Đang tải...</p>
                         </div>
                     </div>
                 </div>
@@ -186,11 +191,13 @@
                                 <input type="text" class="form-control" id="name" placeholder="Tên" required>
                             </div>
                             <div class="form-group mt-3">
-                                <label for="address" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+                                <label for="address" class="form-label">Địa chỉ <span
+                                        class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="address" placeholder="Địa chỉ">
                             </div>
                             <div class="form-group mt-3">
-                                <label for="subject" class="form-label">Tiêu đề <span class="text-danger">*</span></label>
+                                <label for="subject" class="form-label">Tiêu đề <span
+                                        class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="subject" placeholder="Tiêu đề">
                             </div>
                         </div>
@@ -200,14 +207,17 @@
                                 <input type="email" class="form-control" id="email" placeholder="Email" required>
                             </div>
                             <div class="form-group mt-3">
-                                <label for="phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                                <label for="phone" class="form-label">Số điện thoại <span
+                                        class="text-danger">*</span></label>
                                 <input type="tel" class="form-control" id="phone" placeholder="Số điện thoại">
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group mt-3">
-                                <label for="message" class="form-label">Nội dung <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="message" rows="5" placeholder="Nội dung" required></textarea>
+                                <label for="message" class="form-label">Nội dung <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" id="message" rows="5" placeholder="Nội dung"
+                                    required></textarea>
                             </div>
                         </div>
                         <div class="col-12 text-end">
@@ -225,7 +235,8 @@
             <div class="row gy-4">
                 <!-- Logo + Giới thiệu -->
                 <div class="col-12 col-md-4 col-lg-3">
-                    <a href="../../views/client/index.html"><img src="../../assets/images/logo2.png" alt="Logo" class="footer-logo mb-3"></a>
+                    <a href="../../views/client/index.html"><img src="../../assets/images/logo2.png" alt="Logo"
+                            class="footer-logo mb-3"></a>
                     <p class="footer-slogan">MAY MẶC CTH lắng nghe bạn!</p>
                     <p class="footer-desc">
                         Chúng tôi luôn trân trọng mọi ý kiến đóng góp của khách hàng,
@@ -324,20 +335,35 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/script.js"></script>
     <script>
-        const langButtons = document.querySelectorAll(".choose-lang");
-            const currentFlag = document.getElementById("currentFlag");
-            const currentLang = document.getElementById("currentLang");
+        const BASE_URL = '/MayMacCTH'; // Thay đúng đường dẫn gốc dự án của bạn
 
-            langButtons.forEach(btn => {
-                btn.addEventListener("click", function (e) {
-                    e.preventDefault();
-                    const lang = this.getAttribute("data-lang");
-                    const flag = this.getAttribute("data-flag");
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch(`${BASE_URL}/api/contact/get_contact.php?t=${Date.now()}`);
+                const result = await response.json();
 
-                    currentFlag.src = flag;
-                    currentLang.textContent = lang;
-                });
-            });
+                if (result.success && result.data && result.data.length > 0) {
+                    const c = result.data[0];
+
+                    // Chỉ đổ dữ liệu vào đúng 3 thẻ p – giữ nguyên style
+                    document.getElementById('contactAddress').textContent = c.address || 'Chưa cập nhật địa chỉ';
+                    document.getElementById('contactWebsite').textContent = c.website || 'Chưa có website';
+                    document.getElementById('contactPhone').textContent = c.phone_number || 'Chưa có số điện thoại';
+                } else {
+                    // Nếu không có dữ liệu
+                    document.getElementById('contactAddress').textContent = 'Chưa có thông tin';
+                    document.getElementById('contactWebsite').textContent = 'Chưa có thông tin';
+                    document.getElementById('contactPhone').textContent = 'Chưa có thông tin';
+                }
+            } catch (error) {
+                console.error('Lỗi tải thông tin liên hệ:', error);
+                // Nếu lỗi mạng hoặc API → vẫn giữ giao diện đẹp
+                document.getElementById('contactAddress').textContent = 'Không tải được';
+                document.getElementById('contactWebsite').textContent = 'Không tải được';
+                document.getElementById('contactPhone').textContent = 'Không tải được';
+            }
+        });
     </script>
 </body>
+
 </html>

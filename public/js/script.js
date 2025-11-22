@@ -1,15 +1,3 @@
-// document.addEventListener('DOMContentLoaded', function () {
-//   // Example: Smooth scroll for navigation
-//   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-//     anchor.addEventListener('click', function (e) {
-//       e.preventDefault();
-//       document.querySelector(this.getAttribute('href')).scrollIntoView({
-//         behavior: 'smooth'
-//       });
-//     });
-//   });
-// });
-
 document.addEventListener("DOMContentLoaded", function () {
   const fadeElements = document.querySelectorAll(".fade-element");
 
@@ -18,14 +6,15 @@ document.addEventListener("DOMContentLoaded", function () {
       if (entry.isIntersecting) {
         entry.target.classList.add("visible");
       } else {
-        entry.target.classList.remove("visible"); // Cho phép fade-out khi cuộn ngược
+        entry.target.classList.remove("visible");
       }
     });
-  }, { threshold: 0.5 }); // 20% phần tử vào khung nhìn thì kích hoạt
+  }, { threshold: 0.5 });
 
   fadeElements.forEach(el => observer.observe(el));
 });
 
+// Breadcrumb
 document.addEventListener('DOMContentLoaded', function () {
   const breadcrumbPage = window.location.pathname.split('/').pop() || 'index.html';
   const pageMap = {
@@ -60,3 +49,54 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+document.addEventListener("DOMContentLoaded", async function () {
+  const BASE_URL = "/MayMacCTH";
+
+  // Kiểm tra có footer không (tránh lỗi ở trang admin)
+  const addressEl = document.getElementById("footerAddress");
+  const websiteEl = document.getElementById("footerWebsite");
+  const phoneEl = document.getElementById("footerPhone");
+
+  if (!addressEl && !websiteEl && !phoneEl) return;
+
+  async function loadFooterContact() {
+    try {
+      const res = await fetch(`${BASE_URL}/api/contact/get_contact.php?t=${Date.now()}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const data = await res.json();
+
+      if (data.success && data.data && data.data.length > 0) {
+        const c = data.data[0];
+
+        // Địa chỉ
+        if (addressEl) {
+          addressEl.textContent = c.address || "Chưa cập nhật địa chỉ";
+        }
+
+        // Website (tự động thêm link, giữ thẳng hàng)
+        if (websiteEl) {
+          if (c.website && c.website.trim()) {
+            const url = c.website.match(/^https?:\/\//i) ? c.website : "https://" + c.website;
+            websiteEl.innerHTML = `<a href="${url}" target="_blank" class="text-white text-decoration-none">${c.website}</a>`;
+          } else {
+            websiteEl.textContent = "Chưa có website";
+          }
+        }
+
+        // Số điện thoại
+        if (phoneEl) {
+          phoneEl.textContent = c.phone_number || "Chưa cập nhật số điện thoại";
+        }
+      }
+    } catch (err) {
+      console.error("Lỗi load thông tin liên hệ:", err);
+      // Vẫn hiển thị đẹp dù lỗi
+      if (addressEl) addressEl.textContent = "Không tải được";
+      if (websiteEl) websiteEl.textContent = "Không tải được";
+      if (phoneEl) phoneEl.textContent = "Không tải được";
+    }
+  }
+
+  loadFooterContact();
+});
