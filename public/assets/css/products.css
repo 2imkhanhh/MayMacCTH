@@ -13,7 +13,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: url("/asset/images/background.png") no-repeat center center;
+    background: url("../../asset/images/background.png") no-repeat center center;
     background-size: contain; 
     opacity: 0.08; 
     filter: blur(2px); 
@@ -228,68 +228,134 @@
     color: #174DAF;
 } */
 
-.product-card {
+.icon-btn.like {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.8);
     border: none;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    background: #fff;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.25s;
+    z-index: 10;
+}
+
+.icon-btn.like i {
+    font-size: 22px;
+    color: #333;
+}
+
+.icon-btn.like:hover {
+    background: #ffeded;
+}
+
+.icon-btn.like:hover i {
+    color: #ff3b3b;
+}
+
+/* Màu sắc */
+.color-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: inline-block;
+    border: 1px solid #ddd;
+}
+
+/* Card hover */
+.product-card {
+    transition: transform 0.25s;
 }
 
 .product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    transform: translateY(-4px);
 }
 
-.product-card .card-img-top {
-    height: 260px;
-    object-fit: cover;
-    transition: transform 0.4s ease;
-}
-
-.product-card:hover .card-img-top {
-    transform: scale(1.05);
-}
-
-.product-card .card-body {
-    padding: 14px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.product-card .card-title {
-    font-size: 15px;
+/* PRODUCT TITLE */
+.card-title {
+    font-size: 16px;
     font-weight: 600;
-    margin-bottom: 0;
-    color: #222;
+    min-height: 20px;
+    line-height: 1.3;
+    margin-bottom: 6px !important;
+    text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 2; 
     -webkit-box-orient: vertical;
     overflow: hidden;
-    line-height: 1.4;
-    height: 40px;
 }
 
-.product-card .price {
+/* PRICE */
+.price {
     font-size: 18px;
-    font-weight: 700;
-    color: #e74c3c;
-    margin: 8px 0;
+    color: #0056d6;
 }
 
-.product-card .rating {
-    font-size: 13px;
-    color: #f39c12;
-    margin-bottom: 10px;
+/* COLOR DOTS */
+.color-dot {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+}
+
+/* HOVER ICONS – ONLY IN IMAGE */
+.hover-icons {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s ease;
+    z-index: 5;
+}
+
+.image-wrapper:hover + .card-body .hover-icons {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* OR new better method */
+.product-card:hover .hover-icons {
+    opacity: 1;
+    visibility: visible;
+}
+
+.icon-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.icon-btn:hover {
+    background: #0056d6;
+    color: #fff;
+}
+
+/* CARD BODY */
+.product-card .card-body {
+    position: relative;
+    padding: 15px 15px 0;
+    display: flex;
+    flex-direction: column;
 }
 
 /* ---------- MÀU SẮC: Ô TRÒN ĐẸP NHƯ SHOPEE/LAZADA ---------- */
 .color-options {
-    margin: 10px 0;
+    margin: 5px 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -301,7 +367,7 @@
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    border: 2.5px solid #fff;
+    border: 2px solid #000066;
     box-shadow: 0 0 6px rgba(0,0,0,0.3);
     cursor: pointer;
     transition: all 0.2s ease;
@@ -315,10 +381,10 @@
 }
 
 /* Khi chỉ có 1 màu thì làm nổi bật hơn */
-.color-options .color-dot:only-child {
+/* .color-options .color-dot:only-child {
     width: 28px;
     height: 28px;
-}
+} */
 
 /* Hiệu ứng khi hover card → các chấm màu nhảy nhẹ */
 .product-card:hover .color-dot {
@@ -386,7 +452,7 @@
 .rating {
     color: #ffca08;
     font-size: 1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 2px !important;
 }
 
 .rating i {
@@ -398,7 +464,7 @@
     color: #555;
     font-weight: bold;
     margin-left: auto;
-    margin-top: auto;
+    margin-top: 0;
 }
 
 .hover-icons {

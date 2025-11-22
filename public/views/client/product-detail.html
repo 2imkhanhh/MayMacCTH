@@ -511,6 +511,17 @@
         </div>
     </section>
 
+    <div id="addToCartToast" class="toast-notification">
+        <div class="toast-icon">
+            <i class="bx bx-check-circle"></i>
+        </div>
+        <div class="toast-content">
+            <div class="toast-title">Thêm vào giỏ hàng thành công!</div>
+            <div class="toast-message" id="toastProductName">Sản phẩm XYZ</div>
+        </div>
+        <button class="toast-close">&times;</button>
+    </div>
+
     <!-- Footer -->
     <footer class="footer bg-primary text-white py-5">
         <div class="container">
@@ -590,15 +601,19 @@
                     <div class="footer-contact-btns mt-3">
                         <a href="https://zalo.me/078315798" class="contact-card">
                             <div class="contact-icon"><img src="../../assets/images/zalo.png" alt="Zalo"></div>
-                            <div class="contact-text"><span class="contact-label">TƯ VẤN QUA</span><span class="contact-value">ZALO</span></div>
+                            <div class="contact-text"><span class="contact-label">TƯ VẤN QUA</span><span
+                                    class="contact-value">ZALO</span></div>
                         </a>
                         <a href="tel:+078315798" class="contact-card">
                             <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Hotline"></div>
-                            <div class="contact-text"><span class="contact-label">HOTLINE</span><span class="contact-value">0783 157 98</span></div>
+                            <div class="contact-text"><span class="contact-label">HOTLINE</span><span
+                                    class="contact-value">0783 157 98</span></div>
                         </a>
                         <a href="tel:+078315798" class="contact-card">
-                            <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Tại cửa hàng"></div>
-                            <div class="contact-text"><span class="contact-label">TẠI CỬA HÀNG</span><span class="contact-value">078315798</span></div>
+                            <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Tại cửa hàng">
+                            </div>
+                            <div class="contact-text"><span class="contact-label">TẠI CỬA HÀNG</span><span
+                                    class="contact-value">078315798</span></div>
                         </a>
                     </div>
                 </div>
@@ -879,7 +894,61 @@
                     const input = document.getElementById('quantityInput');
                     if (parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
                 });
-                document.getElementById('addToCartBtn')?.addEventListener('click', () => alert(`Đã thêm "${p.name}" vào giỏ hàng!`));
+                document.getElementById('addToCartBtn')?.addEventListener('click', function () {
+                    // Lấy thông tin đã chọn
+                    const selectedColorBtn = document.querySelector('#colorSwatches .btn.active');
+                    const selectedSizeBtn = document.querySelector('#sizeButtons .btn-size.active');
+                    const quantity = parseInt(document.getElementById('quantityInput').value) || 1;
+
+                    // Kiểm tra chọn màu và size (nếu có)
+                    if (p.colors && p.colors.length && !selectedColorBtn) {
+                        alert('Vui lòng chọn màu sắc!');
+                        return;
+                    }
+                    if (!selectedSizeBtn) {
+                        alert('Vui lòng chọn kích thước!');
+                        return;
+                    }
+
+                    const colorName = selectedColorBtn ? selectedColorBtn.title : 'Không có màu';
+                    const size = selectedSizeBtn ? selectedSizeBtn.dataset.size || selectedSizeBtn.textContent : 'Freesize';
+                    const price = parseInt(p.price || 0);
+                    const image = document.getElementById('main-product-image').src;
+
+                    // Tạo object sản phẩm để thêm vào giỏ
+                    const cartItem = {
+                        id: p.product_id,
+                        name: p.name,
+                        price: price,
+                        quantity: quantity,
+                        color: colorName,
+                        size: size,
+                        image: image.includes('upload/') ? image.split('/').pop() : 'no-image.jpg', // lưu tên file ảnh
+                        uniqueKey: `${p.product_id}-${colorName}-${size}` // key duy nhất để tránh trùng
+                    };
+
+                    // Lấy giỏ hàng hiện tại từ localStorage
+                    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+                    // Kiểm tra sản phẩm (cùng id + màu + size) đã có chưa
+                    const existingIndex = cart.findIndex(item => item.uniqueKey === cartItem.uniqueKey);
+
+                    if (existingIndex !== -1) {
+                        // Nếu đã có → tăng số lượng
+                        cart[existingIndex].quantity += quantity;
+                        alert(`Đã cập nhật số lượng: ${p.name} (${colorName}, ${size})`);
+                    } else {
+                        // Nếu chưa có → thêm mới
+                        cart.push(cartItem);
+                        alert(`Đã thêm vào giỏ hàng: ${p.name}`);
+                    }
+
+                    // Lưu lại vào localStorage
+                    localStorage.setItem('cart', JSON.stringify(cart));
+
+                    // Optional: Cập nhật số lượng giỏ hàng trên header (nếu bạn có icon giỏ hàng)
+                    updateCartCount();
+                });
                 document.getElementById('orderBtn')?.addEventListener('click', () => alert('Chuyển đến thanh toán...'));
                 document.querySelector('.size-guide')?.addEventListener('click', e => {
                     e.preventDefault();
@@ -899,7 +968,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const addressEl = document.getElementById('footerAddress');
             const websiteEl = document.getElementById('footerWebsite');
-            const phoneEl   = document.getElementById('footerPhone');
+            const phoneEl = document.getElementById('footerPhone');
 
             if (!addressEl && !websiteEl && !phoneEl) return;
 
@@ -931,6 +1000,19 @@
                 console.error('Lỗi load footer contact:', err);
             }
         });
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCountEl = document.querySelector('#cartCount');
+            if (cartCountEl) {
+                cartCountEl.textContent = totalItems;
+                cartCountEl.style.display = totalItems > 0 ? 'block' : 'none';
+            }
+        }
+
+        // Gọi khi trang load xong
+        updateCartCount();
     </script>
 </body>
 

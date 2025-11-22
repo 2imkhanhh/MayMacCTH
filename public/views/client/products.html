@@ -468,46 +468,48 @@
                     sizeTags += '</div>';
 
                     col.innerHTML = `
-                <div class="card product-card h-100 position-relative overflow-hidden">
-                    <a href="../../views/client/product-detail.html?id=${product.product_id}" class="text-decoration-none">
-                        <div class="image-wrapper position-relative">
-                            <img src="../../assets/images/upload/${product.primary_image || 'no-image.jpg'}" 
-                                 class="card-img-top product-main-img" 
-                                 alt="${product.name}"
-                                 onerror="this.src='../../assets/images/upload/no-image.jpg'">
+                        <div class="card product-card h-100 position-relative overflow-hidden">
+                            
+                            <!-- NÚT YÊU THÍCH ĐƯA LÊN GÓC PHẢI ẢNH -->
+                            <button class="icon-btn like position-absolute top-0 end-0 m-2">
+                                <i class='bx bx-heart'></i>
+                            </button>
+
+                            <a href="../../views/client/product-detail.html?id=${product.product_id}" class="text-decoration-none">
+                                <div class="image-wrapper position-relative">
+                                    <img src="../../assets/images/upload/${product.primary_image || 'no-image.jpg'}"
+                                        class="card-img-top product-main-img"
+                                        alt="${product.name}"
+                                        onerror="this.src='../../assets/images/upload/no-image.jpg'">
+                                </div>
+                            </a>
+
+                            <div class="card-body d-flex flex-column">
+
+                                <a href="../../views/client/product-detail.html?id=${product.product_id}" class="text-decoration-none text-dark">
+                                    <h5 class="card-title mb-2">${product.name}</h5>
+                                </a>
+
+                                <div class="rating text-warning small mb-2">
+                                    ${'★'.repeat(Math.floor(product.star || 5))}${'☆'.repeat(5 - Math.floor(product.star || 5))}
+                                    <span class="text-muted ms-1">(${product.review_count || 0})</span>
+                                </div>
+
+                                <div class="price fw-bold text-primary fs-5 mb-2">${formattedPrice} VNĐ</div>
+
+                                <!-- Màu sắc -->
+                                ${
+                                    product.colors?.length > 0
+                                    ? `<div class="color-options mb-2">${colorDots}</div>`
+                                    : ''
+                                }
+
+                                <!-- Size (ẩn nếu chưa cần) -->
+                                <!-- ${sizeTags} -->
+
+                            </div>
                         </div>
-                    </a>
-                    <div class="card-body d-flex flex-column">
-                        <a href="../../views/client/product-detail.html?id=${product.product_id}" class="text-decoration-none text-dark">
-                            <h5 class="card-title mb-2">${product.name}</h5>
-                        </a>
-                        
-                        <div class="rating text-warning small mb-2">
-                            ${'★'.repeat(Math.floor(product.star || 5))}${'☆'.repeat(5 - Math.floor(product.star || 5))}
-                            <span class="text-muted ms-1">(${product.review_count || 0})</span>
-                        </div>
-
-                        <div class="price fw-bold text-primary fs-5 mb-2">${formattedPrice} VNĐ</div>
-
-                        <!-- Màu sắc -->
-                        ${product.colors?.length > 0 ? `
-                        <div class="color-options mb-2">
-                            ${colorDots}
-                            <!-- <small class="text-muted ms-2">${product.colors.length} màu</small> -->
-                        </div>` : ''}
-
-                        <!-- Kích thước -->
-                        <!-- ${sizeTags} -->
-
-                        <div class="hover-icons mt-auto pt-3">
-                            <button class="icon-btn cart" title="Thêm vào giỏ"><i class='bx bx-cart'></i></button>
-                            <button class="icon-btn like" title="Yêu thích"><i class='bx bx-heart'></i></button>
-                            <button class="icon-btn search" title="Xem nhanh"><i class='bx bx-search'></i></button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
+                    `;
                     productList.appendChild(col);
                 });
 
