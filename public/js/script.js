@@ -37,7 +37,8 @@ document.addEventListener('DOMContentLoaded', function () {
     'contact.html': 'Liên hệ',
     'product-detail.html': 'Áo Đồng Phục',
     'cart.html': 'Giỏ hàng',
-    'order.html': 'Đặt hàng'
+    'order.html': 'Đặt hàng',
+    'news-detail.html': 'Tin tứcc'
   };
 
   const currentPageName = pageMap[breadcrumbPage] || 'Trang chủ';

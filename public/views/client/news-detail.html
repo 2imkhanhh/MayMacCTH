@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết tin tức - Top 10+ mẫu áo đồng phục</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/news-detail.css">
+</head>
+
+<body>
+    <!-- Top Header -->
+    <div class="top-header bg-white border-bottom">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="dropdown me-4">
+                        <button class="btn btn-sm p-0 text-muted d-flex align-items-center"
+                            type="button" aria-expanded="false">
+
+                            <img src="../../assets/images/vietnam-flag.png" id="currentFlag"
+                                style="width: 20px; height: 20px; object-fit: cover; border-radius: 3px;">
+                            <span id="currentLang" class="ms-1">VN</span>
+                        </button>
+
+                        <!-- <ul class="dropdown-menu" aria-labelledby="languageDropdown" style="min-width: 120px;">
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center choose-lang" data-lang="VN"
+                                    data-flag="asset/images/vietnam-flag.png" href="#">
+                                    <img src="asset/images/vietnam-flag.png"
+                                        style="width: 22px; height: 22px; object-fit: cover; border-radius: 3px;">
+                                    <span class="ms-2">VN</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center choose-lang" data-lang="EN"
+                                    data-flag="asset/images/us-flag.png" href="#">
+                                    <img src="asset/images/us-flag.png"
+                                        style="width: 22px; height: 22px; object-fit: cover; border-radius: 3px;">
+                                    <span class="ms-2">EN</span>
+                                </a>
+                            </li>
+                        </ul> -->
+                    </div>
+                    <span class="text-muted me-3"></span>
+                    <!-- <a href="tel:+0783157988" class="text-muted me-4">
+                        <i class="bx bx-phone-call me-1"></i> 0783 157 988
+                    </a> -->
+                    <span class="text-muted me-4">
+                        <i class="bx bx-phone-call me-1"></i> 0783 157 988
+                    </span>
+                </div>
+                <!-- <a href="#" class="text-muted">
+                    <i class="bx bx-git-compare me-1"></i> So sánh
+                </a> -->
+                <span class="text-muted">
+                    <i class="bx bx-git-compare me-1"></i> So sánh
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar bg-white py-2">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-between">
+
+                <a href="../../views/client/index.html"> <img src="../../assets/images/logo.png" alt="Logo" height="60" class="me-32"></a>
+                <div class="d-flex align-items-center">
+                    <select class="form-select category-select" id="categorySelect">
+                        <option value="">Tất cả</option>
+                        <option value="uniform-shirts">Áo đồng phục</option>
+                        <option value="uniform-pants">Quần đồng phục</option>
+                    </select>
+
+                    <div class="search-container">
+                        <input type="text" class="form-control search-input" placeholder="Tìm kiếm sản phẩm..."
+                            aria-label="Search">
+                        <button class="search-button" type="button">
+                            <i class='bx bx-search'></i>
+                        </button>
+                    </div>
+                </div>
+
+                <a href="tel:+0783157988" class="btn btn-outline-primary px-4">
+                    <i class="bx bx-phone-call me-1"></i> 0783 157 988
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto align-items-center">
+                    <!-- Custom dropdown danh mục -->
+                    <li class="nav-item dropdown-custom me-4">
+                        <a href="#" class="nav-link text-warning d-flex align-items-center">
+                            <i class="bx bx-menu me-2"></i> TẤT CẢ DANH MỤC
+                        </a>
+                        <ul class="dropdown-menu-custom">
+                            <li><a href="#">Áo đồng phục</a></li>
+                            <li><a href="#">Áo thể thao</a></li>
+                            <li><a href="#">Áo + Logo áo</a></li>
+                            <li><a href="#">BST + Logo áo</a></li>
+                            <li><a href="#">Đồng phục công giáo</a></li>
+                            <li><a href="#">Đồng phục công sở</a></li>
+                            <li><a href="#">Đồng phục học tập</a></li>
+                            <li><a href="#">Đồng phục mùa non</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Các mục menu khác -->
+                    <li class="nav-item"><a class="nav-link" href="../../views/client/index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../../views/client/about-us.html">Về chúng tôi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../../views/client/products.html">Sản phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../../views/client/guide.html">Hướng dẫn</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="../../views/client/news.html">Tin tức</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../../views/client/contact.html">Liên hệ</a></li>
+                </ul>
+
+                <!-- Icon bên phải -->
+                <ul class="navbar-nav ms-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../views/client/cart.html">
+                            <i class="bx bx-cart"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <section class="news-detail-section pb-5">
+        <div class="container">
+            <div class="row">
+                <!-- CỘT TRÁI: NỘI DUNG BÀI VIẾT -->
+                <div class="col-lg-8">
+                    <article>
+                        <h1 class="news-detail-title">Top 10+ mẫu áo đồng phục đẹp nhất 2025: Xu hướng và Phong cách</h1>
+                        
+                        <div class="news-meta">
+                            <span><i class='bx bx-calendar'></i> 22/11/2025</span>
+                            <span><i class='bx bx-user'></i> Tác giả: Admin CTH</span>
+                        </div>
+
+                        <div class="news-content">
+                            <p><strong>Bạn đang tìm xưởng may áo đồng phục tại Hải Phòng đẹp, giá hợp lý nhất? Năm 2025 đánh dấu sự lên ngôi của những thiết kế tối giản nhưng tinh tế, chú trọng vào chất liệu vải thoáng mát và thân thiện với môi trường.</strong></p>
+                            
+                            <!-- Hình ảnh minh họa chính -->
+                            <img src="../../assets/images/news1.png" onerror="this.src='https://via.placeholder.com/800x450?text=Anh+Minh+Hoa+Bai+Viet'" alt="Mẫu áo đồng phục đẹp">
+                            
+                            <h3>1. Xu hướng màu sắc năm 2025</h3>
+                            <p>Năm nay, các tông màu pastel nhẹ nhàng như xanh mint, hồng phấn hay vàng kem đang chiếm ưu thế. Bên cạnh đó, các doanh nghiệp vẫn ưu tiên các gam màu thương hiệu mạnh mẽ như Xanh Navy, Đỏ Đô để tạo dấu ấn riêng.</p>
+                            
+                            <div class="quote-box">
+                                "Đồng phục không chỉ là trang phục, đó là bộ mặt của thương hiệu. Một bộ đồng phục đẹp giúp nhân viên tự tin hơn 200% khi giao tiếp với khách hàng."
+                            </div>
+
+                            <h3>2. Chất liệu vải "biết thở"</h3>
+                            <p>Tại <strong>MAY MẶC CTH</strong>, chúng tôi ưu tiên sử dụng vải Cotton 100%, vải Cafe, hoặc vải Bamboo. Ưu điểm của các loại vải này là:</p>
+                            <ul>
+                                <li>Khả năng thấm hút mồ hôi cực tốt.</li>
+                                <li>Khử mùi kháng khuẩn tự nhiên.</li>
+                                <li>Không nhăn, không xù lông sau nhiều lần giặt.</li>
+                            </ul>
+
+                            <img src="../../assets/images/news2.png" onerror="this.src='https://via.placeholder.com/800x450?text=Chat+Lieu+Vai'" alt="Chất liệu vải">
+
+                            <h3>3. Top các mẫu thiết kế được ưa chuộng</h3>
+                            <p>Dưới đây là danh sách các mẫu áo polo cổ bẻ, áo thun cổ tròn được các công ty công nghệ và startup lựa chọn nhiều nhất trong quý đầu năm nay. Sự kết hợp giữa viền tay áo và bo cổ khác màu tạo nên điểm nhấn trẻ trung.</p>
+                            
+                            
+                        </div>
+
+                        <!-- Share buttons -->
+                        <div class="mt-5 pt-3 border-top">
+                            <p>Hãy liên hệ ngay với chúng tôi để được tư vấn thiết kế miễn phí!</p>
+                            <p class="fw-bold mb-2">Chia sẻ bài viết:</p>
+
+                            <div class="social-buttons">
+                                <button class="btn fb-btn btn-sm me-2">
+                                    <i class='bx bxl-facebook-circle me-1'></i> Facebook
+                                </button>
+                                <button class="btn ig-btn btn-sm me-2">
+                                    <i class='bx bxl-instagram me-1'></i> Instagram
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- CỘT PHẢI: SIDEBAR TIN LIÊN QUAN -->
+                <div class="col-lg-4 ps-lg-5 mt-5 mt-lg-0">
+                    <!-- Widget tìm kiếm -->
+                    <div class="mb-5">
+                        <h4 class="sidebar-title">Tìm kiếm</h4>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Tìm bài viết...">
+                            <button class="btn btn-primary"><i class='bx bx-search'></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Widget Tin nổi bật -->
+                    <div class="mb-5">
+                        <h4 class="sidebar-title">Tin tức nổi bật</h4>
+                        
+                        <!-- Item 1 -->
+                        <div class="related-news-item">
+                            <img src="../../assets/images/news2.png" onerror="this.src='https://via.placeholder.com/150'" class="related-news-img" alt="Tin 2">
+                            <div class="related-news-content">
+                                <h5><a href="#">Bí quyết chọn size áo chuẩn cho cả công ty</a></h5>
+                                <span class="related-date"><i class='bx bx-time'></i> 20/11/2025</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="related-news-item">
+                            <img src="../../assets/images/news3.png" onerror="this.src='https://via.placeholder.com/150'" class="related-news-img" alt="Tin 3">
+                            <div class="related-news-content">
+                                <h5><a href="#">Quy trình in chuyển nhiệt hiện đại tại CTH</a></h5>
+                                <span class="related-date"><i class='bx bx-time'></i> 18/11/2025</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div class="related-news-item">
+                            <img src="../../assets/images/news1.png" onerror="this.src='https://via.placeholder.com/150'" class="related-news-img" alt="Tin 1">
+                            <div class="related-news-content">
+                                <h5><a href="#">Đồng phục công sở: Nên chọn Vest hay Polo?</a></h5>
+                                <span class="related-date"><i class='bx bx-time'></i> 15/11/2025</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER (Giữ nguyên từ code của bạn) ================= -->
+    <footer class="footer bg-primary text-white py-5">
+        <div class="container">
+            <div class="row gy-4">
+                <!-- Logo + Giới thiệu -->
+                <div class="col-12 col-md-4 col-lg-3">
+                    <a href="../../views/client/index.html"><img src="../../assets/images/logo2.png" alt="Logo" class="footer-logo mb-3"></a>
+                    <p class="footer-slogan">MAY MẶC CTH lắng nghe bạn!</p>
+                    <p class="footer-desc">
+                        Chúng tôi luôn trân trọng mọi ý kiến đóng góp của khách hàng,
+                        không ngừng cải thiện để mang đến sản phẩm và dịch vụ tốt nhất.
+                    </p>
+                    <button class="btn btn-warning footer-btn">ĐÓNG GÓP Ý KIẾN →</button>
+                    <p class="footer-tax mt-3"><strong>MÃ SỐ THUẾ:</strong> 0202167805</p>
+                </div>
+
+                <!-- Về chúng tôi -->
+                <div class="col-6 col-md-4 col-lg-2">
+                    <p class="footer-title">VỀ CHÚNG TÔI</p>
+                    <ul class="footer-links">
+                        <li><a href="#">Giới thiệu MAY MẶC CTH</a></li>
+                        <li><a href="#">Hướng dẫn mua hàng</a></li>
+                        <li><a href="#">Hướng dẫn chọn size</a></li>
+                        <li><a href="#">Chính sách đổi trả</a></li>
+                        <li><a href="#">Chính sách giao hàng</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <!-- Sản phẩm -->
+                <div class="col-6 col-md-4 col-lg-2">
+                    <p class="footer-title">SẢN PHẨM</p>
+                    <ul class="footer-links">
+                        <li><a href="#">Áo đồng phục</a></li>
+                        <li><a href="#">Áo thể thao</a></li>
+                        <li><a href="#">BST + Logo áo</a></li>
+                        <li><a href="#">Đồng phục công giáo</a></li>
+                        <li><a href="#">Đồng phục công sở</a></li>
+                        <li><a href="#">Đồng phục học tập</a></li>
+                    </ul>
+                </div>
+
+                <!-- Tin tức -->
+                <div class="col-6 col-md-6 col-lg-2">
+                    <p class="footer-title">TIN TỨC</p>
+                    <ul class="footer-links">
+                        <li><a href="#">Xu hướng thời trang</a></li>
+                        <li><a href="#">Sức khỏe & Đời sống</a></li>
+                        <li><a href="#">Bí mật Gạo House</a></li>
+                        <li><a href="#">Mẹo hay MAY MẶC</a></li>
+                        <li><a href="#">Tin tức</a></li>
+                    </ul>
+                </div>
+
+                <!-- Thông tin liên hệ + Nút liên hệ -->
+                <div class="col-12 col-md-12 col-lg-3">
+                    <p class="footer-title">THÔNG TIN LIÊN HỆ</p>
+                    <p>📍 73/202 Miếu Hai Xã, Lê Chân, Hải Phòng, Việt Nam</p>
+                    <p>🌐 <a href="https://www.indohaiphong.com"
+                            class="text-white text-decoration-none">www.indohaiphong.com</a></p>
+                    <p>☎ 078315798 - 083435093 - 083919999</p>
+
+                    <!-- Nút liên hệ (phiên bản đã chỉnh đẹp) -->
+                    <div class="footer-contact-btns mt-3">
+                        <a href="https://zalo.me/078315798" class="contact-card">
+                            <div class="contact-icon"><img src="../../assets/images/zalo.png" alt="Zalo"></div>
+                            <div class="contact-text"><span class="contact-label">TƯ VẤN QUA</span><span
+                                    class="contact-value">ZALO</span></div>
+                        </a>
+                        <a href="tel:+078315798" class="contact-card">
+                            <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Hotline"></div>
+                            <div class="contact-text"><span class="contact-label">HOTLINE</span><span
+                                    class="contact-value">0783 157 98</span></div>
+                        </a>
+                        <a href="#" class="contact-card">
+                            <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Mẫu vải"></div>
+                            <div class="contact-text"><span class="contact-label">0783159798</span><span
+                                    class="contact-value">TẠI CỬA HÀNG</span></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="footer-divider my-4">
+
+            <!-- Thanh toán -->
+            <div class="row">
+                <div class="col text-center">
+                    <p class="mb-2 footer-title">PHƯƠNG THỨC THANH TOÁN</p>
+                    <div class="d-flex justify-content-center align-items-center gap-3">
+                        <img src="../../assets/images/cash.png" height="30" alt="Cash">
+                        <img src="../../assets/images/mastercard.png" height="30" alt="Mastercard">
+                        <img src="../../assets/images/visa.png" height="30" alt="Visa">
+                    </div>
+                </div>
+            </div>
+
+            <!-- <p class="text-center mt-4 small mb-0">&copy; 2025 MAY MẶC CTH. All rights reserved.</p> -->
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
