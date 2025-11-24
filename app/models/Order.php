@@ -4,7 +4,6 @@ class Order {
     private $table_orders = "orders";
     private $table_items  = "order_items";
 
-    // Các field của đơn hàng
     public $name;
     public $phone;
     public $address;
@@ -16,7 +15,7 @@ class Order {
     public $subtotal;
     public $shipping_fee;
     public $total;
-    public $items; // mảng chi tiết sản phẩm
+    public $items; 
 
     public function __construct($db) {
         $this->conn = $db;
@@ -88,7 +87,6 @@ class Order {
         }
     }
 
-    // Tạo mã đơn hàng đẹp: DH202511240001
     private function generateOrderCode() {
         $today = date('Ymd');
         $query = "SELECT order_code FROM {$this->table_orders} 
