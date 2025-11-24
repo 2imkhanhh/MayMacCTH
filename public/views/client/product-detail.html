@@ -949,7 +949,45 @@
                     // Optional: Cập nhật số lượng giỏ hàng trên header (nếu bạn có icon giỏ hàng)
                     updateCartCount();
                 });
-                document.getElementById('orderBtn')?.addEventListener('click', () => alert('Chuyển đến thanh toán...'));
+                document.getElementById('orderBtn')?.addEventListener('click', function () {
+                    // Lấy thông tin đã chọn
+                    const selectedColorBtn = document.querySelector('#colorSwatches .btn.active');
+                    const selectedSizeBtn = document.querySelector('#sizeButtons .btn-size.active');
+                    const quantity = parseInt(document.getElementById('quantityInput').value) || 1;
+
+                    // Kiểm tra bắt buộc chọn màu & size
+                    if (p.colors && p.colors.length && !selectedColorBtn) {
+                        alert('Vui lòng chọn màu sắc!');
+                        return;
+                    }
+                    if (!selectedSizeBtn) {
+                        alert('Vui lòng chọn kích thước!');
+                        return;
+                    }
+
+                    const colorName = selectedColorBtn ? selectedColorBtn.title : null;
+                    const size = selectedSizeBtn ? selectedSizeBtn.textContent : 'Freesize';
+                    const price = parseInt(p.price || 0);
+                    const image = document.getElementById('main-product-image').src.split('/').pop();
+
+                    // Tạo object sản phẩm
+                    const buyNowItem = {
+                        id: p.product_id,
+                        name: p.name,
+                        price: price,
+                        quantity: quantity,
+                        color: colorName,
+                        size: size,
+                        image: image || 'no-image.jpg',
+                        uniqueKey: `${p.product_id}-${colorName || 'no-color'}-${size}`
+                    };
+
+                    // XÓA GIỎ HÀNG CŨ → CHỈ GIỮ RIÊNG SẢN PHẨM NÀY
+                    localStorage.setItem('cart', JSON.stringify([buyNowItem]));
+
+                    // CHUYỂN NGAY QUA TRANG ĐẶT HÀNG
+                    window.location.href = '../client/order.html';
+                });
                 document.querySelector('.size-guide')?.addEventListener('click', e => {
                     e.preventDefault();
                     new bootstrap.Modal(document.getElementById('sizeGuideModal')).show();
