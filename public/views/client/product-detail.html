@@ -669,139 +669,139 @@
 
                 // Render nội dung + phần chính sách ĐẸP CHUẨN
                 contentContainer.innerHTML = `
-            <div class="row align-items-start">
-                <!-- Ảnh sản phẩm -->
-                <div class="col-12 col-md-6 mb-4 mb-md-0">
-                    <div class="product-image">
-                        <img src="" alt="${p.name}" id="main-product-image" class="w-100"
-                             style="background:#f5f5f5; min-height:400px; object-fit:contain;">
-                        <div class="thumbnail-images mt-3 d-flex gap-2 flex-wrap" id="thumbnailContainer"></div>
+                    <div class="row align-items-start">
+                        <!-- Ảnh sản phẩm -->
+                        <div class="col-12 col-md-6 mb-4 mb-md-0">
+                            <div class="product-image">
+                                <img src="" alt="${p.name}" id="main-product-image" class="w-100"
+                                    style="background:#f5f5f5; min-height:400px; object-fit:contain;">
+                                <div class="thumbnail-images mt-3 d-flex gap-2 flex-wrap" id="thumbnailContainer"></div>
+                            </div>
+
+                            <div class="accordion product-info-accordion mt-4">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseDetails">
+                                            Chi tiết sản phẩm
+                                        </button>
+                                    </h2>
+                                    <div id="collapseDetails" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            ${p.description ? p.description.replace(/\n/g, '<br>') : 'Chưa có mô tả chi tiết.'}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Thông tin sản phẩm -->
+                        <div class="col-12 col-md-6">
+                            <div class="product-info">
+                                <h1 class="product-title mb-0">${p.name}</h1>
+                                <div class="price-range mb-4">
+                                    <span class="price h3 fw-bold text-danger">
+                                        ${parseInt(p.price || 0).toLocaleString('vi-VN')}đ
+                                    </span>
+                                </div>
+                                <div class="product-meta mb-4 text-muted small">
+                                    <div><strong>Mã sản phẩm:</strong> SP${String(p.product_id).padStart(4, '0')}</div>
+                                    <div><strong>Danh mục:</strong> ${p.category_name || 'Chưa xác định'}</div>
+                                </div>
+
+                                <!-- MÀU SẮC -->
+                                ${p.colors && p.colors.length ? `
+                                <div class="color-options mb-4">
+                                    <h6 class="fw-bold mb-2">Màu sắc</h6>
+                                    <div class="color-swatches d-flex gap-2 flex-wrap" id="colorSwatches"></div>
+                                </div>` : ''}
+
+                                <!-- KÍCH THƯỚC -->
+                                <div class="size-options mb-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="fw-bold mb-0">Kích thước</h6>
+                                        <a href="#" class="size-guide text-primary small">Hướng dẫn chọn size</a>
+                                    </div>
+                                    <div class="size-buttons d-flex gap-2 flex-wrap" id="sizeButtons"></div>
+                                </div>
+
+                                <div class="quantity mb-4">
+                                    <h6 class="fw-bold mb-2">Số lượng</h6>
+                                    <div class="input-group w-50">
+                                        <button class="btn btn-outline-secondary" type="button" id="decrease">-</button>
+                                        <input type="text" class="form-control text-center fw-bold" value="1" readonly id="quantityInput">
+                                        <button class="btn btn-outline-secondary" type="button" id="increase">+</button>
+                                    </div>
+                                </div>
+
+                                <div class="action-buttons mb-5">
+                                    <button class="btn btn-add-cart" id="addToCartBtn">Thêm vào giỏ hàng</button>
+                                    <button class="btn btn-buy" id="orderBtn">Mua ngay</button>
+                                </div>
+
+                                <!-- MÔ TẢ SẢN PHẨM -->
+                                <div class="product-description-wrapper mt-4 pt-3 border-top">
+                                    <h2 class="section-title">Mô tả sản phẩm</h2>
+                                    <div class="product-description-content mt-3">
+                                        ${p.description || 'Chưa có mô tả.'}
+                                    </div>
+                                </div>
+
+                                <!-- PHẦN CHÍNH SÁCH HỖ TRỢ - ĐẸP Y CHANG BẠN MUỐN -->
+                                <div class="policy-wrapper mt-5">
+                                    <div class="row g-4">
+                                        <div class="col-12 col-md-6">
+                                            <div class="policy-item">
+                                                <div class="policy-icon-box text-box">
+                                                    <span>FREE</span>
+                                                    <span>SHIP</span>
+                                                </div>
+                                                <div class="policy-content">
+                                                    <span class="policy-title">Free ship cho đơn trên 200k</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <div class="policy-item">
+                                                <div class="policy-icon-box">
+                                                    <i class='bx bx-sync'></i>
+                                                </div>
+                                                <div class="policy-content">
+                                                    <span class="policy-title">30 ngày đổi trả cho bất kì thứ gì</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <div class="policy-item">
+                                                <div class="policy-icon-box">
+                                                    <i class='bx bx-phone-call'></i>
+                                                </div>
+                                                <div class="policy-content">
+                                                    <span class="policy-title">Hotline hỗ trợ 0783159798</span>
+                                                    <span class="policy-sub">hỗ trợ từ 8h30 - 22h</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <div class="policy-item">
+                                                <div class="policy-icon-box">
+                                                    <i class='bx bx-map-pin'></i>
+                                                </div>
+                                                <div class="policy-content">
+                                                    <span class="policy-title">Đến tận nơi nhận trả hàng</span>
+                                                    <span class="policy-sub">hoàn tiền trong 24h</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="accordion product-info-accordion mt-4">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapseDetails">
-                                    Chi tiết sản phẩm
-                                </button>
-                            </h2>
-                            <div id="collapseDetails" class="accordion-collapse collapse">
-                                <div class="accordion-body">
-                                    ${p.description ? p.description.replace(/\n/g, '<br>') : 'Chưa có mô tả chi tiết.'}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Thông tin sản phẩm -->
-                <div class="col-12 col-md-6">
-                    <div class="product-info">
-                        <h1 class="product-title mb-0">${p.name}</h1>
-                        <div class="price-range mb-4">
-                            <span class="price h3 fw-bold text-danger">
-                                ${parseInt(p.price || 0).toLocaleString('vi-VN')}đ
-                            </span>
-                        </div>
-                        <div class="product-meta mb-4 text-muted small">
-                            <div><strong>Mã sản phẩm:</strong> SP${String(p.product_id).padStart(4, '0')}</div>
-                            <div><strong>Danh mục:</strong> ${p.category_name || 'Chưa xác định'}</div>
-                        </div>
-
-                        <!-- MÀU SẮC -->
-                        ${p.colors && p.colors.length ? `
-                        <div class="color-options mb-4">
-                            <h6 class="fw-bold mb-2">Màu sắc</h6>
-                            <div class="color-swatches d-flex gap-2 flex-wrap" id="colorSwatches"></div>
-                        </div>` : ''}
-
-                        <!-- KÍCH THƯỚC -->
-                        <div class="size-options mb-4">
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h6 class="fw-bold mb-0">Kích thước</h6>
-                                <a href="#" class="size-guide text-primary small">Hướng dẫn chọn size</a>
-                            </div>
-                            <div class="size-buttons d-flex gap-2 flex-wrap" id="sizeButtons"></div>
-                        </div>
-
-                        <div class="quantity mb-4">
-                            <h6 class="fw-bold mb-2">Số lượng</h6>
-                            <div class="input-group w-50">
-                                <button class="btn btn-outline-secondary" type="button" id="decrease">-</button>
-                                <input type="text" class="form-control text-center fw-bold" value="1" readonly id="quantityInput">
-                                <button class="btn btn-outline-secondary" type="button" id="increase">+</button>
-                            </div>
-                        </div>
-
-                        <div class="action-buttons mb-5">
-                            <button class="btn btn-add-cart" id="addToCartBtn">Thêm vào giỏ hàng</button>
-                            <button class="btn btn-buy" id="orderBtn">Mua ngay</button>
-                        </div>
-
-                        <!-- MÔ TẢ SẢN PHẨM -->
-                        <div class="product-description-wrapper mt-4 pt-3 border-top">
-                            <h2 class="section-title">Mô tả sản phẩm</h2>
-                            <div class="product-description-content mt-3">
-                                ${p.description || 'Chưa có mô tả.'}
-                            </div>
-                        </div>
-
-                        <!-- PHẦN CHÍNH SÁCH HỖ TRỢ - ĐẸP Y CHANG BẠN MUỐN -->
-                        <div class="policy-wrapper mt-5">
-                            <div class="row g-4">
-                                <div class="col-12 col-md-6">
-                                    <div class="policy-item">
-                                        <div class="policy-icon-box text-box">
-                                            <span>FREE</span>
-                                            <span>SHIP</span>
-                                        </div>
-                                        <div class="policy-content">
-                                            <span class="policy-title">Free ship cho đơn trên 200k</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6">
-                                    <div class="policy-item">
-                                        <div class="policy-icon-box">
-                                            <i class='bx bx-sync'></i>
-                                        </div>
-                                        <div class="policy-content">
-                                            <span class="policy-title">30 ngày đổi trả cho bất kì thứ gì</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6">
-                                    <div class="policy-item">
-                                        <div class="policy-icon-box">
-                                            <i class='bx bx-phone-call'></i>
-                                        </div>
-                                        <div class="policy-content">
-                                            <span class="policy-title">Hotline hỗ trợ 0783159798</span>
-                                            <span class="policy-sub">hỗ trợ từ 8h30 - 22h</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6">
-                                    <div class="policy-item">
-                                        <div class="policy-icon-box">
-                                            <i class='bx bx-map-pin'></i>
-                                        </div>
-                                        <div class="policy-content">
-                                            <span class="policy-title">Đến tận nơi nhận trả hàng</span>
-                                            <span class="policy-sub">hoàn tiền trong 24h</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
+                `;
 
                 // ==================== ẢNH ====================
                 const mainImg = document.getElementById('main-product-image');

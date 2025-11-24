@@ -238,37 +238,20 @@
                 <div class="col-lg-5">
                     <div class="order-summary-card">
                         <h4 class="mb-4">Tóm tắt đơn hàng</h4>
-                        <div class="order-items">
-                            <div class="order-item d-flex align-items-center mb-3 pb-3 border-bottom">
-                                <img src="../../assets/images/product2.png" alt="Áo đồng phục" class="me-3" width="60">
-                                <div class="flex-grow-1">
-                                    <p class="mb-1 fw-bold">Áo đồng phục công sở CTH-2025</p>
-                                    <small class="text-muted">Size: L | Số lượng: 2</small>
-                                </div>
-                                <strong>598.000đ</strong>
-                            </div>
-                            <div class="order-item d-flex align-items-center mb-3 pb-3 border-bottom">
-                                <img src="../../assets/images/product3.png" alt="Quần" class="me-3" width="60">
-                                <div class="flex-grow-1">
-                                    <p class="mb-1 fw-bold">Quần tây công sở nam</p>
-                                    <small class="text-muted">Size: 32 | Số lượng: 1</small>
-                                </div>
-                                <strong>350.000đ</strong>
-                            </div>
-                        </div>
+                        <div class="order-items" id="orderItems"></div>
 
-                        <div class="order-total mt-4 pt-3 border-top">
+                        <div class="order-total mt-4 pt-3">
                             <div class="d-flex justify-content-between mb-2">
                                 <span>Tạm tính</span>
-                                <strong>948.000đ</strong>
+                                <strong id="orderSubtotal">0đ</strong>
                             </div>
                             <div class="d-flex justify-content-between mb-2">
                                 <span>Phí vận chuyển</span>
-                                <strong class="text-success">Miễn phí</strong>
+                                <strong id="orderShipping"></strong>
                             </div>
                             <div class="d-flex justify-content-between fs-5 fw-bold text-primary">
                                 <span>Tổng cộng</span>
-                                <span>948.000đ</span>
+                                <span id="orderTotal">0đ</span>
                             </div>
                         </div>
 
@@ -397,26 +380,153 @@
         </div>
     </footer>
 
-    <script src="asset/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/script.js"></script>
     <script>
         // Xác nhận đơn hàng (demo)
-        document.getElementById('orderForm').addEventListener('submit', function (e) {
+        document.getElementById('orderForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
-            // Lưu thông tin đơn hàng tạm (demo)
-            const orderData = {
-                id: '#CTH-' + Date.now().toString().slice(-6),
-                time: new Date().toLocaleString('vi-VN'),
-                payment: document.querySelector('input[name="payment"]:checked').value === 'cod'
-                    ? 'Thanh toán khi nhận hàng (COD)'
-                    : 'Chuyển khoản ngân hàng',
-                total: '948.000đ'
-            };
-            localStorage.setItem('currentOrder', JSON.stringify(orderData));
+            // Lấy dữ liệu từ form
+            const name = document.getElementById('fullName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const province = document.getElementById('province').options[document.getElementById('province').selectedIndex].text;
+            const district = document.getElementById('district').options[document.getElementById('district').selectedIndex].text;
+            const ward = document.getElementById('ward').options[document.getElementById('ward').selectedIndex].text;
+            const note = document.getElementById('note').value.trim();
+            const payment_method = document.querySelector('input[name="payment"]:checked').value;
 
-            // Chuyển hướng
-            window.location.href = 'thankyou.html';
+            // Lấy giỏ hàng
+            const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+            if (cart.length === 0) {
+                alert("Giỏ hàng trống!");
+                return;
+            }
+
+            // Tính toán lại tổng tiền
+            let subtotal = 0;
+            const items = cart.map(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                return {
+                    product_id: item.id,
+                    color_name: item.color || null,
+                    size: item.size || null,
+                    quantity: item.quantity,
+                    unit_price: item.price
+                };
+            });
+
+            const shipping_fee = subtotal >= 200000 ? 0 : 30000;
+            const total = subtotal + shipping_fee;
+
+            // Dữ liệu gửi đi
+            const orderData = {
+                name,
+                phone,
+                address: `${address}, ${ward}, ${district}, ${province}`,
+                province,
+                district,
+                ward,
+                note,
+                payment_method: payment_method === 'cod' ? 'cod' : 'bank_transfer',
+                subtotal,
+                shipping_fee,
+                total,
+                items
+            };
+
+            // Gửi đến server
+            try {
+                const response = await fetch('/MayMacCTH/api/order/create_order.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Lưu thông tin đơn để hiển thị ở trang cảm ơn
+                    localStorage.setItem('currentOrder', JSON.stringify({
+                        order_code: result.order_code,
+                        total: total.toLocaleString('vi-VN') + 'đ',
+                        payment: payment_method === 'cod' ? 'Thanh toán khi nhận hàng (COD)' : 'Chuyển khoản ngân hàng',
+                        time: new Date().toLocaleString('vi-VN')
+                    }));
+
+                    // Xóa giỏ hàng
+                    localStorage.removeItem('cart');
+
+                    // Chuyển hướng
+                    window.location.href = 'thankyou.html';
+                } else {
+                    alert("Đặt hàng thất bại: " + result.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Lỗi kết nối, vui lòng thử lại!");
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const orderItemsEl = document.getElementById("orderItems");
+            const subtotalEl = document.getElementById("orderSubtotal");
+            const shippingEl = document.getElementById("orderShipping");
+            const totalEl = document.getElementById("orderTotal");
+
+            const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+            if (cart.length === 0) {
+                orderItemsEl.innerHTML = `
+                    <p class="text-muted text-center">Không có sản phẩm nào trong đơn hàng.</p>
+                `;
+                subtotalEl.textContent = "0đ";
+                shippingEl.textContent = "0đ";
+                totalEl.textContent = "0đ";
+                return;
+            }
+
+            // Render sản phẩm
+            let html = "";
+            let subtotal = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+
+                html += `
+                <div class="order-item d-flex align-items-center mb-3 pb-3 border-bottom">
+                    <img src="../../assets/images/upload/${item.image}" 
+                        alt="${item.name}" 
+                        class="me-3" width="60" 
+                        onerror="this.src='../../assets/images/no-image.jpg'">
+
+                    <div class="flex-grow-1">
+                        <p class="mb-1 fw-bold">${item.name}</p>
+                        <small class="text-muted">
+                            ${item.color ? `Màu: ${item.color}` : ""}
+                            ${item.size ? ` | Size: ${item.size}` : ""}
+                            | Số lượng: ${item.quantity}
+                        </small>
+                    </div>
+
+                    <strong>${itemTotal.toLocaleString("vi-VN")}đ</strong>
+                </div>`;
+            });
+
+            orderItemsEl.innerHTML = html;
+
+            // Tính phí ship
+            const shipping = subtotal >= 200000 ? 0 : 30000;
+
+            subtotalEl.textContent = subtotal.toLocaleString("vi-VN") + "đ";
+            shippingEl.textContent = shipping === 0 ? "Miễn phí" : shipping.toLocaleString("vi-VN") + "đ";
+            totalEl.textContent = (subtotal + shipping).toLocaleString("vi-VN") + "đ";
         });
 
         const BASE_URL = '/MayMacCTH';
@@ -455,6 +565,58 @@
             } catch (err) {
                 console.error('Lỗi load footer contact:', err);
             }
+
+            const provinceSelect = document.getElementById("province");
+            const districtSelect = document.getElementById("district");
+            const wardSelect = document.getElementById("ward");
+
+            let provinces = [];
+
+            // 1. Load danh sách tỉnh
+            async function loadProvinces() {
+                const res = await fetch("https://provinces.open-api.vn/api/?depth=3");
+                provinces = await res.json();
+
+                provinceSelect.innerHTML = '<option value="">Chọn tỉnh/thành</option>';
+
+                provinces.forEach(p => {
+                    provinceSelect.innerHTML += `<option value="${p.code}">${p.name}</option>`;
+                });
+            }
+
+            // 2. Khi chọn tỉnh → load quận/huyện
+            provinceSelect.addEventListener("change", () => {
+                const code = provinceSelect.value;
+                const province = provinces.find(p => p.code == code);
+
+                districtSelect.innerHTML = '<option value="">Chọn quận/huyện</option>';
+                wardSelect.innerHTML = '<option value="">Chọn phường/xã</option>';
+
+                if (!province) return;
+
+                province.districts.forEach(d => {
+                    districtSelect.innerHTML += `<option value="${d.code}">${d.name}</option>`;
+                });
+            });
+
+            // 3. Khi chọn quận → load phường/xã
+            districtSelect.addEventListener("change", () => {
+                const province = provinces.find(p => p.code == provinceSelect.value);
+                if (!province) return;
+
+                const district = province.districts.find(d => d.code == districtSelect.value);
+
+                wardSelect.innerHTML = '<option value="">Chọn phường/xã</option>';
+
+                if (!district) return;
+
+                district.wards.forEach(w => {
+                    wardSelect.innerHTML += `<option value="${w.code}">${w.name}</option>`;
+                });
+            });
+
+            // Gọi hàm load tỉnh
+            loadProvinces();
         });
     </script>
 </body>
