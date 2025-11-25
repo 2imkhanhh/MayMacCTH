@@ -730,10 +730,25 @@
 .reviews-header {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem;
+    align-items: center; 
+    gap: 1.5rem; 
     border-bottom: 1px solid #eee;
     padding-bottom: 1.5rem;
+}
+
+.reviews-header > div:last-child {
+    margin-left: auto;
+}
+
+.btn-review {
+    background-color: #174DAF; 
+    color: #fff; 
+    transition: all 0.3s ease;
+}
+
+.btn-review:hover {
+    background-color: #263e6b; 
+    color: #fff;
 }
 
 .reviews-main-title {
@@ -1001,6 +1016,26 @@
     /* Icon mũi tên phải từ Boxicons */
     font-family: 'boxicons' !important;
 }
+
+.rating-stars-input i {
+    font-size: 28px;
+    cursor: pointer;
+    color: #ccc;
+    transition: 0.2s;
+}
+
+.rating-stars-input i.active {
+    color: #ffcc00;
+}
+
+#previewImages img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
 
 @media (max-width: 991.98px) {
     .action-buttons {

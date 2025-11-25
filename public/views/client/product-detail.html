@@ -239,14 +239,14 @@
                             </button>
                         </div>
 
-                        <div class="product-description-wrapper mt-4 pt-3">
+                        <!-- <div class="product-description-wrapper mt-4 pt-3">
                             <div class="section-title-container">
                                 <h2 class="section-title">Mô tả sản phẩm</h2>
                             </div>
                             <div class="product-description-content mt-3" id="shortDescription">
                                 Đang tải...
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -286,8 +286,76 @@
                         <i class='bx bxs-star'></i>
                         <i class='bx bx-star'></i>
                     </div>
+                    <span class="review-count-text">Dựa trên 50 khách hàng</span>
                 </div>
-                <span class="review-count-text">Dựa trên 50 khách hàng</span>
+                <div class="my-4">
+                    <button class="btn btn-review px-4" data-bs-toggle="collapse"
+                        data-bs-target="#writeReviewCollapse">
+                        <i class='bx bxs-edit-alt'></i> Viết đánh giá
+                    </button>
+                </div>
+            </div>
+            <div class="collapse mt-4" id="writeReviewCollapse">
+                <div class="p-4 border rounded bg-light">
+                    <h5 class="fw-bold mb-3">Viết đánh giá của bạn</h5>
+
+                    <!-- Tên khách -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Họ tên</label>
+                        <input type="text" class="form-control" id="reviewName" placeholder="Nhập tên của bạn">
+                    </div>
+
+                    <!-- Số sao -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold d-block">Xếp hạng</label>
+                        <div class="rating-stars-input" id="ratingStars">
+                            <i class='bx bx-star' data-value="1"></i>
+                            <i class='bx bx-star' data-value="2"></i>
+                            <i class='bx bx-star' data-value="3"></i>
+                            <i class='bx bx-star' data-value="4"></i>
+                            <i class='bx bx-star' data-value="5"></i>
+                        </div>
+                    </div>
+
+                    <!-- Size -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Kích thước bạn đã mua</label>
+                        <select class="form-select" id="reviewSize">
+                            <option value="">Chọn size</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                        </select>
+                    </div>
+
+                    <!-- Màu -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Màu sắc</label>
+                        <input type="text" class="form-control" id="reviewColor" placeholder="VD: Đen, Trắng, Đỏ,...">
+                    </div>
+
+                    <!-- Nội dung -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nội dung đánh giá</label>
+                        <textarea class="form-control" rows="4" id="reviewContent"
+                            placeholder="Chia sẻ trải nghiệm của bạn..."></textarea>
+                    </div>
+
+                    <!-- Upload ảnh -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Thêm hình ảnh (tối đa 5)</label>
+                        <input type="file" class="form-control" id="reviewImages" accept="image/*" multiple>
+                        <div id="previewImages" class="d-flex gap-2 mt-2 flex-wrap"></div>
+                    </div>
+
+                    <!-- Nút gửi + nút hủy -->
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary px-4" id="submitReview">Gửi đánh giá</button>
+                        <button class="btn btn-outline-secondary" data-bs-toggle="collapse"
+                            data-bs-target="#writeReviewCollapse">Hủy</button>
+                    </div>
+                </div>
             </div>
 
             <div class="row mt-4">
@@ -511,7 +579,7 @@
         </div>
     </section>
 
-    <div id="addToCartToast" class="toast-notification">
+    <!-- <div id="addToCartToast" class="toast-notification">
         <div class="toast-icon">
             <i class="bx bx-check-circle"></i>
         </div>
@@ -520,7 +588,7 @@
             <div class="toast-message" id="toastProductName">Sản phẩm XYZ</div>
         </div>
         <button class="toast-close">&times;</button>
-    </div>
+    </div> -->
 
     <!-- Footer -->
     <footer class="footer bg-primary text-white py-5">
@@ -739,14 +807,10 @@
                                     <button class="btn btn-buy" id="orderBtn">Mua ngay</button>
                                 </div>
 
-                                <!-- MÔ TẢ SẢN PHẨM -->
-                                <div class="product-description-wrapper mt-4 pt-3 border-top">
-                                    <h2 class="section-title">Mô tả sản phẩm</h2>
-                                    <div class="product-description-content mt-3">
-                                        ${p.description || 'Chưa có mô tả.'}
-                                    </div>
+                                <!-- Dịch vụ -->
+                                <div class="product-description-wrapper mt-4 pt-3 border-bottom">
+                                    <h2 class="section-title">Dịch vụ của chúng tôi</h2>
                                 </div>
-
                                 <!-- PHẦN CHÍNH SÁCH HỖ TRỢ - ĐẸP Y CHANG BẠN MUỐN -->
                                 <div class="policy-wrapper mt-5">
                                     <div class="row g-4">

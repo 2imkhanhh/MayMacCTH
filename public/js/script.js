@@ -15,39 +15,39 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Breadcrumb
-document.addEventListener('DOMContentLoaded', function () {
-  const breadcrumbPage = window.location.pathname.split('/').pop() || 'index.html';
-  const pageMap = {
-    'index.html': 'Trang chủ',
-    'about-us.html': 'Về chúng tôi',
-    'products.html': 'Sản phẩm',
-    'guide.html': 'Hướng dẫn',
-    'news.html': 'Tin tức',
-    'contact.html': 'Liên hệ',
-    'product-detail.html': 'Áo Đồng Phục',
-    'cart.html': 'Giỏ hàng',
-    'order.html': 'Đặt hàng',
-    'news-detail.html': 'Tin tứcc'
-  };
+// document.addEventListener('DOMContentLoaded', function () {
+//   const breadcrumbPage = window.location.pathname.split('/').pop() || 'index.html';
+//   const pageMap = {
+//     'index.html': 'Trang chủ',
+//     'about-us.html': 'Về chúng tôi',
+//     'products.html': 'Sản phẩm',
+//     'guide.html': 'Hướng dẫn',
+//     'news.html': 'Tin tức',
+//     'contact.html': 'Liên hệ',
+//     'product-detail.html': 'Áo Đồng Phục',
+//     'cart.html': 'Giỏ hàng',
+//     'order.html': 'Đặt hàng',
+//     'news-detail.html': 'Tin tứcc'
+//   };
 
-  const currentPageName = pageMap[breadcrumbPage] || 'Trang chủ';
-  const urlParams = new URLSearchParams(window.location.search);
-  const productName = urlParams.get('name') || 'Áo Đồng Phục';
+//   const currentPageName = pageMap[breadcrumbPage] || 'Trang chủ';
+//   const urlParams = new URLSearchParams(window.location.search);
+//   const productName = urlParams.get('name') || 'Áo Đồng Phục';
 
-  if (breadcrumbPage === 'index.html') {
-    breadcrumb.innerHTML = `${currentPageName}`;
-  } else if (breadcrumbPage === 'product-detail.html') {
-    breadcrumb.innerHTML = `
-      Trang chủ >
-      <a href="products.html">Sản phẩm</a> >
-      <a href="product-detail.html?name=${encodeURIComponent(productName)}" class="product-name">
-        ${productName}
-      </a>
-    `;
-  } else {
-    breadcrumb.innerHTML = `Trang chủ > <a href="${breadcrumbPage}">${currentPageName}</a>`;
-  }
-});
+//   if (breadcrumbPage === 'index.html') {
+//     breadcrumb.innerHTML = `${currentPageName}`;
+//   } else if (breadcrumbPage === 'product-detail.html') {
+//     breadcrumb.innerHTML = `
+//       Trang chủ >
+//       <a href="products.html">Sản phẩm</a> >
+//       <a href="product-detail.html?name=${encodeURIComponent(productName)}" class="product-name">
+//         ${productName}
+//       </a>
+//     `;
+//   } else {
+//     breadcrumb.innerHTML = `Trang chủ > <a href="${breadcrumbPage}">${currentPageName}</a>`;
+//   }
+// });
 
 document.addEventListener("DOMContentLoaded", async function () {
   const BASE_URL = "/MayMacCTH";
