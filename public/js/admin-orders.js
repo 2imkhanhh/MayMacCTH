@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadOrders() {
     try {
-        const res = await fetch(`${BASE_URL}/api/order/get_orders.php`);
+        const res = await fetch(`${BASE_URL}/api/order/get_order.php`);
         const data = await res.json();
 
         if (data.success && data.data && data.data.length > 0) {

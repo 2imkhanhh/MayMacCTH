@@ -289,8 +289,7 @@
                     <span class="review-count-text">Dựa trên 50 khách hàng</span>
                 </div>
                 <div class="my-4">
-                    <button class="btn btn-review px-4" data-bs-toggle="collapse"
-                        data-bs-target="#writeReviewCollapse">
+                    <button class="btn btn-review px-4" data-bs-toggle="collapse" data-bs-target="#writeReviewCollapse">
                         <i class='bx bxs-edit-alt'></i> Viết đánh giá
                     </button>
                 </div>
@@ -299,10 +298,14 @@
                 <div class="p-4 border rounded bg-light">
                     <h5 class="fw-bold mb-3">Viết đánh giá của bạn</h5>
 
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Số điện thoại</label>
+                        <input type="text" class="form-control" id="reviewPhone" placeholder="Nhập số điện thoại">
+                    </div>
                     <!-- Tên khách -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Họ tên</label>
-                        <input type="text" class="form-control" id="reviewName" placeholder="Nhập tên của bạn">
+                        <input type="text" class="form-control" id="reviewName" placeholder="Nhập tên">
                     </div>
 
                     <!-- Số sao -->
@@ -340,6 +343,16 @@
                         <label class="form-label fw-semibold">Nội dung đánh giá</label>
                         <textarea class="form-control" rows="4" id="reviewContent"
                             placeholder="Chia sẻ trải nghiệm của bạn..."></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Chọn tag phù hợp với trải nghiệm của bạn <small
+                                class="text-muted">(có thể chọn nhiều)</small></label>
+                        <div class="review-tag-selection d-flex flex-wrap gap-2" id="reviewTagContainer">
+                            <div class="text-center py-5 text-muted w-100">
+                                <i class='bx bx-loader-alt bx-spin'></i> Đang tải tag...
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Upload ảnh -->
@@ -708,6 +721,84 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/script.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Phân trang
+            const reviewItems = document.querySelectorAll('.review-item');
+            const reviewPagination = document.getElementById('reviewPagination');
+            const reviewList = document.querySelector('.review-list');
+            const itemsPerPage = 3;
+            let currentPage = 1;
+
+            function showReviewPage(page, scroll = true) { // Thêm tham số scroll
+                const totalPages = Math.ceil(reviewItems.length / itemsPerPage);
+                if (page < 1) page = 1;
+                if (page > totalPages) page = totalPages;
+
+                reviewItems.forEach(item => item.style.display = 'none');
+                for (let i = (page - 1) * itemsPerPage; i < page * itemsPerPage && i < reviewItems.length; i++) {
+                    reviewItems[i].style.display = 'block';
+                }
+
+                reviewPagination.innerHTML = '';
+                const maxPagesToShow = 5;
+                let startPage = Math.max(1, page - Math.floor(maxPagesToShow / 2));
+                let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+                if (endPage - startPage < maxPagesToShow - 1) {
+                    startPage = Math.max(1, endPage - maxPagesToShow + 1);
+                }
+
+                reviewPagination.innerHTML += `
+                    <li class="page-item ${page === 1 ? 'disabled' : ''}">
+                        <a class="page-link" href="#" aria-label="Previous" id="prevPage">
+                            <i class='bx bx-chevron-left'></i> Trước
+                        </a>
+                    </li>
+                `;
+
+                for (let i = startPage; i <= endPage; i++) {
+                    reviewPagination.innerHTML += `
+                        <li class="page-item ${i === page ? 'active' : ''}">
+                            <a class="page-link" href="#">${i}</a>
+                        </li>
+                    `;
+                }
+
+                reviewPagination.innerHTML += `
+                    <li class="page-item ${page === totalPages ? 'disabled' : ''}">
+                        <a class="page-link" href="#" aria-label="Next" id="nextPage">
+                            Sau <i class='bx bx-chevron-right'></i>
+                        </a>
+                    </li>
+                `;
+
+                currentPage = page;
+
+                // Chỉ cuộn khi người dùng tương tác với phân trang
+                if (scroll && reviewList) {
+                    reviewList.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+
+            reviewPagination.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (e.target.tagName === 'A' && e.target.closest('#reviewPagination')) {
+                    const link = e.target;
+                    if (link.id === 'prevPage') {
+                        showReviewPage(currentPage - 1);
+                    } else if (link.id === 'nextPage') {
+                        showReviewPage(currentPage + 1);
+                    } else {
+                        const page = parseInt(link.textContent);
+                        currentPage = page;
+                        showReviewPage(page);
+                    }
+                }
+            });
+
+            // Không cuộn khi trang tải
+            showReviewPage(1, false);
+        })
         document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const productId = urlParams.get('id');

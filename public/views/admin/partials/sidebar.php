@@ -40,6 +40,10 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             <i class="bi bi-cart-check"></i><span>Đơn hàng</span>
             <span class="badge bg-danger ms-auto">147</span>
         </a>
+        <a href="review-tags.php" 
+           class="nav-link d-flex align-items-center <?php echo $currentPage == 'review-tags.php' ? 'active' : ''; ?>">
+            <i class="bi bi-book"></i><span>Đánh giá</span>
+        </a>
         <a href="customers.php" 
            class="nav-link d-flex align-items-center <?php echo $currentPage == 'customers.php' ? 'active' : ''; ?>">
             <i class="bi bi-people"></i><span>Khách hàng</span>
