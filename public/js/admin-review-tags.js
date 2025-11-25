@@ -18,7 +18,7 @@ async function loadTags() {
                 const statusText = tag.is_active == 1 ? 'Hiển thị' : 'Ẩn';
 
                 const col = document.createElement('div');
-                col.className = 'col-6 col-sm-4 col-lg-3'; // 4 card mỗi hàng
+                col.className = 'col-6 col-sm-4 col-lg-3'; 
 
                 col.innerHTML = `
                     <div class="tag-card">

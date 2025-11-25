@@ -1154,6 +1154,67 @@
                 console.error(err);
                 contentContainer.innerHTML = `<div class="text-center py-5"><h1 class="text-danger">Lỗi tải sản phẩm</h1><p>${err.message}</p><button class="btn btn-primary" onclick="location.reload()">Tải lại</button></div>`;
             }
+
+            async function loadReviewTags() {
+                const container = document.getElementById('reviewTagContainer');
+                if (!container) return;
+
+                try {
+                    const res = await fetch(`${BASE_URL}/api/review_tags/get_review_tags.php`);
+                    const result = await res.json();
+
+                    if (result.success && result.data?.length > 0) {
+                        const activeTags = result.data.filter(tag => tag.is_active == 1);
+
+                        if (activeTags.length === 0) {
+                            container.innerHTML = '<div class="text-muted">Hiện chưa có tag nào để chọn.</div>';
+                            return;
+                        }
+
+                        container.innerHTML = ''; // Xóa loading
+
+                        activeTags.forEach(tag => {
+                            const btn = document.createElement('div');
+                            btn.className = 'tag-select';
+                            btn.textContent = tag.content;
+                            btn.dataset.tagId = tag.review_tag_id;
+
+                            // Click để chọn/bỏ chọn – HOẠT ĐỘNG 100%
+                            btn.addEventListener('click', function () {
+                                this.classList.toggle('selected');
+                            });
+
+                            container.appendChild(btn);
+                        });
+                    } else {
+                        container.innerHTML = '<div class="text-muted">Chưa có tag nào được bật.</div>';
+                    }
+                } catch (err) {
+                    console.error('Lỗi tải tag:', err);
+                    container.innerHTML = '<div class="text-danger">Lỗi tải tag đánh giá!</div>';
+                }
+            }
+
+            // === 2. LẤY DANH SÁCH TAG ĐÃ CHỌN ===
+            function getSelectedTagIds() {
+                const selected = document.querySelectorAll('#reviewTagContainer .tag-select.selected');
+                return Array.from(selected).map(el => el.dataset.tagId);
+            }
+
+            // === 3. GỌI HÀM TẢI TAG NGAY KHI TRANG LOAD ===
+            loadReviewTags();
+
+            // === 4. XỬ LÝ KHI NHẤN "GỬI ĐÁNH GIÁ" (test) ===
+            document.getElementById('submitReview')?.addEventListener('click', function () {
+                const selectedTags = getSelectedTagIds();
+                if (selectedTags.length > 0) {
+                    console.log('Tag đã chọn:', selectedTags);
+                    alert(`Bạn đã chọn ${selectedTags.length} tag! ID: ${selectedTags.join(', ')}`);
+                    // Sau này gửi kèm: formData.append('tag_ids', selectedTags.join(','));
+                } else {
+                    alert('Bạn chưa chọn tag nào!');
+                }
+            });
         });
 
         const BASE_URL = '/MayMacCTH';
