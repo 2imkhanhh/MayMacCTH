@@ -198,4 +198,65 @@ class ReviewProduct
         $avg = $stmt->fetchColumn();
         return $avg ? (float)$avg : 0;
     }
+
+    public function getAllReviewsWithProductName()
+    {
+        $query = "
+            SELECT 
+                r.review_id,
+                r.product_id,
+                r.customer_name,
+                r.phone,
+                r.rating,
+                r.size,
+                r.color,
+                r.content,
+                r.created_at,
+                p.name AS product_name,
+                GROUP_CONCAT(DISTINCT ri.image) AS images,
+                GROUP_CONCAT(DISTINCT rt.content) AS tag_list
+            FROM {$this->table} r
+            LEFT JOIN products p ON p.product_id = r.product_id
+            LEFT JOIN {$this->images_table} ri ON ri.review_id = r.review_id
+            LEFT JOIN {$this->links_table} rtl ON rtl.review_id = r.review_id
+            LEFT JOIN review_tags rt 
+                ON rtl.review_tag_id = rt.review_tag_id 
+                AND rt.is_active = 1
+            GROUP BY r.review_id
+            ORDER BY r.review_id DESC
+        ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Chuẩn hóa dữ liệu trả về
+        $reviews = [];
+
+        foreach ($rows as $row) {
+            $reviews[] = [
+                "review_id"     => $row['review_id'],
+                "product_id"    => $row['product_id'],
+                "product_name"  => $row['product_name'] ?? '',
+                "customer_name" => $row['customer_name'] ?? 'Khách hàng',
+                "phone"         => $row['phone'] ?? '',
+                "rating"        => (int)($row['rating'] ?? 0),
+                "content"       => $row['content'] ?? '',
+                "size"          => $row['size'] ?? '',
+                "color"         => $row['color'] ?? '',
+                "created_at"    => $row['created_at']
+                    ? date('d/m/Y H:i', strtotime($row['created_at']))
+                    : '',
+                "images"        => $row['images']
+                    ? array_filter(explode(',', $row['images']))
+                    : [],
+                "tags"          => $row['tag_list']
+                    ? array_filter(explode(',', $row['tag_list']))
+                    : []
+            ];
+        }
+
+        return $reviews;
+    }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 </head>
+
 <body class="d-flex">
     <?php include 'partials/sidebar.php'; ?>
 
@@ -16,6 +18,8 @@
         <h2 class="mb-4">Quản lý Tag Đánh Giá</h2>
         <button class="btn btn-primary mb-4" id="btnAdd">Thêm Tag mới</button>
         <div id="tagList" class="row g-4"></div>
+        <h2 class="mt-5 mb-3">Tất cả đánh giá sản phẩm</h2>
+        <div id="reviewList" class="row g-4"></div>
     </div>
 
     <div class="modal fade" id="tagModal">
@@ -49,4 +53,5 @@
     <script src="../../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/admin-review-tags.js"></script>
 </body>
+
 </html>

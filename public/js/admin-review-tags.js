@@ -2,6 +2,7 @@ const BASE_URL = '/MayMacCTH';
 
 document.addEventListener('DOMContentLoaded', () => {
     loadTags();
+    loadAllReviews(); 
     document.getElementById('btnAdd').addEventListener('click', openModal);
 });
 
@@ -92,4 +93,38 @@ async function deleteTag(id) {
     const data = await res.json();
     alert(data.message);
     if (data.success) loadTags();
+}
+
+async function loadAllReviews() {
+    try {
+        const res = await fetch(`${BASE_URL}/api/review_products/get_all_reviews.php`);
+        const result = await res.json();
+
+        const container = document.getElementById('reviewList');
+        container.innerHTML = '';
+
+        if (!result.success || result.data.length === 0) {
+            container.innerHTML = `<div class="col-12 text-center text-muted py-4 fs-5">
+                Chưa có đánh giá nào.
+            </div>`;
+            return;
+        }
+
+        result.data.forEach(r => {
+            container.innerHTML += `
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="review-card">
+                        <h5 class="mb-2">${r.customer_name || 'Ẩn danh'}</h5>
+                        <div class="text-warning mb-2">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+                        <p>${r.content || '(Không có nội dung)'}</p>
+                        <small class="text-muted">Sản phẩm: ${r.product_name}</small><br>
+                        <small class="text-muted">Ngày: ${r.created_at}</small>
+                    </div>
+                </div>
+            `;
+        });
+    } catch (err) {
+        console.error(err);
+        alert('Lỗi tải đánh giá!');
+    }
 }
