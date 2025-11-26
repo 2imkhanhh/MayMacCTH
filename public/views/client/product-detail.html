@@ -278,15 +278,11 @@
             <div class="reviews-header">
                 <h2 class="reviews-main-title">Đánh giá sản phẩm</h2>
                 <div class="overall-rating">
-                    <span class="rating-score">4.0</span>
-                    <div class="rating-stars text-warning">
-                        <i class='bx bxs-star'></i>
-                        <i class='bx bxs-star'></i>
-                        <i class='bx bxs-star'></i>
-                        <i class='bx bxs-star'></i>
-                        <i class='bx bx-star'></i>
+                    <span class="rating-score" id="avgRating">0.0</span>
+                    <div class="rating-stars text-warning" id="avgStars">
+                        <i class='bx bx-star'></i> <!-- JS sẽ thay nội dung -->
                     </div>
-                    <span class="review-count-text">Dựa trên 50 khách hàng</span>
+                    <span class="review-count-text" id="reviewCountText">Dựa trên 0 khách hàng</span>
                 </div>
                 <div class="my-4">
                     <button class="btn btn-review px-4" data-bs-toggle="collapse" data-bs-target="#writeReviewCollapse">
@@ -1161,6 +1157,10 @@
                     const result = await res.json();
                     // console.log('Dữ liệu đánh giá nhận được:', result);
 
+                    if (result.success && result.data) {
+                        renderAverageRating(result.data.average_rating || 0, result.data.total_reviews || 0);
+                    }
+
                     if (!result.success || !result.data || !Array.isArray(result.data.reviews) || result.data.reviews.length === 0) {
                         reviewList.innerHTML = '<div class="text-center text-muted py-5">Chưa có đánh giá nào.</div>';
                         renderPagination(0, 1, 1);
@@ -1179,8 +1179,8 @@
                         </div>
                     <div class="review-rating text-warning">
                         ${Array.from({ length: 5 }, (_, i) =>
-                            `<i class='bx ${i < (r.rating || 0) ? 'bxs-star' : 'bx-star'}'></i>`
-                        ).join('')}
+                        `<i class='bx ${i < (r.rating || 0) ? 'bxs-star' : 'bx-star'}'></i>`
+                    ).join('')}
                     </div>
                 ${r.size || r.color ? `
                 <div class="review-product-details">
@@ -1221,6 +1221,27 @@
                     console.error('Lỗi loadReviews:', err);
                     reviewList.innerHTML = '<div class="text-danger text-center py-4">Lỗi tải đánh giá, đang thử lại...</div>';
                     if (loading) loading.style.display = 'none';
+                }
+            }
+
+            function renderAverageRating(avg, total) {
+                const scoreEl = document.getElementById('avgRating');
+                const starsEl = document.getElementById('avgStars');
+                const countEl = document.getElementById('reviewCountText');
+
+                if (!scoreEl || !starsEl || !countEl) return;
+
+                // Điểm trung bình
+                scoreEl.textContent = Number(avg).toFixed(1);
+
+                // Luôn 1 ngôi sao vàng (dù điểm cao hay thấp)
+                starsEl.innerHTML = `<i class='bx bxs-star' style="font-size:1.5rem;"></i>`;
+
+                // Tổng số đánh giá
+                if (total > 0) {
+                    countEl.textContent = `Dựa trên ${total} khách hàng`;
+                } else {
+                    countEl.textContent = 'Chưa có đánh giá';
                 }
             }
 
