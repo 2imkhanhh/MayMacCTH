@@ -577,9 +577,6 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const BASE_URL = '/MayMacCTH';
             let uploadedImageNames = [];
-
-
-
             // ==================== 2. LOAD + HIỂN THỊ TAG ====================
             async function loadReviewTags() {
                 const container = document.getElementById('reviewTagContainer');
@@ -609,18 +606,6 @@
                 }
             }
             await loadReviewTags();
-
-            // ==================== 3. CHỌN SAO ====================
-            // const stars = document.querySelectorAll('#ratingStars i');
-            // stars.forEach((star, idx) => {
-            //     star.onclick = () => {
-            //         stars.forEach((s, i) => {
-            //             s.classList.toggle('active', i <= idx);
-            //             s.className = i <= idx ? 'bx bxs-star' : 'bx bx-star';
-            //             s.style.color = i <= idx ? '#f39c12' : '#ccc';
-            //         });
-            //     };
-            // });
 
             // ==================== 4. UPLOAD ẢNH + PREVIEW ====================
             const previewContainer = document.getElementById('previewImages');
@@ -665,54 +650,6 @@
                     reader.readAsDataURL(file);
                 });
             });
-
-            // ==================== 5. GỬI ĐÁNH GIÁ – CHẠY NGON 100% ====================
-            // document.getElementById('submitReview')?.addEventListener('click', async () => {
-            //     const rating = Array.from(stars).filter(s => s.classList.contains('active')).length;
-
-            //     const data = {
-            //         product_id: new URLSearchParams(window.location.search).get('id'),
-            //         customer_name: document.getElementById('reviewName')?.value.trim() || '',
-            //         phone: document.getElementById('reviewPhone')?.value.trim() || '',
-            //         rating: rating,
-            //         size: document.getElementById('reviewSize')?.value || '',
-            //         color: document.getElementById('reviewColor')?.value.trim() || '',
-            //         content: document.getElementById('reviewContent')?.value.trim() || '',
-            //         images: uploadedImageNames,
-            //         tag_ids: Array.from(document.querySelectorAll('#reviewTagContainer .tag-select.selected'))
-            //             .map(el => el.dataset.tagId)
-            //     };
-
-            //     // Validate bắt buộc
-            //     if (!data.customer_name || !data.phone || rating === 0 || !data.content) {
-            //         alert('Vui lòng điền đầy đủ: Họ tên, SĐT, đánh giá sao và nội dung!');
-            //         return;
-            //     }
-
-            //     try {
-            //         const res = await fetch(`${BASE_URL}/api/review_products/create_review.php`, {
-            //             method: 'POST',
-            //             headers: { 'Content-Type': 'application/json' },
-            //             body: JSON.stringify(data)
-            //         });
-
-            //         const result = await res.json();
-            //         alert(result.message || 'Đã gửi đánh giá thành công!');
-
-            //         if (result.success) {
-            //             // Reset form
-            //             bootstrap.Collapse.getInstance(document.getElementById('writeReviewCollapse'))?.hide();
-            //             document.getElementById('reviewImages').value = '';
-            //             previewContainer.innerHTML = '';
-            //             uploadedImageNames = [];
-            //             document.getElementById('reviewContent').value = '';
-            //             stars.forEach(s => { s.className = 'bx bx-star'; s.style.color = '#ccc'; s.classList.remove('active'); });
-            //         }
-            //     } catch (err) {
-            //         console.error('Lỗi gửi:', err);
-            //         alert('Lỗi kết nối server!');
-            //     }
-            // });
 
             // ==================== 6. CÁC HÀM KHÁC (giỏ hàng, footer…) ====================
             updateCartCount();
@@ -1214,7 +1151,7 @@
                 reviewList.innerHTML = '';
 
                 try {
-                    const url = `${BASE_URL}/api/review_products/get_reviews.php?id=${productId}&page=${page}`;
+                    const url = `${BASE_URL}/api/review_products/get_reviews.php?id=${productId}&page=${page}&limit=3`;
                     const res = await fetch(url);
 
                     if (!res.ok) {
@@ -1222,7 +1159,7 @@
                     }
 
                     const result = await res.json();
-                    console.log('Dữ liệu đánh giá nhận được:', result);
+                    // console.log('Dữ liệu đánh giá nhận được:', result);
 
                     if (!result.success || !result.data || !Array.isArray(result.data.reviews) || result.data.reviews.length === 0) {
                         reviewList.innerHTML = '<div class="text-center text-muted py-5">Chưa có đánh giá nào.</div>';
@@ -1235,16 +1172,16 @@
                     const reviews = result.data.reviews;
 
                     reviewList.innerHTML = reviews.map(r => `
-            <div class="review-item">
-                <div class="review-author">
-                    <strong>${escapeHtml(r.customer_name || 'Khách')}</strong>
-                    <span class="review-date">${r.created_at || ''}</span>
-                </div>
-                <div class="review-rating text-warning">
-                    ${Array.from({ length: 5 }, (_, i) =>
-                        `<i class='bx ${i < (r.rating || 0) ? 'bxs-star' : 'bx-star'}'></i>`
-                    ).join('')}
-                </div>
+                    <div class="review-item">
+                        <div class="review-author">
+                            <strong>${escapeHtml(r.customer_name || 'Khách')}</strong>
+                            <span class="review-date">${r.created_at || ''}</span>
+                        </div>
+                    <div class="review-rating text-warning">
+                        ${Array.from({ length: 5 }, (_, i) =>
+                            `<i class='bx ${i < (r.rating || 0) ? 'bxs-star' : 'bx-star'}'></i>`
+                        ).join('')}
+                    </div>
                 ${r.size || r.color ? `
                 <div class="review-product-details">
                     ${r.size ? `<span>Kích thước: ${escapeHtml(r.size)}</span>` : ''}
@@ -1295,21 +1232,21 @@
                 }
 
                 let html = `
-        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
-            <a class="page-link" href="#" data-page="${currentPage - 1}">Trước</a>
-        </li>`;
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage - 1}">Trước</a>
+                </li>`;
 
                 for (let i = 1; i <= totalPages; i++) {
                     html += `
-            <li class="page-item ${i === currentPage ? 'active' : ''}">
-                <a class="page-link" href="#" data-page="${i}">${i}</a>
-            </li>`;
+                <li class="page-item ${i === currentPage ? 'active' : ''}">
+                    <a class="page-link" href="#" data-page="${i}">${i}</a>
+                </li>`;
                 }
 
                 html += `
-        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
-            <a class="page-link" href="#" data-page="${currentPage + 1}">Sau</a>
-        </li>`;
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage + 1}">Sau</a>
+                </li>`;
 
                 pagination.innerHTML = html;
             }
@@ -1336,8 +1273,6 @@
             // Gọi load khi trang sẵn sàng
             loadReviews(1);
         });
-
-
 
         // Hàm cập nhật số lượng giỏ hàng (giữ nguyên)
         function updateCartCount() {

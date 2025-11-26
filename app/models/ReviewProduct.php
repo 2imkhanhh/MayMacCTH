@@ -115,7 +115,6 @@ class ReviewProduct
         $this->rating        = (int)$this->rating;
     }
 
-    // (Tùy chọn) Hàm lấy tất cả đánh giá của sản phẩm
     public function getByProductId($product_id)
     {
         $query = "SELECT pr.*, 
@@ -136,58 +135,53 @@ class ReviewProduct
     public function getByProductIdWithDetails($product_id, $limit = 10, $offset = 0)
     {
         $query = "SELECT 
-                    r.review_id,
-                    r.customer_name,
-                    r.phone,
-                    r.rating,
-                    r.content,
-                    r.size,
-                    r.color,
-                    r.created_at,
-                    ri.image AS image_name,
-                    rt.content as tag_content
-                  FROM {$this->table} r
-                  LEFT JOIN {$this->images_table} ri ON ri.review_id = r.review_id
-                  LEFT JOIN {$this->links_table} rtl ON rtl.review_id = r.review_id
-                  LEFT JOIN review_tags rt ON rt.review_tag_id = rtl.review_tag_id AND rt.is_active = 1
-                  WHERE r.product_id = :product_id
-                  ORDER BY r.created_at DESC
-                  LIMIT :limit OFFSET :offset";
+                r.review_id,
+                r.customer_name,
+                r.phone,
+                r.rating,
+                r.content,
+                r.size,
+                r.color,
+                r.created_at,
+                GROUP_CONCAT(DISTINCT ri.image) AS image_list,
+                GROUP_CONCAT(DISTINCT rt.content) AS tag_list
+              FROM {$this->table} r
+              LEFT JOIN {$this->images_table} ri ON ri.review_id = r.review_id
+              LEFT JOIN {$this->links_table} rtl ON rtl.review_id = r.review_id
+              LEFT JOIN review_tags rt ON rtl.review_tag_id = rt.review_tag_id AND rt.is_active = 1
+              WHERE r.product_id = :product_id
+              GROUP BY r.review_id
+              ORDER BY r.created_at DESC
+              LIMIT :limit OFFSET :offset";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bindValue(':product_id', $product_id, PDO::PARAM_INT);
-        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        // Bind đúng kiểu INT cho LIMIT và OFFSET (rất quan trọng!)
+        $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+        $stmt->bindParam(':limit',      $limit,      PDO::PARAM_INT);
+        $stmt->bindParam(':offset',     $offset,     PDO::PARAM_INT);
+
         $stmt->execute();
 
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $reviews = [];
         foreach ($rows as $row) {
-            $id = $row['review_id'];
-            if (!isset($reviews[$id])) {
-                $reviews[$id] = [
-                    "review_id"     => $id,
-                    "customer_name" => $row['customer_name'] ?? 'Khách hàng',
-                    "rating"        => (int)$row['rating'],
-                    "content"       => $row['content'] ?? '',
-                    "size"          => $row['size'] ?? '',
-                    "color"         => $row['color'] ?? '',
-                    "created_at"    => date('d/m/Y', strtotime($row['created_at'])),
-                    "images"        => [],
-                    "tags"          => []
-                ];
-            }
-
-            if (!empty($row['image_name']) && !in_array($row['image_name'], $reviews[$id]['images'])) {
-                $reviews[$id]['images'][] = $row['image_name'];
-            }
-            if (!empty($row['tag_content']) && !in_array($row['tag_content'], $reviews[$id]['tags'])) {
-                $reviews[$id]['tags'][] = $row['tag_content'];
-            }
+            $reviews[] = [
+                "review_id"     => $row['review_id'],
+                "customer_name" => $row['customer_name'] ?? 'Khách hàng',
+                "phone"         => $row['phone'] ?? '',
+                "rating"        => (int)($row['rating'] ?? 0),
+                "content"       => $row['content'] ?? '',
+                "size"          => $row['size'] ?? '',
+                "color"         => $row['color'] ?? '',
+                "created_at"    => $row['created_at'] ? date('d/m/Y H:i', strtotime($row['created_at'])) : '',
+                "images"        => $row['image_list'] ? array_filter(explode(',', $row['image_list'])) : [],
+                "tags"          => $row['tag_list'] ? array_filter(explode(',', $row['tag_list'])) : []
+            ];
         }
 
-        return array_values($reviews);
+        return $reviews;
     }
 
     public function getTotalReviewsByProductId($product_id)
