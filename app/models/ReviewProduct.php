@@ -133,4 +133,75 @@ class ReviewProduct
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getByProductIdWithDetails($product_id, $limit = 10, $offset = 0)
+    {
+        $query = "SELECT 
+                    r.review_id,
+                    r.customer_name,
+                    r.phone,
+                    r.rating,
+                    r.content,
+                    r.size,
+                    r.color,
+                    r.created_at,
+                    ri.image AS image_name,
+                    rt.content as tag_content
+                  FROM {$this->table} r
+                  LEFT JOIN {$this->images_table} ri ON ri.review_id = r.review_id
+                  LEFT JOIN {$this->links_table} rtl ON rtl.review_id = r.review_id
+                  LEFT JOIN review_tags rt ON rt.review_tag_id = rtl.review_tag_id AND rt.is_active = 1
+                  WHERE r.product_id = :product_id
+                  ORDER BY r.created_at DESC
+                  LIMIT :limit OFFSET :offset";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':product_id', $product_id, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $reviews = [];
+        foreach ($rows as $row) {
+            $id = $row['review_id'];
+            if (!isset($reviews[$id])) {
+                $reviews[$id] = [
+                    "review_id"     => $id,
+                    "customer_name" => $row['customer_name'] ?? 'Khách hàng',
+                    "rating"        => (int)$row['rating'],
+                    "content"       => $row['content'] ?? '',
+                    "size"          => $row['size'] ?? '',
+                    "color"         => $row['color'] ?? '',
+                    "created_at"    => date('d/m/Y', strtotime($row['created_at'])),
+                    "images"        => [],
+                    "tags"          => []
+                ];
+            }
+
+            if (!empty($row['image_name']) && !in_array($row['image_name'], $reviews[$id]['images'])) {
+                $reviews[$id]['images'][] = $row['image_name'];
+            }
+            if (!empty($row['tag_content']) && !in_array($row['tag_content'], $reviews[$id]['tags'])) {
+                $reviews[$id]['tags'][] = $row['tag_content'];
+            }
+        }
+
+        return array_values($reviews);
+    }
+
+    public function getTotalReviewsByProductId($product_id)
+    {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM {$this->table} WHERE product_id = ?");
+        $stmt->execute([$product_id]);
+        return (int)$stmt->fetchColumn();
+    }
+
+    public function getAverageRating($product_id)
+    {
+        $stmt = $this->conn->prepare("SELECT AVG(rating) FROM {$this->table} WHERE product_id = ?");
+        $stmt->execute([$product_id]);
+        $avg = $stmt->fetchColumn();
+        return $avg ? (float)$avg : 0;
+    }
 }
