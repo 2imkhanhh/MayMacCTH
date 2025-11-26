@@ -32,8 +32,8 @@ class ReviewProductController {
         $this->review->size           = $input['size'] ?? '';
         $this->review->color          = $input['color'] ?? '';
         $this->review->content        = $input['content'];
-        $this->review->images         = $input['images'] ?? [];       // mảng tên file
-        $this->review->tag_ids        = $input['tag_ids'] ?? [];      // mảng ID tag
+        $this->review->images         = $input['images'] ?? [];       
+        $this->review->tag_ids        = $input['tag_ids'] ?? [];     
 
         if ($this->review->create()) {
             return ["success" => true, "message" => "Gửi đánh giá thành công! Cảm ơn bạn "];
