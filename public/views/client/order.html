@@ -437,7 +437,6 @@
                 items
             };
 
-            // Gửi đến server
             try {
                 const response = await fetch('/MayMacCTH/api/order/create_order.php', {
                     method: 'POST',
@@ -451,7 +450,6 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    // Lưu thông tin đơn để hiển thị ở trang cảm ơn
                     localStorage.setItem('currentOrder', JSON.stringify({
                         order_code: result.order_code,
                         total: total.toLocaleString('vi-VN') + 'đ',
@@ -459,10 +457,8 @@
                         time: new Date().toLocaleString('vi-VN')
                     }));
 
-                    // Xóa giỏ hàng
                     localStorage.removeItem('cart');
 
-                    // Chuyển hướng
                     window.location.href = 'thankyou.html';
                 } else {
                     alert("Đặt hàng thất bại: " + result.message);
@@ -491,7 +487,6 @@
                 return;
             }
 
-            // Render sản phẩm
             let html = "";
             let subtotal = 0;
 
@@ -521,7 +516,6 @@
 
             orderItemsEl.innerHTML = html;
 
-            // Tính phí ship
             const shipping = subtotal >= 200000 ? 0 : 30000;
 
             subtotalEl.textContent = subtotal.toLocaleString("vi-VN") + "đ";
@@ -572,7 +566,6 @@
 
             let provinces = [];
 
-            // 1. Load danh sách tỉnh
             async function loadProvinces() {
                 const res = await fetch("https://provinces.open-api.vn/api/?depth=3");
                 provinces = await res.json();
@@ -584,7 +577,6 @@
                 });
             }
 
-            // 2. Khi chọn tỉnh → load quận/huyện
             provinceSelect.addEventListener("change", () => {
                 const code = provinceSelect.value;
                 const province = provinces.find(p => p.code == code);
@@ -599,7 +591,6 @@
                 });
             });
 
-            // 3. Khi chọn quận → load phường/xã
             districtSelect.addEventListener("change", () => {
                 const province = provinces.find(p => p.code == provinceSelect.value);
                 if (!province) return;
@@ -615,7 +606,6 @@
                 });
             });
 
-            // Gọi hàm load tỉnh
             loadProvinces();
         });
     </script>
