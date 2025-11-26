@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý Tag Đánh Giá</title>
+    <title>Quản lý Tag & Đánh giá</title>
     <link rel="stylesheet" href="../../assets/css/admin-style.css">
     <link rel="stylesheet" href="../../assets/css/admin-review-tags.css">
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.css">
@@ -15,14 +15,72 @@
     <?php include 'partials/sidebar.php'; ?>
 
     <div class="main-content flex-grow-1 p-4">
-        <h2 class="mb-4">Quản lý Tag Đánh Giá</h2>
-        <button class="btn btn-primary mb-4" id="btnAdd">Thêm Tag mới</button>
-        <div id="tagList" class="row g-4"></div>
-        <h2 class="mt-5 mb-3">Tất cả đánh giá sản phẩm</h2>
-        <div id="reviewList" class="row g-4"></div>
+        <h2 class="mb-4">Quản lý Tag & Đánh giá</h2>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs mb-4" id="manageTabs">
+            <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-tags">Tag</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-reviews">Đánh giá</button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <!-- TAGS -->
+            <div class="tab-pane fade show active" id="tab-tags">
+                <div class="mb-3 d-flex justify-content-end">
+                    <button class="btn btn-success" id="btnAdd">Thêm Tag mới</button>
+                </div>
+                <div id="tagList" class="row g-3"></div>
+            </div>
+
+            <!-- Filter -->
+            <div class="review-filter">
+                <label for="filterRating">Rating:</label>
+                <select id="filterRating">
+                    <option value="">Tất cả</option>
+                    <option value="5">★★★★★</option>
+                    <option value="4">★★★★☆</option>
+                    <option value="3">★★★☆☆</option>
+                    <option value="2">★★☆☆☆</option>
+                    <option value="1">★☆☆☆☆</option>
+                </select>
+
+                <label for="filterDate">Ngày:</label>
+                <input type="date" id="filterDate">
+
+                <button type="button" id="btnFilterReviews">Lọc</button>
+                <button type="button" id="btnResetFilter">Reset</button>
+            </div>
+
+
+            <!-- REVIEWS -->
+            <div class="tab-pane fade" id="tab-reviews">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="reviewTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>STT</th>
+                                <th>Khách hàng</th>
+                                <th>Sản phẩm</th>
+                                <th>Rating</th>
+                                <th>Nội dung</th>
+                                <th>Tags</th>
+                                <th>Ngày</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="modal fade" id="tagModal">
+    <!-- Modal Thêm/Sửa Tag -->
+    <div class="modal fade" id="tagModal" tabindex="-1">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <div class="modal-header">

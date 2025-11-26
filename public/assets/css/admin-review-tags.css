@@ -65,8 +65,10 @@
 
 /* Nội dung tag */
 .tag-content {
-    padding: 20px 16px 20px 20px;   /* Tăng padding trái một chút */
-    text-align: left;               /* Căn trái */
+    padding: 20px 16px 20px 20px;
+    /* Tăng padding trái một chút */
+    text-align: left;
+    /* Căn trái */
     flex-grow: 1;
     display: flex;
     align-items: center;
@@ -130,4 +132,79 @@
 .btn-tag-edit i,
 .btn-tag-delete i {
     font-size: 1rem;
+}
+
+/* REVIEW TABLE */
+#reviewTable th,
+#reviewTable td {
+    vertical-align: middle;
+}
+
+.badge-tag {
+    font-size: 0.75rem;
+    padding: 4px 6px;
+    margin-right: 2px;
+}
+
+#reviewTable td {
+    vertical-align: middle;
+}
+
+#reviewTable td .star {
+    color: #FFD700; /* vàng */
+    font-size: 1rem;
+    margin-right: 2px;
+}
+
+/* Tag trong bảng */
+#reviewTable td .badge-tag {
+    background-color: #174DAF !important; /* màu nền */
+    color: #fff; /* chữ trắng */
+    font-weight: 600;
+    margin-right: 3px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+}
+
+/* ---------------- FILTER REVIEW ---------------- */
+#reviewTable .star {
+    font-size: 1rem;
+    color: gold; /* Ngôi sao vàng */
+    margin-right: 2px;
+}
+
+.review-filter {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.review-filter label {
+    font-weight: 600;
+}
+
+.review-filter input,
+.review-filter select {
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+}
+
+.review-filter button {
+    background: linear-gradient(135deg, #174DAF, #003087);
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.review-filter button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(23, 77, 175, 0.3);
 }
