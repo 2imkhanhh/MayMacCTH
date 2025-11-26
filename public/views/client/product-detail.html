@@ -372,54 +372,24 @@
                     <div class="review-filters">
                         <h6 class="filter-title">Lọc đánh giá</h6>
                         <div class="input-group search-reviews mb-4">
-                            <span class="input-group-text">
-                                <i class='bx bx-search'></i>
-                            </span>
-                            <input type="text" class="form-control" placeholder="Tìm kiếm đánh giá">
+                            <span class="input-group-text"><i class='bx bx-search'></i></span>
+                            <input type="text" class="form-control" id="searchReviewInput"
+                                placeholder="Tìm kiếm đánh giá">
                         </div>
 
                         <h6 class="filter-title">Phân loại xếp hạng</h6>
                         <ul class="filter-list star-filter-list">
-                            <li>
-                                <button class="btn btn-filter-star active">
-                                    5 <i class='bx bxs-star'></i>
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-filter-star">
-                                    4 <i class='bx bxs-star'></i>
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-filter-star">
-                                    3 <i class='bx bxs-star'></i>
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-filter-star">
-                                    2 <i class='bx bxs-star'></i>
-                                </button>
-                            </li>
-                            <li>
-                                <button class="btn btn-filter-star">
-                                    1 <i class='bx bxs-star'></i>
-                                </button>
-                            </li>
+                            <li><button class="btn btn-filter-star active" data-rating="5">5 <i
+                                        class='bx bxs-star'></i></button></li>
+                            <li><button class="btn btn-filter-star" data-rating="4">4 <i
+                                        class='bx bxs-star'></i></button></li>
+                            <li><button class="btn btn-filter-star" data-rating="3">3 <i
+                                        class='bx bxs-star'></i></button></li>
+                            <li><button class="btn btn-filter-star" data-rating="2">2 <i
+                                        class='bx bxs-star'></i></button></li>
+                            <li><button class="btn btn-filter-star" data-rating="1">1 <i
+                                        class='bx bxs-star'></i></button></li>
                         </ul>
-
-                        <h6 class="filter-title mt-4">Lọc phản hồi</h6>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="checkHasFeedback">
-                            <label class="form-check-label" for="checkHasFeedback">
-                                Đã phản hồi
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="checkHasImage">
-                            <label class="form-check-label" for="checkHasImage">
-                                Có hình ảnh
-                            </label>
-                        </div>
                     </div>
                 </div>
 
@@ -573,7 +543,7 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const BASE_URL = '/MayMacCTH';
             let uploadedImageNames = [];
-            // ==================== 2. LOAD + HIỂN THỊ TAG ====================
+            // ==================== LOAD + HIỂN THỊ TAG ====================
             async function loadReviewTags() {
                 const container = document.getElementById('reviewTagContainer');
                 if (!container) return;
@@ -1125,6 +1095,59 @@
                         bootstrap.Collapse.getInstance(document.getElementById('writeReviewCollapse'))?.hide();
 
                         // Tải lại đánh giá mới nhất
+                        function renderClientPagination(totalItems, totalPages, currentPage) {
+                            const pagination = document.getElementById('reviewPagination');
+                            pagination.dataset.currentPage = currentPage;
+
+                            if (totalPages <= 1) {
+                                pagination.innerHTML = '';
+                                return;
+                            }
+
+                            let html = `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage - 1}">Trước</a>
+                </li>`;
+
+                            for (let i = 1; i <= totalPages; i++) {
+                                html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" data-page="${i}">${i}</a>
+                    </li>`;
+                            }
+
+                            html += `<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" data-page="${currentPage + 1}">Sau</a>
+                </li>`;
+
+                            pagination.innerHTML = html;
+                        }
+
+                        // Click phân trang mới (client-side)
+                        document.getElementById('reviewPagination')?.addEventListener('click', e => {
+                            e.preventDefault();
+                            const link = e.target.closest('a');
+                            if (!link || link.parentElement.classList.contains('disabled')) return;
+                            const page = parseInt(link.dataset.page);
+                            if (page > 0) {
+                                document.getElementById('reviewPagination').dataset.currentPage = page;
+                                renderFilteredReviews();
+                                document.querySelector('.review-list')?.scrollIntoView({ behavior: 'smooth' });
+                            }
+                        });
+
+                        // Reset trang về 1 khi tìm kiếm hoặc lọc sao
+                        document.getElementById('searchReviewInput')?.addEventListener('input', () => {
+                            document.getElementById('reviewPagination').dataset.currentPage = 1;
+                            renderFilteredReviews();
+                        });
+
+                        document.querySelectorAll('.btn-filter-star').forEach(btn => {
+                            btn.addEventListener('click', function () {
+                                document.querySelectorAll('.btn-filter-star').forEach(b => b.classList.remove('active'));
+                                this.classList.add('active');
+                                document.getElementById('reviewPagination').dataset.currentPage = 1;
+                                renderFilteredReviews();
+                            });
+                        });
                         loadReviews(1);
                     }
                 } catch (err) {
@@ -1141,89 +1164,33 @@
 
                 if (!productId) return;
 
-                // Bắt đầu loading
                 if (loading) loading.style.display = 'block';
                 if (noReviews) noReviews.style.display = 'none';
                 reviewList.innerHTML = '';
 
                 try {
-                    const url = `${BASE_URL}/api/review_products/get_reviews.php?id=${productId}&page=${page}&limit=3`;
-                    const res = await fetch(url);
-
-                    if (!res.ok) {
-                        throw new Error(`HTTP ${res.status}`);
-                    }
-
+                    // Lấy hết đánh giá 1 lần để lọc/tìm kiếm mượt
+                    const res = await fetch(`${BASE_URL}/api/review_products/get_reviews.php?id=${productId}&limit=999`);
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
                     const result = await res.json();
-                    // console.log('Dữ liệu đánh giá nhận được:', result);
 
+                    // Cập nhật điểm trung bình + tổng đánh giá
                     if (result.success && result.data) {
                         renderAverageRating(result.data.average_rating || 0, result.data.total_reviews || 0);
-                    }
-
-                    if (!result.success || !result.data || !Array.isArray(result.data.reviews) || result.data.reviews.length === 0) {
+                        currentReviews = result.data.reviews.map(r => ({ ...r })); // Lưu để lọc
+                        renderFilteredReviews(); // Render + phân trang + tìm kiếm
+                    } else {
                         reviewList.innerHTML = '<div class="text-center text-muted py-5">Chưa có đánh giá nào.</div>';
-                        renderPagination(0, 1, 1);
-                        if (loading) loading.style.display = 'none';
+                        document.getElementById('reviewPagination').innerHTML = '';
                         if (noReviews) noReviews.style.display = 'block';
-                        return;
                     }
-
-                    const reviews = result.data.reviews;
-
-                    reviewList.innerHTML = reviews.map(r => `
-                    <div class="review-item">
-                        <div class="review-author">
-                            <strong>${escapeHtml(r.customer_name || 'Khách')}</strong>
-                            <span class="review-date">${r.created_at || ''}</span>
-                        </div>
-                    <div class="review-rating text-warning">
-                        ${Array.from({ length: 5 }, (_, i) =>
-                        `<i class='bx ${i < (r.rating || 0) ? 'bxs-star' : 'bx-star'}'></i>`
-                    ).join('')}
-                    </div>
-                ${r.size || r.color ? `
-                <div class="review-product-details">
-                    ${r.size ? `<span>Kích thước: ${escapeHtml(r.size)}</span>` : ''}
-                    ${r.color ? `<span>Màu sắc: ${escapeHtml(r.color)}</span>` : ''}
-                </div>` : ''}
-                <p class="review-text">${escapeHtml(r.content || '')}</p>
-
-               ${r.images && r.images.length ? `
-                <div class="review-images">
-                    ${r.images.map(img => `
-                        <img src="${BASE_URL}/public/assets/images/upload/${img}" 
-                            alt="Ảnh đánh giá" 
-                            class="img-fluid rounded me-2 mb-2" 
-                            style="max-height:120px; object-fit:cover; border:1px solid #ddd;"
-                            onerror="this.src='https://via.placeholder.com/100?text=No+Image'; this.onerror=null;">
-                    `).join('')}
-                </div>` : ''}
-
-                ${r.tags && r.tags.length ? `
-                        <div class="review-tags">
-                            ${r.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
-                        </div>` : ''}
-                    </div>
-                `).join('');
-
-                    renderPagination(
-                        result.data.total_reviews || 0,
-                        result.data.total_pages || 1,
-                        result.data.current_page || 1
-                    );
-
-                    // Ẩn loading + hiện danh sách
-                    if (loading) loading.style.display = 'none';
-                    if (noReviews) noReviews.style.display = 'none';
-
                 } catch (err) {
                     console.error('Lỗi loadReviews:', err);
-                    reviewList.innerHTML = '<div class="text-danger text-center py-4">Lỗi tải đánh giá, đang thử lại...</div>';
+                    reviewList.innerHTML = '<div class="text-danger text-center py-4">Lỗi tải đánh giá!</div>';
+                } finally {
                     if (loading) loading.style.display = 'none';
                 }
             }
-
             function renderAverageRating(avg, total) {
                 const scoreEl = document.getElementById('avgRating');
                 const starsEl = document.getElementById('avgStars');
@@ -1245,8 +1212,109 @@
                 }
             }
 
-            function renderPagination(total, totalPages, currentPage) {
+            // Hàm escape HTML tránh XSS
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            // Gọi load khi trang sẵn sàng
+            loadReviews(1);
+
+            let currentReviews = [];  // Lưu toàn bộ đánh giá hiện tại từ API
+
+            // Hàm render lại danh sách đánh giá (gọi lại khi lọc/tìm kiếm)
+            function renderFilteredReviews() {
+                const searchText = (document.getElementById('searchReviewInput')?.value || '').trim().toLowerCase();
+                const activeStarBtn = document.querySelector('.btn-filter-star.active');
+                const selectedRating = activeStarBtn ? parseInt(activeStarBtn.dataset.rating) : null;
+
+                let filtered = currentReviews.filter(review => {
+                    const matchSearch = !searchText ||
+                        (review.customer_name || '').toLowerCase().includes(searchText) ||
+                        (review.content || '').toLowerCase().includes(searchText) ||
+                        (review.size || '').toLowerCase().includes(searchText) ||
+                        (review.color || '').toLowerCase().includes(searchText);
+
+                    const matchRating = selectedRating === null || review.rating === selectedRating;
+
+                    return matchSearch && matchRating;
+                });
+
+                const reviewList = document.getElementById('reviewList');
                 const pagination = document.getElementById('reviewPagination');
+
+                if (filtered.length === 0) {
+                    reviewList.innerHTML = '<div class="text-center text-muted py-5">Không tìm thấy đánh giá nào phù hợp.</div>';
+                    pagination.innerHTML = '';
+                    return;
+                }
+
+                // Phân trang client-side: 3 đánh giá/trang
+                const perPage = 3;
+                const totalPages = Math.ceil(filtered.length / perPage);
+                let currentPage = parseInt(pagination.dataset.currentPage || '1');
+                if (currentPage < 1 || currentPage > totalPages) currentPage = 1;
+
+                const start = (currentPage - 1) * perPage;
+                const end = start + perPage;
+                const pageItems = filtered.slice(start, end);
+
+                // Render đánh giá
+                reviewList.innerHTML = pageItems.map(r => `
+                    <div class="review-item border-bottom pb-4 mb-4">
+                        <!-- Tên khách + ngày đẩy ra 2 bên -->
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <strong>${escapeHtml(r.customer_name || 'Khách hàng')}</strong>
+                            <span class="text-muted small">${r.created_at || ''}</span>
+                        </div>
+
+                        <!-- Sao đánh giá -->
+                        <div class="text-warning mb-2">
+                            ${Array(5).fill(0).map((_, i) =>
+                                    `<i class='bx ${i < (r.rating || 0) ? 'bxs-star' : 'bx-star'}'></i>`
+                                ).join('')}
+                        </div>
+
+                        <!-- Kích thước + Màu (không có dấu chấm tròn, chỉ cách bằng khoảng trắng) -->
+                        ${r.size || r.color ? `
+                        <div class="text-muted small mb-2">
+                            ${r.size ? `Kích thước: ${escapeHtml(r.size)}` : ''}
+                            ${r.size && r.color ? `&nbsp;&nbsp;|&nbsp;&nbsp;` : ''}
+                            ${r.color ? `Màu: ${escapeHtml(r.color)}` : ''}
+                        </div>` : ''}
+
+                        <!-- Nội dung đánh giá -->
+                        <p class="mb-3">${escapeHtml(r.content || '')}</p>
+
+                        <!-- Ảnh -->
+                        ${r.images && r.images.length ? `
+                        <div class="review-images d-flex gap-2 flex-wrap mb-3">
+                            ${r.images.map(img => `
+                                <img src="${BASE_URL}/public/assets/images/upload/${img}" 
+                                    class="rounded border" style="width:100px;height:100px;object-fit:cover;cursor:pointer;"
+                                    onclick="openImageModal('${BASE_URL}/public/assets/images/upload/${img}')">
+                            `).join('')}
+                        </div>` : ''}
+
+                        <!-- Tag -->
+                        ${r.tags && r.tags.length ? `
+                        <div class="d-flex gap-2 flex-wrap">
+                            ${r.tags.map(tag => `<span class="badge bg-light text-dark border">${escapeHtml(tag)}</span>`).join('')}
+                        </div>` : ''}
+                    </div>
+                `).join('');
+
+                // Cập nhật phân trang
+                renderClientPagination(filtered.length, totalPages, currentPage);
+            }
+
+            // Phân trang riêng cho client-side
+            function renderClientPagination(totalItems, totalPages, currentPage) {
+                const pagination = document.getElementById('reviewPagination');
+                pagination.dataset.currentPage = currentPage;
+
                 if (totalPages <= 1) {
                     pagination.innerHTML = '';
                     return;
@@ -1272,27 +1340,33 @@
                 pagination.innerHTML = html;
             }
 
-            // Xử lý click phân trang
+            // Xử lý click phân trang (client-side)
             document.getElementById('reviewPagination')?.addEventListener('click', e => {
                 e.preventDefault();
                 const link = e.target.closest('a');
                 if (!link || link.parentElement.classList.contains('disabled')) return;
                 const page = parseInt(link.dataset.page);
                 if (page > 0) {
-                    loadReviews(page);
-                    document.querySelector('.review-list').scrollIntoView({ behavior: 'smooth' });
+                    const pagination = document.getElementById('reviewPagination');
+                    pagination.dataset.currentPage = page;
+                    renderFilteredReviews();
+                    document.querySelector('.review-list')?.scrollIntoView({ behavior: 'smooth' });
                 }
             });
 
-            // Hàm escape HTML tránh XSS
-            function escapeHtml(text) {
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
-            }
+            // Tìm kiếm realtime
+            document.getElementById('searchReviewInput')?.addEventListener('input', () => {
+                renderFilteredReviews();
+            });
 
-            // Gọi load khi trang sẵn sàng
-            loadReviews(1);
+            // Lọc theo sao
+            document.querySelectorAll('.btn-filter-star').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    document.querySelectorAll('.btn-filter-star').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    renderFilteredReviews();
+                });
+            });
         });
 
         // Hàm cập nhật số lượng giỏ hàng (giữ nguyên)
