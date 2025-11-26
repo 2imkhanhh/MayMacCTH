@@ -921,7 +921,7 @@
             }
 
             try {
-                const res = await fetch(`../../../api/product/get_product.php`);
+                const res = await fetch(`${BASE_URL}/api/product/get_product.php`);
                 if (!res.ok) throw new Error('Lỗi server');
                 const result = await res.json();
                 if (!result.success || !result.data?.length) throw new Error('Không có sản phẩm');
