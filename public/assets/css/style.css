@@ -290,7 +290,7 @@ body {
 
 /* KHUNG ẢNH MỚI: Bao bọc để tạo viền và giảm chiều rộng ảnh */
 .product-image-container {
-  padding: 15px 10px 5px 10px;
+  padding: 0;
   background-color: #f7f7f7;
   text-align: center;
   transition: background-color 0.3s;
@@ -302,7 +302,7 @@ body {
 
 /* Ảnh sản phẩm (Ảnh sẽ hiển thị chiều dài đầy đủ nhưng nằm giữa khung) */
 .product-image-container .card-img-top {
-  width: 85%;
+  width: 100%;
   height: auto;
   object-fit: contain;
   /* Đảm bảo ảnh không bị cắt xén */

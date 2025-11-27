@@ -379,7 +379,7 @@
 
                         <h6 class="filter-title">Phân loại xếp hạng</h6>
                         <ul class="filter-list star-filter-list">
-                            <li><button class="btn btn-filter-star active" data-rating="5">5 <i
+                            <li><button class="btn btn-filter-star" data-rating="5">5 <i
                                         class='bx bxs-star'></i></button></li>
                             <li><button class="btn btn-filter-star" data-rating="4">4 <i
                                         class='bx bxs-star'></i></button></li>
@@ -1011,9 +1011,31 @@
 
             document.getElementById('writeReviewCollapse')?.addEventListener('shown.bs.collapse', function () {
                 const stars = document.querySelectorAll('#ratingStars i');
+                let selectedRating = 0;
+
+                // Reset về trạng thái chưa chọn sao nào
+                stars.forEach(s => {
+                    s.className = 'bx bx-star';
+                    s.style.color = '#ccc';
+                });
 
                 stars.forEach((star, idx) => {
+                    star.style.cursor = 'pointer';
+
+                    star.onmouseover = () => {
+                        stars.forEach((s, i) => {
+                            if (i <= idx) {
+                                s.className = 'bx bxs-star';
+                                s.style.color = '#f39c12';
+                            } else {
+                                s.className = 'bx bx-star';
+                                s.style.color = '#ccc';
+                            }
+                        });
+                    };
+
                     star.onclick = () => {
+                        selectedRating = idx + 1;
                         stars.forEach((s, i) => {
                             if (i <= idx) {
                                 s.className = 'bx bxs-star';
@@ -1026,8 +1048,80 @@
                     };
                 });
 
-                // Tự động focus vào ô tên
+                // Khi rời chuột khỏi khu vực sao → nếu chưa click thì về rỗng
+                document.getElementById('ratingStars').onmouseleave = () => {
+                    if (selectedRating === 0) {
+                        stars.forEach(s => {
+                            s.className = 'bx bx-star';
+                            s.style.color = '#ccc';
+                        });
+                    }
+                };
+
                 document.getElementById('reviewName')?.focus();
+            });
+
+            const reviewPhoneInput = document.getElementById('reviewPhone');
+            const reviewNameInput = document.getElementById('reviewName');
+            const submitReviewBtn = document.getElementById('submitReview');
+
+            // Ban đầu tắt nút gửi
+            if (submitReviewBtn) submitReviewBtn.disabled = true;
+
+            // Tạo chỗ hiện thông báo dưới ô SĐT
+            const phoneHelp = document.createElement('small');
+            phoneHelp.id = 'phoneReviewHelp';
+            phoneHelp.className = 'text-muted d-block mt-1';
+            reviewPhoneInput?.parentNode.appendChild(phoneHelp);
+
+            reviewPhoneInput?.addEventListener('input', async function () {
+                const phone = this.value.trim();
+                phoneHelp.textContent = '';
+                phoneHelp.className = 'text-muted d-block mt-1';
+
+                if (phone.length < 9) {
+                    submitReviewBtn.disabled = true;
+                    phoneHelp.textContent = 'Vui lòng nhập số điện thoại hợp lệ';
+                    phoneHelp.className = 'text-danger';
+                    reviewNameInput.value = '';
+                    reviewNameInput.readOnly = false;
+                    return;
+                }
+
+                // Làm sạch số điện thoại
+                let cleanPhone = phone.replace(/\D/g, '');
+                if (cleanPhone.startsWith('84')) {
+                    cleanPhone = '0' + cleanPhone.slice(2);
+                }
+
+                const productId = new URLSearchParams(window.location.search).get('id');
+
+                try {
+                    phoneHelp.textContent = 'Đang kiểm tra...';
+                    phoneHelp.className = 'text-primary';
+
+                    const res = await fetch(`${BASE_URL}/api/review_products/check_review_permission.php?phone=${encodeURIComponent(cleanPhone)}&product_id=${productId}&t=${Date.now()}`);
+                    const data = await res.json();
+
+                    if (data.can_review) {
+                        reviewNameInput.value = data.customer_name || 'Khách hàng';
+                        reviewNameInput.readOnly = true;
+                        submitReviewBtn.disabled = false;
+                        phoneHelp.textContent = 'Đã mua hàng – Bạn được phép đánh giá sản phẩm này';
+                        phoneHelp.className = 'text-success fw-bold';
+                    } else {
+                        reviewNameInput.value = '';
+                        reviewNameInput.readOnly = false;
+                        submitReviewBtn.disabled = true;
+                        phoneHelp.textContent = data.message || 'Bạn chưa mua sản phẩm này hoặc đơn chưa hoàn tất';
+                        phoneHelp.className = 'text-danger';
+                    }
+                } catch (err) {
+                    console.error('Lỗi kiểm tra quyền đánh giá:', err);
+                    phoneHelp.textContent = 'Lỗi kết nối, vui lòng thử lại';
+                    phoneHelp.className = 'text-danger';
+                    submitReviewBtn.disabled = true;
+                }
             });
 
             // Xử lý gửi đánh giá (lấy DOM mới nhất, không bị cache)
@@ -1139,14 +1233,18 @@
                             renderFilteredReviews();
                         });
 
-                        document.querySelectorAll('.btn-filter-star').forEach(btn => {
-                            btn.addEventListener('click', function () {
-                                document.querySelectorAll('.btn-filter-star').forEach(b => b.classList.remove('active'));
-                                this.classList.add('active');
-                                document.getElementById('reviewPagination').dataset.currentPage = 1;
-                                renderFilteredReviews();
-                            });
-                        });
+                        // document.querySelectorAll('.btn-filter-star').forEach(btn => {
+                        //     btn.addEventListener('click', function () {
+                        //         if (this.classList.contains('active')) {
+                        //             this.classList.remove('active');
+                        //         } else {
+                        //             document.querySelectorAll('.btn-filter-star').forEach(b => b.classList.remove('active'));
+                        //             this.classList.add('active');
+                        //         }
+                        //         document.getElementById('reviewPagination').dataset.currentPage = 1;
+                        //         renderFilteredReviews();
+                        //     });
+                        // });
                         loadReviews(1);
                     }
                 } catch (err) {
@@ -1176,8 +1274,26 @@
                     // Cập nhật điểm trung bình + tổng đánh giá
                     if (result.success && result.data) {
                         renderAverageRating(result.data.average_rating || 0, result.data.total_reviews || 0);
-                        currentReviews = result.data.reviews.map(r => ({ ...r })); // Lưu để lọc
-                        renderFilteredReviews(); // Render + phân trang + tìm kiếm
+                        currentReviews = result.data.reviews.map(r => ({ ...r })); 
+
+                        document.querySelectorAll('.btn-filter-star').forEach(btn => {
+                            btn.replaceWith(btn.cloneNode(true));
+                        });
+
+                        document.querySelectorAll('.btn-filter-star').forEach(btn => {
+                            btn.addEventListener('click', function (e) {
+                                e.preventDefault();
+                                if (this.classList.contains('active')) {
+                                    this.classList.remove('active');
+                                } else {
+                                    document.querySelectorAll('.btn-filter-star').forEach(b => b.classList.remove('active'));
+                                    this.classList.add('active');
+                                }
+                                document.getElementById('reviewPagination').dataset.currentPage = 1;
+                                renderFilteredReviews();
+                            });
+                        });
+                        renderFilteredReviews(); 
                     } else {
                         reviewList.innerHTML = '<div class="text-center text-muted py-5">Chưa có đánh giá nào.</div>';
                         document.getElementById('reviewPagination').innerHTML = '';
@@ -1272,8 +1388,8 @@
                         <!-- Sao đánh giá -->
                         <div class="text-warning mb-2">
                             ${Array(5).fill(0).map((_, i) =>
-                                    `<i class='bx ${i < (r.rating || 0) ? 'bxs-star' : 'bx-star'}'></i>`
-                                ).join('')}
+                    `<i class='bx ${i < (r.rating || 0) ? 'bxs-star' : 'bx-star'}'></i>`
+                ).join('')}
                         </div>
 
                         <!-- Kích thước + Màu (không có dấu chấm tròn, chỉ cách bằng khoảng trắng) -->
@@ -1359,13 +1475,13 @@
             });
 
             // Lọc theo sao
-            document.querySelectorAll('.btn-filter-star').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    document.querySelectorAll('.btn-filter-star').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    renderFilteredReviews();
-                });
-            });
+            // document.querySelectorAll('.btn-filter-star').forEach(btn => {
+            //     btn.addEventListener('click', function () {
+            //         document.querySelectorAll('.btn-filter-star').forEach(b => b.classList.remove('active'));
+            //         this.classList.add('active');
+            //         renderFilteredReviews();
+            //     });
+            // });
         });
 
         // Hàm cập nhật số lượng giỏ hàng (giữ nguyên)

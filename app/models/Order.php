@@ -1,5 +1,6 @@
 <?php
-class Order {
+class Order
+{
     private $conn;
     private $table_orders = "orders";
     private $table_items  = "order_items";
@@ -15,14 +16,15 @@ class Order {
     public $subtotal;
     public $shipping_fee;
     public $total;
-    public $items; 
+    public $items;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
-    // Tạo đơn hàng + chi tiết (có transaction)
-    public function create() {
+    public function create()
+    {
         $this->conn->beginTransaction();
 
         try {
@@ -79,7 +81,6 @@ class Order {
 
             $this->conn->commit();
             return ['success' => true, 'order_id' => $order_id, 'order_code' => $order_code];
-
         } catch (Exception $e) {
             $this->conn->rollBack();
             error_log("Order creation failed: " . $e->getMessage());
@@ -87,7 +88,8 @@ class Order {
         }
     }
 
-    private function generateOrderCode() {
+    private function generateOrderCode()
+    {
         $today = date('Ymd');
         $query = "SELECT order_code FROM {$this->table_orders} 
                   WHERE order_code LIKE :prefix ORDER BY order_id DESC LIMIT 1";
@@ -104,8 +106,8 @@ class Order {
         return "DH{$today}0001";
     }
 
-    // (Tùy chọn) Lấy danh sách đơn hàng cho admin sau này
-    public function getAll($limit = 50, $offset = 0) {
+    public function getAll($limit = 50, $offset = 0)
+    {
         $query = "SELECT * FROM {$this->table_orders} ORDER BY order_id DESC LIMIT :limit OFFSET :offset";
         $stmt = $this->conn->prepare($query);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
@@ -113,5 +115,31 @@ class Order {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function checkCustomerBoughtProduct($phone, $product_id)
+    {
+        $query = "
+            SELECT o.name 
+            FROM {$this->table_orders} o
+            INNER JOIN {$this->table_items} oi ON o.order_id = oi.order_id
+            WHERE o.phone = :phone
+              AND oi.product_id = :product_id
+              AND o.order_status = 'completed'
+            LIMIT 1
+        ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':phone', $phone);
+        $stmt->bindValue(':product_id', $product_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($row) {
+            $this->name = $row['name']; 
+            return true;
+        }
+
+        return false;
+    }
 }
-?>
