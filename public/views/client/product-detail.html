@@ -536,6 +536,10 @@
             <!-- <p class="text-center mt-4 small mb-0">&copy; 2025 MAY MẶC CTH. All rights reserved.</p> -->
         </div>
     </footer>
+    <div id="globalToast" class="global-toast">
+        <i id="toastIcon" class='bx'></i>
+        <span id="toastMessage">Thông báo</span>
+    </div>
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/script.js"></script>
@@ -899,7 +903,7 @@
                         color: colorName,
                         size: size,
                         image: image.includes('upload/') ? image.split('/').pop() : 'no-image.jpg',
-                        uniqueKey: `${p.product_id}-${colorName}-${size}` 
+                        uniqueKey: `${p.product_id}-${colorName}-${size}`
                     };
 
                     // Lấy giỏ hàng hiện tại từ localStorage
@@ -911,11 +915,11 @@
                     if (existingIndex !== -1) {
                         // Nếu đã có → tăng số lượng
                         cart[existingIndex].quantity += quantity;
-                        alert(`Đã cập nhật số lượng: ${p.name} (${colorName}, ${size})`);
+                        showToast(`Đã cập nhật số lượng: ${p.name} (${colorName}, ${size})`, 'success');
                     } else {
                         // Nếu chưa có → thêm mới
                         cart.push(cartItem);
-                        alert(`Đã thêm vào giỏ hàng: ${p.name}`);
+                        showToast(`Đã thêm vào giỏ hàng: ${p.name}`, 'success');
                     }
 
                     // Lưu lại vào localStorage
@@ -932,11 +936,11 @@
 
                     // Kiểm tra bắt buộc chọn màu & size
                     if (p.colors && p.colors.length && !selectedColorBtn) {
-                        alert('Vui lòng chọn màu sắc!');
+                        showToast('Vui lòng chọn màu sắc!', 'error');
                         return;
                     }
                     if (!selectedSizeBtn) {
-                        alert('Vui lòng chọn kích thước!');
+                        showToast('Vui lòng chọn kích thước!', 'error');
                         return;
                     }
 
@@ -1135,7 +1139,7 @@
                 const files = document.getElementById('reviewImages')?.files;
 
                 if (!name || !phone || rating === 0 || !content) {
-                    alert('Vui lòng điền đầy đủ: Họ tên, SĐT, đánh giá sao và nội dung!');
+                    showToast('Vui lòng điền đầy đủ: Họ tên, SĐT, đánh giá sao và nội dung!', 'error');
                     return;
                 }
 
@@ -1164,14 +1168,12 @@
                     const res = await fetch(`${BASE_URL}/api/review_products/create_review.php`, {
                         method: 'POST',
                         body: formData
-                        // KHÔNG set Content-Type → để browser tự set multipart/form-data
                     });
 
                     const result = await res.json();
-                    alert(result.message || (result.success ? 'Gửi thành công!' : 'Có lỗi!'));
+                    showSuccessToast(result.message || (result.success ? 'Gửi đánh giá thành công!' : 'Có lỗi!'));
 
                     if (result.success) {
-                        // Reset form...
                         document.getElementById('reviewName').value = '';
                         document.getElementById('reviewPhone').value = '';
                         document.getElementById('reviewContent').value = '';
@@ -1274,7 +1276,7 @@
                     // Cập nhật điểm trung bình + tổng đánh giá
                     if (result.success && result.data) {
                         renderAverageRating(result.data.average_rating || 0, result.data.total_reviews || 0);
-                        currentReviews = result.data.reviews.map(r => ({ ...r })); 
+                        currentReviews = result.data.reviews.map(r => ({ ...r }));
 
                         document.querySelectorAll('.btn-filter-star').forEach(btn => {
                             btn.replaceWith(btn.cloneNode(true));
@@ -1293,7 +1295,7 @@
                                 renderFilteredReviews();
                             });
                         });
-                        renderFilteredReviews(); 
+                        renderFilteredReviews();
                     } else {
                         reviewList.innerHTML = '<div class="text-center text-muted py-5">Chưa có đánh giá nào.</div>';
                         document.getElementById('reviewPagination').innerHTML = '';
@@ -1493,6 +1495,31 @@
                 el.textContent = total;
                 el.style.display = total > 0 ? 'block' : 'none';
             }
+        }
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('globalToast');
+            const icon = document.getElementById('toastIcon');
+            const msg = document.getElementById('toastMessage');
+
+            // Xóa class cũ
+            toast.classList.remove('success', 'error', 'show');
+
+            // Set nội dung + icon
+            msg.textContent = message;
+
+            if (type === 'success') {
+                toast.classList.add('success');
+                icon.className = 'bx bxs-check-circle';
+            } else {
+                toast.classList.add('error');
+                icon.className = 'bx bxs-error';
+            }
+
+            // Hiển thị
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, type === 'error' ? 5000 : 3000);
         }
     </script>
 </body>
