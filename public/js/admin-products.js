@@ -44,7 +44,7 @@ async function loadCategories() {
 async function loadProducts() {
     const categoryId = document.getElementById('filterCategory').value;
     const name = document.getElementById('searchName').value.trim();
-    let url = `${BASE_URL}/api/product/get_product.php`;
+    let url = `${BASE_URL}/api/product/get_all_product.php`;
     if (categoryId || name) {
         url += '?' + new URLSearchParams({ category_id: categoryId, name });
     }

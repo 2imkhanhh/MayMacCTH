@@ -301,7 +301,7 @@
                     <!-- Tên khách -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Họ tên</label>
-                        <input type="text" class="form-control" id="reviewName" placeholder="Nhập tên">
+                        <input type="text" class="form-control" id="reviewName" placeholder="Họ tên" disabled>
                     </div>
 
                     <!-- Số sao -->
@@ -632,7 +632,7 @@
             }
 
             try {
-                const res = await fetch(`${BASE_URL}/api/product/get_product.php`);
+                const res = await fetch(`${BASE_URL}/api/product/get_all_product.php`);
                 if (!res.ok) throw new Error('Lỗi server');
                 const result = await res.json();
                 if (!result.success || !result.data?.length) throw new Error('Không có sản phẩm');
@@ -1058,7 +1058,7 @@
                     }
                 };
 
-                document.getElementById('reviewName')?.focus();
+                document.getElementById('reviewPhone')?.focus();
             });
 
             const reviewPhoneInput = document.getElementById('reviewPhone');
@@ -1107,7 +1107,7 @@
                         reviewNameInput.value = data.customer_name || 'Khách hàng';
                         reviewNameInput.readOnly = true;
                         submitReviewBtn.disabled = false;
-                        phoneHelp.textContent = 'Đã mua hàng – Bạn được phép đánh giá sản phẩm này';
+                        phoneHelp.textContent = 'Cảm ơn bạn đã tin tưởng và ủng hộ – Hãy để lại cho chúng tôi 1 đánh giá!';
                         phoneHelp.className = 'text-success fw-bold';
                     } else {
                         reviewNameInput.value = '';

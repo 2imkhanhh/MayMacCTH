@@ -18,7 +18,7 @@ if (!is_dir($uploadDir)) {
 
 $uploadedImageNames = [];
 
-// ============ 1. XỬ LÝ UPLOAD ẢNH (FormData) ============
+// XỬ LÝ UPLOAD ẢNH (FormData) 
 if (!empty($_FILES['images']['name'][0])) {
     $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
     $maxSize = 5 * 1024 * 1024; // 5MB
@@ -50,7 +50,7 @@ if (!empty($_FILES['images']['name'][0])) {
     }
 }
 
-// ============ 2. LẤY DỮ LIỆU TỪ $_POST (vì dùng FormData) ============
+// ============ 2. LẤY DỮ LIỆU TỪ $_POST  ============
 $product_id     = $_POST['product_id'] ?? 0;
 $customer_name  = trim($_POST['customer_name'] ?? '');
 $phone          = trim($_POST['phone'] ?? '');

@@ -96,7 +96,7 @@ class ProductController {
         $data = [
             'name'        => $_POST['name'] ?? '',
             'description' => $_POST['description'] ?? '',
-            'price'       => (int)($_POST['price'] ?? 0),        // THÊM DÒNG NÀY
+            'price'       => (int)($_POST['price'] ?? 0),       
             'category_id' => (int)($_POST['category_id'] ?? 0),
             'is_active'   => isset($_POST['is_active']) ? 1 : 0
         ];
@@ -146,5 +146,18 @@ class ProductController {
         return $result
             ? ["success" => true, "message" => "Xóa thành công!"]
             : ["success" => false, "message" => "Xóa thất bại"];
+    }
+
+    public function getAll() {
+        $category_id = $_GET['category_id'] ?? null;
+        $name = $_GET['name'] ?? null;
+        
+        $products = $this->product->getAll($category_id, $name);
+
+        return [
+            "success" => true,
+            "message" => "Danh sách tất cả sản phẩm",
+            "data" => $products
+        ];
     }
 }

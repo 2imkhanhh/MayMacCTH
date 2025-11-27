@@ -29,7 +29,7 @@ try {
         "data" => [
             "average_rating" => $avgRating,
             "total_reviews"   => $totalReviews,
-            "total_pages"     => ceil($totalReviews / $limit),  // ← Tính lại theo limit mới
+            "total_pages"     => ceil($totalReviews / $limit),  
             "current_page"    => $page,
             "reviews"         => $reviews
         ]

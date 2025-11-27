@@ -344,4 +344,33 @@ class Product
             return false;
         }
     }
+
+    public function getAll($category_id = null, $name = null)
+    {
+        $query = "SELECT 
+                    p.*,
+                    c.name as category_name,
+                    pc.color_id, pc.color_name, pc.color_code,
+                    pv.size,
+                    pi.image, pi.is_primary, pi.sort_order
+                  FROM products p
+                  LEFT JOIN categories c ON p.category_id = c.category_id
+                  LEFT JOIN product_colors pc ON pc.product_id = p.product_id
+                  LEFT JOIN product_variants pv ON pv.color_id = pc.color_id
+                  LEFT JOIN product_images pi ON pi.product_id = p.product_id
+                  WHERE 1=1"; 
+
+        if ($category_id) $query .= " AND p.category_id = :category_id";
+        if ($name) $query .= " AND p.name LIKE :name";
+
+        $query .= " ORDER BY p.product_id DESC";
+
+        $stmt = $this->conn->prepare($query);
+        if ($category_id) $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+        if ($name) $stmt->bindValue(':name', '%' . $name . '%', PDO::PARAM_STR);
+        $stmt->execute();
+
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->groupProductData($results);
+    }
 }

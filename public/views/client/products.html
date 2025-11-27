@@ -372,7 +372,7 @@
             // Load sản phẩm từ API
             async function loadProducts() {
                 try {
-                    const res = await fetch('/MayMacCTH/api/product/get_product.php');
+                    const res = await fetch('/MayMacCTH/api/product/get_all_product.php');
                     const result = await res.json();
                     if (result.success && result.data) {
                         allProducts = result.data; 
