@@ -315,6 +315,22 @@
         </div>
     </footer>
 
+    <div id="globalToast" class="global-toast">
+        <i id="toastIcon" class='bx'></i>
+        <span id="toastMessage">Thông báo</span>
+    </div>
+    <div id="confirmModal" class="confirm-modal">
+        <div class="confirm-box">
+            <i class='bx bxs-trash' style="font-size: 3rem; color: #dc3545;"></i>
+            <h4>Xóa sản phẩm?</h4>
+            <p>Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?</p>
+            <div class="d-flex gap-3 mt-4">
+                <button id="cancelBtn" class="btn btn-secondary flex-fill">Hủy</button>
+                <button id="confirmBtn" class="btn btn-danger flex-fill">Xóa</button>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/script.js"></script>
@@ -468,13 +484,22 @@
                 });
 
                 document.querySelectorAll('.cart-item-remove').forEach(btn => {
-                    btn.onclick = function () {
-                        if (confirm("Xóa sản phẩm này khỏi giỏ hàng?")) {
+                    btn.onclick = async function () {
+                        const productName = this.closest('.cart-item').querySelector('.cart-item-name')?.textContent || 'sản phẩm';
+
+                        const confirmed = await showConfirm(
+                            "Xóa sản phẩm?",
+                            `Bạn có chắc muốn xóa <strong>${productName}</strong> khỏi giỏ hàng?`
+                        );
+
+                        if (confirmed) {
                             const index = this.closest('.cart-item').dataset.index;
                             let cart = JSON.parse(localStorage.getItem('cart') || '[]');
                             cart.splice(index, 1);
                             localStorage.setItem('cart', JSON.stringify(cart));
                             renderCart();
+                            updateCartCount(); 
+                            showToast('Đã xóa sản phẩm khỏi giỏ hàng', 'success');
                         }
                     };
                 });
@@ -507,7 +532,7 @@
             document.getElementById('orderBtn').addEventListener('click', function () {
                 const cart = JSON.parse(localStorage.getItem('cart') || '[]');
                 if (cart.length === 0) {
-                    alert('Giỏ hàng trống!');
+                    showToast('Giỏ hàng trống!', 'error');
                     return;
                 }
                 window.location.href = 'order.html';
@@ -516,6 +541,67 @@
             // ==================== CHẠY ====================
             renderCart();
         });
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('globalToast');
+            const icon = document.getElementById('toastIcon');
+            const msg = document.getElementById('toastMessage');
+
+            // Xóa class cũ
+            toast.classList.remove('success', 'error', 'show');
+
+            // Set nội dung + icon
+            msg.textContent = message;
+
+            if (type === 'success') {
+                toast.classList.add('success');
+                icon.className = 'bx bxs-check-circle';
+            } else {
+                toast.classList.add('error');
+                icon.className = 'bx bxs-error';
+            }
+
+            // Hiển thị
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, type === 'error' ? 5000 : 3000);
+        }
+        function showConfirm(title = "Xóa sản phẩm?", message = "Bạn có chắc chắn muốn xóa?", onConfirm) {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('confirmModal');
+                const confirmBtn = document.getElementById('confirmBtn');
+                const cancelBtn = document.getElementById('cancelBtn');
+
+                document.querySelector('.confirm-box h4').textContent = title;
+                document.querySelector('.confirm-box p').innerHTML = message;
+
+                modal.style.display = 'flex';
+
+                const close = () => {
+                    modal.style.display = 'none';
+                    confirmBtn.onclick = null;
+                    cancelBtn.onclick = null;
+                };
+
+                confirmBtn.onclick = () => {
+                    close();
+                    onConfirm();
+                    resolve(true);
+                };
+
+                cancelBtn.onclick = () => {
+                    close();
+                    resolve(false);
+                };
+
+                modal.onclick = (e) => {
+                    if (e.target === modal) {
+                        close();
+                        resolve(false);
+                    }
+                };
+            });
+        }
     </script>
 
 </body>

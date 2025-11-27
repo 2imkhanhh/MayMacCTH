@@ -269,6 +269,10 @@
             </div>
         </div>
     </section>
+    <div id="globalToast" class="global-toast">
+        <i id="toastIcon" class='bx'></i>
+        <span id="toastMessage">Thông báo</span>
+    </div>
 
     <!-- Footer -->
     <footer class="footer bg-primary text-white py-5">
@@ -400,7 +404,7 @@
             // Lấy giỏ hàng
             const cart = JSON.parse(localStorage.getItem("cart") || "[]");
             if (cart.length === 0) {
-                alert("Giỏ hàng trống!");
+                showToast("Giỏ hàng trống!", 'error');
                 return;
             }
 
@@ -608,6 +612,31 @@
 
             loadProvinces();
         });
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('globalToast');
+            const icon = document.getElementById('toastIcon');
+            const msg = document.getElementById('toastMessage');
+
+            // Xóa class cũ
+            toast.classList.remove('success', 'error', 'show');
+
+            // Set nội dung + icon
+            msg.textContent = message;
+
+            if (type === 'success') {
+                toast.classList.add('success');
+                icon.className = 'bx bxs-check-circle';
+            } else {
+                toast.classList.add('error');
+                icon.className = 'bx bxs-error';
+            }
+
+            // Hiển thị
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, type === 'error' ? 5000 : 3000);
+        }
     </script>
 </body>
 

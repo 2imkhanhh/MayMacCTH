@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../../assets/css/admin-style.css">
     <link rel="stylesheet" href="../../assets/css/admin-banner.css">
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body class="d-flex">
@@ -82,6 +83,21 @@
                         <button type="submit" class="btn btn-success" id="saveEditBannerBtn">Cập nhật</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    <div id="globalToast" class="global-toast">
+        <i id="toastIcon" class='bx'></i>
+        <span id="toastMessage">Thông báo</span>
+    </div>
+    <div id="confirmModal" class="confirm-modal">
+        <div class="confirm-box">
+            <i class='bx bxs-trash' style="font-size: 3rem; color: #dc3545;"></i>
+            <h4>Xóa sản phẩm?</h4>
+            <p>Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?</p>
+            <div class="d-flex gap-3 mt-4">
+                <button id="cancelBtn" class="btn btn-secondary flex-fill">Hủy</button>
+                <button id="confirmBtn" class="btn btn-danger flex-fill">Xóa</button>
             </div>
         </div>
     </div>

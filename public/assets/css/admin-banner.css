@@ -21,10 +21,12 @@
     background: #fff;
     border: none;
     border-radius: 15px;
-    overflow: hidden; /* Để ảnh không bị tràn ra ngoài bo góc */
+    overflow: hidden;
+    /* Để ảnh không bị tràn ra ngoài bo góc */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
-    height: 100%; /* Đảm bảo các card bằng nhau trong cùng 1 hàng */
+    height: 100%;
+    /* Đảm bảo các card bằng nhau trong cùng 1 hàng */
     display: flex;
     flex-direction: column;
 }
@@ -38,7 +40,8 @@
 .banner-img-wrapper {
     position: relative;
     width: 100%;
-    height: 180px; /* Chiều cao cố định để dàn trang đều */
+    height: 180px;
+    /* Chiều cao cố định để dàn trang đều */
     overflow: hidden;
     background-color: #f0f2f5;
 }
@@ -46,12 +49,14 @@
 .banner-img-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Giữ tỉ lệ ảnh, cắt phần thừa, không bị méo */
+    object-fit: cover;
+    /* Giữ tỉ lệ ảnh, cắt phần thừa, không bị méo */
     transition: transform 0.5s ease;
 }
 
 .banner-card:hover .banner-img-wrapper img {
-    transform: scale(1.05); /* Phóng to nhẹ ảnh khi hover */
+    transform: scale(1.05);
+    /* Phóng to nhẹ ảnh khi hover */
 }
 
 /* 4. Badge trạng thái (Hiển thị/Ẩn) */
@@ -65,17 +70,19 @@
     font-weight: 600;
     text-transform: uppercase;
     backdrop-filter: blur(4px);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     z-index: 2;
 }
 
 .status-active {
-    background-color: rgba(40, 167, 69, 0.9); /* Màu xanh lá */
+    background-color: rgba(40, 167, 69, 0.9);
+    /* Màu xanh lá */
     color: white;
 }
 
 .status-inactive {
-    background-color: rgba(108, 117, 125, 0.9); /* Màu xám */
+    background-color: rgba(108, 117, 125, 0.9);
+    /* Màu xám */
     color: white;
 }
 
@@ -94,20 +101,20 @@
     color: #333;
     margin-bottom: 15px;
     display: -webkit-box;
-    -webkit-line-clamp: 2; 
+    /* -webkit-line-clamp: 2;  */
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
 .banner-actions {
     display: flex;
-    gap: 10px; 
+    gap: 10px;
     margin-top: auto;
 }
 
 /* Style chung cho cả 2 nút */
 .btn-action {
-    flex: 1; 
+    flex: 1;
     border: none;
     padding: 10px;
     border-radius: 8px;
@@ -116,13 +123,13 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 5px; /* Khoảng cách giữa icon và chữ */
+    gap: 5px;
     transition: all 0.3s ease;
     cursor: pointer;
 }
 
 .btn-edit {
-    background-color: #e7f1ff !important; 
+    background-color: #e7f1ff !important;
     color: #174DAF !important;
 }
 
@@ -150,7 +157,7 @@
 .modal-content {
     border-radius: 15px;
     border: none;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 .modal-header {
@@ -165,14 +172,81 @@
 }
 
 .btn-close {
-    filter: invert(1) grayscale(100%) brightness(200%); 
+    filter: invert(1) grayscale(100%) brightness(200%);
 }
 
 #currentImage {
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     object-fit: cover;
     width: 100%;
     height: 200px;
 }
 
+#globalToast {
+    display: none !important;
+}
+
+#globalToast.show {
+    display: flex !important;
+    animation: slideInRight 0.4s ease forwards;
+}
+
+.global-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    min-width: 300px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    font-size: 15px;
+    z-index: 99999;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: white;
+}
+
+.global-toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.global-toast.success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+.global-toast.error {
+    background: linear-gradient(135deg, #dc3545, #e74c3c);
+}
+
+.global-toast i {
+    font-size: 1.8rem;
+}
+
+.confirm-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    backdrop-filter: blur(5px);
+}
+
+.confirm-box {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    animation: pop 0.3s ease;
+}

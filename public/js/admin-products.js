@@ -58,7 +58,7 @@ async function loadProducts() {
         if (result.success && result.data.length > 0) {
             result.data.forEach(p => {
                 const col = document.createElement('div');
-                col.className = 'col-md-6 col-lg-4 mb-4';
+                col.className = 'col-6 col-md-4 col-lg-3 mb-4';
 
                 const status = p.is_active == 1
                     ? '<span class="badge bg-success position-absolute top-0 start-0 m-2 z-3">Hiển thị</span>'
@@ -74,15 +74,17 @@ async function loadProducts() {
                              onerror="this.src='../../assets/images/no-image.jpg'">
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title fs-6 fw-bold">${p.name}</h5>
-                            <p class="text-muted small">${p.category_name || 'Chưa có danh mục'}</p>
-                            <p class="text-primary fw-bold fs-5">${parseInt(p.price || 0).toLocaleString()}đ</p>
+                            <div class="d-flex flex-column gap-1 mb-2">
+                                <p class="text-muted small mb-0">${p.category_name || 'Chưa có danh mục'}</p>
+                                <p class="text-primary fw-bold fs-5 mb-0">${parseInt(p.price || 0).toLocaleString()}đ</p>
+                            </div>
                             <small class="text-warning">${star} (${p.review_count || 0} đánh giá)</small>
                             <div class="product-actions mt-auto">
                                 <button class="btn-action btn-edit w-100 d-flex align-items-center justify-content-center gap-2" data-id="${p.product_id}">
-                                    <i class="bi bi-pencil-square"></i> Sửa sản phẩm
+                                    <i class="bi bi-pencil-square"></i> Sửa
                                 </button>
                                 <button class="btn-action btn-delete w-100 d-flex align-items-center justify-content-center gap-2" data-id="${p.product_id}">
-                                    <i class="bi bi-trash"></i> Xóa sản phẩm
+                                    <i class="bi bi-trash"></i> Xóa
                                 </button>
                             </div>
                         </div>
