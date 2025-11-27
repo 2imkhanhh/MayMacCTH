@@ -89,7 +89,7 @@ $reviewId = $reviewModel->create();
 if ($reviewId) {
     echo json_encode([
         "success" => true,
-        "message" => "Đánh giá của bạn đã được gửi thành công! Cảm ơn bạn ❤️",
+        "message" => "Đánh giá được gửi thành công! Cảm ơn bạn đã tin tưởng và ủng hộ ❤️",
         "data" => ["review_id" => $reviewId]
     ], JSON_UNESCAPED_UNICODE);
 } else {

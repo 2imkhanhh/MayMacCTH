@@ -37,28 +37,23 @@
                 <div id="tagList" class="row g-3"></div>
             </div>
 
-            <!-- Filter -->
-            <div class="review-filter">
-                <label for="filterRating">Rating:</label>
-                <select id="filterRating">
-                    <option value="">Tất cả</option>
-                    <option value="5">★★★★★</option>
-                    <option value="4">★★★★☆</option>
-                    <option value="3">★★★☆☆</option>
-                    <option value="2">★★☆☆☆</option>
-                    <option value="1">★☆☆☆☆</option>
-                </select>
-
-                <label for="filterDate">Ngày:</label>
-                <input type="date" id="filterDate">
-
-                <button type="button" id="btnFilterReviews">Lọc</button>
-                <button type="button" id="btnResetFilter">Reset</button>
-            </div>
-
-
             <!-- REVIEWS -->
             <div class="tab-pane fade" id="tab-reviews">
+                <div class="review-filter mb-3">
+                    <label for="filterRating">Lọc theo số sao:</label>
+                    <select id="filterRating">
+                        <option value="">Tất cả</option>
+                        <option value="5">★★★★★</option>
+                        <option value="4">★★★★☆</option>
+                        <option value="3">★★★☆☆</option>
+                        <option value="2">★★☆☆☆</option>
+                        <option value="1">★☆☆☆☆</option>
+                    </select>
+
+                    <button type="button" id="btnFilterReviews">Lọc</button>
+                    <button type="button" id="btnResetFilter">Reset</button>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover" id="reviewTable">
                         <thead class="table-light">
@@ -70,6 +65,7 @@
                                 <th>Nội dung</th>
                                 <th>Tags</th>
                                 <th>Ngày</th>
+                                <th class="text-center">Thao tác</th>
                             </tr>
                         </thead>
                         <tbody></tbody>

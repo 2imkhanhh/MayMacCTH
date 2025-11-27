@@ -1,6 +1,6 @@
 const BASE_URL = '/MayMacCTH';
 let tagModalInstance = null;
-let allReviews = []; // Lưu toàn bộ đánh giá
+let allReviews = []; 
 
 document.addEventListener('DOMContentLoaded', () => {
     tagModalInstance = new bootstrap.Modal(document.getElementById('tagModal'));
@@ -40,8 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btnFilterReviews')?.addEventListener('click', applyReviewFilter);
     document.getElementById('btnResetFilter')?.addEventListener('click', () => {
         document.getElementById('filterRating').value = '';
-        document.getElementById('filterFromDate').value = '';
-        document.getElementById('filterToDate').value = '';
         renderReviewTable(allReviews);
     });
 });
@@ -60,7 +58,7 @@ async function loadTags() {
                 const statusText = tag.is_active == 1 ? 'Hiển thị' : 'Ẩn';
 
                 const col = document.createElement('div');
-                col.className = 'col-6 col-md-3'; // 4 card / hàng
+                col.className = 'col-6 col-md-3'; 
 
                 col.innerHTML = `
                     <div class="tag-card">
@@ -150,6 +148,11 @@ function renderReviewTable(data) {
                 <td>${r.content || '(Không có nội dung)'}</td>
                 <td>${tagsHtml}</td>
                 <td>${r.created_at}</td>
+                <td class="text-center">
+                    <button class="btn btn-sm btn-danger" onclick="deleteReview(${r.review_id})" title="Xóa đánh giá">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
             </tr>
         `;
     });
@@ -158,27 +161,45 @@ function renderReviewTable(data) {
 // ---------------- REVIEW FILTER ----------------
 function applyReviewFilter() {
     const rating = document.getElementById('filterRating').value;
-    const date = document.getElementById('filterDate').value; // Chỉ 1 ngày
 
     let filtered = allReviews;
 
     if (rating) {
         filtered = filtered.filter(r => r.rating == parseInt(rating));
     }
-
-    if (date) {
-        filtered = filtered.filter(r => {
-            const reviewDate = new Date(r.created_at).toISOString().slice(0, 10);
-            return reviewDate === date;
-        });
-    }
-
     renderReviewTable(filtered);
 }
 
 // Reset filter
 document.getElementById('btnResetFilter')?.addEventListener('click', () => {
-    document.getElementById('filterRating').value = '';
-    document.getElementById('filterDate').value = '';
+    const ratingEl = document.getElementById('filterRating');
+    if (ratingEl) ratingEl.value = '';
+
     renderReviewTable(allReviews);
 });
+
+async function deleteReview(reviewId) {
+    if (!confirm('Bạn có CHẮC CHẮN muốn xóa vĩnh viễn đánh giá này?\n\nHành động này KHÔNG THỂ hoàn tác!')) {
+        return;
+    }
+
+    try {
+        const res = await fetch(`${BASE_URL}/api/review_products/delete_review.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ review_id: reviewId })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            alert('Xóa đánh giá thành công!');
+            loadAllReviews(); // Reload lại danh sách
+        } else {
+            alert(data.message || 'Xóa thất bại!');
+        }
+    } catch (err) {
+        console.error(err);
+        alert('Lỗi kết nối server!');
+    }
+}

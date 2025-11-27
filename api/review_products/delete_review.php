@@ -1,0 +1,68 @@
+<?php
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+
+require_once __DIR__ . '/../../config/connect.php';
+require_once __DIR__ . '/../../app/models/ReviewProduct.php';
+
+try {
+    // Chỉ chấp nhận POST + JSON
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        echo json_encode(["success" => false, "message" => "Phương thức không được hỗ trợ"]);
+        exit;
+    }
+
+    // Lấy dữ liệu JSON từ body
+    $input = json_decode(file_get_contents('php://input'), true);
+    $review_id = $input['review_id'] ?? null;
+
+    if (!$review_id || !is_numeric($review_id)) {
+        echo json_encode(["success" => false, "message" => "ID đánh giá không hợp lệ"]);
+        exit;
+    }
+
+    $db = (new Database())->getConnection();
+    $reviewModel = new ReviewProduct($db);
+
+    // === 1. LẤY THÔNG TIN ĐÁNH GIÁ (để lấy danh sách ảnh cần xóa) ===
+    $review = $reviewModel->getReviewById($review_id); // Bạn cần thêm method này trong model (xem bên dưới)
+
+    if (!$review) {
+        echo json_encode(["success" => false, "message" => "Không tìm thấy đánh giá"]);
+        exit;
+    }
+
+    // === 2. XÓA CÁC ẢNH TRONG THƯ MỤC (nếu có) ===
+    $uploadDir = __DIR__ . '/../../public/assets/images/upload/';
+    if (!empty($review['images'])) {
+        foreach ($review['images'] as $image) {
+            $filePath = $uploadDir . $image;
+            if (file_exists($filePath)) {
+                @unlink($filePath); // Xóa file, @ để không báo lỗi nếu không xóa được
+            }
+        }
+    }
+
+    // === 3. XÓA BẢN GHI TRONG DATABASE ===
+    $deleted = $reviewModel->delete($review_id); // Dùng method delete trong model
+
+    if ($deleted) {
+        echo json_encode([
+            "success" => true,
+            "message" => "Xóa đánh giá thành công!"
+        ], JSON_UNESCAPED_UNICODE);
+    } else {
+        echo json_encode([
+            "success" => false,
+            "message" => "Xóa đánh giá thất bại. Vui lòng thử lại."
+        ], JSON_UNESCAPED_UNICODE);
+    }
+
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Lỗi server: " . $e->getMessage()
+    ], JSON_UNESCAPED_UNICODE);
+}
+?>

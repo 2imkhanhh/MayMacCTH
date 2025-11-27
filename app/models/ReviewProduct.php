@@ -17,17 +17,14 @@ class ReviewProduct
     public $content;
     public $created_at;
 
-    // Thuộc tính phụ để nhận từ controller
-    public $images = [];    // mảng tên file ảnh
-    public $tag_ids = [];   // mảng ID tag được chọn
+    public $images = [];   
+    public $tag_ids = [];   
 
-    // Constructor nhận PDO (bắt buộc, giống ReviewTag)
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
-    // Hàm tạo đánh giá + ảnh + tag (có transaction)
     public function create()
     {
         try {
@@ -57,7 +54,6 @@ class ReviewProduct
 
             $review_id = $this->conn->lastInsertId();
 
-            // 2. Lưu ảnh nếu có
             if (!empty($this->images) && is_array($this->images)) {
                 $img_query = "INSERT INTO {$this->images_table} (review_id, image) VALUES (:review_id, :image)";
                 $img_stmt = $this->conn->prepare($img_query);
@@ -72,7 +68,6 @@ class ReviewProduct
                 }
             }
 
-            // 3. Lưu liên kết tag nếu có
             if (!empty($this->tag_ids) && is_array($this->tag_ids)) {
                 $tag_query = "INSERT IGNORE INTO {$this->links_table} (review_id, review_tag_id) 
                               VALUES (:review_id, :tag_id)";
@@ -82,7 +77,6 @@ class ReviewProduct
                 foreach ($this->tag_ids as $tag_id) {
                     $tag_id = (int)$tag_id;
                     if ($tag_id > 0) {
-                        // Kiểm tra tag có tồn tại và đang active
                         $check = $this->conn->prepare("SELECT 1 FROM review_tags WHERE review_tag_id = ? AND is_active = 1");
                         $check->execute([$tag_id]);
                         if ($check->rowCount() > 0) {
@@ -94,7 +88,7 @@ class ReviewProduct
             }
 
             $this->conn->commit();
-            return $review_id; // Trả về ID đánh giá vừa tạo
+            return $review_id; 
 
         } catch (Exception $e) {
             $this->conn->rollBack();
@@ -103,7 +97,6 @@ class ReviewProduct
         }
     }
 
-    // Hàm làm sạch dữ liệu đầu vào
     private function sanitize()
     {
         $this->customer_name = htmlspecialchars(strip_tags($this->customer_name));
@@ -156,7 +149,6 @@ class ReviewProduct
 
         $stmt = $this->conn->prepare($query);
 
-        // Bind đúng kiểu INT cho LIMIT và OFFSET (rất quan trọng!)
         $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
         $stmt->bindParam(':limit',      $limit,      PDO::PARAM_INT);
         $stmt->bindParam(':offset',     $offset,     PDO::PARAM_INT);
@@ -230,8 +222,6 @@ class ReviewProduct
         $stmt->execute();
 
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Chuẩn hóa dữ liệu trả về
         $reviews = [];
 
         foreach ($rows as $row) {
@@ -258,5 +248,61 @@ class ReviewProduct
         }
 
         return $reviews;
+    }
+
+    public function getReviewById($review_id)
+    {
+        $query = "SELECT review_id FROM {$this->table} WHERE review_id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $review_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        if ($stmt->rowCount() === 0) {
+            return false;
+        }
+
+        $imgStmt = $this->conn->prepare("SELECT image FROM {$this->images_table} WHERE review_id = :id");
+        $imgStmt->bindParam(':id', $review_id, PDO::PARAM_INT);
+        $imgStmt->execute();
+
+        $images = $imgStmt->fetchAll(PDO::FETCH_COLUMN); 
+
+        return [
+            'review_id' => $review_id,
+            'images'    => is_array($images) ? $images : []
+        ];
+    }
+
+    public function delete($review_id)
+    {
+        try {
+            $this->conn->beginTransaction();
+
+            //Xóa liên kết tag
+            $query1 = "DELETE FROM {$this->links_table} WHERE review_id = :id";
+            $stmt1 = $this->conn->prepare($query1);
+            $stmt1->bindParam(':id', $review_id, PDO::PARAM_INT);
+            $stmt1->execute();
+
+            //Xóa ảnh trong bảng phụ
+            $query2 = "DELETE FROM {$this->images_table} WHERE review_id = :id";
+            $stmt2 = $this->conn->prepare($query2);
+            $stmt2->bindParam(':id', $review_id, PDO::PARAM_INT);
+            $stmt2->execute();
+
+            //Xóa đánh giá chính
+            $query3 = "DELETE FROM {$this->table} WHERE review_id = :id";
+            $stmt3 = $this->conn->prepare($query3);
+            $stmt3->bindParam(':id', $review_id, PDO::PARAM_INT);
+            $stmt3->execute();
+
+            $this->conn->commit();
+            return true;
+
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            error_log("ReviewProduct delete error: " . $e->getMessage());
+            return false;
+        }
     }
 }
