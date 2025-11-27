@@ -517,7 +517,6 @@
 
             async function loadHomeProducts() {
                 try {
-                    // Đường dẫn tuyệt đối – chạy được ở mọi trang
                     const res = await fetch('/MayMacCTH/api/product/get_product.php');
                     
                     if (!res.ok) {
@@ -559,17 +558,20 @@
                                         <img src="${imageUrl}" 
                                             class="card-img-top" 
                                             alt="${product.name}"
-                                            style="height: 200px; object-fit: cover;"
+                                            style="object-fit: cover;"
                                             onerror="this.src='/MayMacCTH/public/assets/images/no-image.jpg'">
                                     </div>
                                 </a>
-                                <div class="card-body text-center p-3">
+                                <div class="card-body text-center p-2">
                                     <p class="card-text mb-2 text-truncate fw-medium" title="${product.name}">
                                         ${product.name}
                                     </p>
+                                    <!--
                                     <p class="product-price text-danger fw-bold fs-5 mb-0">
                                         ${price}<span class="currency-symbol">đ</span>
                                     </p>
+                                    -->
+                                    <div class="price fw-bold fs-5 mb-2" style="color: #174DAF;">${price}đ</div>
                                 </div>
                             </div>
                         `;

@@ -276,7 +276,6 @@ body {
 .product-card {
   border: 1px solid #e0e0e0;
   border-radius: 12px;
-  /* Bo góc hơn */
   transition: transform 0.3s, box-shadow 0.3s;
   overflow: hidden;
   background-color: #fff;
@@ -285,10 +284,8 @@ body {
 .product-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-  /* Đổ bóng mạnh hơn */
 }
 
-/* KHUNG ẢNH MỚI: Bao bọc để tạo viền và giảm chiều rộng ảnh */
 .product-image-container {
   padding: 0;
   background-color: #f7f7f7;
@@ -300,12 +297,10 @@ body {
   background-color: #f0f0f0;
 }
 
-/* Ảnh sản phẩm (Ảnh sẽ hiển thị chiều dài đầy đủ nhưng nằm giữa khung) */
 .product-image-container .card-img-top {
-  width: 100%;
+  height: 100%;
   height: auto;
   object-fit: contain;
-  /* Đảm bảo ảnh không bị cắt xén */
   transition: transform 0.4s ease;
   border-radius: 8px;
 }
@@ -326,7 +321,7 @@ body {
   margin-bottom: 0 !important;
 
   /* Đảm bảo cắt chữ 2 dòng được ưu tiên */
-  height: 42px;
+  height: 20px;
   /* Cung cấp chiều cao cố định cho 2 dòng */
   line-height: 1.4;
   /* Dùng 1.4 để dễ đọc hơn */

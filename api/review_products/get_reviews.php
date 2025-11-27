@@ -12,7 +12,7 @@ try {
     $product_id = $_GET['id'] ?? 0;
     $page       = max(1, (int)($_GET['page'] ?? 1));
     $limit      = (int)($_GET['limit'] ?? 3);
-    $limit      = $limit > 0 ? $limit : 3;  // Không cho limit <= 0
+    $limit      = $limit > 0 ? $limit : 3;  
     $offset     = ($page - 1) * $limit;
 
     if ($product_id <= 0) {

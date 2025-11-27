@@ -808,7 +808,7 @@
                     thumbContainer.appendChild(thumb);
                 });
 
-                // ==================== MÀU + SIZE ====================
+                //MÀU + SIZE 
                 if (p.colors && p.colors.length) {
                     const colorSwatches = document.getElementById('colorSwatches');
                     p.colors.forEach((color, idx) => {
@@ -898,8 +898,8 @@
                         quantity: quantity,
                         color: colorName,
                         size: size,
-                        image: image.includes('upload/') ? image.split('/').pop() : 'no-image.jpg', // lưu tên file ảnh
-                        uniqueKey: `${p.product_id}-${colorName}-${size}` // key duy nhất để tránh trùng
+                        image: image.includes('upload/') ? image.split('/').pop() : 'no-image.jpg',
+                        uniqueKey: `${p.product_id}-${colorName}-${size}` 
                     };
 
                     // Lấy giỏ hàng hiện tại từ localStorage
