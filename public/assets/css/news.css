@@ -113,3 +113,34 @@
     content: "\e901"; /* Icon mũi tên phải từ Boxicons */
     font-family: 'boxicons' !important;
 }
+
+.news-card .card-img-top,
+.news-card img {
+    /* Khóa cứng kích thước và vị trí */
+    transform: none !important;
+    transition: none !important;
+    scale: 1 !important;
+}
+
+/* Kể cả khi hover vào khung cha (.news-card), ảnh vẫn phải đứng yên */
+.news-card:hover .card-img-top,
+.news-card:hover img {
+    transform: none !important;
+    scale: 1 !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* 2. Xử lý tiêu đề: Màu đen mặc định, hover ra màu xanh */
+.news-title-link {
+    color: #333 !important; /* Màu đen (luôn ưu tiên) */
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: block; /* Đảm bảo nhận full kích thước dòng */
+}
+
+/* Chỉ đổi màu khi chuột chạm đúng vào chữ tiêu đề */
+.news-title-link:hover {
+    color: #174DAF !important; /* Màu xanh */
+    text-decoration: none;
+}

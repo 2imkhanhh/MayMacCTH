@@ -83,7 +83,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-success btn-lg">
+                        <button type="submit" class="btn btn-success">
                             <i class="bi bi-save"></i> Lưu bài viết
                         </button>
                     </div>

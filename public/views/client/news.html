@@ -295,7 +295,6 @@
         const ITEMS_PER_PAGE = 9;
 
         document.addEventListener('DOMContentLoaded', async function () {
-            // === 1. XỬ LÝ NGÔN NGỮ (giữ nguyên) ===
             const langButtons = document.querySelectorAll(".choose-lang");
             const currentFlag = document.getElementById("currentFlag");
             const currentLang = document.getElementById("currentLang");
@@ -310,7 +309,6 @@
                 });
             });
 
-            // === 2. LOAD FOOTER CONTACT (giữ nguyên) ===
             const addressEl = document.getElementById('footerAddress');
             const websiteEl = document.getElementById('footerWebsite');
             const phoneEl = document.getElementById('footerPhone');
@@ -367,7 +365,6 @@
                         return;
                     }
 
-                    // Lọc bài đã xuất bản
                     allArticles = result.data.filter(a => a.is_published == 1);
                     renderNews(currentPage);
 
@@ -409,41 +406,40 @@
                 }
 
                 newsContainer.innerHTML = pageArticles.map(article => `
-                <div class="col news-item">
-                    <div class="card h-100 news-card shadow-sm hover-shadow transition">
-                        ${article.thumbnail
-                        ? `<img src="${BASE_URL}/${article.thumbnail}" class="card-img-top" alt="${article.title}" style="height:220px; object-fit:cover;">`
-                        : `<div class="bg-light d-flex align-items-center justify-content-center" style="height:220px;">
-                                   <i class="bi bi-image fs-1 text-muted"></i>
-                               </div>`
-                    }
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title mb-2">
-                                <a href="${BASE_URL}/tin-tuc/${article.slug}" class="text-decoration-none text-dark fw-bold">
-                                    ${article.title}
-                                </a>
-                            </h5>
-                            <p class="text-muted small mb-3">
-                                <i class="bi bi-calendar3"></i> 
-                                ${new Date(article.created_at).toLocaleDateString('vi-VN')}
-                                ${article.author ? ` | ${article.author}` : ''}
-                            </p>
-                            <p class="card-text text-muted flex-grow-1">
-                                ${getExcerpt(article.content || '', 130)}
-                            </p>
-                            <!--
-                            <a href="${BASE_URL}/tin-tuc/${article.slug}" class="btn btn-outline-primary btn-sm mt-3 align-self-start">
-                                Xem chi tiết <i class="bi bi-arrow-right"></i>
-                            </a>
-                            -->
+                    <div class="col news-item">
+                        <div class="card h-100 news-card shadow-sm border-0">
+                            ${article.thumbnail
+                                    ? `<div style="overflow: hidden; height: 220px;">
+                                    <img src="${BASE_URL}/${article.thumbnail}" class="card-img-top" alt="${article.title}" style="height: 100%; width: 100%; object-fit: cover;">
+                            </div>`
+                                    : `<div class="d-flex align-items-center justify-content-center" style="height:220px;">
+                                    <i class="bi bi-image fs-1 text-muted"></i>
+                            </div>`
+                                }
+                            
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title mb-2">
+                                    <a href="${BASE_URL}/tin-tuc/${article.slug}" class="news-title-link fw-bold text-decoration-none">
+                                        ${article.title}
+                                    </a>
+                                </h5>
+                                
+                                <p class="text-muted small mb-3">
+                                    <i class="bi bi-calendar3"></i> 
+                                    ${new Date(article.created_at).toLocaleDateString('vi-VN')}
+                                    ${article.author ? ` | ${article.author}` : ''}
+                                </p>
+                                
+                                <p class="card-text text-muted flex-grow-1">
+                                    ${getExcerpt(article.content || '', 130)}
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
 
                 renderPagination();
             }
-
             function renderPagination() {
                 const totalPages = Math.ceil(allArticles.length / ITEMS_PER_PAGE);
                 if (totalPages <= 1) {
