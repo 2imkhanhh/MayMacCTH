@@ -14,7 +14,6 @@ class ReviewProductController {
             return ["success" => false, "message" => "Method not allowed"];
         }
 
-        // Lấy dữ liệu từ JSON (frontend gửi JSON)
         $input = json_decode(file_get_contents("php://input"), true) ?? $_POST;
 
         $required = ['product_id', 'customer_name', 'phone', 'rating', 'content'];
@@ -24,7 +23,6 @@ class ReviewProductController {
             }
         }
 
-        // Gán dữ liệu
         $this->review->product_id     = (int)$input['product_id'];
         $this->review->customer_name  = $input['customer_name'];
         $this->review->phone          = $input['phone'];

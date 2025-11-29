@@ -92,7 +92,6 @@ class ProductController {
             return ["success" => false, "message" => "Method not allowed"];
         }
 
-        // ĐÃ THÊM PRICE VÀO CẬP NHẬT
         $data = [
             'name'        => $_POST['name'] ?? '',
             'description' => $_POST['description'] ?? '',

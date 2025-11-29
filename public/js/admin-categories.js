@@ -51,10 +51,10 @@ async function loadCategories() {
                         <h5 class="category-name">${cat.name}</h5>
                         <p class="category-count">Sản phẩm: ${cat.product_count || 0}</p>
                         <div class="category-actions">
-                            <button class="btn btn-category btn-edit" onclick="editCategory(${cat.category_id}, '${cat.name}')">
-                                <i class="bi bi-pencil"></i> Sửa
+                            <button class="btn btn-action btn-edit" onclick="editCategory(${cat.category_id}, '${cat.name}')">
+                                <i class="bi bi-pencil-square"></i> Sửa
                             </button>
-                            <button class="btn btn-category btn-delete" onclick="deleteCategory(${cat.category_id})">
+                            <button class="btn btn-action btn-delete" onclick="deleteCategory(${cat.category_id})">
                                 <i class="bi bi-trash"></i> Xóa
                             </button>
                         </div>

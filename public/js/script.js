@@ -15,39 +15,55 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Breadcrumb
-// document.addEventListener('DOMContentLoaded', function () {
-//   const breadcrumbPage = window.location.pathname.split('/').pop() || 'index.html';
-//   const pageMap = {
-//     'index.html': 'Trang chủ',
-//     'about-us.html': 'Về chúng tôi',
-//     'products.html': 'Sản phẩm',
-//     'guide.html': 'Hướng dẫn',
-//     'news.html': 'Tin tức',
-//     'contact.html': 'Liên hệ',
-//     'product-detail.html': 'Áo Đồng Phục',
-//     'cart.html': 'Giỏ hàng',
-//     'order.html': 'Đặt hàng',
-//     'news-detail.html': 'Tin tứcc'
-//   };
+document.addEventListener('DOMContentLoaded', async function () {
+    const breadcrumb = document.getElementById('breadcrumb');
+    if (!breadcrumb) return;
 
-//   const currentPageName = pageMap[breadcrumbPage] || 'Trang chủ';
-//   const urlParams = new URLSearchParams(window.location.search);
-//   const productName = urlParams.get('name') || 'Áo Đồng Phục';
+    const currentPage = location.pathname.split('/').pop();
 
-//   if (breadcrumbPage === 'index.html') {
-//     breadcrumb.innerHTML = `${currentPageName}`;
-//   } else if (breadcrumbPage === 'product-detail.html') {
-//     breadcrumb.innerHTML = `
-//       Trang chủ >
-//       <a href="products.html">Sản phẩm</a> >
-//       <a href="product-detail.html?name=${encodeURIComponent(productName)}" class="product-name">
-//         ${productName}
-//       </a>
-//     `;
-//   } else {
-//     breadcrumb.innerHTML = `Trang chủ > <a href="${breadcrumbPage}">${currentPageName}</a>`;
-//   }
-// });
+    if (currentPage === 'product-detail.php') {
+        return; 
+    }
+
+    if (currentPage === 'product-detail.html') {
+        const urlParams = new URLSearchParams(location.search);
+        const productName = urlParams.get('name') || 'Chi tiết sản phẩm';
+
+        breadcrumb.innerHTML = `
+            <a href="index.html">Trang chủ</a>
+            <span class="sep">/</span>
+            <a href="products.html">Sản phẩm</a>
+            <span class="sep">/</span>
+            <span class="current">${productName}</span>
+        `;
+        return;
+    }
+
+    const pageMap = {
+        'index.html'       : 'Trang chủ',
+        'about-us.html'    : 'Về chúng tôi',
+        'products.html'    : 'Sản phẩm',
+        'guide.html'       : 'Hướng dẫn',
+        'news.html'        : 'Tin tức',
+        'news-detail.html' : 'Tin tức',
+        'contact.html'     : 'Liên hệ',
+        'cart.html'        : 'Giỏ hàng',
+        'order.html'       : 'Đặt hàng',
+        'thankyou.html'    : 'Cảm ơn'
+    };
+
+    const pageName = pageMap[currentPage] || 'Trang chủ';
+
+    if (currentPage === 'index.html') {
+        breadcrumb.innerHTML = `<span class="current">${pageName}</span>`;
+    } else {
+        breadcrumb.innerHTML = `
+            <a href="index.html">Trang chủ</a>
+            <span class="sep"> > </span>
+            <span class="current">${pageName}</span>
+        `;
+    }
+});
 
 document.addEventListener("DOMContentLoaded", async function () {
   const BASE_URL = "/MayMacCTH";

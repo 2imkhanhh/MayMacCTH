@@ -16,7 +16,6 @@ class OrderController {
             return ["success" => false, "message" => "Dữ liệu không hợp lệ"];
         }
 
-        // Gán dữ liệu vào model
         $this->order->name           = $input['name'] ?? '';
         $this->order->phone          = $input['phone'] ?? '';
         $this->order->address        = $input['address'] ?? '';
@@ -30,7 +29,6 @@ class OrderController {
         $this->order->total          = $input['total'];
         $this->order->items          = $input['items'];
 
-        // Validate cơ bản
         if (empty($this->order->name) || empty($this->order->phone) || empty($this->order->address)) {
             return ["success" => false, "message" => "Vui lòng điền đầy đủ thông tin"];
         }

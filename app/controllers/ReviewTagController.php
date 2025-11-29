@@ -9,13 +9,11 @@ class ReviewTagController {
         $this->tag = new ReviewTag($db);
     }
 
-    // Lấy tất cả tag
     public function get() {
         $data = $this->tag->getAll();
         return ["success" => true, "data" => $data];
     }
 
-    // Thêm mới
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return ["success" => false, "message" => "Method not allowed"];
@@ -34,7 +32,6 @@ class ReviewTagController {
             : ["success" => false, "message" => "Thêm thất bại, có thể tag đã tồn tại"];
     }
 
-    // Cập nhật
     public function update($id) {
         $id = (int)$id;
         $item = $this->tag->getById($id);
@@ -56,7 +53,6 @@ class ReviewTagController {
             : ["success" => false, "message" => "Cập nhật thất bại"];
     }
 
-    // Xóa
     public function delete($id) {
         $id = (int)$id;
         $item = $this->tag->getById($id);

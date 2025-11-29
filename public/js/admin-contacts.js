@@ -2,8 +2,6 @@ const BASE_URL = '/MayMacCTH';
 
 document.addEventListener('DOMContentLoaded', () => {
     loadContact();
-
-    // Nút chính (duy nhất) – dùng để thêm hoặc sửa
     document.getElementById('btnAdd').addEventListener('click', () => openModal());
 });
 
@@ -53,8 +51,6 @@ async function loadContact() {
 
         if (data.success && data.data && data.data.length > 0) {
             const c = data.data[0];
-
-            // Hiển thị thông tin (không có nút sửa)
             container.innerHTML = `
                 <div class="col-12">
                     <div class="card shadow-sm">
@@ -81,12 +77,10 @@ async function loadContact() {
                 </div>
             `;
 
-            // Đổi nút thành "Cập nhật thông tin liên hệ"
             btnAdd.innerHTML = '<i class="bi bi-pencil"></i> Cập nhật thông tin liên hệ';
             btnAdd.classList.remove('btn-primary');
             btnAdd.classList.add('btn-success');
         } else {
-            // Chưa có dữ liệu
             container.innerHTML = `
                 <div class="col-12 text-center py-5">
                     <i class="bi bi-info-circle display-1 text-secondary opacity-50"></i>
@@ -95,7 +89,6 @@ async function loadContact() {
                 </div>
             `;
 
-            // Nút thêm
             btnAdd.innerHTML = '<i class="bi bi-plus-circle"></i> Thêm thông tin liên hệ';
             btnAdd.classList.remove('btn-success');
             btnAdd.classList.add('btn-primary');
@@ -114,7 +107,6 @@ function openModal() {
     form.reset();
     document.getElementById('contact_id').value = '';
 
-    // Kiểm tra xem có dữ liệu chưa để đổi tiêu đề
     fetch(`${BASE_URL}/api/contact/get_contact.php`)
         .then(r => r.json())
         .then(data => {

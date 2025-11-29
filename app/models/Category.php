@@ -10,7 +10,6 @@ class Category {
         $this->conn = $db;
     }
 
-    // Lấy danh sách + số sản phẩm trong mỗi danh mục
     public function get() {
         $query = "SELECT c.*, 
                          COUNT(p.product_id) as product_count
@@ -56,13 +55,12 @@ class Category {
     }
 
     public function delete($id) {
-        // Kiểm tra xem danh mục có sản phẩm không
         $check = "SELECT COUNT(*) FROM products WHERE category_id = :id";
         $stmt = $this->conn->prepare($check);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         if ($stmt->fetchColumn() > 0) {
-            return false; // Không cho xóa nếu còn sản phẩm
+            return false; 
         }
 
         $query = "DELETE FROM " . $this->table . " WHERE category_id = :id";

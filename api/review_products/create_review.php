@@ -10,7 +10,6 @@ require_once __DIR__ . '/../../app/models/ReviewProduct.php';
 $db = (new Database())->getConnection();
 $reviewModel = new ReviewProduct($db);
 
-// Thư mục lưu ảnh
 $uploadDir = __DIR__ . '/../../public/assets/images/upload/';
 if (!is_dir($uploadDir)) {
     mkdir($uploadDir, 0755, true);
@@ -18,10 +17,9 @@ if (!is_dir($uploadDir)) {
 
 $uploadedImageNames = [];
 
-// XỬ LÝ UPLOAD ẢNH (FormData) 
 if (!empty($_FILES['images']['name'][0])) {
     $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-    $maxSize = 5 * 1024 * 1024; // 5MB
+    $maxSize = 5 * 1024 * 1024; 
 
     foreach ($_FILES['images']['name'] as $key => $name) {
         $tmpName = $_FILES['images']['tmp_name'][$key];
@@ -50,7 +48,6 @@ if (!empty($_FILES['images']['name'][0])) {
     }
 }
 
-// ============ 2. LẤY DỮ LIỆU TỪ $_POST  ============
 $product_id     = $_POST['product_id'] ?? 0;
 $customer_name  = trim($_POST['customer_name'] ?? '');
 $phone          = trim($_POST['phone'] ?? '');
@@ -59,20 +56,17 @@ $size           = trim($_POST['size'] ?? '');
 $color          = trim($_POST['color'] ?? '');
 $content        = trim($_POST['content'] ?? '');
 
-// Lấy tag_ids (có thể là mảng)
 $tag_ids = [];
 if (!empty($_POST['tag_ids'])) {
     $tag_ids = is_array($_POST['tag_ids']) ? $_POST['tag_ids'] : [$_POST['tag_ids']];
 }
 $tag_ids = array_map('intval', $tag_ids);
 
-// Validate bắt buộc
 if ($product_id <= 0 || empty($customer_name) || empty($phone) || $rating < 1 || $rating > 5 || empty($content)) {
     echo json_encode(["success" => false, "message" => "Vui lòng điền đầy đủ thông tin bắt buộc"]);
     exit;
 }
 
-// Gán vào model
 $reviewModel->product_id    = $product_id;
 $reviewModel->customer_name = $customer_name;
 $reviewModel->phone         = $phone;
@@ -83,7 +77,6 @@ $reviewModel->content       = $content;
 $reviewModel->images        = $uploadedImageNames;
 $reviewModel->tag_ids       = $tag_ids;
 
-// ============ 3. TẠO ĐÁNH GIÁ ============
 $reviewId = $reviewModel->create();
 
 if ($reviewId) {

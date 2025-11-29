@@ -65,7 +65,7 @@
         </div>
     </div>
 
-    <!-- Search Bar - CẬP NHẬT Ô TÌM KIẾM MỚI -->
+    <!-- Search Bar -->
     <div class="search-bar bg-white py-2">
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
@@ -150,7 +150,6 @@
             <div class="container d-flex justify-content-between align-items-center flex-wrap">
                 <div class="page-title" id="categoryTitle">ĐANG TẢI...</div>
                 <div class="breadcrumb-nav" id="breadcrumb">
-                    Trang chủ > <a href="products.html">Sản phẩm</a> > <span id="productNameBreadcrumb">...</span>
                 </div>
             </div>
         </div>
@@ -164,7 +163,6 @@
                             style="background:#f5f5f5; min-height:400px; object-fit:contain;">
 
                         <div class="thumbnail-images mt-3 d-flex gap-2 flex-wrap" id="thumbnailContainer">
-                            <!-- Thumbnail sẽ được load bằng JS -->
                         </div>
                     </div>
 
@@ -183,7 +181,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- FAQ giữ nguyên như cũ -->
                     </div>
                 </div>
 
@@ -547,7 +544,6 @@
         document.addEventListener('DOMContentLoaded', async () => {
             const BASE_URL = '/MayMacCTH';
             let uploadedImageNames = [];
-            // ==================== LOAD + HIỂN THỊ TAG ====================
             async function loadReviewTags() {
                 const container = document.getElementById('reviewTagContainer');
                 if (!container) return;
@@ -577,7 +573,7 @@
             }
             await loadReviewTags();
 
-            // ==================== 4. UPLOAD ẢNH + PREVIEW ====================
+            //UPLOAD ẢNH + PREVIEW 
             const previewContainer = document.getElementById('previewImages');
             document.getElementById('reviewImages')?.addEventListener('change', e => {
                 const files = e.target.files;
@@ -621,7 +617,6 @@
                 });
             });
 
-            // ==================== 6. CÁC HÀM KHÁC (giỏ hàng, footer…) ====================
             updateCartCount();
 
             const urlParams = new URLSearchParams(window.location.search);
@@ -648,7 +643,15 @@
                 const categoryTitleEl = document.getElementById('categoryTitle');
                 const breadcrumbEl = document.getElementById('productNameBreadcrumb');
                 if (categoryTitleEl) categoryTitleEl.textContent = p.category_name || 'SẢN PHẨM';
-                if (breadcrumbEl) breadcrumbEl.textContent = p.name;
+                if (breadcrumb) {
+                    breadcrumb.innerHTML = `
+                        <a href="index.html">Trang chủ</a>
+                        <span class="sep"> > </span>
+                        <a href="products.html">Sản phẩm</a>
+                        <span class="sep"> > </span>
+                        <span class="current">${p.name}</span>
+                    `;
+                }
 
                 // Render nội dung + phần chính sách ĐẸP CHUẨN
                 contentContainer.innerHTML = `

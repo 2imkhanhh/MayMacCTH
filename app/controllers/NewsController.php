@@ -15,11 +15,10 @@ class NewsController
         }
     }
 
-    // Hàm xử lý upload thumbnail (dùng chung cho create & update)
     private function handleThumbnailUpload($oldThumbnail = null)
     {
         if (!isset($_FILES['thumbnail']) || $_FILES['thumbnail']['error'] !== UPLOAD_ERR_OK) {
-            return $oldThumbnail; // Không upload mới → giữ ảnh cũ
+            return $oldThumbnail; 
         }
 
         $file = $_FILES['thumbnail'];
@@ -27,21 +26,20 @@ class NewsController
         $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
         if (!in_array($ext, $allowed) || $file['size'] > 5 * 1024 * 1024) {
-            return $oldThumbnail; // Không hợp lệ → giữ ảnh cũ
+            return $oldThumbnail; 
         }
 
         $filename = 'thumb_' . time() . '_' . rand(1000, 9999) . '.' . $ext;
         $dest = $this->uploadDir . $filename;
 
         if (move_uploaded_file($file['tmp_name'], $dest)) {
-            // Xóa ảnh cũ nếu có
             if ($oldThumbnail && file_exists($this->uploadDir . ltrim($oldThumbnail, '/'))) {
                 @unlink($this->uploadDir . ltrim($oldThumbnail, '/'));
             }
             return 'public/assets/images/upload/' . $filename;
         }
 
-        return $oldThumbnail; // Upload thất bại → giữ ảnh cũ
+        return $oldThumbnail; 
     }
 
     public function get($id = null)
@@ -74,7 +72,6 @@ class NewsController
         $this->news->is_published  = isset($_POST['is_published']) ? 1 : 0;
         $this->news->content       = $_POST['content'];
 
-        // Xử lý thumbnail
         $this->news->thumbnail = $this->handleThumbnailUpload();
 
         return $this->news->create()
@@ -89,7 +86,6 @@ class NewsController
             return ["success" => false, "message" => "Không tìm thấy bài viết", "status" => 404];
         }
 
-        // Gán dữ liệu như cũ...
         $this->news->id            = $id;
         $this->news->title         = trim($_POST['title'] ?? $article['title']);
         $this->news->slug          = trim($_POST['slug'] ?? $article['slug']);
@@ -111,7 +107,6 @@ class NewsController
             return ["success" => false, "message" => "Method not allowed", "status" => 405];
         }
 
-        // Xóa ảnh thumbnail nếu có
         $article = $this->news->getById($id);
         if ($article && !empty($article['thumbnail'])) {
             $path = $this->uploadDir . ltrim($article['thumbnail'], '/');

@@ -9,7 +9,6 @@ class Product
         $this->conn = $db;
     }
 
-    // Lấy danh sách sản phẩm + JOIN colors, variants, images
     public function get($category_id = null, $name = null)
     {
         $query = "SELECT 
@@ -63,7 +62,6 @@ class Product
         return $this->groupProductData($results)[0] ?? null;
     }
 
-    // Gom nhóm dữ liệu theo sản phẩm (1 sản phẩm → nhiều màu → nhiều size → nhiều ảnh)
     private function groupProductData($rows)
     {
         $products = [];
@@ -71,7 +69,6 @@ class Product
         foreach ($rows as $row) {
             $pid = $row['product_id'];
 
-            // Khởi tạo sản phẩm nếu chưa có
             if (!isset($products[$pid])) {
                 $products[$pid] = [
                     'product_id'     => $pid,
@@ -91,9 +88,7 @@ class Product
                 ];
             }
 
-            // === XỬ LÝ ẢNH ===
             if (!empty($row['image'])) {
-                // Kiểm tra xem ảnh đã tồn tại chưa
                 $exists = false;
                 foreach ($products[$pid]['images'] as $img) {
                     if ($img['image'] === $row['image']) {
@@ -109,7 +104,6 @@ class Product
                         'sort_order' => (int)($row['sort_order'] ?? 0)
                     ];
 
-                    // Cập nhật ảnh chính (ưu tiên is_primary = 1, nếu không có thì lấy ảnh đầu)
                     if (($row['is_primary'] ?? 0) == 1) {
                         $products[$pid]['primary_image'] = $row['image'];
                     } elseif ($products[$pid]['primary_image'] === null && count($products[$pid]['images']) === 1) {
@@ -118,7 +112,6 @@ class Product
                 }
             }
 
-            // === XỬ LÝ MÀU + SIZE ===
             if (!empty($row['color_id'])) {
                 $colorId = $row['color_id'];
 
@@ -140,10 +133,8 @@ class Product
             }
         }
 
-        // Chuyển colors từ object → array (để frontend dễ dùng)
         foreach ($products as &$p) {
             $p['colors'] = array_values($p['colors']);
-            // Sắp xếp ảnh theo sort_order
             usort($p['images'], function ($a, $b) {
                 return ($a['sort_order'] ?? 0) <=> ($b['sort_order'] ?? 0);
             });
@@ -152,13 +143,10 @@ class Product
         return array_values($products);
     }
 
-
-    // Tạo sản phẩm + màu + size + ảnh
     public function create($data, $colors, $images, $primaryIndex)
     {
         $this->conn->beginTransaction();
         try {
-            // 1. Tạo sản phẩm chính
             $query = "INSERT INTO products SET 
                         name = :name, 
                         description = :description,
@@ -177,14 +165,12 @@ class Product
             ]);
             $productId = $this->conn->lastInsertId();
 
-            // 2. Thêm màu
             foreach ($colors as $c) {
                 if (empty($c['name'])) continue;
                 $stmt = $this->conn->prepare("INSERT INTO product_colors (product_id, color_name, color_code) VALUES (?, ?, ?)");
                 $stmt->execute([$productId, $c['name'], $c['code'] ?? '#000000']);
                 $colorId = $this->conn->lastInsertId();
 
-                // 3. Thêm size cho màu
                 if (!empty($c['sizes'])) {
                     $sizes = array_map('trim', explode(',', $c['sizes']));
                     foreach ($sizes as $size) {
@@ -196,7 +182,6 @@ class Product
                 }
             }
 
-            // 4. Thêm ảnh
             $uploadDir = __DIR__ . '/../../public/assets/images/upload/';
             foreach ($images as $index => $file) {
                 if ($file['error'] !== 0) continue;
@@ -225,7 +210,6 @@ class Product
     {
         $this->conn->beginTransaction();
         try {
-            // 1. Cập nhật thông tin chính
             $query = "UPDATE products SET 
                         name = :name,
                         description = :description,
@@ -243,11 +227,9 @@ class Product
                 ':product_id' => $productId
             ]);
 
-            // 2. XÓA hết màu + size cũ
             $this->conn->prepare("DELETE FROM product_variants WHERE product_id = ?")->execute([$productId]);
             $this->conn->prepare("DELETE FROM product_colors WHERE product_id = ?")->execute([$productId]);
 
-            // 3. Thêm lại màu + size mới
             foreach ($colors as $c) {
                 if (empty($c['name'])) continue;
                 $stmt = $this->conn->prepare("INSERT INTO product_colors (product_id, color_name, color_code) VALUES (?, ?, ?)");
@@ -265,10 +247,8 @@ class Product
                 }
             }
 
-            // 4. Xử lý ảnh
             $uploadDir = __DIR__ . '/../../public/assets/images/upload/';
 
-            // Xóa ảnh cũ nếu không còn trong danh sách giữ lại
             $stmt = $this->conn->prepare("SELECT image_id, image FROM product_images WHERE product_id = ?");
             $stmt->execute([$productId]);
             $oldImages = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -281,7 +261,6 @@ class Product
                 }
             }
 
-            // Thêm ảnh mới
             $sortOrder = 0;
             foreach ($images as $index => $file) {
                 if ($file['error'] !== 0) continue;
@@ -297,7 +276,6 @@ class Product
                 }
             }
 
-            // Cập nhật lại ảnh chính nếu cần (trong trường hợp không upload ảnh mới)
             if (empty($images) && $primaryIndex >= 0 && isset($existingImages[$primaryIndex])) {
                 $this->conn->prepare("UPDATE product_images SET is_primary = 0 WHERE product_id = ?")->execute([$productId]);
                 $this->conn->prepare("UPDATE product_images SET is_primary = 1 WHERE image_id = ?")->execute([$existingImages[$primaryIndex]]);
@@ -312,25 +290,20 @@ class Product
         }
     }
 
-    // Tương tự cho update() và delete() - mình có thể gửi nếu bạn cần
     public function delete($id)
     {
         $this->conn->beginTransaction();
         try {
-            // 1. Lấy danh sách ảnh để xóa file
             $stmt = $this->conn->prepare("SELECT image FROM product_images WHERE product_id = ?");
             $stmt->execute([$id]);
             $images = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-            // 2. Xóa file ảnh vật lý
             $uploadDir = __DIR__ . '/../../public/assets/images/upload/';
             foreach ($images as $img) {
                 $path = $uploadDir . $img;
                 if (file_exists($path)) @unlink($path);
             }
 
-            // 3. Xóa dữ liệu trong DB (có CASCADE nên chỉ cần xóa product là đủ)
-            // Nhưng để an toàn, xóa thủ công theo thứ tự
             $this->conn->prepare("DELETE FROM product_images WHERE product_id = ?")->execute([$id]);
             $this->conn->prepare("DELETE FROM product_variants WHERE product_id = ?")->execute([$id]);
             $this->conn->prepare("DELETE FROM product_colors WHERE product_id = ?")->execute([$id]);

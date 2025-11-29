@@ -248,42 +248,15 @@
                 Xem thêm tin tức <i class='bx bx-right-arrow-alt'></i>
             </a>
         </div>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div class="col">
-                <div class="card h-100 news-card">
-                    <img src="../../assets/images/news1.png" class="card-img-top" alt="News 1">
-                    <div class="card-body">
-                        <a href="#" class="card-title-link">Top 10+ mẫu áo đồng phục đẹp nhất 2025</a>
-                        <p class="text-muted">
-                            Bạn đang tìm xưởng may áo đồng phục tại Hải Phòng đẹp, giá hợp lý nhất? Chúng tôi sẽ giúp
-                            bạn...
-                        </p>
-                    </div>
+
+        <!-- Container cho 3 tin tức (giống hệt news.html) -->
+        <div class="row row-cols-1 row-cols-md-3 g-4" id="homeNewsContainer">
+            <!-- Loading giống news.html -->
+            <div class="col-12 text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Đang tải...</span>
                 </div>
-            </div>
-            <div class="col">
-                <div class="card h-100 news-card">
-                    <img src="../../assets/images/news2.png" class="card-img-top" alt="News 2">
-                    <div class="card-body">
-                        <a href="#" class="card-title-link">Top 10+ mẫu áo đồng phục đẹp nhất 2025</a>
-                        <p class="text-muted">
-                            Bạn đang tìm xưởng may áo đồng phục tại Hải Phòng đẹp, giá hợp lý nhất? Chúng tôi sẽ giúp
-                            bạn...
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100 news-card">
-                    <img src="../../assets/images/news3.png" class="card-img-top" alt="News 3">
-                    <div class="card-body">
-                        <a href="#" class="card-title-link">Top 10+ mẫu áo đồng phục đẹp nhất 2025</a>
-                        <p class="text-muted">
-                            Bạn đang tìm xưởng may áo đồng phục tại Hải Phòng đẹp, giá hợp lý nhất? Chúng tôi sẽ giúp
-                            bạn...
-                        </p>
-                    </div>
-                </div>
+                <p class="mt-3">Đang tải tin tức...</p>
             </div>
         </div>
     </div>
@@ -679,6 +652,104 @@
                 }
             } catch (err) {
                 console.error('Lỗi load footer contact:', err);
+            }
+        });
+        function getExcerpt(contentJson, maxLength = 130) {
+            try {
+                const blocks = JSON.parse(contentJson).blocks;
+                let text = '';
+                for (const block of blocks) {
+                    if ((block.type === 'paragraph' || block.type === 'header') && block.data.text) {
+                        text += block.data.text.replace(/<[^>]*>/g, '') + ' ';
+                        if (text.length >= maxLength) break;
+                    }
+                }
+                return text.trim().substring(0, maxLength) + (text.length > maxLength ? '...' : '');
+            } catch {
+                return 'Xem chi tiết để biết thêm...';
+            }
+        }
+
+        async function loadHomeNews() {
+            const container = document.getElementById('homeNewsContainer');
+            if (!container) return;
+
+            // Loading giống news.html
+            container.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Đang tải...</span>
+                </div>
+                <p class="mt-3">Đang tải tin tức...</p>
+            </div>`;
+
+            try {
+                const res = await fetch(`${BASE_URL}/api/news/get_news.php?t=${Date.now()}`);
+                const result = await res.json();
+
+                if (!result.success || !result.data || result.data.length === 0) {
+                    container.innerHTML = `<div class="col-12 text-center py-5"><h5 class="text-muted">Chưa có bài viết nào.</h5></div>`;
+                    return;
+                }
+
+                const latest3 = result.data
+                    .filter(a => a.is_published == 1)
+                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                    .slice(0, 3);
+
+                if (latest3.length === 0) {
+                    container.innerHTML = `<div class="col-12 text-center py-5"><h5 class="text-muted">Chưa có bài viết nào.</h5></div>`;
+                    return;
+                }
+
+                container.innerHTML = latest3.map(article => `
+                    <div class="col news-item">
+                        <div class="card h-100 news-card shadow-sm border-0">
+                            ${article.thumbnail
+                        ? `<div style="overflow: hidden; height: 220px;">
+                                    <img src="${BASE_URL}/${article.thumbnail}" class="card-img-top" alt="${article.title}" style="height: 100%; width: 100%; object-fit: cover;">
+                                </div>`
+                        : `<div class="d-flex align-items-center justify-content-center" style="height:220px;">
+                                    <i class="bi bi-image fs-1 text-muted"></i>
+                                </div>`
+                    }
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title mb-2">
+                                    <a href="${BASE_URL}/tin-tuc/${article.slug}" class="news-title-link fw-bold text-decoration-none">
+                                        ${article.title}
+                                    </a>
+                                </h5>
+                                <p class="text-muted small mb-3">
+                                    <i class="bi bi-calendar3"></i> 
+                                    ${new Date(article.created_at).toLocaleDateString('vi-VN')}
+                                    ${article.author ? ` | ${article.author}` : ''}
+                                </p>
+                                <p class="card-text text-muted flex-grow-1">
+                                    ${getExcerpt(article.content || '', 130)}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (err) {
+                console.error('Lỗi tải tin tức trang chủ:', err);
+                container.innerHTML = `<div class="col-12 text-center py-5 text-danger">Lỗi tải dữ liệu. Vui lòng thử lại sau!</div>`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadHomeNews);
+        document.getElementById('homeNewsContainer')?.addEventListener('click', function (e) {
+            const link = e.target.closest('a[href*="/tin-tuc/"]');
+            if (!link) return;
+
+            e.preventDefault(); 
+
+            const href = link.getAttribute('href');
+            const slug = href.split('/').pop();
+
+            if (slug && slug !== '' && slug !== 'tin-tuc') {
+                window.location.href = `${BASE_URL}/public/views/client/news-detail.html?slug=${encodeURIComponent(slug)}`;
             }
         });
     </script>

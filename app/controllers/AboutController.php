@@ -9,25 +9,21 @@ class AboutController {
         $this->about = new About($db);
     }
 
-    // Lấy tất cả nội dung About
     public function get() {
         $data = $this->about->getAll();
         return ["success" => true, "data" => $data];
     }
 
-    // Hàm hỗ trợ upload + xóa ảnh cũ
     private function handleImageUpload($oldImage = null) {
         $uploadDir = __DIR__ . '/../../public/assets/images/upload/';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0755, true);
         }
 
-        // Nếu không có file mới → giữ nguyên ảnh cũ
         if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
             return $oldImage;
         }
 
-        // Xóa ảnh cũ nếu tồn tại
         if ($oldImage) {
             $oldPath = $uploadDir . basename($oldImage);
             if (file_exists($oldPath)) {
@@ -35,7 +31,6 @@ class AboutController {
             }
         }
 
-        // Upload ảnh mới
         $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
         $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
         if (!in_array($ext, $allowed)) {
@@ -46,13 +41,12 @@ class AboutController {
         $targetPath = $uploadDir . $filename;
 
         if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
-            return '../../assets/images/upload/' . $filename; // đường dẫn để lưu DB
+            return '../../assets/images/upload/' . $filename; 
         }
 
-        return $oldImage; // lỗi thì giữ ảnh cũ
+        return $oldImage; 
     }
 
-    // Thêm mới
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return ["success" => false, "message" => "Method not allowed"];
@@ -63,7 +57,7 @@ class AboutController {
         }
 
         try {
-            $imagePath = $this->handleImageUpload(); // xử lý upload
+            $imagePath = $this->handleImageUpload(); 
 
             $this->about->title         = trim($_POST['title']);
             $this->about->content       = $_POST['content'] ?? '';
@@ -79,7 +73,6 @@ class AboutController {
         }
     }
 
-    // Cập nhật
     public function update($id) {
         $id = (int)$id;
         $item = $this->about->getById($id);
@@ -92,7 +85,7 @@ class AboutController {
         }
 
         try {
-            $imagePath = $this->handleImageUpload($item['image']); // có thể thay ảnh mới
+            $imagePath = $this->handleImageUpload($item['image']); 
 
             $this->about->about_id      = $id;
             $this->about->title         = trim($_POST['title']);
@@ -109,7 +102,6 @@ class AboutController {
         }
     }
 
-    // Xóa
     public function delete($id) {
         $id = (int)$id;
         $item = $this->about->getById($id);
@@ -117,7 +109,6 @@ class AboutController {
             return ["success" => false, "message" => "Không tìm thấy nội dung"];
         }
 
-        // Xóa ảnh nếu có
         if ($item['image']) {
             $path = __DIR__ . '/../../public/assets/images/upload/' . basename($item['image']);
             if (file_exists($path)) @unlink($path);

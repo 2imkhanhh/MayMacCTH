@@ -7,20 +7,16 @@ document.addEventListener('DOMContentLoaded', () => {
     loadCategories();
     loadProducts();
 
-    // Nút thêm + sửa
     document.getElementById('btnAdd').onclick = () => openModal();
     document.getElementById('btnSearch').onclick = loadProducts;
     document.getElementById('searchName').addEventListener('keypress', e => e.key === 'Enter' && loadProducts());
 
-    // Thêm màu + ảnh
     document.getElementById('addColor').onclick = addColorField;
     document.getElementById('addImage').onclick = addImageField;
 
-    // Submit form
     document.getElementById('productForm').onsubmit = handleSubmit;
 });
 
-// ==================== LOAD DATA ====================
 async function loadCategories() {
     try {
         const res = await fetch(`${BASE_URL}/api/category/get_category.php`);
@@ -108,7 +104,6 @@ async function loadProducts() {
     }
 }
 
-// ==================== MODAL & FORM ====================
 function openModal(product = null) {
     currentEditId = product ? product.product_id : null;
     const modal = new bootstrap.Modal(document.getElementById('productModal'));
@@ -125,10 +120,9 @@ function openModal(product = null) {
         title.textContent = 'Sửa sản phẩm';
         form.name.value = product.name;
         form.category_id.value = product.category_id;
-        form.price.value = product.price || 0; // Giá chung
+        form.price.value = product.price || 0; 
         document.getElementById('isActiveCheckbox').checked = product.is_active == 1;
 
-        // Load màu
         if (product.colors && product.colors.length > 0) {
             product.colors.forEach(c => {
                 const sizesStr = c.sizes ? c.sizes.join(', ') : '';
@@ -138,7 +132,6 @@ function openModal(product = null) {
             addColorField();
         }
 
-        // Load ảnh
         if (product.images && product.images.length > 0) {
             product.images.forEach(img => {
                 addImageField(img.image || '', img.is_primary == 1, img.image_id);
@@ -209,7 +202,6 @@ function addImageField(imageUrl = '', isPrimary = false, imageId = null) {
     imageIndex++;
 }
 
-// ==================== SỬA & XÓA ====================
 async function editProduct(id) {
     try {
         const res = await fetch(`${BASE_URL}/api/product/get_product_by_id.php?id=${id}`);
@@ -237,15 +229,10 @@ async function deleteProduct(id) {
     }
 }
 
-// ==================== SUBMIT FORM ====================
 async function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(this);
     const id = currentEditId;
-
-    // Đảm bảo gửi price và description
-    // formData.append('price', this.price.value);
-    // formData.append('description', this.description.value);
 
     const url = id
         ? `${BASE_URL}/api/product/update_product.php?id=${id}`

@@ -5,8 +5,6 @@ class ReviewProduct
     private $table = "product_reviews";
     private $images_table = "product_review_images";
     private $links_table = "review_tag_links";
-
-    // Các thuộc tính chính
     public $review_id;
     public $product_id;
     public $customer_name;
@@ -29,8 +27,6 @@ class ReviewProduct
     {
         try {
             $this->conn->beginTransaction();
-
-            // 1. Insert đánh giá chính
             $query = "INSERT INTO {$this->table} 
                      (product_id, customer_name, phone, rating, size, color, content, created_at) 
                      VALUES (:product_id, :customer_name, :phone, :rating, :size, :color, :content, NOW())";
@@ -278,19 +274,16 @@ class ReviewProduct
         try {
             $this->conn->beginTransaction();
 
-            //Xóa liên kết tag
             $query1 = "DELETE FROM {$this->links_table} WHERE review_id = :id";
             $stmt1 = $this->conn->prepare($query1);
             $stmt1->bindParam(':id', $review_id, PDO::PARAM_INT);
             $stmt1->execute();
 
-            //Xóa ảnh trong bảng phụ
             $query2 = "DELETE FROM {$this->images_table} WHERE review_id = :id";
             $stmt2 = $this->conn->prepare($query2);
             $stmt2->bindParam(':id', $review_id, PDO::PARAM_INT);
             $stmt2->execute();
 
-            //Xóa đánh giá chính
             $query3 = "DELETE FROM {$this->table} WHERE review_id = :id";
             $stmt3 = $this->conn->prepare($query3);
             $stmt3->bindParam(':id', $review_id, PDO::PARAM_INT);

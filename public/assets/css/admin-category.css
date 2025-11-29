@@ -1,23 +1,44 @@
-/* ============================================================= */
-/*                ADMIN - QUẢN LÝ DANH MỤC                        */
-/* ============================================================= */
-
-#btnAdd {
-    background: linear-gradient(135deg, #174DAF, #003087);
+.btn-action {
+    flex: 1;
     border: none;
-    padding: 12px 28px;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
     font-weight: 600;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(23, 77, 175, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-#btnAdd:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(23, 77, 175, 0.4);
+.btn-edit {
+    background-color: #e7f1ff !important;
+    color: #174DAF !important;
 }
 
-/* Card danh mục */
+.btn-edit:hover {
+    background-color: #174DAF !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(23, 77, 175, 0.3);
+}
+
+.btn-delete {
+    background-color: #ffecec !important;
+    color: #e63946 !important;
+}
+
+.btn-delete:hover {
+    background-color: #e63946 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(230, 57, 70, 0.3);
+}
+
+.btn-action i {
+    font-size: 1.1em;
+}
+
 .category-card {
     background: #fff;
     border: none;
@@ -36,7 +57,6 @@
     box-shadow: 0 20px 40px rgba(23, 77, 175, 0.18);
 }
 
-/* Icon danh mục (tùy chọn màu ngẫu nhiên) */
 .category-icon {
     width: 70px;
     height: 70px;
@@ -50,7 +70,6 @@
     box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
 
-/* Màu ngẫu nhiên cho từng danh mục (có thể mở rộng) */
 .category-card:nth-child(6n+1) .category-icon { background: linear-gradient(135deg, #174DAF, #003087); }
 .category-card:nth-child(6n+2) .category-icon { background: linear-gradient(135deg, #28a745, #1e7e34); }
 .category-card:nth-child(6n+3) .category-icon { background: linear-gradient(135deg, #ffc107, #e0a800); }
@@ -163,7 +182,6 @@
 #categoryModal .btn-success {
     background: linear-gradient(135deg, #28a745, #1e7e34);
     border: none;
-    padding: 12px 30px;
     border-radius: 10px;
     font-weight: 600;
 }

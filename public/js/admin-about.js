@@ -1,6 +1,5 @@
 const BASE_URL = '/MayMacCTH';
 
-// Hàm giải mã HTML entities: &amp; → &, &quot; → ", &lt; → <, v.v.
 function decodeHtml(text) {
     const div = document.createElement('div');
     div.innerHTML = text || '';
@@ -20,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const file = e.target.files[0];
         const preview = document.getElementById('previewImage');
         if (file) {
-            preview.src = URL.createObjectURL(file); // ĐÃ SỬA LỖI createObjectObjectURL
+            preview.src = URL.createObjectURL(file); 
             preview.style.display = 'block';
         } else {
             preview.src = '';
@@ -38,12 +37,10 @@ async function loadAbout() {
         const container = document.getElementById('aboutList');
         container.innerHTML = '';
 
-        // Reset trạng thái các phần chính
         existingSections = { header: false, banner: false, footer: false };
 
         if (result.success && result.data?.length > 0) {
             result.data.forEach(item => {
-                // Đánh dấu các phần chính đã tồn tại
                 if (['header', 'banner', 'footer'].includes(item.section_type)) {
                     existingSections[item.section_type] = true;
                 }
@@ -89,7 +86,6 @@ async function loadAbout() {
     }
 }
 
-// Cập nhật trạng thái nút "Thêm mới"
 function updateAddButtonState() {
     const btn = document.getElementById('btnAdd');
     const allFilled = existingSections.header && existingSections.banner && existingSections.footer;
@@ -100,20 +96,17 @@ function updateAddButtonState() {
     btn.classList.toggle('btn-secondary', allFilled);
 }
 
-// Mở modal thêm mới
 function openModal() {
     document.getElementById('aboutForm').reset();
     document.getElementById('about_id').value = '';
     document.getElementById('previewImage').style.display = 'none';
 
-    // Tự động chọn loại còn thiếu (nếu có)
     const available = Object.keys(existingSections).find(key => !existingSections[key]);
     sectionTypeSelect.value = available || 'grid_item';
 
     new bootstrap.Modal(document.getElementById('aboutModal')).show();
 }
 
-// Sửa nội dung
 async function editItem(id) {
     try {
         const res = await fetch(`${BASE_URL}/api/about/get_about.php`);
@@ -142,14 +135,12 @@ async function editItem(id) {
     }
 }
 
-// Submit form (thêm hoặc sửa)
 document.getElementById('aboutForm').addEventListener('submit', async e => {
     e.preventDefault();
 
     const type = sectionTypeSelect.value;
     const id = document.getElementById('about_id').value;
 
-    // Không cho tạo mới nếu phần chính đã tồn tại
     if (!id && existingSections[type]) {
         alert(`Đã tồn tại phần "${type}" rồi! Chỉ được tạo 1 lần.`);
         return;
@@ -171,7 +162,7 @@ document.getElementById('aboutForm').addEventListener('submit', async e => {
 
         if (data.success) {
             bootstrap.Modal.getInstance(document.getElementById('aboutModal')).hide();
-            loadAbout(); // Reload danh sách
+            loadAbout(); 
         }
     } catch (err) {
         console.error(err);
@@ -179,7 +170,6 @@ document.getElementById('aboutForm').addEventListener('submit', async e => {
     }
 });
 
-// Xóa nội dung
 async function deleteItem(id) {
     if (!confirm('Bạn có chắc chắn muốn xóa nội dung này?\nHành động này không thể hoàn tác!')) return;
 

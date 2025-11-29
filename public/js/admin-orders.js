@@ -1,11 +1,9 @@
 const BASE_URL = '/MayMacCTH';
 let currentOrderId = null;
-let allOrders = []; // Lưu toàn bộ đơn hàng để tìm kiếm + lọc
+let allOrders = []; 
 
 document.addEventListener('DOMContentLoaded', () => {
     loadOrders();
-
-    // Filter trạng thái + Tìm kiếm
     document.getElementById('filterOrderStatus').addEventListener('change', filterAndSearch);
     document.getElementById('searchInput').addEventListener('input', filterAndSearch);
 });
@@ -72,7 +70,6 @@ function renderOrders(orders) {
     });
 }
 
-// Lọc + Tìm kiếm kết hợp
 function filterAndSearch() {
     const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
     const statusFilter = document.getElementById('filterOrderStatus').value;
@@ -89,7 +86,7 @@ function filterAndSearch() {
         filtered = filtered.filter(order => {
             const code = order.order_code.toLowerCase();
             const name = order.name.toLowerCase();
-            const phone = order.phone.replace(/\s/g, ''); // bỏ khoảng trắng trong sđt
+            const phone = order.phone.replace(/\s/g, ''); 
 
             return code.includes(searchTerm) ||
                    name.includes(searchTerm) ||
@@ -100,7 +97,6 @@ function filterAndSearch() {
     renderOrders(filtered);
 }
 
-// Định dạng trạng thái đơn hàng
 function formatOrderStatus(status) {
     const map = {
         pending: 'Chờ xác nhận',
@@ -111,7 +107,6 @@ function formatOrderStatus(status) {
     return map[status] || status;
 }
 
-// Xem chi tiết đơn hàng
 async function showOrderDetail(orderId) {
     currentOrderId = orderId;
 
@@ -129,7 +124,6 @@ async function showOrderDetail(orderId) {
 
         document.getElementById('modalOrderCode').textContent = o.order_code;
 
-        // Hàm tự động xác định trạng thái thanh toán
         const getAutoPaymentStatus = (status) => {
             return (status === 'completed' || status === 'cancelled') ? 'paid' : 'unpaid';
         };
@@ -211,19 +205,16 @@ async function showOrderDetail(orderId) {
             </div>
         `;
 
-        // Gán giá trị hiện tại
         const statusSelect = document.getElementById('statusSelect');
         const paymentSelect = document.getElementById('paymentStatusSelect');
 
         statusSelect.value = o.order_status;
         paymentSelect.value = getAutoPaymentStatus(o.order_status);
 
-        // Khi đổi trạng thái đơn → tự động đổi thanh toán
         statusSelect.addEventListener('change', function () {
             paymentSelect.value = getAutoPaymentStatus(this.value);
         });
 
-        // Mở modal
         new bootstrap.Modal(document.getElementById('orderDetailModal')).show();
 
     } catch (err) {
@@ -254,7 +245,7 @@ async function updateOrderStatus() {
         if (data.success) {
             alert('Cập nhật trạng thái thành công!');
             bootstrap.Modal.getInstance(document.getElementById('orderDetailModal')).hide();
-            loadOrders(); // Tải lại dữ liệu mới nhất
+            loadOrders(); 
         } else {
             alert(data.message || 'Cập nhật thất bại');
         }

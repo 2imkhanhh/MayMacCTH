@@ -12,7 +12,6 @@ class Contact {
         $this->conn = $db;
     }
 
-    // Lấy tất cả liên hệ
     public function getAll() {
         $query = "SELECT * FROM " . $this->table . " ORDER BY contact_id DESC";
         $stmt = $this->conn->prepare($query);
@@ -20,7 +19,6 @@ class Contact {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Lấy 1 liên hệ theo ID
     public function getById($id) {
         $query = "SELECT * FROM " . $this->table . " WHERE contact_id = :id LIMIT 1";
         $stmt = $this->conn->prepare($query);
@@ -29,7 +27,6 @@ class Contact {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Tạo mới
     public function create() {
         $query = "INSERT INTO " . $this->table . " 
                   (address, website, phone_number) 
@@ -49,7 +46,6 @@ class Contact {
         return false;
     }
 
-    // Cập nhật
     public function update($id) {
         $query = "UPDATE " . $this->table . " 
                   SET address = :address, 
@@ -68,7 +64,6 @@ class Contact {
         return $stmt->execute();
     }
 
-    // Xóa
     public function delete($id) {
         $query = "DELETE FROM " . $this->table . " WHERE contact_id = :id";
         $stmt = $this->conn->prepare($query);

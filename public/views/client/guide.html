@@ -66,7 +66,7 @@
         </div>
     </div>
 
-    <!-- Search Bar - CẬP NHẬT Ô TÌM KIẾM MỚI -->
+    <!-- Search Bar -->
     <div class="search-bar bg-white py-2">
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
@@ -435,8 +435,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', async function () {
             const BASE_URL = '/MayMacCTH';
-
-            // Mapping catalog → nhóm 1-5
             const catalogMap = {
                 'huong-dan-mua-hang': 1,
                 'huong-dan-chon-size': 2,
@@ -445,14 +443,12 @@
                 'faq': 5
             };
 
-            // LẤY DỮ LIỆU VÀ ĐỔ VÀO ĐÚNG Ô – GIỮ NGUYÊN 100% STYLE CŨ
             async function loadGuides() {
                 try {
                     const res = await fetch(`${BASE_URL}/api/guide/get_guide.php`);
                     const result = await res.json();
                     if (!result.success || !result.data) return;
 
-                    // Reset tất cả ô về trống trước khi đổ dữ liệu mới
                     document.querySelectorAll('.guide-content .card-title').forEach(el => el.textContent = '');
                     document.querySelectorAll('.guide-content .card-text').forEach(el => el.innerHTML = '');
 
@@ -460,13 +456,11 @@
                         const group = catalogMap[guide.catalog];
                         if (!group) return;
 
-                        // Tìm các ô trống trong nhóm này (tối đa 2 ô)
                         const slots = [
                             document.getElementById(`guide-content-${group}-1`),
                             document.getElementById(`guide-content-${group}-2`)
                         ].filter(Boolean);
 
-                        // Tìm ô đầu tiên còn trống
                         const emptySlot = slots.find(slot =>
                             !slot.querySelector('.card-title').textContent.trim()
                         );
@@ -483,11 +477,8 @@
                     console.error('Lỗi tải hướng dẫn:', err);
                 }
             }
-
-            // Tải dữ liệu ngay khi vào trang
             await loadGuides();
 
-            // ==================== GIỮ NGUYÊN TOÀN BỘ LOGIC HIỆN TẠI CỦA BẠN ====================
             const langButtons = document.querySelectorAll(".choose-lang");
             const currentFlag = document.getElementById("currentFlag");
             const currentLang = document.getElementById("currentLang");

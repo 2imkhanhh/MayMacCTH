@@ -19,12 +19,10 @@ class AccountController {
             return ['success' => false, 'message' => 'Tên đăng nhập không tồn tại'];
         }
 
-        // Kiểm tra mật khẩu
         if (!password_verify($password, $user['password'])) {
             return ['success' => false, 'message' => 'Mật khẩu sai'];
         }
 
-        // Đăng nhập thành công
         session_start();
         $_SESSION['admin_id'] = $user['id'] ?? 1;
         $_SESSION['admin_name'] = $user['name'];

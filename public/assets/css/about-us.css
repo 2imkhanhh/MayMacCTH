@@ -1,17 +1,16 @@
-/* General Styles for About Us Section */
 .about-us {
     margin-top: 0;
     padding: 0;
 }
 
 .title-section {
-    background-color: #f1f1f1; /* Màu xám nhạt giống trong ảnh */
+    background-color: #f1f1f1; 
     padding: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0; /* Loại bỏ margin để dính sát với menu */
-    width: 100%; /* Kéo dài background đến hết chiều rộng */
+    margin: 0; 
+    width: 100%;
     position: relative;
     left: 0;
     right: 0;
@@ -19,21 +18,21 @@
 
 .page-title {
     font-family: 'Archivo', sans-serif;
-    font-weight: 700; /* Bold */
-    font-size: 1.5rem; /* Kích thước nhỏ hơn so với h1 */
+    font-weight: 700; 
+    font-size: 1.5rem; 
     color: #333;
     margin: 0;
 }
 
 .breadcrumb-nav {
     font-size: 1rem;
-    color: #333; /* Màu đen cho "Trang chủ" */
+    color: #333; 
 }
 
 .breadcrumb-nav a {
-    color: #007bff; /* Màu xanh cho phần link */
+    color: #174DAF; 
     text-decoration: none;
-    margin-left: 0.5rem; /* Khoảng cách sau ">" */
+    margin-left: 0.5rem; 
 }
 
 .breadcrumb-nav a:hover {
@@ -41,55 +40,54 @@
 }
 
 .breadcrumb-nav span {
-    color: #333; /* Màu đen cho phần tĩnh */
+    color: #333; 
 }
 
-/* Điều chỉnh kích thước hình ảnh để khớp với card */
 .about-us .text-center img {
-    max-width: 100%; /* Chiều rộng bằng container cha */
-    height: auto; /* Tự động điều chỉnh chiều cao để giữ tỷ lệ */
+    max-width: 100%;
+    height: auto; 
     margin-bottom: 30px;
 }
 
 .about-card {
-    border: 1px solid #ddd; /* Viền mỏng */
-    border-radius: 8px; /* Góc bo tròn */
-    background-color: #EFF1FF; /* Màu background mới */
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    background-color: #EFF1FF; 
     transition: transform 0.3s;
     height: 100%;
 }
 
 .brand-card {
-    background-color: #EFF1FF; /* Màu background mới */
-    border: none; /* Loại bỏ viền */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng */
+    background-color: #EFF1FF; 
+    border: none; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .about-card .card-body {
-    padding: 1.5rem; /* Padding nhỏ hơn để gọn gàng */
+    padding: 1.5rem;
 }
 
 .brand-card .card-body {
-    padding: 2rem; /* Padding lớn hơn cho card "Câu chuyện thương hiệu" */
+    padding: 2rem; 
 }
 
 .about-card .card-title {
     font-family: 'Archivo', sans-serif;
-    font-weight: 700; /* Chữ đậm */
-    font-size: 1.25rem; /* Kích thước tiêu đề */
-    color: #333; /* Màu tiêu đề */
+    font-weight: 700; 
+    font-size: 1.25rem; 
+    color: #333; 
     margin-bottom: 1rem;
 }
 
 .brand-card .card-title {
-    font-size: 1.5rem; /* Tiêu đề lớn hơn cho "Câu chuyện thương hiệu" */
-    color: #333; /* Màu tiêu đề khác biệt */
+    font-size: 1.5rem; 
+    color: #333; 
 }
 
 .about-card .card-text {
     font-size: 1rem;
     color: #555;
-    line-height: 1.6; /* Khoảng cách dòng */
+    line-height: 1.6; 
 }
 
 /* fade-in/fade-out */
@@ -99,32 +97,28 @@
   transition: all 0.8s ease-out;
 }
 
-/* Khi phần tử hiện ra */
 .fade-element.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* Hover effect */
 .about-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Bóng khi hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
 }
 
 .brand-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Bóng đậm hơn cho card đặc biệt */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); 
 }
 
-/* Các style khác */
 .about-us .lead {
     font-size: 1.25rem;
     color: #666;
 }
 
-/* Thêm margin-bottom cho card "Cam kết chất lượng" */
 .brand-story-card:last-child {
-    margin-bottom: 5rem; /* Khoảng cách 5rem với footer, có thể điều chỉnh */
+    margin-bottom: 5rem; 
 }
 
 .about-us {
@@ -132,7 +126,6 @@
     overflow: hidden;
 }
 
-/* Hình nền mờ ở dưới */
 .about-us::before {
     content: "";
     position: absolute;
@@ -141,19 +134,17 @@
     width: 100%;
     height: 100%;
     background: url("/asset/images/background.png") no-repeat center center;
-    background-size: contain; /* hoặc 'cover' nếu muốn ảnh phủ kín */
-    opacity: 0.08; /* Độ mờ ảnh nền */
-    filter: blur(2px); /* Làm mờ nhẹ */
+    background-size: contain;
+    opacity: 0.08; 
+    filter: blur(2px); 
     z-index: 0;
 }
 
-/* Đảm bảo nội dung hiển thị trên nền */
 .about-us > * {
     position: relative;
     z-index: 1;
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
     .page-title {
         font-size: 1.2rem;
@@ -170,8 +161,8 @@
     }
 
     .about-us .text-center img {
-        max-width: 100%; /* Trên màn hình nhỏ, giữ chiều rộng tối đa */
-        height: auto; /* Tự động điều chỉnh chiều cao */
+        max-width: 100%; 
+        height: auto;
     }
 
     .brand-card .card-title {
@@ -195,6 +186,6 @@
     }
 
     .brand-story-card:last-child {
-        margin-bottom: 3rem; /* Giảm khoảng cách trên màn hình nhỏ */
+        margin-bottom: 3rem; 
     }
 }

@@ -69,7 +69,6 @@ class About {
     }
 
     public function delete($id) {
-        // Xóa ảnh cũ nếu có
         $old = $this->getById($id);
         if ($old && $old['image']) {
             $path = __DIR__ . '/../../public/assets/images/upload/' . $old['image'];

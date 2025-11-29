@@ -1,6 +1,5 @@
 const BASE_URL = '/MayMacCTH';
 
-// Khi DOM load xong
 document.addEventListener('DOMContentLoaded', () => {
     loadBanners();
 
@@ -13,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Preview ảnh thêm Banner
     const addImageInput = document.querySelector('#addBannerForm input[name="image"]');
     const addPreviewImg = document.createElement('img');
     addPreviewImg.id = 'addPreviewImg';
@@ -38,14 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Submit thêm banner
     const addForm = document.getElementById('addBannerForm');
     if (addForm) {
         addForm.addEventListener('submit', addBanner);
     }
 });
 
-// ==================== Load danh sách banner ====================
 async function loadBanners() {
     try {
         const res = await fetch(`${BASE_URL}/api/banner/get_banner.php`);
@@ -87,7 +83,6 @@ async function loadBanners() {
                 grid.appendChild(col);
             });
 
-            // Gắn sự kiện
             document.querySelectorAll('.edit-banner-btn').forEach(btn => {
                 btn.addEventListener('click', () => editBanner(btn.dataset.id));
             });
@@ -101,7 +96,6 @@ async function loadBanners() {
                     );
 
                     if (confirmed) {
-                        // Gọi xóa thật
                         try {
                             const res = await fetch(`${BASE_URL}/api/banner/delete_banner.php?id=${btn.dataset.id}`, {
                                 method: 'DELETE'
@@ -131,7 +125,6 @@ async function loadBanners() {
     }
 }
 
-// ==================== Thêm Banner ====================
 async function addBanner(e) {
     e.preventDefault();
     const form = document.getElementById('addBannerForm');
@@ -160,7 +153,6 @@ async function addBanner(e) {
     }
 }
 
-// ==================== Sửa Banner ====================
 async function editBanner(id) {
     try {
         const res = await fetch(`${BASE_URL}/api/banner/get_banner.php`);
@@ -185,7 +177,6 @@ async function editBanner(id) {
             currentImg.style.display = 'block';
         }
 
-        // Gỡ listener cũ (tránh trùng)
         const form = document.getElementById('editBannerForm');
         form.onsubmit = async (e) => {
             e.preventDefault();
@@ -217,7 +208,6 @@ async function editBanner(id) {
     }
 }
 
-// ==================== Xóa Banner (dùng modal confirm đẹp) ====================
 async function deleteBanner(id, title = 'banner này') {
     const confirmed = await showConfirm(
         "Xóa banner?",
@@ -244,7 +234,6 @@ async function deleteBanner(id, title = 'banner này') {
     }
 }
 
-// ==================== Các hàm hỗ trợ ====================
 function clearAddForm() {
     const form = document.getElementById('addBannerForm');
     if (form) form.reset();
@@ -261,10 +250,8 @@ function showToast(message, type = 'success') {
     const icon = document.getElementById('toastIcon');
     const msg = document.getElementById('toastMessage');
 
-    // Xóa class cũ
     toast.classList.remove('success', 'error', 'show');
 
-    // Set nội dung + icon
     msg.textContent = message;
 
     if (type === 'success') {
@@ -275,7 +262,6 @@ function showToast(message, type = 'success') {
         icon.className = 'bx bxs-error';
     }
 
-    // Hiển thị
     setTimeout(() => toast.classList.add('show'), 100);
     setTimeout(() => {
         toast.classList.remove('show');
@@ -287,7 +273,6 @@ function showConfirm(title = "Xóa banner?", message = "Bạn có chắc chắn 
         const confirmBtn = document.getElementById('confirmBtn');
         const cancelBtn = document.getElementById('cancelBtn');
 
-        // Set nội dung
         document.querySelector('.confirm-box h4').textContent = title;
         document.querySelector('.confirm-box p').innerHTML = message;
 

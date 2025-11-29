@@ -75,16 +75,14 @@ class BannerController {
             mkdir($uploadDir, 0755, true);
         }
 
-        $imageName = $banner['image']; // giữ ảnh cũ nếu không upload mới
+        $imageName = $banner['image']; 
 
         if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
-            // Xóa ảnh cũ
             $oldPath = $uploadDir . $banner['image'];
             if (file_exists($oldPath)) {
                 @unlink($oldPath);
             }
 
-            // Upload ảnh mới
             $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
             $imageName = 'banner_' . time() . '_' . rand(1000,9999) . '.' . $ext;
             $uploadPath = $uploadDir . $imageName;

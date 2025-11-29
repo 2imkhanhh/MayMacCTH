@@ -29,7 +29,6 @@ class News
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Lấy 1 bài theo ID
     public function getById($id)
     {
         $query = "SELECT a.*, c.content 
@@ -42,13 +41,11 @@ class News
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Tạo bài viết
     public function create()
     {
         $this->conn->beginTransaction();
 
         try {
-            // 1. Insert vào news_articles
             $query = "INSERT INTO {$this->table} 
                      SET title = :title, slug = :slug, thumbnail = :thumbnail, 
                          author = :author, is_published = :is_published";
@@ -67,7 +64,6 @@ class News
             if (!$stmt->execute()) return false;
             $article_id = $this->conn->lastInsertId();
 
-            // 2. Insert nội dung JSON
             $query2 = "INSERT INTO {$this->content_table} (article_id, content) VALUES (:id, :content)";
             $stmt2 = $this->conn->prepare($query2);
             $stmt2->bindParam(':id', $article_id, PDO::PARAM_INT);
@@ -87,12 +83,10 @@ class News
         }
     }
 
-    // Cập nhật bài viết
     public function update()
     {
         $this->conn->beginTransaction();
         try {
-            // === KIỂM TRA SLUG TRÙNG (NGOẠI TRỪ CHÍNH NÓ) ===
             $stmtCheck = $this->conn->prepare("SELECT id FROM {$this->table} WHERE slug = :slug AND id != :id");
             $stmtCheck->execute([
                 ':slug' => $this->slug,
@@ -102,9 +96,7 @@ class News
             if ($stmtCheck->rowCount() > 0) {
                 throw new Exception("Slug đã được sử dụng bởi bài viết khác!");
             }
-            // ===============================================
 
-            // Cập nhật bảng news_articles
             $query = "UPDATE {$this->table} 
                  SET title = :title, 
                      slug = :slug, 
@@ -115,12 +107,10 @@ class News
 
             $stmt = $this->conn->prepare($query);
 
-            // Làm sạch dữ liệu
             $this->title  = htmlspecialchars(strip_tags($this->title));
             $this->slug   = htmlspecialchars(strip_tags($this->slug));
             $this->author = htmlspecialchars(strip_tags($this->author));
 
-            // Bind params
             $stmt->bindParam(':title', $this->title);
             $stmt->bindParam(':slug', $this->slug);
             $stmt->bindParam(':thumbnail', $this->thumbnail);
@@ -132,7 +122,6 @@ class News
                 throw new Exception("Cập nhật bài viết thất bại");
             }
 
-            // Cập nhật nội dung (bảng news_contents)
             $query2 = "REPLACE INTO {$this->content_table} (article_id, content) VALUES (:id, :content)";
             $stmt2 = $this->conn->prepare($query2);
             $stmt2->bindParam(':id', $this->id, PDO::PARAM_INT);
@@ -147,11 +136,10 @@ class News
         } catch (Exception $e) {
             $this->conn->rollBack();
             error_log("Lỗi update bài viết ID {$this->id}: " . $e->getMessage());
-            return false; // Controller sẽ nhận false và báo lỗi
+            return false; 
         }
     }
 
-    // Xóa bài viết
     public function delete($id)
     {
         $this->conn->beginTransaction();

@@ -1,10 +1,8 @@
-// ĐƯỜNG DẪN CHUẨN CHO DỰ ÁN CỦA BẠN
 const PUBLIC_URL = '/MayMacCTH/';          
 const API_BASE   = '/MayMacCTH/api/news';        
 
 let editor = null;
 
-// Khởi tạo Editor.js
 async function initEditor(data = { blocks: [] }) {
     if (editor && typeof editor.destroy === 'function') {
         await editor.destroy();
@@ -48,7 +46,6 @@ async function initEditor(data = { blocks: [] }) {
     });
 }
 
-// Load danh sách bài viết
 async function loadNews() {
     try {
         const res = await fetch(`${API_BASE}/get_news.php`);
@@ -88,7 +85,6 @@ async function loadNews() {
     }
 }
 
-// Mở modal
 async function openModal(id = null) {
     const modal = new bootstrap.Modal(document.getElementById('newsModal'));
     document.getElementById('newsForm').reset();
@@ -100,7 +96,6 @@ async function openModal(id = null) {
     document.getElementById('modalTitle').textContent = id ? 'Sửa bài viết' : 'Viết bài mới';
     if (id) await loadArticleForEdit(id);
 
-    // Preview thumbnail
     const thumbnailInput = document.querySelector('[name="thumbnail"]');
     thumbnailInput.replaceWith(thumbnailInput.cloneNode(true));
     document.querySelector('[name="thumbnail"]').addEventListener('change', e => {
@@ -118,7 +113,6 @@ async function openModal(id = null) {
     modal.show();
 }
 
-// Load bài để sửa
 async function loadArticleForEdit(id) {
     try {
         const res = await fetch(`${API_BASE}/get_news.php?id=${id}`);
@@ -149,7 +143,6 @@ async function loadArticleForEdit(id) {
     }
 }
 
-// Upload ảnh trong editor
 async function uploadImage(file) {
     const formData = new FormData();
     formData.append('image', file);
@@ -160,7 +153,6 @@ async function uploadImage(file) {
     return await res.json();
 }
 
-// Submit form
 document.getElementById('newsForm').addEventListener('submit', async function (e) {
     e.preventDefault();
     if (!editor) return alert('Editor chưa sẵn sàng!');
@@ -190,7 +182,6 @@ document.getElementById('newsForm').addEventListener('submit', async function (e
     }
 });
 
-// Các hàm nhanh
 function editNews(id) { openModal(id); }
 
 async function deleteNews(id) {
@@ -204,7 +195,6 @@ async function deleteNews(id) {
     }
 }
 
-// Khởi chạy
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btnAdd').addEventListener('click', () => openModal());
     loadNews();

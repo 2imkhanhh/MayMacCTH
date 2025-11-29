@@ -28,10 +28,8 @@ class Order
         $this->conn->beginTransaction();
 
         try {
-            // 1. Tạo mã đơn hàng
             $order_code = $this->generateOrderCode();
 
-            // 2. Insert vào bảng orders
             $query = "INSERT INTO {$this->table_orders} 
                       (order_code, name, phone, address, province, district, ward, note, 
                        payment_method, subtotal, shipping_fee, total, 
@@ -58,7 +56,6 @@ class Order
             $stmt->execute();
             $order_id = $this->conn->lastInsertId();
 
-            // 3. Insert chi tiết đơn hàng
             $query_item = "INSERT INTO order_items 
                (order_id, product_id, color_name, size, quantity, unit_price, total_price)
                VALUES (:order_id, :product_id, :color_name, :size, :quantity, :unit_price, :total_price)";

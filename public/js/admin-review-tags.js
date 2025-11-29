@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadTags();
     loadAllReviews();
 
-    // --- Thêm Tag ---
     document.getElementById('btnAdd')?.addEventListener('click', () => {
         document.getElementById('tagForm').reset();
         document.getElementById('review_tag_id').value = '';
@@ -17,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tagModalInstance.show();
     });
 
-    // --- Submit Tag ---
     document.getElementById('tagForm')?.addEventListener('submit', async e => {
         e.preventDefault();
         const id = document.getElementById('review_tag_id').value;
@@ -36,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Filter Events ---
     document.getElementById('btnFilterReviews')?.addEventListener('click', applyReviewFilter);
     document.getElementById('btnResetFilter')?.addEventListener('click', () => {
         document.getElementById('filterRating').value = '';
@@ -44,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// ---------------- TAG GRID ----------------
 async function loadTags() {
     try {
         const res = await fetch(`${BASE_URL}/api/review_tags/get_review_tags.php`);
@@ -109,7 +105,6 @@ async function deleteTag(id) {
     if (data.success) loadTags();
 }
 
-// ---------------- REVIEW TABLE ----------------
 async function loadAllReviews() {
     try {
         const res = await fetch(`${BASE_URL}/api/review_products/get_all_reviews.php`);
@@ -158,7 +153,6 @@ function renderReviewTable(data) {
     });
 }
 
-// ---------------- REVIEW FILTER ----------------
 function applyReviewFilter() {
     const rating = document.getElementById('filterRating').value;
 
@@ -170,7 +164,6 @@ function applyReviewFilter() {
     renderReviewTable(filtered);
 }
 
-// Reset filter
 document.getElementById('btnResetFilter')?.addEventListener('click', () => {
     const ratingEl = document.getElementById('filterRating');
     if (ratingEl) ratingEl.value = '';
@@ -194,7 +187,7 @@ async function deleteReview(reviewId) {
 
         if (data.success) {
             alert('Xóa đánh giá thành công!');
-            loadAllReviews(); // Reload lại danh sách
+            loadAllReviews(); 
         } else {
             alert(data.message || 'Xóa thất bại!');
         }

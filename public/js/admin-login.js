@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify({ username, password })
             });
 
-            // Quan trọng: kiểm tra nếu không phải JSON thì báo lỗi
             const text = await response.text();
             let result;
             try {

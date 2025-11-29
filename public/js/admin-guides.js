@@ -2,7 +2,6 @@ const BASE_URL = '/MayMacCTH';
 let modalInstance = null;
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Đảm bảo modal đã tồn tại trước khi khởi tạo
     const modalElement = document.getElementById('guideModal');
     if (!modalElement) {
         console.error('Không tìm thấy #guideModal');
@@ -12,13 +11,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     loadGuides();
 
-    // ==================== NÚT THÊM MỚI (chỉ gắn sau khi chắc chắn có phần tử) ====================
     document.querySelectorAll('.add-guide-btn').forEach(btn => {
         btn.addEventListener('click', function () {
             const catalog = this.dataset.catalog;
             const container = document.querySelector(`.guide-list[data-catalog="${catalog}"]`);
-            
-            // Đếm số card hiện tại trong danh mục này
             const currentCount = container.children.length;
 
             if (currentCount >= 2) {
@@ -42,8 +38,6 @@ document.addEventListener('DOMContentLoaded', function () {
             modalInstance.show();
         });
     });
-
-    // ==================== LƯU FORM ====================
     const guideForm = document.getElementById('guideForm');
     if (guideForm) {
         guideForm.addEventListener('submit', async function (e) {
@@ -71,20 +65,16 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
-    // ==================== CHUYỂN TAB → TẢI LẠI ====================
     document.querySelectorAll('#guideTabs .nav-link').forEach(tab => {
         tab.addEventListener('shown.bs.tab', loadGuides);
     });
 });
 
-// ==================== LOAD DANH SÁCH ====================
 async function loadGuides() {
     try {
         const res = await fetch(`${BASE_URL}/api/guide/get_guide.php`);
         const result = await res.json();
 
-        // Xóa nội dung cũ
         document.querySelectorAll('.guide-list').forEach(list => list.innerHTML = '');
 
         if (!result.success || !result.data || result.data.length === 0) {
@@ -130,7 +120,6 @@ async function loadGuides() {
     }
 }
 
-// ==================== SỬA ====================
 async function editGuide(id) {
     try {
         const res = await fetch(`${BASE_URL}/api/guide/get_guide.php`);
@@ -161,7 +150,6 @@ async function editGuide(id) {
     }
 }
 
-// ==================== XÓA ====================
 async function deleteGuide(id) {
     if (!confirm('Bạn có chắc chắn muốn xóa hướng dẫn này không?')) return;
 
