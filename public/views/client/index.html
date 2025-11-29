@@ -367,15 +367,19 @@
                     <div class="footer-contact-btns mt-3">
                         <a href="https://zalo.me/078315798" class="contact-card">
                             <div class="contact-icon"><img src="../../assets/images/zalo.png" alt="Zalo"></div>
-                            <div class="contact-text"><span class="contact-label">TƯ VẤN QUA</span><span class="contact-value">ZALO</span></div>
+                            <div class="contact-text"><span class="contact-label">TƯ VẤN QUA</span><span
+                                    class="contact-value">ZALO</span></div>
                         </a>
                         <a href="tel:+078315798" class="contact-card">
                             <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Hotline"></div>
-                            <div class="contact-text"><span class="contact-label">HOTLINE</span><span class="contact-value">0783 157 98</span></div>
+                            <div class="contact-text"><span class="contact-label">HOTLINE</span><span
+                                    class="contact-value">0783 157 98</span></div>
                         </a>
                         <a href="tel:+078315798" class="contact-card">
-                            <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Tại cửa hàng"></div>
-                            <div class="contact-text"><span class="contact-label">TẠI CỬA HÀNG</span><span class="contact-value">078315798</span></div>
+                            <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Tại cửa hàng">
+                            </div>
+                            <div class="contact-text"><span class="contact-label">TẠI CỬA HÀNG</span><span
+                                    class="contact-value">078315798</span></div>
                         </a>
                     </div>
                 </div>
@@ -518,7 +522,7 @@
             async function loadHomeProducts() {
                 try {
                     const res = await fetch('/MayMacCTH/api/product/get_product.php');
-                    
+
                     if (!res.ok) {
                         throw new Error(`HTTP ${res.status}`);
                     }
@@ -592,13 +596,60 @@
 
             // Gọi load ngay khi trang mở
             loadHomeProducts();
+
+            const dropdownMenu = document.querySelector('.dropdown-menu-custom');
+
+            if (!dropdownMenu) return;
+
+            dropdownMenu.innerHTML = '';
+
+            try {
+                const response = await fetch('/MayMacCTH/api/category/get_category.php?t=' + Date.now());
+
+                if (!response.ok) {
+                    throw new Error('Lỗi mạng: ' + response.status);
+                }
+
+                const result = await response.json();
+
+                if (!result.success || !Array.isArray(result.data) || result.data.length === 0) {
+                    dropdownMenu.innerHTML = '<li><a href="#" class="dropdown-item text-muted">Chưa có danh mục</a></li>';
+                    return;
+                }
+
+                const activeCategories = result.data.filter(cat =>
+                    cat.is_active === undefined || cat.is_active == 1 || cat.is_active === '1'
+                );
+
+                if (activeCategories.length === 0) {
+                    dropdownMenu.innerHTML = '<li><a href="#" class="dropdown-item text-muted">Không có danh mục nào hiển thị</a></li>';
+                    return;
+                }
+
+                activeCategories.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+
+                activeCategories.forEach(category => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+
+                    a.href = `/MayMacCTH/public/views/client/products.html?category=${category.category_id}`;
+                    a.textContent = category.name.trim();
+                    a.className = 'dropdown-item';
+
+                    li.appendChild(a);
+                    dropdownMenu.appendChild(li);
+                });
+            } catch (err) {
+                console.error('Lỗi load danh mục:', err);
+                dropdownMenu.innerHTML = '<li><a href="#" class="dropdown-item text-danger">Lỗi tải danh mục</a></li>';
+            }
         });
 
         const BASE_URL = '/MayMacCTH';
         document.addEventListener('DOMContentLoaded', async () => {
             const addressEl = document.getElementById('footerAddress');
             const websiteEl = document.getElementById('footerWebsite');
-            const phoneEl   = document.getElementById('footerPhone');
+            const phoneEl = document.getElementById('footerPhone');
 
             if (!addressEl && !websiteEl && !phoneEl) return;
 

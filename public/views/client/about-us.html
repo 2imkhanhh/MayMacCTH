@@ -347,7 +347,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/script.js"></script>
     <script>
-        // Hàm giải mã HTML entities ( &amp; → &, &quot; → ", v.v. )
         function decodeHtml(text) {
             const div = document.createElement('div');
             div.innerHTML = text || '';
@@ -356,7 +355,6 @@
 
         document.addEventListener('DOMContentLoaded', async () => {
             try {
-                // Đường dẫn chính xác từ public/views/client/ → ra thư mục gốc
                 const res = await fetch('../../../api/about/get_about.php');
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
@@ -368,13 +366,11 @@
 
                 const data = result.data;
 
-                // Lấy từng phần
                 const bannerItem = data.find(i => i.section_type === 'banner');
                 const headerItem = data.find(i => i.section_type === 'header');
                 const footerItem = data.find(i => i.section_type === 'footer');
                 const gridItems = data.filter(i => i.section_type === 'grid_item'); 
 
-                // 1. BANNER → Ảnh đội ngũ (phần đầu trang)
                 if (bannerItem?.image) {
                     const img = document.querySelector('#bannerImageSection img');
                     if (img) {
@@ -383,14 +379,12 @@
                     }
                 }
 
-                // 2. HEADER → Câu chuyện thương hiệu
                 if (headerItem) {
                     const el = document.getElementById('headerStorySection');
                     el.querySelector('.card-title').textContent = decodeHtml(headerItem.title) || 'CÂU CHUYỆN THƯƠNG HIỆU';
                     el.querySelector('.card-text').textContent = decodeHtml(headerItem.content || '');
                 }
 
-                // 3. GRID ITEM 
                 gridItems.forEach((item, index) => {
                     const col = document.querySelector(`[data-grid="${index + 1}"]`);
                     if (!col) return; 
@@ -398,7 +392,6 @@
                     col.querySelector('.card-title').textContent = decodeHtml(item.title || 'Tiêu đề');
                     col.querySelector('.card-text').textContent = decodeHtml(item.content || '');
 
-                    // Nếu card có ảnh
                     if (item.image) {
                         let img = col.querySelector('img');
                         if (!img) {
@@ -412,14 +405,12 @@
                     }
                 });
 
-                // 4. FOOTER → Cam kết cuối trang
                 if (footerItem) {
                     const el = document.getElementById('footerSection');
                     el.querySelector('.card-title').textContent = decodeHtml(footerItem.title) || 'CAM KẾT CỦA CTH';
                     el.querySelector('.card-text').textContent = decodeHtml(footerItem.content || '');
                 }
 
-                // Hiệu ứng fade khi scroll
                 const observer = new IntersectionObserver(entries => {
                     entries.forEach(entry => {
                         entry.target.classList.toggle('visible', entry.isIntersecting);
@@ -430,8 +421,6 @@
 
             } catch (err) {
                 console.error('Lỗi tải trang Giới thiệu:', err);
-                // Có thể hiện thông báo nhẹ nhàng cho người dùng nếu muốn
-                // document.querySelector('.container').innerHTML += '<p class="text-danger text-center">Tạm thời không tải được nội dung.</p>';
             }
         });
 
@@ -470,6 +459,52 @@
                 }
             } catch (err) {
                 console.error('Lỗi load footer contact:', err);
+            }
+            const dropdownMenu = document.querySelector('.dropdown-menu-custom');
+
+            if (!dropdownMenu) return;
+
+            dropdownMenu.innerHTML = '';
+
+            try {
+                const response = await fetch('/MayMacCTH/api/category/get_category.php?t=' + Date.now());
+
+                if (!response.ok) {
+                    throw new Error('Lỗi mạng: ' + response.status);
+                }
+
+                const result = await response.json();
+
+                if (!result.success || !Array.isArray(result.data) || result.data.length === 0) {
+                    dropdownMenu.innerHTML = '<li><a href="#" class="dropdown-item text-muted">Chưa có danh mục</a></li>';
+                    return;
+                }
+
+                const activeCategories = result.data.filter(cat =>
+                    cat.is_active === undefined || cat.is_active == 1 || cat.is_active === '1'
+                );
+
+                if (activeCategories.length === 0) {
+                    dropdownMenu.innerHTML = '<li><a href="#" class="dropdown-item text-muted">Không có danh mục nào hiển thị</a></li>';
+                    return;
+                }
+
+                activeCategories.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+
+                activeCategories.forEach(category => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+
+                    a.href = `/MayMacCTH/public/views/client/products.html?category=${category.category_id}`;
+                    a.textContent = category.name.trim();
+                    a.className = 'dropdown-item';
+
+                    li.appendChild(a);
+                    dropdownMenu.appendChild(li);
+                });
+            } catch (err) {
+                console.error('Lỗi load danh mục:', err);
+                dropdownMenu.innerHTML = '<li><a href="#" class="dropdown-item text-danger">Lỗi tải danh mục</a></li>';
             }
         });
     </script>

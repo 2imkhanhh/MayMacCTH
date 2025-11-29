@@ -370,6 +370,52 @@
                 document.getElementById('contactWebsite').textContent = 'Không tải được';
                 document.getElementById('contactPhone').textContent = 'Không tải được';
             }
+            const dropdownMenu = document.querySelector('.dropdown-menu-custom');
+
+            if (!dropdownMenu) return;
+
+            dropdownMenu.innerHTML = '';
+
+            try {
+                const response = await fetch('/MayMacCTH/api/category/get_category.php?t=' + Date.now());
+
+                if (!response.ok) {
+                    throw new Error('Lỗi mạng: ' + response.status);
+                }
+
+                const result = await response.json();
+
+                if (!result.success || !Array.isArray(result.data) || result.data.length === 0) {
+                    dropdownMenu.innerHTML = '<li><a href="#" class="dropdown-item text-muted">Chưa có danh mục</a></li>';
+                    return;
+                }
+
+                const activeCategories = result.data.filter(cat =>
+                    cat.is_active === undefined || cat.is_active == 1 || cat.is_active === '1'
+                );
+
+                if (activeCategories.length === 0) {
+                    dropdownMenu.innerHTML = '<li><a href="#" class="dropdown-item text-muted">Không có danh mục nào hiển thị</a></li>';
+                    return;
+                }
+
+                activeCategories.sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+
+                activeCategories.forEach(category => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+
+                    a.href = `/MayMacCTH/public/views/client/products.html?category=${category.category_id}`;
+                    a.textContent = category.name.trim();
+                    a.className = 'dropdown-item';
+
+                    li.appendChild(a);
+                    dropdownMenu.appendChild(li);
+                });
+            } catch (err) {
+                console.error('Lỗi load danh mục:', err);
+                dropdownMenu.innerHTML = '<li><a href="#" class="dropdown-item text-danger">Lỗi tải danh mục</a></li>';
+            }
         });
 
         document.addEventListener('DOMContentLoaded', async () => {

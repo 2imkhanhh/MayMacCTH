@@ -179,7 +179,7 @@ document.getElementById('btnResetFilter')?.addEventListener('click', () => {
 });
 
 async function deleteReview(reviewId) {
-    if (!confirm('Bạn có CHẮC CHẮN muốn xóa vĩnh viễn đánh giá này?\n\nHành động này KHÔNG THỂ hoàn tác!')) {
+    if (!confirm('Xoá đánh giá')) {
         return;
     }
 

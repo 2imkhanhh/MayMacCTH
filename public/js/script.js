@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", async function () {
   const BASE_URL = "/MayMacCTH";
 
-  // Kiểm tra có footer không (tránh lỗi ở trang admin)
   const addressEl = document.getElementById("footerAddress");
   const websiteEl = document.getElementById("footerWebsite");
   const phoneEl = document.getElementById("footerPhone");
@@ -69,12 +68,10 @@ document.addEventListener("DOMContentLoaded", async function () {
       if (data.success && data.data && data.data.length > 0) {
         const c = data.data[0];
 
-        // Địa chỉ
         if (addressEl) {
           addressEl.textContent = c.address || "Chưa cập nhật địa chỉ";
         }
 
-        // Website (tự động thêm link, giữ thẳng hàng)
         if (websiteEl) {
           if (c.website && c.website.trim()) {
             const url = c.website.match(/^https?:\/\//i) ? c.website : "https://" + c.website;
@@ -84,14 +81,12 @@ document.addEventListener("DOMContentLoaded", async function () {
           }
         }
 
-        // Số điện thoại
         if (phoneEl) {
           phoneEl.textContent = c.phone_number || "Chưa cập nhật số điện thoại";
         }
       }
     } catch (err) {
       console.error("Lỗi load thông tin liên hệ:", err);
-      // Vẫn hiển thị đẹp dù lỗi
       if (addressEl) addressEl.textContent = "Không tải được";
       if (websiteEl) websiteEl.textContent = "Không tải được";
       if (phoneEl) phoneEl.textContent = "Không tải được";
