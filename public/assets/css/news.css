@@ -122,7 +122,6 @@
     scale: 1 !important;
 }
 
-/* Kể cả khi hover vào khung cha (.news-card), ảnh vẫn phải đứng yên */
 .news-card:hover .card-img-top,
 .news-card:hover img {
     transform: none !important;
@@ -131,16 +130,14 @@
     filter: none !important;
 }
 
-/* 2. Xử lý tiêu đề: Màu đen mặc định, hover ra màu xanh */
 .news-title-link {
-    color: #333 !important; /* Màu đen (luôn ưu tiên) */
+    color: #333 !important; 
     text-decoration: none;
     transition: color 0.3s ease;
-    display: block; /* Đảm bảo nhận full kích thước dòng */
+    display: block; 
 }
 
-/* Chỉ đổi màu khi chuột chạm đúng vào chữ tiêu đề */
 .news-title-link:hover {
-    color: #174DAF !important; /* Màu xanh */
+    color: #174DAF !important; 
     text-decoration: none;
 }
