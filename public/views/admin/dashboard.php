@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once 'auth_middleware.php';  
+
 if (!isset($_SESSION['admin_logged_in'])) {
     header('Location: login.html');
     exit;

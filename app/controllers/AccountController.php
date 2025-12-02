@@ -23,10 +23,10 @@ class AccountController {
             return ['success' => false, 'message' => 'Mật khẩu sai'];
         }
 
-        session_start();
         $_SESSION['admin_id'] = $user['id'] ?? 1;
         $_SESSION['admin_name'] = $user['name'];
         $_SESSION['admin_logged_in'] = true;
+        $_SESSION['last_activity'] = time();
 
         return [
             'success' => true,

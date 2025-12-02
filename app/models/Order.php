@@ -133,10 +133,18 @@ class Order
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
-            $this->name = $row['name']; 
+            $this->name = $row['name'];
             return true;
         }
 
         return false;
+    }
+    public function countPendingOrders()
+    {
+        $query = "SELECT COUNT(*) as total FROM {$this->table_orders} WHERE order_status = 'pending'";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int)$row['total'];
     }
 }

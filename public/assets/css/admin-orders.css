@@ -10,6 +10,11 @@
 .badge-cod { background:#ffc107; color:#000; }
 .badge-bank { background:#17a2b8; color:#fff; }
 
+#pendingOrderCount:empty,
+#pendingOrderCount[data-count="0"] {
+    display: none !important;
+}
+
 @media (max-width: 768px) {
     .table thead { display:none; }
     .table tbody tr { display:block; margin-bottom:1rem; border:1px solid #dee2e6; border-radius:8px; padding:1rem; }
