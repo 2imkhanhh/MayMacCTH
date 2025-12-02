@@ -1,4 +1,3 @@
-// public/js/admin-login.js
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('loginForm');
     const btnLogin = document.getElementById('btnLogin');
@@ -8,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     form.addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        const username = document.getElementById('username').value.trim(); // có thể là name
+        const username = document.getElementById('username').value.trim(); 
         const password = document.getElementById('password').value;
 
         if (!username || !password) {

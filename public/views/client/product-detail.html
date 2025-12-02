@@ -909,35 +909,26 @@
                         uniqueKey: `${p.product_id}-${colorName}-${size}`
                     };
 
-                    // Lấy giỏ hàng hiện tại từ localStorage
                     let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-                    // Kiểm tra sản phẩm (cùng id + màu + size) đã có chưa
                     const existingIndex = cart.findIndex(item => item.uniqueKey === cartItem.uniqueKey);
 
                     if (existingIndex !== -1) {
-                        // Nếu đã có → tăng số lượng
                         cart[existingIndex].quantity += quantity;
                         showToast(`Đã cập nhật số lượng: ${p.name} (${colorName}, ${size})`, 'success');
                     } else {
-                        // Nếu chưa có → thêm mới
                         cart.push(cartItem);
                         showToast(`Đã thêm vào giỏ hàng: ${p.name}`, 'success');
                     }
 
-                    // Lưu lại vào localStorage
                     localStorage.setItem('cart', JSON.stringify(cart));
-
-                    // Optional: Cập nhật số lượng giỏ hàng trên header (nếu bạn có icon giỏ hàng)
                     updateCartCount();
                 });
                 document.getElementById('orderBtn')?.addEventListener('click', function () {
-                    // Lấy thông tin đã chọn
                     const selectedColorBtn = document.querySelector('#colorSwatches .btn.active');
                     const selectedSizeBtn = document.querySelector('#sizeButtons .btn-size.active');
                     const quantity = parseInt(document.getElementById('quantityInput').value) || 1;
 
-                    // Kiểm tra bắt buộc chọn màu & size
                     if (p.colors && p.colors.length && !selectedColorBtn) {
                         showToast('Vui lòng chọn màu sắc!', 'error');
                         return;
@@ -952,7 +943,6 @@
                     const price = parseInt(p.price || 0);
                     const image = document.getElementById('main-product-image').src.split('/').pop();
 
-                    // Tạo object sản phẩm
                     const buyNowItem = {
                         id: p.product_id,
                         name: p.name,
@@ -964,10 +954,7 @@
                         uniqueKey: `${p.product_id}-${colorName || 'no-color'}-${size}`
                     };
 
-                    // XÓA GIỎ HÀNG CŨ → CHỈ GIỮ RIÊNG SẢN PHẨM NÀY
                     localStorage.setItem('cart', JSON.stringify([buyNowItem]));
-
-                    // CHUYỂN NGAY QUA TRANG ĐẶT HÀNG
                     window.location.href = '../client/order.html';
                 });
                 document.querySelector('.size-guide')?.addEventListener('click', e => {
@@ -1020,7 +1007,6 @@
                 const stars = document.querySelectorAll('#ratingStars i');
                 let selectedRating = 0;
 
-                // Reset về trạng thái chưa chọn sao nào
                 stars.forEach(s => {
                     s.className = 'bx bx-star';
                     s.style.color = '#ccc';
@@ -1072,10 +1058,8 @@
             const reviewNameInput = document.getElementById('reviewName');
             const submitReviewBtn = document.getElementById('submitReview');
 
-            // Ban đầu tắt nút gửi
             if (submitReviewBtn) submitReviewBtn.disabled = true;
 
-            // Tạo chỗ hiện thông báo dưới ô SĐT
             const phoneHelp = document.createElement('small');
             phoneHelp.id = 'phoneReviewHelp';
             phoneHelp.className = 'text-muted d-block mt-1';
@@ -1095,7 +1079,6 @@
                     return;
                 }
 
-                // Làm sạch số điện thoại
                 let cleanPhone = phone.replace(/\D/g, '');
                 if (cleanPhone.startsWith('84')) {
                     cleanPhone = '0' + cleanPhone.slice(2);
@@ -1131,7 +1114,6 @@
                 }
             });
 
-            // Xử lý gửi đánh giá (lấy DOM mới nhất, không bị cache)
             document.getElementById('submitReview')?.addEventListener('click', async () => {
                 const name = document.getElementById('reviewName')?.value.trim();
                 const phone = document.getElementById('reviewPhone')?.value.trim();
@@ -1148,8 +1130,6 @@
 
                 const tagIds = Array.from(document.querySelectorAll('#reviewTagContainer .tag-select.selected'))
                     .map(t => t.dataset.tagId);
-
-                // Dùng FormData để gửi cả file + text
                 const formData = new FormData();
                 formData.append('product_id', new URLSearchParams(window.location.search).get('id'));
                 formData.append('customer_name', name);
@@ -1160,7 +1140,6 @@
                 formData.append('content', content);
                 tagIds.forEach(id => formData.append('tag_ids[]', id));
 
-                // Thêm ảnh (nếu có)
                 if (files && files.length > 0) {
                     for (let file of files) {
                         formData.append('images[]', file);
@@ -1193,7 +1172,6 @@
 
                         bootstrap.Collapse.getInstance(document.getElementById('writeReviewCollapse'))?.hide();
 
-                        // Tải lại đánh giá mới nhất
                         function renderClientPagination(totalItems, totalPages, currentPage) {
                             const pagination = document.getElementById('reviewPagination');
                             pagination.dataset.currentPage = currentPage;
@@ -1219,7 +1197,6 @@
                             pagination.innerHTML = html;
                         }
 
-                        // Click phân trang mới (client-side)
                         document.getElementById('reviewPagination')?.addEventListener('click', e => {
                             e.preventDefault();
                             const link = e.target.closest('a');
@@ -1232,7 +1209,6 @@
                             }
                         });
 
-                        // Reset trang về 1 khi tìm kiếm hoặc lọc sao
                         document.getElementById('searchReviewInput')?.addEventListener('input', () => {
                             document.getElementById('reviewPagination').dataset.currentPage = 1;
                             renderFilteredReviews();
@@ -1271,7 +1247,6 @@
                 reviewList.innerHTML = '';
 
                 try {
-                    // Lấy hết đánh giá 1 lần để lọc/tìm kiếm mượt
                     const res = await fetch(`${BASE_URL}/api/review_products/get_reviews.php?id=${productId}&limit=999`);
                     if (!res.ok) throw new Error(`HTTP ${res.status}`);
                     const result = await res.json();

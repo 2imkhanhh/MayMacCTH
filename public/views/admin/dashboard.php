@@ -76,7 +76,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
     document.querySelectorAll('#logoutBtn, #logoutBtnTop').forEach(btn => {
         btn.addEventListener('click', () => {
             if (confirm('Bạn có chắc muốn đăng xuất?')) {
-                window.location.href = 'logout.php'; // mình làm luôn file này cho bạn dưới đây
+                window.location.href = 'logout.php'; 
             }
         });
     });

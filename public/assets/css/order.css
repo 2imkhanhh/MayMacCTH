@@ -37,10 +37,7 @@
 .breadcrumb-nav span {
     color: #333;
 }
-body {
-    /* Đảm bảo luôn có khoảng trống dưới cùng trang web */
-    padding-bottom: 200px;
-}
+
 .order-section {
     background-color: #f8f9fa;
     padding-bottom: 300px;
