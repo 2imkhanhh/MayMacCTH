@@ -72,20 +72,34 @@
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
 
-                <a href="../../views/client/index.html"> <img src="../../assets/images/logo.png" alt="Logo" height="60"
-                        class="me-32"></a>
-                <div class="d-flex align-items-center">
-                    <select class="form-select category-select" id="categorySelect">
-                        <option value="">Tất cả</option>
-                        <option value="uniform-shirts">Áo đồng phục</option>
-                        <option value="uniform-pants">Quần đồng phục</option>
-                    </select>
+                <a href="../../views/client/index.html">
+                    <img src="../../assets/images/logo.png" alt="Logo" height="60" class="me-32">
+                </a>
 
-                    <div class="search-container">
-                        <input type="text" class="form-control search-input" placeholder="Tìm kiếm sản phẩm..."
-                            aria-label="Search">
-                        <button class="search-button" type="button">
-                            <i class='bx bx-search'></i>
+                <div class="d-flex align-items-center bg-white border rounded px-2"
+                    style="height: 45px; position: relative;">
+
+                    <div class="search-dropdown-wrap h-100 d-flex align-items-center position-relative">
+                        <input type="hidden" id="categorySelectValue" value="">
+
+                        <div class="search-trigger d-flex align-items-center cursor-pointer pe-3 border-end"
+                            style="cursor: pointer; min-width: 130px; justify-content: space-between; height: 100%;">
+                            <span id="categoryDisplayText" class="fw-bold text-dark" style="font-size: 14px;">Tất
+                                cả</span>
+                            <i class='bx bx-chevron-down ms-2 text-muted'></i>
+                        </div>
+
+                        <ul class="search-dropdown-list" id="searchCategoryUl">
+                            <li><a href="javascript:void(0)" onclick="selectSearchCategory('', 'Tất cả')">Tất cả</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="search-container flex-grow-1 ms-2 d-flex align-items-center">
+                        <input type="text" class="form-control border-0 shadow-none search-input" id="searchInput"
+                            placeholder="Tìm kiếm sản phẩm..." aria-label="Search" style="font-size: 14px;">
+                        <button class="btn border-0" type="button" id="btnSearch">
+                            <i class='bx bx-search fs-5 text-primary'></i>
                         </button>
                     </div>
                 </div>

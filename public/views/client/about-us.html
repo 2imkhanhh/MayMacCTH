@@ -70,20 +70,34 @@
         <div class="container">
             <div class="d-flex align-items-center justify-content-between">
 
-                <a href="../../views/client/index.html"> <img src="../../assets/images/logo.png" alt="Logo" height="60"
-                        class="me-32"></a>
-                <div class="d-flex align-items-center">
-                    <select class="form-select category-select" id="categorySelect">
-                        <option value="">Tất cả</option>
-                        <option value="uniform-shirts">Áo đồng phục</option>
-                        <option value="uniform-pants">Quần đồng phục</option>
-                    </select>
+                <a href="../../views/client/index.html">
+                    <img src="../../assets/images/logo.png" alt="Logo" height="60" class="me-32">
+                </a>
 
-                    <div class="search-container">
-                        <input type="text" class="form-control search-input" placeholder="Tìm kiếm sản phẩm..."
-                            aria-label="Search">
-                        <button class="search-button" type="button">
-                            <i class='bx bx-search'></i>
+                <div class="d-flex align-items-center bg-white border rounded px-2"
+                    style="height: 45px; position: relative;">
+
+                    <div class="search-dropdown-wrap h-100 d-flex align-items-center position-relative">
+                        <input type="hidden" id="categorySelectValue" value="">
+
+                        <div class="search-trigger d-flex align-items-center cursor-pointer pe-3 border-end"
+                            style="cursor: pointer; min-width: 130px; justify-content: space-between; height: 100%;">
+                            <span id="categoryDisplayText" class="fw-bold text-dark" style="font-size: 14px;">Tất
+                                cả</span>
+                            <i class='bx bx-chevron-down ms-2 text-muted'></i>
+                        </div>
+
+                        <ul class="search-dropdown-list" id="searchCategoryUl">
+                            <li><a href="javascript:void(0)" onclick="selectSearchCategory('', 'Tất cả')">Tất cả</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="search-container flex-grow-1 ms-2 d-flex align-items-center">
+                        <input type="text" class="form-control border-0 shadow-none search-input" id="searchInput"
+                            placeholder="Tìm kiếm sản phẩm..." aria-label="Search" style="font-size: 14px;">
+                        <button class="btn border-0" type="button" id="btnSearch">
+                            <i class='bx bx-search fs-5 text-primary'></i>
                         </button>
                     </div>
                 </div>
@@ -418,7 +432,88 @@
             } catch (err) {
                 console.error('Lỗi tải trang Giới thiệu:', err);
             }
+
+            await loadSearchCategories();
+
+            const searchWrap = document.querySelector('.search-dropdown-wrap');
+            const searchTrigger = document.querySelector('.search-trigger');
+            const searchList = document.getElementById('searchCategoryUl');
+
+            if (searchWrap && searchTrigger && searchList) {
+                searchTrigger.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    searchList.classList.toggle('show');
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!searchWrap.contains(e.target)) {
+                        searchList.classList.remove('show');
+                    }
+                });
+            }
+            const btnSearch = document.getElementById('btnSearch');
+            const searchInput = document.getElementById('searchInput');
+
+            const performSearch = () => {
+                const keyword = searchInput.value.trim();
+                const categoryId = document.getElementById('categorySelectValue').value;
+
+                let url = '../../views/client/products.html';
+                const params = new URLSearchParams();
+
+                if (keyword) params.append('q', keyword);
+                if (categoryId) params.append('category', categoryId);
+
+                if (params.toString()) url += '?' + params.toString();
+                window.location.href = url;
+            };
+
+            if (btnSearch) btnSearch.addEventListener('click', performSearch);
+            if (searchInput) searchInput.addEventListener('keypress', e => {
+                if (e.key === 'Enter') performSearch();
+            });
         });
+        function selectSearchCategory(id, name) {
+            document.getElementById('categoryDisplayText').innerText = name;
+            document.getElementById('categorySelectValue').value = id;
+
+            const searchList = document.getElementById('searchCategoryUl');
+            if (searchList) searchList.classList.remove('show');
+        }
+        async function loadSearchCategories() {
+            const ulList = document.getElementById('searchCategoryUl');
+            if (!ulList) return;
+            ulList.innerHTML = '<li><a href="javascript:void(0)" onclick="selectSearchCategory(\'\', \'Tất cả\')">Tất cả</a></li>';
+
+            try {
+                const response = await fetch('/MayMacCTH/api/category/get_category.php?t=' + Date.now());
+
+                if (!response.ok) throw new Error('Lỗi kết nối API');
+
+                const result = await response.json();
+
+                if (result.success && Array.isArray(result.data)) {
+                    let categories = result.data;
+                    categories.sort((a, b) => a.name.localeCompare(b.name));
+
+                    categories.forEach(category => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = "javascript:void(0)";
+                        const catName = category.name.trim();
+                        a.textContent = catName;
+                        a.onclick = () => selectSearchCategory(category.category_id, catName);
+
+                        li.appendChild(a);
+                        ulList.appendChild(li);
+                    });
+                } else {
+                    console.warn("API trả về thành công nhưng không có dữ liệu danh mục nào.");
+                }
+            } catch (err) {
+                console.error('Lỗi load danh mục:', err);
+            }
+        }
 
         const BASE_URL = '/MayMacCTH';
 
