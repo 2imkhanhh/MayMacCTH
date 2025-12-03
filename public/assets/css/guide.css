@@ -1,7 +1,25 @@
+.breadcrumb-nav {
+    font-size: 1rem;
+    color: #333;
+}
+
+.breadcrumb-nav a {
+    color: #174DAF;
+    text-decoration: none;
+    margin-left: 0.5rem;
+}
+
+.breadcrumb-nav a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb-nav span {
+    color: #333;
+}
 .guide-card {
     border: none;
     border-radius: 8px;
-    background-color: #003087; /* Màu nền xanh dương */
+    background-color: #003087; 
     transition: transform 0.3s, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
@@ -12,13 +30,15 @@
 
 .guide-card .card-body {
     padding: 1.5rem;
+    background-color: transparent !important; 
+    border: none; 
 }
 
 .guide-card .card-text {
     margin: 0;
     font-size: 16px;
     font-weight: 560;
-    color: #FFFFFF; /* Văn bản màu trắng */
+    color: #FFFFFF; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,94 +47,89 @@
 }
 
 .guide-image {
-    width: 50px; /* Tăng kích thước hình ảnh */
+    width: 50px; 
     height: 50px;
-    margin-left: 8px; /* Khoảng cách giữa text và hình ảnh */
+    margin-left: 8px; 
     vertical-align: middle;
-    transition: transform 0.3s; /* Hiệu ứng phóng to */
+    transition: transform 0.3s; 
 }
 
 .guide-card:hover .guide-image {
-    transform: scale(1.2); /* Phóng to hình ảnh khi hover */
+    transform: scale(1.2); 
 }
 
 .guide-card .bx-down-arrow-alt {
-    display: block; /* Đảm bảo icon nằm dưới text */
-    margin-top: 8px; /* Khoảng cách giữa text và icon mũi tên */
+    display: block; 
+    margin-top: 8px;
 }
 
 .guide-content-area {
-    transition: all 0.3s ease; /* Hiệu ứng mượt mà khi hiển thị/ẩn */
-    max-width: 800px; /* Giới hạn chiều rộng để căn giữa */
-    margin-left: auto; /* Căn giữa */
+    transition: all 0.3s ease; 
+    max-width: 800px; 
+    margin-left: auto; 
     margin-right: auto;
 }
 
 .guide-content {
-    display: none; /* Ẩn tất cả guide-content ban đầu */
+    display: none; 
 }
 
 .guide-content.active {
-    display: block; /* Hiển thị khi được kích hoạt */
+    display: block; 
 }
 
 .guide-content .about-card {
-    border: 1px solid #ddd; /* Viền mỏng */
-    border-radius: 8px; /* Góc bo tròn */
-    background-color: #EFF1FF; /* Màu background từ about-us.css */
-    transition: transform 0.3s, box-shadow 0.3s; /* Thêm transition cho cả box-shadow */
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    background-color: #EFF1FF; 
+    transition: transform 0.3s, box-shadow 0.3s; 
     height: 100%;
 }
 
 .guide-content .about-card:hover {
-    transform: translateY(-5px); /* Hiệu ứng nâng card */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Thêm box-shadow TỪ about-us.css */
+    transform: translateY(-5px); 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
 }
 
 .guide-content .about-card .card-body {
-    padding: 1.5rem; /* Padding giống about-us.css */
+    background-color: transparent !important; 
+    padding: 1.5rem; 
 }
 
 .guide-content .about-card .card-title {
-    font-family: 'Archivo', sans-serif; /* Font giống about-us.css */
-    font-weight: 700; /* Chữ đậm */
-    font-size: 1.25rem; /* Kích thước tiêu đề */
-    color: #333; /* Màu tiêu đề */
+   font-family: 'Archivo', sans-serif; 
+    font-weight: 700; 
+    font-size: 1.25rem; 
+    color: #333; 
     margin-bottom: 1rem;
+    max-width: 100% !important;
 }
 
 .guide-content .about-card .card-text {
-    font-size: 1rem; /* Kích thước text */
-    color: #555; /* Màu text */
-    line-height: 1.6; /* Khoảng cách dòng */
+    font-size: 1rem; 
+    color: #555;
+    line-height: 1.6; 
 }
 
 .guide-card.active-card {
     background-color: #FFD000;
 }
 
-/* 2. Chữ khi active (màu xanh) */
 .guide-card.active-card .card-text {
     color: #174DAF;
 }
 
-/* 3. Icon mũi tên khi active (màu xanh) */
 .guide-card.active-card .bx {
-    /* !important là BẮT BUỘC 
-      vì trong HTML bạn đang dùng style inline "color: #FFFFFF" 
-    */
     color: #174DAF !important; 
 }
 
-/* 3. Hiệu ứng XOAY MŨI TÊN (Quan trọng nhất) */
 .guide-card .bx {
-    transition: transform 0.4s ease, color 0.4s ease !important; /* Làm mượt cả xoay và đổi màu */
-    transform: rotate(0deg); /* Trạng thái ban đầu: 0 độ */
+    transition: transform 0.4s ease, color 0.4s ease !important; 
+    transform: rotate(0deg); 
 }
 
-/* 4. Khi card active, xoay mũi tên 180 độ */
 .guide-card.active-card .bx {
-    transform: rotate(180deg); /* Trạng thái active: xoay 180 độ */
+    transform: rotate(180deg); 
 }
 
 .guide-content-wrapper {
