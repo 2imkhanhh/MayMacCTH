@@ -2,14 +2,17 @@
 require_once __DIR__ . "/../../config/connect.php";
 require_once __DIR__ . "/../models/Product.php";
 
-class ProductController {
+class ProductController
+{
     private $product;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->product = new Product($db);
     }
 
-    public function get() {
+    public function get()
+    {
         $category_id = $_GET['category_id'] ?? null;
         $name = $_GET['name'] ?? null;
         $products = $this->product->get($category_id, $name);
@@ -21,7 +24,8 @@ class ProductController {
         ];
     }
 
-    public function getById($id) {
+    public function getById($id)
+    {
         $product = $this->product->getById($id);
         if (!$product) {
             return ["success" => false, "message" => "Không tìm thấy", "status" => 404];
@@ -29,7 +33,8 @@ class ProductController {
         return ["success" => true, "data" => [$product]];
     }
 
-    public function create() {
+    public function create()
+    {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return ["success" => false, "message" => "Method not allowed"];
         }
@@ -87,7 +92,8 @@ class ProductController {
             : ["success" => false, "message" => "Thêm thất bại!"];
     }
 
-    public function update($id) {
+    public function update($id)
+    {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return ["success" => false, "message" => "Method not allowed"];
         }
@@ -95,7 +101,7 @@ class ProductController {
         $data = [
             'name'        => $_POST['name'] ?? '',
             'description' => $_POST['description'] ?? '',
-            'price'       => (int)($_POST['price'] ?? 0),       
+            'price'       => (int)($_POST['price'] ?? 0),
             'category_id' => (int)($_POST['category_id'] ?? 0),
             'is_active'   => isset($_POST['is_active']) ? 1 : 0
         ];
@@ -140,17 +146,19 @@ class ProductController {
             : ["success" => false, "message" => "Cập nhật thất bại"];
     }
 
-    public function delete($id) {
+    public function delete($id)
+    {
         $result = $this->product->delete($id);
         return $result
             ? ["success" => true, "message" => "Xóa thành công!"]
             : ["success" => false, "message" => "Xóa thất bại"];
     }
 
-    public function getAll() {
-        $category_id = $_GET['category_id'] ?? null;
-        $name = $_GET['name'] ?? null;
-        
+    public function getAll()
+    {
+        $category_id = $_GET['category_id'] ?? $_GET['category'] ?? null;
+        $name = $_GET['name'] ?? $_GET['q'] ?? null;
+
         $products = $this->product->getAll($category_id, $name);
 
         return [

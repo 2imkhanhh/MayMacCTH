@@ -128,7 +128,8 @@ body {
   border-radius: 8px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
   min-width: 240px;
-  margin-top: 5px;
+  margin-top: 0;
+  padding-top: 5px;
   padding: 0;
   z-index: 1050;
   display: none;
@@ -239,7 +240,7 @@ body {
   text-decoration: none;
   color: #333;
   font-size: 14px;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid #f8f9fa;
   transition: all 0.2s ease;
 }
 
@@ -248,7 +249,7 @@ body {
 }
 
 .search-dropdown-list li a:hover {
-  background-color: #f0f8ff;
+  background-color: #f8f9fa;
   padding-left: 25px;
   color: #333;
 }
@@ -323,13 +324,11 @@ body {
 /* Tiêu đề sản phẩm / shop */
 .product-title {
   font-family: 'Poppins', sans-serif;
-  /* hoặc Montserrat nếu bạn thích */
   font-weight: 700;
   font-size: 22px;
   color: #272D37;
 }
 
-/* Link "Xem thêm thông tin" */
 .view-more {
   color: #003087;
   text-decoration: none;
@@ -343,13 +342,11 @@ body {
   transform: scale(1.1);
 }
 
-/* Icon mũi tên */
 .view-more i {
   vertical-align: middle;
   margin-left: 4px;
 }
 
-/* Card sản phẩm */
 .product-card {
   border: 1px solid #e0e0e0;
   border-radius: 12px;
@@ -802,7 +799,6 @@ footer.footer .footer-links a:hover {
   }
 }
 
-/* Di động (max-width: 767.98px) */
 @media (max-width: 767.98px) {
   .container {
     padding-left: 20px;
