@@ -667,7 +667,7 @@
                     `;
                 }
 
-                // Render nội dung + phần chính sách ĐẸP CHUẨN
+                // Render 
                 contentContainer.innerHTML = `
                     <div class="row align-items-start">
                         <!-- Ảnh sản phẩm -->
@@ -799,7 +799,7 @@
                     </div>
                 `;
 
-                // ==================== ẢNH ====================
+                // ẢNH 
                 const mainImg = document.getElementById('main-product-image');
                 const thumbContainer = document.getElementById('thumbnailContainer');
                 thumbContainer.innerHTML = '';
@@ -891,12 +891,10 @@
                     if (parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
                 });
                 document.getElementById('addToCartBtn')?.addEventListener('click', function () {
-                    // Lấy thông tin đã chọn
                     const selectedColorBtn = document.querySelector('#colorSwatches .btn.active');
                     const selectedSizeBtn = document.querySelector('#sizeButtons .btn-size.active');
                     const quantity = parseInt(document.getElementById('quantityInput').value) || 1;
 
-                    // Kiểm tra chọn màu và size (nếu có)
                     if (p.colors && p.colors.length && !selectedColorBtn) {
                         alert('Vui lòng chọn màu sắc!');
                         return;
@@ -911,7 +909,7 @@
                     const price = parseInt(p.price || 0);
                     const image = document.getElementById('main-product-image').src;
 
-                    // Tạo object sản phẩm để thêm vào giỏ
+                    // Tạo object sản phẩm 
                     const cartItem = {
                         id: p.product_id,
                         name: p.name,
@@ -1055,7 +1053,6 @@
                     };
                 });
 
-                // Khi rời chuột khỏi khu vực sao → nếu chưa click thì về rỗng
                 document.getElementById('ratingStars').onmouseleave = () => {
                     if (selectedRating === 0) {
                         stars.forEach(s => {
@@ -1309,8 +1306,6 @@
 
                 // Điểm trung bình
                 scoreEl.textContent = Number(avg).toFixed(1);
-
-                // Luôn 1 ngôi sao vàng (dù điểm cao hay thấp)
                 starsEl.innerHTML = `<i class='bx bxs-star' style="font-size:1.5rem;"></i>`;
 
                 // Tổng số đánh giá
@@ -1328,12 +1323,10 @@
                 return div.innerHTML;
             }
 
-            // Gọi load khi trang sẵn sàng
             loadReviews(1);
 
-            let currentReviews = [];  // Lưu toàn bộ đánh giá hiện tại từ API
+            let currentReviews = [];  
 
-            // Hàm render lại danh sách đánh giá (gọi lại khi lọc/tìm kiếm)
             function renderFilteredReviews() {
                 const searchText = (document.getElementById('searchReviewInput')?.value || '').trim().toLowerCase();
                 const activeStarBtn = document.querySelector('.btn-filter-star.active');
@@ -1360,7 +1353,6 @@
                     return;
                 }
 
-                // Phân trang client-side: 3 đánh giá/trang
                 const perPage = 3;
                 const totalPages = Math.ceil(filtered.length / perPage);
                 let currentPage = parseInt(pagination.dataset.currentPage || '1');
@@ -1415,7 +1407,6 @@
                     </div>
                 `).join('');
 
-                // Cập nhật phân trang
                 renderClientPagination(filtered.length, totalPages, currentPage);
             }
 
@@ -1449,7 +1440,6 @@
                 pagination.innerHTML = html;
             }
 
-            // Xử lý click phân trang (client-side)
             document.getElementById('reviewPagination')?.addEventListener('click', e => {
                 e.preventDefault();
                 const link = e.target.closest('a');
@@ -1463,7 +1453,6 @@
                 }
             });
 
-            // Tìm kiếm realtime
             document.getElementById('searchReviewInput')?.addEventListener('input', () => {
                 renderFilteredReviews();
             });
@@ -1523,7 +1512,88 @@
                 console.error('Lỗi load danh mục:', err);
                 dropdownMenu.innerHTML = '<li><a href="#" class="dropdown-item text-danger">Lỗi tải danh mục</a></li>';
             }   
+            
+            await loadSearchCategories();
+
+            const searchWrap = document.querySelector('.search-dropdown-wrap');
+            const searchTrigger = document.querySelector('.search-trigger');
+            const searchList = document.getElementById('searchCategoryUl');
+
+            if (searchWrap && searchTrigger && searchList) {
+                searchTrigger.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    searchList.classList.toggle('show');
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!searchWrap.contains(e.target)) {
+                        searchList.classList.remove('show');
+                    }
+                });
+            }
+            const btnSearch = document.getElementById('btnSearch');
+            const searchInput = document.getElementById('searchInput');
+
+            const performSearch = () => {
+                const keyword = searchInput.value.trim();
+                const categoryId = document.getElementById('categorySelectValue').value;
+
+                let url = '../../views/client/products.html';
+                const params = new URLSearchParams();
+
+                if (keyword) params.append('q', keyword);
+                if (categoryId) params.append('category', categoryId);
+
+                if (params.toString()) url += '?' + params.toString();
+                window.location.href = url;
+            };
+
+            if (btnSearch) btnSearch.addEventListener('click', performSearch);
+            if (searchInput) searchInput.addEventListener('keypress', e => {
+                if (e.key === 'Enter') performSearch();
+            });
         });
+        function selectSearchCategory(id, name) {
+            document.getElementById('categoryDisplayText').innerText = name;
+            document.getElementById('categorySelectValue').value = id;
+
+            const searchList = document.getElementById('searchCategoryUl');
+            if (searchList) searchList.classList.remove('show');
+        }
+        async function loadSearchCategories() {
+            const ulList = document.getElementById('searchCategoryUl');
+            if (!ulList) return;
+            ulList.innerHTML = '<li><a href="javascript:void(0)" onclick="selectSearchCategory(\'\', \'Tất cả\')">Tất cả</a></li>';
+
+            try {
+                const response = await fetch('/MayMacCTH/api/category/get_category.php?t=' + Date.now());
+
+                if (!response.ok) throw new Error('Lỗi kết nối API');
+
+                const result = await response.json();
+
+                if (result.success && Array.isArray(result.data)) {
+                    let categories = result.data;
+                    categories.sort((a, b) => a.name.localeCompare(b.name));
+
+                    categories.forEach(category => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = "javascript:void(0)";
+                        const catName = category.name.trim();
+                        a.textContent = catName;
+                        a.onclick = () => selectSearchCategory(category.category_id, catName);
+
+                        li.appendChild(a);
+                        ulList.appendChild(li);
+                    });
+                } else {
+                    console.warn("API trả về thành công nhưng không có dữ liệu danh mục nào.");
+                }
+            } catch (err) {
+                console.error('Lỗi load danh mục:', err);
+            }
+        }
 
         // Hàm cập nhật số lượng giỏ hàng (giữ nguyên)
         function updateCartCount() {

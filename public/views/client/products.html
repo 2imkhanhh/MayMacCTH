@@ -671,7 +671,7 @@
                     if (selectedCategories.length > 0 && !selectedCategories.includes(p.category_id)) return false;
                     // Lọc giá
                     if (p.price < minPrice || p.price > maxPrice) return false;
-                    // Lọc Size (nếu có)
+                    // Lọc Size 
                     if (selectedSizes.length > 0) {
                         const hasSize = p.colors.some(color => color.sizes.some(size => selectedSizes.includes(size)));
                         if (!hasSize) return false;
@@ -740,7 +740,87 @@
                 console.error('Lỗi load danh mục:', err);
                 dropdownMenu.innerHTML = '<li><a href="#" class="dropdown-item text-danger">Lỗi tải danh mục</a></li>';
             }
+            await loadSearchCategories();
+
+            const searchWrap = document.querySelector('.search-dropdown-wrap');
+            const searchTrigger = document.querySelector('.search-trigger');
+            const searchList = document.getElementById('searchCategoryUl');
+
+            if (searchWrap && searchTrigger && searchList) {
+                searchTrigger.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    searchList.classList.toggle('show');
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!searchWrap.contains(e.target)) {
+                        searchList.classList.remove('show');
+                    }
+                });
+            }
+            const btnSearch = document.getElementById('btnSearch');
+            const searchInput = document.getElementById('searchInput');
+
+            const performSearch = () => {
+                const keyword = searchInput.value.trim();
+                const categoryId = document.getElementById('categorySelectValue').value;
+
+                let url = '../../views/client/products.html';
+                const params = new URLSearchParams();
+
+                if (keyword) params.append('q', keyword);
+                if (categoryId) params.append('category', categoryId);
+
+                if (params.toString()) url += '?' + params.toString();
+                window.location.href = url;
+            };
+
+            if (btnSearch) btnSearch.addEventListener('click', performSearch);
+            if (searchInput) searchInput.addEventListener('keypress', e => {
+                if (e.key === 'Enter') performSearch();
+            });
         });
+        function selectSearchCategory(id, name) {
+            document.getElementById('categoryDisplayText').innerText = name;
+            document.getElementById('categorySelectValue').value = id;
+
+            const searchList = document.getElementById('searchCategoryUl');
+            if (searchList) searchList.classList.remove('show');
+        }
+        async function loadSearchCategories() {
+            const ulList = document.getElementById('searchCategoryUl');
+            if (!ulList) return;
+            ulList.innerHTML = '<li><a href="javascript:void(0)" onclick="selectSearchCategory(\'\', \'Tất cả\')">Tất cả</a></li>';
+
+            try {
+                const response = await fetch('/MayMacCTH/api/category/get_category.php?t=' + Date.now());
+
+                if (!response.ok) throw new Error('Lỗi kết nối API');
+
+                const result = await response.json();
+
+                if (result.success && Array.isArray(result.data)) {
+                    let categories = result.data;
+                    categories.sort((a, b) => a.name.localeCompare(b.name));
+
+                    categories.forEach(category => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = "javascript:void(0)";
+                        const catName = category.name.trim();
+                        a.textContent = catName;
+                        a.onclick = () => selectSearchCategory(category.category_id, catName);
+
+                        li.appendChild(a);
+                        ulList.appendChild(li);
+                    });
+                } else {
+                    console.warn("API trả về thành công nhưng không có dữ liệu danh mục nào.");
+                }
+            } catch (err) {
+                console.error('Lỗi load danh mục:', err);
+            }
+        }
 
         const BASE_URL = '/MayMacCTH';
 
