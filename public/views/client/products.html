@@ -149,9 +149,22 @@
 
                 <!-- Icon bên phải -->
                 <ul class="navbar-nav ms-3">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../../views/client/cart.html">
-                            <i class="bx bx-cart"></i>
+                    <li class="nav-item" style="margin-right: 90px;">
+                        <a class="nav-link" href="../../views/client/cart.html"
+                            style="display: flex; align-items: center; justify-content: center;">
+
+                            <div
+                                style="position: relative; width: 24px !important; height: 24px !important; line-height: 24px;">
+
+                                <i class="bx bx-cart" style="font-size: 24px; position: absolute; top: 0; left: 0;"></i>
+
+                                <span id="cartCount" class="badge rounded-pill bg-danger"
+                                    style="position: absolute; top: -6px; right: -8px; font-size: 9px; padding: 2px 4px; border: 2px solid #fff; display: none;">
+                                    0
+                                    <span class="visually-hidden">sản phẩm</span>
+                                </span>
+                            </div>
+
                         </a>
                     </li>
                 </ul>
@@ -419,7 +432,7 @@
                     const searchInput = document.getElementById('searchInput');
                     if (searchInput && keyword) searchInput.value = keyword;
 
-                    let apiUrl = '/MayMacCTH/api/product/get_all_product.php'; 
+                    let apiUrl = '/MayMacCTH/api/product/get_all_product.php';
 
                     if (keyword || urlCategoryId) {
                         apiUrl = `/MayMacCTH/api/product/get_all_product.php?t=${Date.now()}`;
@@ -427,7 +440,7 @@
                         if (urlCategoryId) apiUrl += `&category=${urlCategoryId}`;
                     }
 
-                    console.log("Đang tải API:", apiUrl); 
+                    console.log("Đang tải API:", apiUrl);
 
                     const res = await fetch(apiUrl);
                     const result = await res.json();
@@ -447,7 +460,7 @@
                                         product.average_rating = rating ? rating.average_rating : 0;
                                         product.review_count = rating ? rating.review_count : 0;
                                     });
-                                    currentProducts = [...allProducts]; 
+                                    currentProducts = [...allProducts];
                                 }
                             } catch (err) {
                                 console.warn('Không tải được đánh giá:', err);
@@ -584,7 +597,7 @@
 
                 if (typeof setupPagination === 'function') {
                     setupPagination(products.length);
-                    showPage(1); 
+                    showPage(1);
                 }
             }
 
@@ -748,7 +761,7 @@
 
             if (searchWrap && searchTrigger && searchList) {
                 searchTrigger.addEventListener('click', (e) => {
-                    e.stopPropagation(); 
+                    e.stopPropagation();
                     searchList.classList.toggle('show');
                 });
 
@@ -779,6 +792,7 @@
             if (searchInput) searchInput.addEventListener('keypress', e => {
                 if (e.key === 'Enter') performSearch();
             });
+            updateCartCount();
         });
         function selectSearchCategory(id, name) {
             document.getElementById('categoryDisplayText').innerText = name;
@@ -819,6 +833,17 @@
                 }
             } catch (err) {
                 console.error('Lỗi load danh mục:', err);
+            }
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const totalItems = cart.length;
+
+            const el = document.getElementById('cartCount');
+            if (el) {
+                el.textContent = totalItems;
+                el.style.display = totalItems > 0 ? 'block' : 'none';
             }
         }
 

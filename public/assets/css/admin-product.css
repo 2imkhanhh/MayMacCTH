@@ -1,4 +1,3 @@
-/* 1. Nút "Thêm sản phẩm mới" */
 #btnAdd {
     background: linear-gradient(135deg, #174DAF, #003087);
     border: none;
@@ -25,7 +24,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 5px; /* Khoảng cách giữa icon và chữ */
+    gap: 5px; 
     transition: all 0.3s ease;
     cursor: pointer;
 }
@@ -58,12 +57,10 @@
 
 .product-actions {
     display: flex;
-    gap: 10px; /* Khoảng cách giữa 2 nút */
+    gap: 10px; 
     margin-top: auto;
 }
 
-/* 2. Card sản phẩm */
-/* Card sản phẩm */
 .product-card {
     background: #fff;
     border-radius: 15px;
@@ -81,7 +78,6 @@
     box-shadow: 0 15px 30px rgba(23, 77, 175, 0.15);
 }
 
-/* Ảnh */
 .product-img-wrapper {
     height: 100%;
     width: 100%;
@@ -101,7 +97,6 @@
     transform: scale(1.05);
 }
 
-/* Badge trạng thái */
 .product-status {
     position: absolute;
     top: 12px;
@@ -124,7 +119,6 @@
     background: rgba(108, 117, 125, 0.9);
 }
 
-/* Body */
 .product-body {
     padding: 18px;
     display: flex;
@@ -146,7 +140,6 @@
     margin-bottom: 0 !important;
 }
 
-/* Action buttons */
 .product-actions {
     flex: 1; 
     border: none;
@@ -157,13 +150,13 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 5px; /* Khoảng cách giữa icon và chữ */
+    gap: 5px; 
     transition: all 0.3s ease;
     cursor: pointer;
 }
 
 .btn-edit {
-    background-color: #e7f1ff !important; /* !important để đè bootstrap nếu cần */
+    background-color: #e7f1ff !important; 
     color: #174DAF !important;
 }
 
@@ -188,11 +181,9 @@
     font-size: 1.1em;
 }
 
-/* Hiệu ứng khi hover cả card */
 .product-card:hover .btn-action {
     transform: translateY(-2px);
 }
-/* 4. Bộ lọc & tìm kiếm */
 #filterCategory,
 #searchName {
     border-radius: 10px;
@@ -220,7 +211,6 @@
     background: #003087;
 }
 
-/* 5. Modal thêm/sửa sản phẩm */
 #productModal .modal-content {
     border-radius: 18px;
     border: none;
@@ -268,7 +258,6 @@
     box-shadow: 0 0 0 0.25rem rgba(23, 77, 175, 0.15);
 }
 
-/* Ảnh preview trong modal */
 #currentImage {
     border-radius: 12px;
     box-shadow: 0 6px 16px rgba(0,0,0,0.12);
@@ -279,7 +268,6 @@
     border: 3px solid #f0f2f5;
 }
 
-/* Nút lưu trong modal */
 #productModal .btn-success {
     background: linear-gradient(135deg, #28a745, #1e7e34);
     border: none;
@@ -293,7 +281,6 @@
     transform: translateY(-2px);
 }
 
-/* Thông báo "Chưa có sản phẩm" */
 #productList:empty + .col-12,
 .text-center h5 {
     font-weight: 500;
@@ -309,7 +296,74 @@
     backdrop-filter: blur(4px);
 }
 
-/* Responsive tinh chỉnh */
+#globalToast {
+    display: none !important;
+}
+
+#globalToast.show {
+    display: flex !important;
+    animation: slideInRight 0.4s ease forwards;
+}
+
+.global-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    min-width: 300px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    font-size: 15px;
+    z-index: 99999;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: white;
+}
+
+.global-toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.global-toast.success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+.global-toast.error {
+    background: linear-gradient(135deg, #dc3545, #e74c3c);
+}
+
+.global-toast i {
+    font-size: 1.8rem;
+}
+
+.confirm-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    backdrop-filter: blur(5px);
+}
+
+.confirm-box {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    animation: pop 0.3s ease;
+}
+
 @media (max-width: 768px) {
     .product-card .card-title {
         font-size: 1rem;

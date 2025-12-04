@@ -21,11 +21,9 @@ require_once 'auth_middleware.php';
         <h2 class="mb-4">Quản lý Banner</h2>
         <button class="btn btn-primary mb-3" id="btnAdd">Thêm Banner mới</button>
 
-        <!-- Grid hiển thị banner -->
         <div id="bannerList" class="row"></div>
     </div>
 
-    <!-- Modal Thêm Banner -->
     <div class="modal fade" id="addBannerModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -56,8 +54,7 @@ require_once 'auth_middleware.php';
             </div>
         </div>
     </div>
-
-    <!-- Modal Sửa Banner -->
+    
     <div class="modal fade" id="editBannerModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">

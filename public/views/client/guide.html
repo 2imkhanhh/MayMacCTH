@@ -150,9 +150,22 @@
 
                 <!-- Icon bên phải -->
                 <ul class="navbar-nav ms-3">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../../views/client/cart.html">
-                            <i class="bx bx-cart"></i>
+                    <li class="nav-item" style="margin-right: 90px;">
+                        <a class="nav-link" href="../../views/client/cart.html"
+                            style="display: flex; align-items: center; justify-content: center;">
+
+                            <div
+                                style="position: relative; width: 24px !important; height: 24px !important; line-height: 24px;">
+
+                                <i class="bx bx-cart" style="font-size: 24px; position: absolute; top: 0; left: 0;"></i>
+
+                                <span id="cartCount" class="badge rounded-pill bg-danger"
+                                    style="position: absolute; top: -6px; right: -8px; font-size: 9px; padding: 2px 4px; border: 2px solid #fff; display: none;">
+                                    0
+                                    <span class="visually-hidden">sản phẩm</span>
+                                </span>
+                            </div>
+
                         </a>
                     </li>
                 </ul>
@@ -412,15 +425,19 @@
                     <div class="footer-contact-btns mt-3">
                         <a href="https://zalo.me/078315798" class="contact-card">
                             <div class="contact-icon"><img src="../../assets/images/zalo.png" alt="Zalo"></div>
-                            <div class="contact-text"><span class="contact-label">TƯ VẤN QUA</span><span class="contact-value">ZALO</span></div>
+                            <div class="contact-text"><span class="contact-label">TƯ VẤN QUA</span><span
+                                    class="contact-value">ZALO</span></div>
                         </a>
                         <a href="tel:+078315798" class="contact-card">
                             <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Hotline"></div>
-                            <div class="contact-text"><span class="contact-label">HOTLINE</span><span class="contact-value">0783 157 98</span></div>
+                            <div class="contact-text"><span class="contact-label">HOTLINE</span><span
+                                    class="contact-value">0783 157 98</span></div>
                         </a>
                         <a href="tel:+078315798" class="contact-card">
-                            <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Tại cửa hàng"></div>
-                            <div class="contact-text"><span class="contact-label">TẠI CỬA HÀNG</span><span class="contact-value">078315798</span></div>
+                            <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Tại cửa hàng">
+                            </div>
+                            <div class="contact-text"><span class="contact-label">TẠI CỬA HÀNG</span><span
+                                    class="contact-value">078315798</span></div>
                         </a>
                     </div>
                 </div>
@@ -629,7 +646,7 @@
 
             if (searchWrap && searchTrigger && searchList) {
                 searchTrigger.addEventListener('click', (e) => {
-                    e.stopPropagation(); 
+                    e.stopPropagation();
                     searchList.classList.toggle('show');
                 });
 
@@ -660,6 +677,7 @@
             if (searchInput) searchInput.addEventListener('keypress', e => {
                 if (e.key === 'Enter') performSearch();
             });
+            updateCartCount();
         });
         function selectSearchCategory(id, name) {
             document.getElementById('categoryDisplayText').innerText = name;
@@ -703,12 +721,23 @@
             }
         }
 
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const totalItems = cart.length;
+
+            const el = document.getElementById('cartCount');
+            if (el) {
+                el.textContent = totalItems;
+                el.style.display = totalItems > 0 ? 'block' : 'none';
+            }
+        }
+
         const BASE_URL = '/MayMacCTH';
 
         document.addEventListener('DOMContentLoaded', async () => {
             const addressEl = document.getElementById('footerAddress');
             const websiteEl = document.getElementById('footerWebsite');
-            const phoneEl   = document.getElementById('footerPhone');
+            const phoneEl = document.getElementById('footerPhone');
 
             if (!addressEl && !websiteEl && !phoneEl) return;
 

@@ -33,6 +33,7 @@ async function loadCategories() {
             }
         });
     } catch (err) {
+        showToast('Lỗi tải danh mục!', 'error');
         console.error('Lỗi load danh mục:', err);
     }
 }
@@ -99,9 +100,31 @@ async function loadProducts() {
             container.innerHTML = '<div class="col-12 text-center py-5 text-muted"><h5>Chưa có sản phẩm nào</h5></div>';
         }
     } catch (err) {
-        alert('Lỗi tải sản phẩm');
+        showToast('Lỗi tải danh sách sản phẩm!', 'error');
         console.error(err);
     }
+}
+
+function showToast(message, type = 'success') {
+    const toast = document.getElementById('globalToast');
+    const icon = document.getElementById('toastIcon');
+    const msg = document.getElementById('toastMessage');
+
+    toast.classList.remove('success', 'error', 'show');
+
+    msg.textContent = message;
+
+    if (type === 'success') {
+        toast.classList.add('success');
+        icon.className = 'bx bxs-check-circle';
+    } else {
+        toast.classList.add('error');
+        icon.className = 'bx bxs-error';
+    }
+
+    // Hiển thị
+    setTimeout(() => toast.classList.add('show'), 100);
+    setTimeout(() => toast.classList.remove('show'), type === 'error' ? 5000 : 3000);
 }
 
 function openModal(product = null) {
@@ -120,7 +143,8 @@ function openModal(product = null) {
         title.textContent = 'Sửa sản phẩm';
         form.name.value = product.name;
         form.category_id.value = product.category_id;
-        form.price.value = product.price || 0; 
+        form.price.value = product.price || 0;
+        form.description.value = product.description || '';
         document.getElementById('isActiveCheckbox').checked = product.is_active == 1;
 
         if (product.colors && product.colors.length > 0) {
@@ -153,9 +177,9 @@ function openModal(product = null) {
 function addColorField(name = '', code = '#000000', sizes = '') {
     const container = document.getElementById('colorContainer');
     const div = document.createElement('div');
-    div.className = 'color-item';
+    div.className = 'color-item mt-3';
     div.innerHTML = `
-        <button type="button" class="btn btn-sm btn-danger remove-color">×</button>
+        <button type="button" class="btn btn-sm btn-danger remove-color position-absolute" style="top: -10px; right: -10px; z-index: 10;">×</button>
         <div class="row g-3">
             <div class="col-md-5">
                 <label>Tên màu</label>
@@ -179,9 +203,9 @@ function addColorField(name = '', code = '#000000', sizes = '') {
 function addImageField(imageUrl = '', isPrimary = false, imageId = null) {
     const container = document.getElementById('imageContainer');
     const div = document.createElement('div');
-    div.className = 'image-item';
+    div.className = 'image-item mt-3 position-relative';
     div.innerHTML = `
-        <button type="button" class="btn btn-sm btn-danger remove-image">×</button>
+        <button type="button" class="btn btn-sm btn-danger remove-image position-absolute" style="top: -10px; right: -10px; z-index: 10;">×</button>
         <div class="form-check">
             <input class="form-check-input" type="radio" name="primary_image" value="${imageIndex}" ${isPrimary ? 'checked' : ''}>
             <label class="form-check-label">Ảnh chính</label>
@@ -193,7 +217,7 @@ function addImageField(imageUrl = '', isPrimary = false, imageId = null) {
     `;
     container.appendChild(div);
     div.querySelector('.remove-image').onclick = () => div.remove();
-    div.querySelector('input[type="file"]').onchange = function(e) {
+    div.querySelector('input[type="file"]').onchange = function (e) {
         if (e.target.files[0]) {
             div.querySelector('img').src = URL.createObjectURL(e.target.files[0]);
             div.querySelector('img').style.display = 'block';
@@ -209,23 +233,32 @@ async function editProduct(id) {
         if (result.success && result.data[0]) {
             openModal(result.data[0]);
         } else {
-            alert('Không tìm thấy sản phẩm');
+            showToast('Không tìm thấy sản phẩm!', 'error');
         }
     } catch (err) {
-        alert('Lỗi tải thông tin sản phẩm');
+        showToast('Lỗi tải thông tin sản phẩm!', 'error');
         console.error(err);
     }
 }
 
 async function deleteProduct(id) {
-    if (!confirm('Xóa sản phẩm này? Tất cả màu, ảnh, size sẽ bị xóa vĩnh viễn!')) return;
+    const confirmed = await showConfirm('Xóa sản phẩm?', 'Tất cả dữ liệu liên quan sẽ bị xóa vĩnh viễn!');
+
+    if (!confirmed) return;
+
     try {
         const res = await fetch(`${BASE_URL}/api/product/delete_product.php?id=${id}`, { method: 'DELETE' });
         const data = await res.json();
-        alert(data.message || (data.success ? 'Xóa thành công!' : 'Xóa thất bại'));
-        if (data.success) loadProducts();
+
+        if (data.success) {
+            showToast(data.message || 'Xóa sản phẩm thành công!', 'success');
+            loadProducts();
+        } else {
+            showToast(data.message || 'Xóa sản phẩm thất bại!', 'error');
+        }
     } catch (err) {
-        alert('Lỗi kết nối');
+        showToast('Lỗi kết nối server!', 'error');
+        console.error(err);
     }
 }
 
@@ -243,24 +276,47 @@ async function handleSubmit(e) {
             method: 'POST',
             body: formData
         });
-
         const text = await res.text();
         let data;
         try {
             data = JSON.parse(text);
         } catch (e) {
-            console.error("Lỗi server:", text);
-            alert("Lỗi server! Kiểm tra console (F12)");
+            console.error("Server trả về lỗi:", text);
+            showToast('Lỗi server! Vui lòng thử lại.', 'error');
             return;
         }
 
-        alert(data.message || (data.success ? 'Thành công!' : 'Lỗi!'));
+        showToast(data.message || (data.success ? 'Lưu sản phẩm thành công!' : 'Lưu thất bại!'), data.success ? 'success' : 'error');
+
         if (data.success) {
             bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
             loadProducts();
         }
     } catch (err) {
-        alert('Lỗi kết nối');
+        showToast('Lỗi kết nối server!', 'error');
         console.error(err);
     }
+}
+
+function showConfirm(title = "Xác nhận", message = "Bạn có chắc chắn?") {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('confirmModal');
+        const confirmBtn = document.getElementById('confirmBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+
+        document.querySelector('.confirm-box h4').textContent = title;
+        document.querySelector('.confirm-box p').innerHTML = message;
+
+        modal.style.display = 'flex';
+
+        const close = () => {
+            modal.style.display = 'none';
+            confirmBtn.onclick = null;
+            cancelBtn.onclick = null;
+        };
+
+        confirmBtn.onclick = () => { close(); resolve(true); };
+        cancelBtn.onclick = () => { close(); resolve(false); };
+        modal.onclick = (e) => { if (e.target === modal) { close(); resolve(false); } };
+    });
 }

@@ -230,17 +230,13 @@
     display: block;
 }
 
-/* Container các nút hành động cùng hàng */
+/* Container các nút hành động */
 .action-buttons {
     display: flex;
     flex-direction: row;
-    /* Hiển thị các nút trên cùng một hàng */
     flex-wrap: wrap;
-    /* Cho phép nút xuống dòng nếu không đủ không gian */
     gap: 0.75rem;
-    /* Khoảng cách giữa các nút */
     justify-content: space-between;
-    /* Phân bố đều các nút trên hàng */
 }
 
 .action-buttons .btn-add-cart,
@@ -248,72 +244,54 @@
 .action-buttons .btn-zalo {
     display: flex;
     flex-direction: column;
-    /* Xếp chữ và dòng phụ theo chiều dọc bên trong nút */
     justify-content: center;
     align-items: center;
     flex: 1;
-    /* Mỗi nút chiếm không gian đều nhau */
     min-width: 150px;
-    /* Chiều rộng tối thiểu để đảm bảo nút không quá nhỏ */
     padding: 1rem 1rem;
-    /* Padding để có thêm không gian */
     min-height: 80px;
-    /* Chiều cao tối thiểu để nút cao hơn */
     border-radius: 8px;
-    /* Bo góc nhất quán */
     font-size: 0.95rem;
-    /* Kích thước chữ để vừa vặn */
     font-weight: 600;
-    /* Chữ đậm */
     text-align: center;
     text-decoration: none;
     transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
     overflow: hidden;
-    /* Ngăn chữ tràn ra ngoài */
     box-sizing: border-box;
-    /* Đảm bảo padding được tính trong chiều rộng/cao */
 }
 
 .action-buttons .btn-add-cart {
     background-color: #174DAF;
-    /* Màu xanh dương */
     color: #fff;
     border: none;
 }
 
 .action-buttons .btn-add-cart:hover {
     background-color: #133f8c;
-    /* Xanh dương đậm hơn khi hover */
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .action-buttons .btn-buy {
     background-color: #fff;
-    /* Màu trắng */
     color: #174DAF;
     border: 2px solid #174DAF;
-    /* Viền xanh dương */
 }
 
 .action-buttons .btn-buy:hover {
     background-color: #f1f1f1;
-    /* Xám nhạt khi hover */
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .action-buttons .btn-zalo {
     background-color: #FFC107;
-    /* Màu vàng giống ảnh */
     color: #333;
-    /* Chữ tối hơn để tương phản với nền vàng */
     border: none;
 }
 
 .action-buttons .btn-zalo:hover {
     background-color: #FFB300;
-    /* Vàng đậm hơn khi hover */
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -321,31 +299,23 @@
 .action-buttons .btn-zalo .zalo-content {
     display: flex;
     flex-direction: row;
-    /* Biểu tượng và chữ "Chat qua Zalo" theo hàng ngang */
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    /* Khoảng cách giữa biểu tượng và chữ */
 }
 
 .action-buttons .btn-subtext {
     font-size: 0.8rem;
-    /* Kích thước chữ nhỏ hơn cho dòng phụ */
     font-weight: 400;
-    /* Chữ nhẹ hơn cho dòng phụ */
     color: #555;
-    /* Màu tối hơn cho dòng phụ, giống ảnh */
     opacity: 0.9;
-    /* Hơi mờ để tạo thứ tự ưu tiên */
     margin-top: 0.25rem;
-    /* Khoảng cách phía trên */
 }
 
 .action-buttons .zalo-icon {
     width: 32px;
     height: 32px;
 }
-
 
 .btn-add-cart {
     background-color: #FFD000 !important;
@@ -417,13 +387,9 @@
 
 .action-buttons .btn {
     display: inline-flex;
-    /* Flexbox cho icon + text */
     align-items: center;
-    /* Căn giữa theo chiều dọc */
     justify-content: center;
-    /* Căn giữa theo chiều ngang */
     gap: 8px;
-    /* Khoảng cách giữa icon và chữ */
     height: 52px;
     border-radius: 8px;
     font-size: 16px;
@@ -432,7 +398,6 @@
     padding: 0 20px;
 }
 
-/* Nút Thêm vào giỏ hàng */
 .btn-add-cart {
     border: 2px solid #007bff;
     color: #007bff;
@@ -445,7 +410,6 @@
     color: white;
 }
 
-/* Nút Mua ngay */
 .btn-buy {
     background: #ffc107;
     border: none;
@@ -458,7 +422,6 @@
     color: #000;
 }
 
-/* Icon trong nút */
 .action-buttons .btn i {
     font-size: 1.25em;
     display: inline-flex;
@@ -473,12 +436,9 @@
     text-decoration: underline;
 }
 
-/* Cập nhật màu giá */
 .price-range .price {
     color: #174DAF;
 }
-
-/* Điều chỉnh cột để loại bỏ khoảng trắng thừa */
 .row.no-gutters {
     margin-right: 0;
     margin-left: 0;
@@ -486,48 +446,34 @@
 
 .col-12.col-md-6.pr-md-0 {
     padding-right: 0;
-    /* Loại bỏ padding-right trên màn hình md */
 }
 
 .col-12.col-md-6.pl-md-2 {
     padding-left: 10px;
-    /* Giảm padding-left để gần hơn */
 }
 
 .section-title-container {
     display: flex;
-    /* Cho tiêu đề và đường kẻ nằm ngang */
     align-items: center;
-    /* Căn giữa theo chiều dọc */
     margin-bottom: 1rem;
-    /* Khoảng cách bên dưới */
 }
 
 .section-title {
     font-family: 'Archivo', sans-serif;
-    /* Dùng font nhất quán */
     font-size: 1.5rem;
-    /* Kích thước chữ vừa phải cho cột */
     font-weight: 700;
-    /* Chữ đậm */
     color: #333;
     margin: 0;
     white-space: nowrap;
-    /* Không cho chữ "Mô tả sản phẩm" xuống dòng */
     padding-right: 1rem;
-    /* Khoảng cách giữa chữ và đường kẻ */
 }
 
 .title-divider {
     flex-grow: 1;
-    /* Cho đường kẻ lấp đầy không gian còn lại */
     height: 2px;
-    /* Độ dày đường kẻ */
     background-color: #ccc;
-    /* Màu đường kẻ giống trong ảnh */
 }
 
-/* Kiểu chữ cho nội dung mô tả (bạn có thể tùy chỉnh) */
 .product-description-content {
     font-size: 1rem;
     line-height: 1.6;
@@ -536,7 +482,6 @@
 
 .policy-wrapper {
     background-color: #f0f2ff;
-    /* Màu nền xanh nhạt giống ảnh */
     border-radius: 10px;
     padding: 25px 20px;
 }
@@ -551,7 +496,6 @@
     width: 50px;
     height: 50px;
     border: 2px solid #000;
-    /* Khung viền đen đậm */
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -559,11 +503,9 @@
     font-size: 26px;
     color: #000;
     flex-shrink: 0;
-    /* Không bị co lại khi màn hình nhỏ */
     background-color: transparent;
 }
 
-/* Style riêng cho chữ FREE SHIP trong khung */
 .policy-icon-box.text-box {
     flex-direction: column;
     font-size: 11px;
@@ -581,7 +523,6 @@
 
 .policy-title {
     font-weight: 600;
-    /* Chữ không quá đậm nhưng rõ ràng */
     display: block;
 }
 
@@ -590,102 +531,92 @@
     margin-top: 2px;
 }
 
-/* Tùy chỉnh icon (dấu + / -) */
 .product-info-accordion .accordion-button::after {
-    /* Dùng content để vẽ dấu + */
     content: '+';
     font-family: 'Courier New', Courier, monospace;
-    /* Dùng font đơn giản */
     font-size: 2rem;
     font-weight: 300;
     color: #555;
     background-image: none;
-    /* Xóa icon chevron mặc định của Bootstrap */
     transform: none;
-    /* Xóa xoay mặc định */
     margin-left: auto;
-    /* Đẩy qua phải */
     line-height: 1;
     transition: none;
-    /* Tắt transition xoay */
 }
 
-/* Khi nút không bị thu gọn (đang mở) */
 .product-info-accordion .accordion-button:not(.collapsed) {
     background-color: #e9ecff;
-    /* Màu nền đậm hơn 1 chút khi mở */
     color: #000;
 }
 
 .product-info-accordion .accordion-button:not(.collapsed)::after {
-    /* Khi mở, đổi thành dấu - */
     content: '−';
-    /* Ký tự dấu trừ (khác với gạch nối) */
     transform: none;
-    /* Vẫn không xoay */
 }
 
 .product-info-accordion .accordion-body {
     padding: 1rem 1.5rem 1.5rem 1.5rem;
-    /* Padding cho nội dung */
     background-color: #f7f7ff;
-    /* Nền nhạt */
     border-top: 1px solid #e0e0ff;
-    /* Thêm 1 đường kẻ mỏng ngăn cách */
     font-size: 1rem;
     line-height: 1.6;
     color: #555;
+}
+
+.quantity-group {
+    width: fit-content; 
+}
+
+.quantity-group button {
+    width: 32px;       
+    padding: 4px 0;    
+}
+
+.quantity-group input {
+    width: 40px !important;     
+    max-width: 40px !important;
+    flex: 0 0 40px !important;  
+    min-width: 40px !important; 
+    padding: 4px 2px;
+    text-align: center;
 }
 
 .section-divider {
     border: 0;
     height: 2px;
     background-color: #ccc;
-    /* Màu xám nhạt */
 }
 
 .product-info-accordion>.accordion-item>.accordion-collapse>.accordion-body {
     padding: 1rem;
-    /* Giảm padding một chút (hoặc đặt 0 nếu muốn) */
     background-color: #fff;
-    /* Nền trắng */
     border-top: 1px solid #e0e0ff;
 }
 
-/* Bắt đầu style cho accordion lồng nhau */
 .nested-accordion .accordion-item {
     border: 1px solid #e0e0ff;
-    /* Viền mỏng */
     border-radius: 4px;
-    /* Bo góc nhẹ */
     margin-bottom: 0.5rem;
     background-color: #f7f7ff;
-    /* Nền nhạt */
 }
 
 .nested-accordion .accordion-item:last-child {
     margin-bottom: 0;
 }
 
-/* Nút bấm của accordion con (nhỏ hơn) */
 .nested-accordion .accordion-button {
     font-size: 0.95rem;
-    /* Font nhỏ hơn */
     font-weight: 500;
-    /* Nhẹ hơn */
     color: #333;
     background-color: #fdfdff;
-    /* Nền trắng hơn 1 chút */
     padding: 0.75rem 1rem;
     box-shadow: none !important;
 }
 
-/* Icon + / - cho mục con (giống cha, nhưng nhỏ hơn) */
 .nested-accordion .accordion-button::after {
     content: '+';
     font-family: 'Courier New', Courier, monospace;
     font-size: 1.5rem;
-    /* Icon nhỏ hơn */
     font-weight: 300;
     color: #555;
     background-image: none;
@@ -693,10 +624,8 @@
     margin-left: auto;
     line-height: 1;
     transition: none;
-    /* Giống style của bạn */
 }
 
-/* Khi mục con được mở */
 .nested-accordion .accordion-button:not(.collapsed) {
     background-color: #f7f7ff;
     color: #000;
@@ -707,7 +636,6 @@
     transform: none;
 }
 
-/* Body của mục con (câu trả lời) */
 .nested-accordion .accordion-body {
     background-color: #fff;
     padding: 1rem;
@@ -716,17 +644,12 @@
     border-top: 1px solid #e0e0ff;
 }
 
-/* ============================================== */
-/* ===== CSS CHO PHẦN ĐÁNH GIÁ SẢN PHẨM ===== */
-/* ============================================== */
 .product-reviews-section {
     font-family: 'Archivo', sans-serif;
     color: #333;
     margin-bottom: 3rem;
-    /* Khoảng cách với footer */
 }
 
-/* Tiêu đề & Đánh giá tổng quan */
 .reviews-header {
     display: flex;
     flex-wrap: wrap;
@@ -765,7 +688,6 @@
     padding: 0.5rem 1rem;
     border-radius: 8px;
     margin-left: 1rem;
-    /* Khoảng cách với tiêu đề */
 }
 
 .rating-score {
@@ -783,10 +705,8 @@
     font-size: 0.9rem;
     color: #777;
     margin-left: auto;
-    /* Đẩy sang phải */
 }
 
-/* Cột Lọc (Bên trái) */
 .review-filters {
     background-color: #fcfcfc;
     border: 1px solid #eee;
@@ -829,7 +749,6 @@
     background-color: #fff;
     color: #555;
     border-radius: 20px;
-    /* Bo tròn */
     padding: 0.3rem 0.8rem;
     font-size: 0.9rem;
     transition: all 0.2s;
@@ -838,9 +757,7 @@
 .btn-filter-star:hover,
 .btn-filter-star.active {
     background-color: #fff8e1;
-    /* Vàng nhạt */
     border-color: #ffc107;
-    /* Vàng */
     color: #000;
 }
 
@@ -854,7 +771,6 @@
     font-size: 0.95rem;
 }
 
-/* Cột Danh sách đánh giá (Bên phải) */
 .review-list .review-item {
     border-bottom: 1px solid #eee;
     padding-bottom: 1.5rem;
@@ -1039,13 +955,11 @@
 
 .pagination .page-item#prevPage .page-link::before {
     content: "\e900";
-    /* Icon mũi tên trái từ Boxicons */
     font-family: 'boxicons' !important;
 }
 
 .pagination .page-item#nextPage .page-link::after {
     content: "\e901";
-    /* Icon mũi tên phải từ Boxicons */
     font-family: 'boxicons' !important;
 }
 
@@ -1108,18 +1022,14 @@
 @media (max-width: 991.98px) {
     .action-buttons {
         gap: 12px;
-        /* Giảm khoảng cách */
         justify-content: center;
     }
 
     .action-buttons .btn {
         min-width: 180px;
-        /* Giảm độ rộng */
         min-height: 52px;
-        /* Giảm chiều cao */
         padding: 8px 16px;
         font-size: 14px;
-        /* Chữ nhỏ hơn */
     }
 
     .action-buttons .btn-subtext {
@@ -1132,26 +1042,20 @@
     }
 }
 
-/* Di động (max-width: 768px) */
 @media (max-width: 768px) {
     .action-buttons {
         flex-direction: column;
-        /* Xếp dọc */
         align-items: stretch;
-        /* Nút chiếm toàn chiều rộng */
         gap: 10px;
         margin: 15px 0;
     }
 
     .action-buttons .btn {
         min-width: 100%;
-        /* Chiếm toàn chiều rộng */
         min-height: 48px;
-        /* Đủ lớn để chạm */
         padding: 10px 12px;
         font-size: 13px;
         border-radius: 6px;
-        /* Bo góc nhỏ hơn */
     }
 
     .action-buttons .btn-subtext {
