@@ -12,6 +12,8 @@ class News
     public $author;
     public $is_published;
     public $content;
+    public $new_category_id;
+    public $is_featured = 0;
 
     public function __construct($db)
     {
@@ -20,10 +22,11 @@ class News
 
     public function get()
     {
-        $query = "SELECT a.*, c.content 
-                  FROM {$this->table} a 
-                  LEFT JOIN {$this->content_table} c ON a.id = c.article_id 
-                  ORDER BY a.created_at DESC";
+        $query = "SELECT a.*, c.content, cat.name as category_name
+          FROM {$this->table} a 
+          LEFT JOIN {$this->content_table} c ON a.id = c.article_id 
+          LEFT JOIN news_categories cat ON a.new_category_id = cat.new_category_id
+          ORDER BY a.created_at DESC";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -47,8 +50,9 @@ class News
 
         try {
             $query = "INSERT INTO {$this->table} 
-                     SET title = :title, slug = :slug, thumbnail = :thumbnail, 
-                         author = :author, is_published = :is_published";
+                 SET title = :title, slug = :slug, thumbnail = :thumbnail, 
+                     author = :author, is_published = :is_published,
+                     new_category_id = :new_category_id, is_featured = :is_featured";
             $stmt = $this->conn->prepare($query);
 
             $this->title = htmlspecialchars(strip_tags($this->title));
@@ -60,6 +64,8 @@ class News
             $stmt->bindParam(':thumbnail', $this->thumbnail);
             $stmt->bindParam(':author', $this->author);
             $stmt->bindParam(':is_published', $this->is_published, PDO::PARAM_INT);
+            $stmt->bindParam(':new_category_id', $this->new_category_id, PDO::PARAM_INT);
+            $stmt->bindParam(':is_featured', $this->is_featured, PDO::PARAM_INT);
 
             if (!$stmt->execute()) return false;
             $article_id = $this->conn->lastInsertId();
@@ -98,12 +104,10 @@ class News
             }
 
             $query = "UPDATE {$this->table} 
-                 SET title = :title, 
-                     slug = :slug, 
-                     thumbnail = :thumbnail,
-                     author = :author, 
-                     is_published = :is_published
-                 WHERE id = :id";
+            SET title = :title, slug = :slug, thumbnail = :thumbnail,
+                author = :author, is_published = :is_published,
+                new_category_id = :new_category_id, is_featured = :is_featured
+            WHERE id = :id";
 
             $stmt = $this->conn->prepare($query);
 
@@ -117,6 +121,8 @@ class News
             $stmt->bindParam(':author', $this->author);
             $stmt->bindParam(':is_published', $this->is_published, PDO::PARAM_INT);
             $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+            $stmt->bindParam(':new_category_id', $this->new_category_id, PDO::PARAM_INT);
+            $stmt->bindParam(':is_featured', $this->is_featured, PDO::PARAM_INT);
 
             if (!$stmt->execute()) {
                 throw new Exception("Cập nhật bài viết thất bại");

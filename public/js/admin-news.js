@@ -30,7 +30,7 @@ async function initEditor(data = { blocks: [] }) {
                             }
                             return {
                                 success: 1,
-                                file: { url: PUBLIC_URL + res.path }  // Đúng: /MayMacCTH/public/assets/...
+                                file: { url: PUBLIC_URL + res.path }  
                             };
                         },
                         uploadByUrl(url) {
@@ -92,6 +92,7 @@ async function openModal(id = null) {
     document.getElementById('thumbnailPreview').innerHTML = '';
 
     await initEditor();
+    await loadCategories();
 
     document.getElementById('modalTitle').textContent = id ? 'Sửa bài viết' : 'Viết bài mới';
     if (id) await loadArticleForEdit(id);
@@ -126,6 +127,8 @@ async function loadArticleForEdit(id) {
         document.querySelector('[name="author"]').value = a.author || 'Admin CTH';
         document.querySelector('[name="is_published"]').checked = a.is_published == 1;
         document.getElementById('article_id').value = a.id;
+        document.querySelector('[name="new_category_id"]').value = a.new_category_id || '';
+        document.querySelector('[name="is_featured"]').checked = a.is_featured == 1;
 
         if (a.thumbnail) {
             document.getElementById('thumbnailPreview').innerHTML = 
@@ -199,3 +202,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btnAdd').addEventListener('click', () => openModal());
     loadNews();
 });
+
+async function loadCategories() {
+    try {
+        const res = await fetch('/MayMacCTH/api/news/get_news_categories.php');
+        const data = await res.json();
+        const select = document.querySelector('[name="new_category_id"]');
+        select.innerHTML = '<option value="">-- Chọn danh mục --</option>';
+        if (data.success && data.data) {
+            data.data.forEach(cat => {
+                select.innerHTML += `<option value="${cat.new_category_id}">${cat.name}</option>`;
+            });
+        }
+    } catch (err) {
+        console.error('Lỗi load danh mục:', err);
+    }
+}

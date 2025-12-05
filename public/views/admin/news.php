@@ -75,6 +75,20 @@ require_once 'auth_middleware.php';
                                             <input type="text" class="form-control" name="author" value="Admin CTH">
                                         </div>
 
+                                        <div class="mb-3">
+                                            <label class="form-label">Danh mục tin tức</label>
+                                            <select class="form-select" name="new_category_id">
+                                                <option value="">-- Chọn danh mục --</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" name="is_featured" id="is_featured" value="1">
+                                            <label class="form-check-label text-warning fw-bold" for="is_featured">
+                                                <i class="bi bi-star-fill"></i> Tin tức nổi bật 
+                                            </label>
+                                        </div>
+
                                         <div class="form-check mb-3">
                                             <input class="form-check-input" type="checkbox" name="is_published" id="is_published" value="1" checked>
                                             <label class="form-check-label" for="is_published">Xuất bản ngay</label>

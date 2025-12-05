@@ -71,6 +71,8 @@ class NewsController
         $this->news->author        = trim($_POST['author'] ?? 'Admin CTH');
         $this->news->is_published  = isset($_POST['is_published']) ? 1 : 0;
         $this->news->content       = $_POST['content'];
+        $this->news->new_category_id   = (int)($_POST['new_category_id'] ?? 0) ?: null;
+        $this->news->is_featured   = isset($_POST['is_featured']) ? 1 : 0;
 
         $this->news->thumbnail = $this->handleThumbnailUpload();
 
@@ -93,6 +95,10 @@ class NewsController
         $this->news->is_published  = isset($_POST['is_published']) ? 1 : 0;
         $this->news->content       = $_POST['content'] ?? $article['content'];
         $this->news->thumbnail     = $this->handleThumbnailUpload($article['thumbnail']);
+        $this->news->new_category_id = !empty($_POST['new_category_id']) 
+            ? (int)$_POST['new_category_id'] 
+            : ($article['new_category_id'] ?? null);
+        $this->news->is_featured = isset($_POST['is_featured']) ? 1 : ($article['is_featured'] ?? 0);
 
         if ($this->news->update()) {
             return ["success" => true, "message" => "Cập nhật thành công!"];
