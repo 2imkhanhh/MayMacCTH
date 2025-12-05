@@ -166,15 +166,6 @@
     color: #ff3b3b;
 }
 
-/* Màu sắc */
-.color-dot {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    display: inline-block;
-    border: 1px solid #ddd;
-}
-
 /* Card hover */
 .product-card {
     border-radius: 15px; 
@@ -226,15 +217,6 @@
     white-space: nowrap;
     display: inline-block;
     margin-top: 2px;
-}
-
-/* COLOR DOTS */
-.color-dot {
-    width: 15px;
-    height: 15px;
-    display: inline-block;
-    border-radius: 50%;
-    border: 1px solid #ddd;
 }
 
 .hover-icons {
@@ -313,7 +295,7 @@
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    border: 2px solid #000066;
+    /* border: 2px solid #000066; */
     box-shadow: 0 0 6px rgba(0,0,0,0.3);
     cursor: pointer;
     transition: all 0.2s ease;

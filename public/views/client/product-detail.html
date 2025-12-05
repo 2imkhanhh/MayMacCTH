@@ -225,8 +225,8 @@
                             <div><strong>Danh mục:</strong> <span id="productCategory">-</span></div>
                         </div>
 
-                        <!-- Màu sắc (nếu có) -->
-                        <div class="color-options mb-4" id="colorOptions" style="display: none;">
+                        <!-- Màu sắc -->
+                        <div class="color-options mb-4 text-start" id="colorOptions" style="display: none;">
                             <h6 class="fw-bold mb-2">Màu sắc</h6>
                             <div class="color-swatches d-flex gap-2" id="colorSwatches"></div>
                         </div>
@@ -304,7 +304,7 @@
                 <div class="overall-rating">
                     <span class="rating-score" id="avgRating">0.0</span>
                     <div class="rating-stars text-warning" id="avgStars">
-                        <i class='bx bx-star'></i> <!-- JS sẽ thay nội dung -->
+                        <i class='bx bx-star'></i> 
                     </div>
                     <span class="review-count-text" id="reviewCountText">Dựa trên 0 khách hàng</span>
                 </div>
@@ -722,11 +722,15 @@
 
                                 <!-- MÀU SẮC -->
                                 ${p.colors && p.colors.length ? `
-                                <div class="color-options mb-4 text-start">
-                                    <h6 class="fw-bold mb-2 ">Màu sắc</h6>
-                                    <div class="color-swatches d-flex gap-2 flex-wrap" id="colorSwatches"></div>
-                                </div>` : ''}
-
+                                    <div class="color-options mb-4 text-start" id="colorOptions" style="display: none;">
+                                        <h6 class="fw-bold mb-2">Màu sắc</h6>
+                                        
+                                        <div class="color-swatches d-inline-flex flex-wrap gap-2 p-2 rounded" 
+                                            id="colorSwatches" 
+                                            style="background-color: #fffaf0;">
+                                            </div>
+                                    </div>` : ''
+                                }
                                 <!-- KÍCH THƯỚC -->
                                 <div class="size-options mb-4">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -842,32 +846,31 @@
 
                 //MÀU + SIZE 
                 if (p.colors && p.colors.length) {
+                    document.getElementById('colorOptions').style.display = 'block';
                     const colorSwatches = document.getElementById('colorSwatches');
+                    colorSwatches.innerHTML = ''; 
+
                     p.colors.forEach((color, idx) => {
                         const btn = document.createElement('button');
                         btn.type = 'button';
-                        btn.className = 'btn border position-relative';
+                        btn.className = 'btn btn-color-circle position-relative'; 
+                        
                         btn.style.backgroundColor = color.color_code || '#ccc';
-                        btn.style.width = '44px';
-                        btn.style.height = '44px';
-                        btn.title = color.color_name;
-                        if (idx === 0) btn.classList.add('active', 'border-primary');
+                        btn.title = color.color_name; 
 
-                        const span = document.createElement('span');
-                        span.className = 'position-absolute top-50 start-50 translate-middle text-white fw-bold';
-                        span.style.fontSize = '10px';
-                        span.textContent = color.color_name.substring(0, 3).toUpperCase();
-                        btn.appendChild(span);
+                        if (idx === 0) btn.classList.add('active');
 
                         btn.onclick = () => {
-                            colorSwatches.querySelectorAll('button').forEach(b => b.classList.remove('active', 'border-primary'));
-                            btn.classList.add('active', 'border-primary');
+                            colorSwatches.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                            btn.classList.add('active');
                             updateSizes(color.sizes || []);
                         };
                         colorSwatches.appendChild(btn);
                     });
+                    
                     updateSizes(p.colors[0].sizes || []);
                 } else {
+                    document.getElementById('colorOptions').style.display = 'none';
                     document.getElementById('sizeButtons').innerHTML = '<span class="text-muted">Không có size</span>';
                 }
 

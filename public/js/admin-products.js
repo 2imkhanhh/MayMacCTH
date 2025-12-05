@@ -242,7 +242,7 @@ async function editProduct(id) {
 }
 
 async function deleteProduct(id) {
-    const confirmed = await showConfirm('Xóa sản phẩm?', 'Tất cả dữ liệu liên quan sẽ bị xóa vĩnh viễn!');
+    const confirmed = await showConfirm('Xóa sản phẩm?');
 
     if (!confirmed) return;
 
