@@ -22,7 +22,7 @@ class News
 
     public function get()
     {
-        $query = "SELECT a.*, c.content, cat.name as category_name
+        $query = "SELECT a.*, c.content, cat.name as category_name, cat.new_category_id AS category_id
           FROM {$this->table} a 
           LEFT JOIN {$this->content_table} c ON a.id = c.article_id 
           LEFT JOIN news_categories cat ON a.new_category_id = cat.new_category_id
@@ -34,7 +34,7 @@ class News
 
     public function getById($id)
     {
-        $query = "SELECT a.*, c.content 
+        $query = "SELECT a.*, c.content, cat.name AS category_name
                   FROM {$this->table} a 
                   LEFT JOIN {$this->content_table} c ON a.id = c.article_id 
                   WHERE a.id = :id";
@@ -164,7 +164,7 @@ class News
 
     public function getBySlug($slug)
     {
-        $query = "SELECT a.*, c.content 
+        $query = "SELECT a.*, c.content, cat.name AS category_name
               FROM {$this->table} a 
               LEFT JOIN {$this->content_table} c ON a.id = c.article_id 
               WHERE a.slug = :slug AND a.is_published = 1 

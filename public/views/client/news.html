@@ -243,12 +243,8 @@
                 <!-- Tin tức -->
                 <div class="col-6 col-md-6 col-lg-2">
                     <p class="footer-title">TIN TỨC</p>
-                    <ul class="footer-links">
-                        <li><a href="#">Xu hướng thời trang</a></li>
-                        <li><a href="#">Sức khỏe & Đời sống</a></li>
-                        <li><a href="#">Bí mật Gạo House</a></li>
-                        <li><a href="#">Mẹo hay MAY MẶC</a></li>
-                        <li><a href="#">Tin tức</a></li>
+                    <ul class="footer-links" id="footerNewsCategories">
+                        <li class="text-muted small">Đang tải...</li>
                     </ul>
                 </div>
 
@@ -373,6 +369,8 @@
                 <p class="mt-3">Đang tải tin tức...</p>
             </div>`;
 
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryFilterId = urlParams.get('id');
             async function loadNews() {
                 newsContainer.innerHTML = loadingHTML;
 
@@ -389,15 +387,30 @@
                         return;
                     }
 
-                    allArticles = result.data.filter(a => a.is_published == 1);
+                    let filteredArticles = result.data.filter(a => a.is_published == 1);
+                    if (categoryFilterId) {
+                        const catId = parseInt(categoryFilterId);
+                        filteredArticles = filteredArticles.filter(a =>
+                            a.new_category_id != null && parseInt(a.new_category_id) === catId
+                        );
+
+                        if (filteredArticles.length > 0) {
+                            const categoryName = filteredArticles[0].category_name || 'Danh mục';
+                            const titleEl = document.querySelector('.news-section h2');
+                            if (titleEl) {
+                                titleEl.insertAdjacentHTML('afterend',
+                                    `<p class="text-center text-primary fs-5 mb-4"><strong>› ${categoryName}</strong></p>`
+                                );
+                            }
+                        }
+                    }
+
+                    allArticles = filteredArticles;
                     renderNews(currentPage);
 
                 } catch (err) {
                     console.error('Lỗi tải tin tức:', err);
-                    newsContainer.innerHTML = `
-                    <div class="col-12 text-center py-5 text-danger">
-                        Lỗi tải dữ liệu. Vui lòng thử lại sau!
-                    </div>`;
+                    newsContainer.innerHTML = `<div class="col-12 text-center py-5 text-danger">Lỗi tải dữ liệu!</div>`;
                 }
             }
 
@@ -440,7 +453,6 @@
                                     <i class="bi bi-image fs-1 text-muted"></i>
                             </div>`
                     }
-                            
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title mb-2">
                                     <a href="${BASE_URL}/tin-tuc/${article.slug}" class="news-title-link fw-bold text-decoration-none">
@@ -654,20 +666,49 @@
             }
         }
         document.querySelector('.news-section').addEventListener('click', function (e) {
-            // Nhấn vào tiêu đề hoặc nút "Xem chi tiết"
             const link = e.target.closest('a[href*="/tin-tuc/"]');
             if (!link) return;
 
             e.preventDefault();
 
-            // Lấy slug từ href: /tin-tuc/top-10-mau-ao-dep-2025 → top-10-mau-ao-dep-2025
             const href = link.getAttribute('href');
             const slug = href.split('/').pop();
 
             if (slug && slug !== '' && slug !== 'tin-tuc') {
-                // ĐÚNG ĐƯỜNG DẪN CỦA BẠN:
                 window.location.href = `${BASE_URL}/public/views/client/news-detail.html?slug=${encodeURIComponent(slug)}`;
             }
+        });
+        async function loadFooterNewsCategories() {
+            const container = document.getElementById('footerNewsCategories');
+            if (!container) return;
+
+            try {
+                const res = await fetch('/MayMacCTH/api/news/get_news_categories.php');
+                const result = await res.json();
+
+                // Xóa nội dung cũ
+                container.innerHTML = '';
+
+                if (result.success && result.data && result.data.length > 0) {
+                    result.data.forEach(cat => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+
+                        a.href = `/MayMacCTH/public/views/client/news.html?id=${cat.id}`;
+                        a.textContent = cat.name;
+                        li.appendChild(a);
+                        container.appendChild(li);
+                    });
+                } else {
+                    container.innerHTML = '<li class="text-muted small">Chưa có danh mục</li>';
+                }
+            } catch (err) {
+                console.error('Lỗi load danh mục footer:', err);
+                container.innerHTML = '<li class="text-danger small">Lỗi tải danh mục</li>';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFooterNewsCategories();
         });
     </script>
 </body>

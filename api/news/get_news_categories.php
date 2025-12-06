@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../config/connect.php';
 
 try {
     $db = (new Database())->getConnection();
-    $stmt = $db->query("SELECT new_category_id, name FROM news_categories ORDER BY name");
+    $stmt = $db->query("SELECT new_category_id AS id, name FROM news_categories ORDER BY name");
     $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     echo json_encode(["success" => true, "data" => $categories]);

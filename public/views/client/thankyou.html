@@ -270,12 +270,8 @@
                 <!-- Tin tức -->
                 <div class="col-6 col-md-6 col-lg-2">
                     <p class="footer-title">TIN TỨC</p>
-                    <ul class="footer-links">
-                        <li><a href="#">Xu hướng thời trang</a></li>
-                        <li><a href="#">Sức khỏe & Đời sống</a></li>
-                        <li><a href="#">Bí mật Gạo House</a></li>
-                        <li><a href="#">Mẹo hay MAY MẶC</a></li>
-                        <li><a href="#">Tin tức</a></li>
+                    <ul class="footer-links" id="footerNewsCategories">
+                        <li class="text-muted small">Đang tải...</li>
                     </ul>
                 </div>
 
@@ -437,6 +433,38 @@
                 el.style.display = totalItems > 0 ? 'block' : 'none';
             }
         }
+        async function loadFooterNewsCategories() {
+            const container = document.getElementById('footerNewsCategories');
+            if (!container) return;
+
+            try {
+                const res = await fetch('/MayMacCTH/api/news/get_news_categories.php');
+                const result = await res.json();
+
+                // Xóa nội dung cũ
+                container.innerHTML = '';
+
+                if (result.success && result.data && result.data.length > 0) {
+                    result.data.forEach(cat => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+
+                        a.href = `/MayMacCTH/public/views/client/news.html?id=${cat.id}`;
+                        a.textContent = cat.name;
+                        li.appendChild(a);
+                        container.appendChild(li);
+                    });
+                } else {
+                    container.innerHTML = '<li class="text-muted small">Chưa có danh mục</li>';
+                }
+            } catch (err) {
+                console.error('Lỗi load danh mục footer:', err);
+                container.innerHTML = '<li class="text-danger small">Lỗi tải danh mục</li>';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFooterNewsCategories();
+        });
     </script>
 </body>
 
