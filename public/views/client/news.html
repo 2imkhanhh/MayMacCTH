@@ -142,7 +142,14 @@
                     </li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/products.html">Sản phẩm</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/guide.html">Hướng dẫn</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="../../views/client/news.html">Tin tức</a></li>
+                    <li class="nav-item dropdown-custom">
+                        <a href="/MayMacCTH/public/views/client/news.html" class="nav-link text-warning d-flex align-items-center">
+                            Tin tức
+                        </a>
+                        <ul class="dropdown-menu-custom" id="newsCategoryDropdown">
+                            <li class="text-center py-3"><small class="text-muted">Đang tải danh mục...</small></li>
+                        </ul>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/contact.html">Liên hệ</a></li>
                 </ul>
 
@@ -210,7 +217,9 @@
                         Chúng tôi luôn trân trọng mọi ý kiến đóng góp của khách hàng,
                         không ngừng cải thiện để mang đến sản phẩm và dịch vụ tốt nhất.
                     </p>
-                    <button class="btn btn-warning footer-btn">ĐÓNG GÓP Ý KIẾN →</button>
+                    <a href="../../views/client/contact.html#feedbackForm" class="btn btn-warning footer-btn">
+                        ĐÓNG GÓP Ý KIẾN →
+                    </a>
                     <p class="footer-tax mt-3"><strong>MÃ SỐ THUẾ:</strong> 0202167805</p>
                 </div>
 
@@ -230,13 +239,8 @@
                 <!-- Sản phẩm -->
                 <div class="col-6 col-md-4 col-lg-2">
                     <p class="footer-title">SẢN PHẨM</p>
-                    <ul class="footer-links">
-                        <li><a href="#">Áo đồng phục</a></li>
-                        <li><a href="#">Áo thể thao</a></li>
-                        <li><a href="#">BST + Logo áo</a></li>
-                        <li><a href="#">Đồng phục công giáo</a></li>
-                        <li><a href="#">Đồng phục công sở</a></li>
-                        <li><a href="#">Đồng phục học tập</a></li>
+                    <ul class="footer-links" id="footerProductsCategories">
+                        <li class="text-muted small">Đang tải...</li>
                     </ul>
                 </div>
 
@@ -707,9 +711,73 @@
                 container.innerHTML = '<li class="text-danger small">Lỗi tải danh mục</li>';
             }
         }
+        async function loadFooterProductsCategories() {
+            const container = document.getElementById('footerProductsCategories');
+            if (!container) return;
+
+            try {
+                const res = await fetch('/MayMacCTH/api/category/get_category.php?t=' + Date.now());
+                const result = await res.json();
+
+                // Xóa nội dung cũ
+                container.innerHTML = '';
+
+                if (result.success && Array.isArray(result.data) && result.data.length > 0) {
+                    
+                    let categories = result.data;
+                    categories.sort((a, b) => a.name.localeCompare(b.name));
+
+                    categories.forEach(cat => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = `/MayMacCTH/public/views/client/products.html?category=${cat.category_id}`;
+                        a.textContent = cat.name.trim();
+                        li.appendChild(a);
+                        container.appendChild(li);
+                    });
+                } else {
+                    container.innerHTML = '<li class="text-muted small">Chưa có danh mục</li>';
+                }
+            } catch (err) {
+                console.error('Lỗi load danh mục footer:', err);
+                container.innerHTML = '<li class="text-danger small">Lỗi tải danh mục</li>';
+            }
+        }
         document.addEventListener('DOMContentLoaded', () => {
             loadFooterNewsCategories();
+            loadNewsCategoriesDropdown();
+            loadFooterProductsCategories();
         });
+        async function loadNewsCategoriesDropdown() {
+            const dropdown = document.getElementById('newsCategoryDropdown');
+            if (!dropdown) return;
+
+            try {
+                const res = await fetch('/MayMacCTH/api/news/get_news_categories.php');
+                const result = await res.json();
+
+                // Xóa loading
+                dropdown.innerHTML = '';
+
+                if (result.success && result.data && result.data.length > 0) {
+                    result.data.forEach(cat => {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+
+                        a.href = `/MayMacCTH/public/views/client/news.html?id=${cat.id}`;
+                        a.textContent = cat.name;
+
+                        li.appendChild(a);
+                        dropdown.appendChild(li);
+                    });
+                } else {
+                    dropdown.innerHTML = '<li class="text-center py-3"><small class="text-muted">Chưa có danh mục tin tức</small></li>';
+                }
+            } catch (err) {
+                console.error('Lỗi load danh mục tin tức:', err);
+                dropdown.innerHTML = '<li class="text-center py-3 text-danger"><small>Lỗi tải dữ liệu</small></li>';
+            }
+        }
     </script>
 </body>
 

@@ -211,7 +211,7 @@ async function loadCategories() {
         select.innerHTML = '<option value="">-- Chọn danh mục --</option>';
         if (data.success && data.data) {
             data.data.forEach(cat => {
-                select.innerHTML += `<option value="${cat.new_category_id}">${cat.name}</option>`;
+                select.innerHTML += `<option value="${cat.id}">${cat.name}</option>`;
             });
         }
     } catch (err) {

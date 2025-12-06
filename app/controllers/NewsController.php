@@ -18,7 +18,7 @@ class NewsController
     private function handleThumbnailUpload($oldThumbnail = null)
     {
         if (!isset($_FILES['thumbnail']) || $_FILES['thumbnail']['error'] !== UPLOAD_ERR_OK) {
-            return $oldThumbnail; 
+            return $oldThumbnail;
         }
 
         $file = $_FILES['thumbnail'];
@@ -26,7 +26,7 @@ class NewsController
         $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
         if (!in_array($ext, $allowed) || $file['size'] > 5 * 1024 * 1024) {
-            return $oldThumbnail; 
+            return $oldThumbnail;
         }
 
         $filename = 'thumb_' . time() . '_' . rand(1000, 9999) . '.' . $ext;
@@ -39,7 +39,7 @@ class NewsController
             return 'public/assets/images/upload/' . $filename;
         }
 
-        return $oldThumbnail; 
+        return $oldThumbnail;
     }
 
     public function get($id = null)
@@ -71,14 +71,16 @@ class NewsController
         $this->news->author        = trim($_POST['author'] ?? 'Admin CTH');
         $this->news->is_published  = isset($_POST['is_published']) ? 1 : 0;
         $this->news->content       = $_POST['content'];
-        $this->news->new_category_id   = (int)($_POST['new_category_id'] ?? 0) ?: null;
+        if (empty($_POST['new_category_id'])) {
+            return ["success" => false, "message" => "Vui lòng chọn danh mục!"];
+        }
+        $this->news->new_category_id = (int)$_POST['new_category_id'];
         $this->news->is_featured   = isset($_POST['is_featured']) ? 1 : 0;
-
         $this->news->thumbnail = $this->handleThumbnailUpload();
 
         return $this->news->create()
             ? ["success" => true, "message" => "Tạo bài viết thành công!"]
-            : ["success" => false, "message" => "Lỗi khi tạo bài viết (slug trùng?)"];
+            : ["success" => false, "message" => "Lỗi khi tạo bài viết"];
     }
 
     public function update($id)
@@ -95,9 +97,10 @@ class NewsController
         $this->news->is_published  = isset($_POST['is_published']) ? 1 : 0;
         $this->news->content       = $_POST['content'] ?? $article['content'];
         $this->news->thumbnail     = $this->handleThumbnailUpload($article['thumbnail']);
-        $this->news->new_category_id = !empty($_POST['new_category_id']) 
-            ? (int)$_POST['new_category_id'] 
-            : ($article['new_category_id'] ?? null);
+        if (empty($_POST['new_category_id'])) {
+            return ["success" => false, "message" => "Vui lòng chọn danh mục!"];
+        }
+        $this->news->new_category_id = (int)$_POST['new_category_id'];
         $this->news->is_featured = isset($_POST['is_featured']) ? 1 : ($article['is_featured'] ?? 0);
 
         if ($this->news->update()) {
@@ -124,7 +127,8 @@ class NewsController
             : ["success" => false, "message" => "Xóa thất bại"];
     }
 
-    public function getNewsModel() {
+    public function getNewsModel()
+    {
         return $this->news;
     }
 }

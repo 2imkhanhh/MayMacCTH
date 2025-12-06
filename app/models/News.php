@@ -37,6 +37,7 @@ class News
         $query = "SELECT a.*, c.content, cat.name AS category_name
                   FROM {$this->table} a 
                   LEFT JOIN {$this->content_table} c ON a.id = c.article_id 
+                  LEFT JOIN news_categories cat ON a.new_category_id = cat.new_category_id
                   WHERE a.id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -64,7 +65,11 @@ class News
             $stmt->bindParam(':thumbnail', $this->thumbnail);
             $stmt->bindParam(':author', $this->author);
             $stmt->bindParam(':is_published', $this->is_published, PDO::PARAM_INT);
-            $stmt->bindParam(':new_category_id', $this->new_category_id, PDO::PARAM_INT);
+            $stmt->bindValue(
+                ':new_category_id',
+                $this->new_category_id,
+                !empty($this->new_category_id) ? PDO::PARAM_INT : PDO::PARAM_NULL
+            );
             $stmt->bindParam(':is_featured', $this->is_featured, PDO::PARAM_INT);
 
             if (!$stmt->execute()) return false;
@@ -121,7 +126,11 @@ class News
             $stmt->bindParam(':author', $this->author);
             $stmt->bindParam(':is_published', $this->is_published, PDO::PARAM_INT);
             $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
-            $stmt->bindParam(':new_category_id', $this->new_category_id, PDO::PARAM_INT);
+            $stmt->bindValue(
+                ':new_category_id',
+                $this->new_category_id,
+                !empty($this->new_category_id) ? PDO::PARAM_INT : PDO::PARAM_NULL
+            );
             $stmt->bindParam(':is_featured', $this->is_featured, PDO::PARAM_INT);
 
             if (!$stmt->execute()) {
@@ -142,7 +151,7 @@ class News
         } catch (Exception $e) {
             $this->conn->rollBack();
             error_log("Lỗi update bài viết ID {$this->id}: " . $e->getMessage());
-            return false; 
+            return false;
         }
     }
 
@@ -167,6 +176,7 @@ class News
         $query = "SELECT a.*, c.content, cat.name AS category_name
               FROM {$this->table} a 
               LEFT JOIN {$this->content_table} c ON a.id = c.article_id 
+              LEFT JOIN news_categories cat ON a.new_category_id = cat.new_category_id
               WHERE a.slug = :slug AND a.is_published = 1 
               LIMIT 1";
         $stmt = $this->conn->prepare($query);
