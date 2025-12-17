@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (websiteEl) {
           if (c.website && c.website.trim()) {
             const url = c.website.match(/^https?:\/\//i) ? c.website : "https://" + c.website;
-            websiteEl.innerHTML = `<a href="${url}" target="_blank" class="text-white text-decoration-none">${c.website}</a>`;
+            websiteEl.outerHTML = `<a href="${url}" target="_blank" class="text-decoration-none" style="font-size: 14px; color: #ffffffd9;">${c.website}</a>`;
           } else {
             websiteEl.textContent = "Chưa có website";
           }

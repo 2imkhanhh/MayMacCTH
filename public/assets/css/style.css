@@ -321,7 +321,6 @@ body {
 }
 
 /* SẢN PHẨM */
-/* Tiêu đề sản phẩm / shop */
 .product-title {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
@@ -582,6 +581,57 @@ footer.footer .footer-btn {
   border: none;
 }
 
+.contact-btn {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #0f3d8f;
+  transition: transform 0.2s;
+  flex-grow: 1; 
+  max-width: 260px;
+}
+
+.contact-btn:hover {
+  transform: translateY(-2px);
+}
+
+.icon-wrap {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background-image: url('../../assets/images/circle1.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.icon-wrap img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.text-wrap {
+  position: relative;
+  height: auto;
+  min-width: 140px;
+  background-image: url('../../assets/images/circle2.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 5px;
+  margin-left: -5px;
+  z-index: 1;
+}
+
 footer.footer .footer-btn:hover {
   background-color: #E0A800;
 }
@@ -616,9 +666,11 @@ footer.footer .footer-links a:hover {
 
 .footer-contact-btns {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 15px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 20px;
+  align-items: center;
 }
 
 .contact-card {
@@ -681,12 +733,15 @@ footer.footer .footer-links a:hover {
   font-size: 13px;
   font-weight: 500;
   color: #00235b;
-  letter-spacing: 0.3px;
+  line-height: 1;
+  margin-bottom: 2px;
+  text-align: center;
 }
 
 .contact-value {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
+  line-height: 1;
   color: #003087;
   margin-top: 1px;
 }

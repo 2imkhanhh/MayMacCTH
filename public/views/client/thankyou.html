@@ -144,7 +144,7 @@
                     <li class="nav-item"><a class="nav-link" href="../../views/client/guide.html">Hướng dẫn</a></li>
                     <li class="nav-item dropdown-custom">
                         <a href="/MayMacCTH/public/views/client/news.html" class="nav-link text-warning d-flex align-items-center">
-                            Tin tức
+                            Tin tức <i class='bx bx-chevron-down' style="font-size: 20px;"></i>
                         </a>
                         <ul class="dropdown-menu-custom" id="newsCategoryDropdown">
                             <li class="text-center py-3"><small class="text-muted">Đang tải danh mục...</small></li>
@@ -236,92 +236,118 @@
     <footer class="footer bg-primary text-white py-5">
         <div class="container">
             <div class="row gy-4">
-                <div class="col-12 col-md-4 col-lg-3">
-                    <a href="../../views/client/index.html"><img src="../../assets/images/logo2.png" alt="Logo"
-                            class="footer-logo mb-3"></a>
-                    <p class="footer-slogan">MAY MẶC CTH lắng nghe bạn!</p>
-                    <p class="footer-desc">
-                        Chúng tôi luôn trân trọng mọi ý kiến đóng góp của khách hàng,
-                        không ngừng cải thiện để mang đến sản phẩm và dịch vụ tốt nhất.
+                <div class="col-12 col-md-6 col-lg-3">
+                    <a href="../../views/client/index.html">
+                        <img src="../../assets/images/logo2.png" alt="Logo" class="footer-logo mb-3">
+                    </a>
+                    <p class="footer-slogan">MAY MẶC CTH lắng nghe bạn !</p>
+                    <p class="footer-desc mb-3">
+                        Chúng tôi luôn quý trọng và tiếp thu mọi ý kiến đóng góp từ khách hàng.
                     </p>
-                    <a href="../../views/client/contact.html#feedbackForm" class="btn btn-warning footer-btn">
+                    <a href="../../views/client/contact.html#feedbackForm" class="btn btn-warning footer-btn mb-3">
                         ĐÓNG GÓP Ý KIẾN →
                     </a>
-                    <p class="footer-tax mt-3"><strong>MÃ SỐ THUẾ:</strong> 0202167805</p>
+                    <p class="footer-tax"><strong>MÃ SỐ THUẾ:</strong> 0202167805</p>
                 </div>
 
-                <!-- Về chúng tôi -->
-                <div class="col-6 col-md-4 col-lg-2">
-                    <p class="footer-title">VỀ CHÚNG TÔI</p>
-                    <ul class="footer-links">
-                        <li><a href="#">Giới thiệu MAY MẶC CTH</a></li>
-                        <li><a href="#">Hướng dẫn mua hàng</a></li>
-                        <li><a href="#">Hướng dẫn chọn size</a></li>
-                        <li><a href="#">Chính sách đổi trả</a></li>
-                        <li><a href="#">Chính sách giao hàng</a></li>
-                        <li><a href="#">FAQ</a></li>
-                    </ul>
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="mb-4">
+                        <p class="footer-title">VỀ CHÚNG TÔI</p>
+                        <ul class="footer-links">
+                            <li><a href="#">Giới thiệu MAY MẶC CTH</a></li>
+                            <li><a href="#">Hướng dẫn mua hàng</a></li>
+                            <li><a href="#">Hướng dẫn chọn size</a></li>
+                            <li><a href="#">Chính sách đổi trả</a></li>
+                            <li><a href="#">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="footer-title mb-3">THÔNG TIN LIÊN HỆ</p>
+
+                        <div class="d-flex align-items-start mb-3">
+                            <i class='bx bx-map text-warning me-2'
+                                style="font-size: 16px; min-width: 22px; margin-top: 3px;"></i>
+                            <span id="footerAddress" style="font-size: 14px; color: #ffffffd9;">Đang tải địa
+                                chỉ...</span>
+                        </div>
+
+                        <div class="d-flex align-items-start mb-3">
+                            <i class='bx bx-globe text-success me-2'
+                                style="font-size: 16px; min-width: 22px; margin-top: 3px;"></i>
+                            <span id="footerWebsite" style="font-size: 14px; color: #ffffffd9;">Đang tải
+                                website...</span>
+                        </div>
+
+                        <div class="d-flex align-items-start mb-4">
+                            <i class='bx bx-phone text-danger me-2'
+                                style="font-size: 16px; min-width: 22px; margin-top: 3px;"></i>
+                            <span id="footerPhone" style="font-size: 14px; color: #ffffffd9;">Đang tải số điện
+                                thoại...</span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Sản phẩm -->
-                <div class="col-6 col-md-4 col-lg-2">
-                    <p class="footer-title">SẢN PHẨM</p>
-                    <ul class="footer-links" id="footerProductsCategories">
-                        <li class="text-muted small">Đang tải...</li>
-                    </ul>
-                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="footer-title">SẢN PHẨM</p>
+                            <ul class="footer-links" id="footerProductsCategories">
+                                <li class="text-muted small">Đang tải...</li>
+                            </ul>
+                        </div>
 
-                <!-- Tin tức -->
-                <div class="col-6 col-md-6 col-lg-2">
-                    <p class="footer-title">TIN TỨC</p>
-                    <ul class="footer-links" id="footerNewsCategories">
-                        <li class="text-muted small">Đang tải...</li>
-                    </ul>
-                </div>
+                        <div class="col-6">
+                            <div class="mb-4">
+                                <p class="footer-title">TIN TỨC</p>
+                                <ul class="footer-links" id="footerNewsCategories">
+                                    <li class="text-muted small">Đang tải...</li>
+                                </ul>
+                            </div>
+                            <div class="mb-4">
+                                <p class="footer-title">PHƯƠNG THỨC THANH TOÁN</p>
+                                <div class="d-flex gap-2">
+                                    <img src="../../assets/images/cash.png" height="28" style="margin-right: 10px;">
+                                    <img src="../../assets/images/mastercard.png" height="28"
+                                        style="margin-right: 10px;">
+                                    <img src="../../assets/images/visa.png" height="28">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                <!-- Thông tin liên hệ + Nút liên hệ -->
-                <div class="col-12 col-md-12 col-lg-3">
-                    <p class="footer-title">THÔNG TIN LIÊN HỆ</p>
-                    <p>📍 73/202 Miếu Hai Xã, Lê Chân, Hải Phòng, Việt Nam</p>
-                    <p>🌐 <a href="https://www.indohaiphong.com"
-                            class="text-white text-decoration-none">www.indohaiphong.com</a></p>
-                    <p>☎ 078315798 - 083435093 - 083919999</p>
-
-                    <div class="footer-contact-btns mt-3">
-                        <a href="https://zalo.me/078315798" class="contact-card">
-                            <div class="contact-icon"><img src="../../assets/images/zalo.png" alt="Zalo"></div>
-                            <div class="contact-text"><span class="contact-label">TƯ VẤN QUA</span><span
-                                    class="contact-value">ZALO</span></div>
+                    <div class="footer-contact-btns mt-4">
+                        <a href="https://zalo.me/0783159798" target="_blank" class="contact-btn">
+                            <div class="icon-wrap">
+                                <img src="../../assets/images/zalo.png" alt="Zalo">
+                            </div>
+                            <div class="text-wrap">
+                                <span class="contact-label">TƯ VẤN QUA</span>
+                                <span class="contact-value">0783159798</span>
+                            </div>
                         </a>
-                        <a href="tel:+078315798" class="contact-card">
-                            <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Hotline"></div>
-                            <div class="contact-text"><span class="contact-label">HOTLINE</span><span
-                                    class="contact-value">0783 157 98</span></div>
+
+                        <a href="tel:0783159798" class="contact-btn">
+                            <div class="icon-wrap">
+                                <img src="../../assets/images/hotline.png" alt="Hotline">
+                            </div>
+                            <div class="text-wrap">
+                                <span class="contact-label">HOTLINE TƯ VẤN</span>
+                                <span class="contact-value">0783159798</span>
+                            </div>
                         </a>
-                        <a href="#" class="contact-card">
-                            <div class="contact-icon"><img src="../../assets/images/hotline.png" alt="Mẫu vải"></div>
-                            <div class="contact-text"><span class="contact-label">0783159798</span><span
-                                    class="contact-value">TẠI CỬA HÀNG</span></div>
+
+                        <a href="#" class="contact-btn">
+                            <div class="icon-wrap">
+                                <img src="../../assets/images/hotline.png" alt="Xem mẫu">
+                            </div>
+                            <div class="text-wrap">
+                                <span class="contact-label">XEM VẢI & MẪU</span>
+                                <span class="contact-value">0783159798</span>
+                            </div>
                         </a>
                     </div>
                 </div>
             </div>
-
-            <hr class="footer-divider my-4">
-
-            <!-- Thanh toán -->
-            <div class="row">
-                <div class="col text-center">
-                    <p class="mb-2 footer-title">PHƯƠNG THỨC THANH TOÁN</p>
-                    <div class="d-flex justify-content-center align-items-center gap-3">
-                        <img src="../../assets/images/cash.png" height="30" alt="Cash">
-                        <img src="../../assets/images/mastercard.png" height="30" alt="Mastercard">
-                        <img src="../../assets/images/visa.png" height="30" alt="Visa">
-                    </div>
-                </div>
-            </div>
-
-            <!-- <p class="text-center mt-4 small mb-0">&copy; 2025 MAY MẶC CTH. All rights reserved.</p> -->
         </div>
     </footer>
 

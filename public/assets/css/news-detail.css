@@ -116,35 +116,19 @@
 }
 
 .social-buttons .btn {
-    font-weight: 600;
-    padding: 8px 16px;
-    border-radius: 10px;
-    display: inline-flex;
-    align-items: center;
-    transition: 0.25s;
+    padding: 0;
+    border: none;
+    background: none;
+    transition: transform 0.3s ease; 
 }
 
-.fb-btn {
-    background: #1877F2;
-    color: #fff;
-    border: none;
-    box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
-}
-.fb-btn:hover {
-    background: #0f5ed7;
-    box-shadow: 0 6px 16px rgba(24, 119, 242, 0.4);
-    color: #fff !important;
-    opacity: 0.9;
-    transform: translateY(-1px);
+.social-icon {
+    width: 36px; 
+    height: 36px;
+    cursor: pointer;
+    vertical-align: middle;
 }
 
-.ig-btn {
-    background: linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
-    color: #fff;
-    border: none;
-    box-shadow: 0 4px 12px rgba(150, 47, 191, 0.3);
-}
-.ig-btn:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
+.social-buttons .btn:hover {
+    transform: scale(1.1);
 }
