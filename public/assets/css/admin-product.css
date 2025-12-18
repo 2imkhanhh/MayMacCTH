@@ -364,6 +364,161 @@
     animation: pop 0.3s ease;
 }
 
+#productModal .form-check-input[type="checkbox"],
+#productModal .form-check-input[type="radio"] {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#productModal .form-check-input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: #ddd;
+}
+
+#productModal .form-check-input:checked {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#presetColors,
+#presetSizes {
+    accent-color: #174DAF;
+    width: 20px;
+    height: 20px;
+}
+
+#presetColors:focus,
+#presetSizes:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+#newColorName,
+#newColorCode,
+#newSize {
+    border-radius: 10px !important;
+    border: 1.5px solid #ddd;
+    padding: 12px 15px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    height: 48px; 
+}
+
+#newColorName:focus,
+#newColorCode:focus,
+#newSize:focus {
+    border-color: #174DAF !important;
+    box-shadow: 0 0 0 0.2rem rgba(23, 77, 175, 0.15) !important;
+    outline: none !important;
+}
+
+#colorList + .input-group,
+#sizeList + .input-group {
+    margin-top: 10px;
+}
+
+#colorList + .input-group .form-control,
+#sizeList + .input-group .form-control {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+#colorList + .input-group .form-control-color {
+    width: 58px !important;
+    height: 48px !important;
+    padding: 4px !important;
+    border: 1.5px solid #ddd !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+    cursor: pointer;
+    background: transparent;
+}
+
+#newColorCode::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+#newColorCode::-webkit-color-swatch {
+    border: none;
+    border-radius: 8px;
+}
+
+#newColorCode::-moz-color-swatch {
+    border: none;
+    border-radius: 8px;
+}
+
+#colorList + .input-group .btn,
+#sizeList + .input-group .btn {
+    background: linear-gradient(135deg, #174DAF, #003087);
+    color: white;
+    border: none;
+    border-top-right-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+    font-weight: 600;
+    padding: 0 22px;
+    transition: all 0.3s ease;
+    height: 48px;
+}
+
+#colorList + .input-group .btn:hover,
+#sizeList + .input-group .btn:hover {
+    background: linear-gradient(135deg, #003087, #001f5b);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(23, 77, 175, 0.3);
+}
+
+#sizeList + .input-group .form-control {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+#sizeList + .input-group .btn {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+#colorList > div,
+#sizeList > div {
+    padding: 8px 12px !important;          
+    margin-bottom: 8px !important;         
+    font-size: 0.92rem;                    
+    min-height: auto;
+    border-radius: 8px !important;
+    background: #f9fbff !important;
+    border: 1px solid #e6edff !important;
+    transition: all 0.3s ease;
+}
+
+#colorList .color-swatch {
+    width: 24px !important;                
+    height: 24px !important;
+    border-radius: 6px !important;
+    margin-right: 10px !important;
+}
+
+#colorList .fw-medium,
+#sizeList .fw-medium,
+#sizeList .fs-5 {
+    font-size: 0.95rem !important;         
+}
+
+#colorList .remove-color-btn,
+#sizeList .remove-size-btn {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 0.95rem !important;
+    padding: 0;
+}
+
+#colorList > div:hover,
+#sizeList > div:hover {
+    background: #eef4ff !important;
+    transform: translateX(3px);
+    box-shadow: 0 2px 6px rgba(23, 77, 175, 0.08);
+}
 @media (max-width: 768px) {
     .product-card .card-title {
         font-size: 1rem;

@@ -1,5 +1,5 @@
 <?php
-require_once 'auth_middleware.php';  
+require_once 'auth_middleware.php';
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +14,7 @@ require_once 'auth_middleware.php';
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
+    <!-- <style>
         .color-item,
         .image-item {
             border: 1px dashed #ccc;
@@ -34,7 +34,7 @@ require_once 'auth_middleware.php';
         .size-item {
             margin: 5px 0;
         }
-    </style>
+    </style> -->
 </head>
 
 <body class="d-flex">
@@ -107,45 +107,74 @@ require_once 'auth_middleware.php';
                         </div>
 
                         <hr>
-                        <h6>Biến thể màu sắc & kích thước</h6>
-                        <div id="colorContainer">
-                            <div class="color-item">
-                                <button type="button" class="btn btn-sm btn-danger remove-color" style="display:none;">×</button>
-                                <div class="row g-3">
-                                    <div class="col-md-4">
-                                        <label>Tên màu</label>
-                                        <input type="text" class="form-control" name="colors[0][name]" placeholder="VD: Đen">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label>Mã màu</label>
-                                        <input type="color" class="form-control form-control-color" name="colors[0][code]" value="#000000">
-                                    </div>
-                                    <div class="col-md-5">
-                                        <label>Giá (VNĐ)</label>
-                                        <input type="number" class="form-control" name="colors[0][price]" value="0">
-                                    </div>
+                        <h6>Thuộc tính sản phẩm</h6>
+                        <p class="text-muted small">Tick vào ô để thêm nhanh màu sắc hoặc kích thước.</p>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input preset-checkbox" type="checkbox" id="presetColors">
+                                <label class="form-check-label fw-bold" for="presetColors">
+                                    Màu sắc
+                                </label>
+                            </div>
+                            <div class="form-check mt-2">
+                                <input class="form-check-input preset-checkbox" type="checkbox" id="presetSizes">
+                                <label class="form-check-label fw-bold" for="presetSizes">
+                                    Kích thước
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="fw-bold">Màu sắc</label>
+                                <div id="colorList" class="mb-3">
                                 </div>
-                                <div class="mt-3">
-                                    <label>Kích thước (nhập cách nhau bởi dấu phẩy)</label>
-                                    <input type="text" class="form-control" name="colors[0][sizes]" placeholder="S, M, L, XL">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="newColorName" placeholder="Tên màu">
+                                    <input type="color" class="form-control form-control-color" id="newColorCode" value="#FFFF00">
+                                    <button class="btn btn-outline-primary" type="button" id="addColorBtn">+ Thêm màu</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="fw-bold">Kích thước</label>
+                                <div id="sizeList" class="mb-3">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" id="newSize" placeholder="Kích thước">
+                                    <button class="btn btn-outline-primary" type="button" id="addSizeBtn">+ Thêm kích thước</button>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-outline-secondary btn-sm" id="addColor">+ Thêm màu</button>
 
+                        <div class="text-center mb-3">
+                            <button type="button" class="btn btn-success" id="generateVariantsBtn">Tạo tổ hợp</button>
+                        </div>
+
+                        <div id="variantsTableContainer" style="display:none;">
+                            <h6>Tổ hợp đã tạo (<span id="variantCount">0</span>)</h6>
+                            <table class="table table-sm table-bordered" id="variantsTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Màu</th>
+                                        <th>Mã màu</th>
+                                        <th>Kích thước</th>
+                                        <th><button type="button" class="btn btn-sm btn-danger" id="clearAllVariants">Xóa tất cả</button></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                         <hr>
                         <h6>Ảnh sản phẩm</h6>
-                        <div id="imageContainer">
-                            <div class="image-item">
-                                <button type="button" class="btn btn-sm btn-danger remove-image" style="display:none;">×</button>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="primary_image" value="0" checked>
-                                    <label class="form-check-label">Ảnh chính</label>
-                                </div>
-                                <input type="file" class="form-control mt-2" name="images[]" accept="image/*">
-                                <img class="img-thumbnail mt-2" style="max-height:150px; display:none;">
-                            </div>
+                        <p class="text-muted small mb-3">Chọn nhiều ảnh cùng lúc. Ảnh đầu tiên sẽ mặc định là ảnh chính.</p>
+                        <input type="file" id="bulkImageInput" name="images[]" accept="image/*" multiple style="display:none;">
+                        <div class="text-center mb-3">
+                            <button type="button" class="btn btn-primary" id="selectImagesBtn">
+                                <i class="bi bi-images me-2"></i> Chọn ảnh sản phẩm
+                            </button>
                         </div>
+                        <div id="imagePreviewContainer" class="row g-3"></div>
                         <button type="button" class="btn btn-outline-secondary btn-sm" id="addImage">+ Thêm ảnh</button>
 
                         <hr>

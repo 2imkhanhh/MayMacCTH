@@ -39,11 +39,10 @@ class ProductController
             return ["success" => false, "message" => "Method not allowed"];
         }
 
-        // ĐÃ THÊM PRICE VÀO ĐÂY – QUAN TRỌNG NHẤT!
         $data = [
             'name'        => $_POST['name'] ?? '',
             'description' => $_POST['description'] ?? '',
-            'price'       => (int)($_POST['price'] ?? 0),        // THÊM DÒNG NÀY
+            'price'       => (int)($_POST['price'] ?? 0),
             'category_id' => (int)($_POST['category_id'] ?? 0),
             'is_active'   => isset($_POST['is_active']) ? 1 : 0
         ];
@@ -53,20 +52,29 @@ class ProductController
         }
 
         $colors = [];
+        $hasAnySize = false;
+
         foreach ($_POST['colors'] ?? [] as $c) {
             if (!empty($c['name'])) {
+                $sizes = $c['sizes'] ?? '';
+                if (is_array($sizes)) {
+                    $sizes = implode(',', $sizes); 
+                }
+
                 $colors[] = [
-                    'name'  => $c['name'],
+                    'name'  => trim($c['name']),
                     'code'  => $c['code'] ?? '#000000',
-                    'sizes' => $c['sizes'] ?? ''
+                    'sizes' => $sizes
                 ];
+
+                if (!empty($sizes)) {
+                    $hasAnySize = true;
+                }
             }
         }
 
-        $primaryIndex = (int)($_POST['primary_image'] ?? 0);
-
-        if (empty($colors)) {
-            return ["success" => false, "message" => "Phải có ít nhất 1 màu"];
+        if (empty($colors) && !$hasAnySize) {
+            return ["success" => false, "message" => "Phải có ít nhất một màu sắc hoặc một kích thước"];
         }
 
         $uploadedFiles = [];
@@ -85,6 +93,8 @@ class ProductController
         if (empty($uploadedFiles)) {
             return ["success" => false, "message" => "Phải có ít nhất 1 ảnh"];
         }
+
+        $primaryIndex = (int)($_POST['primary_image'] ?? 0);
 
         $result = $this->product->create($data, $colors, $uploadedFiles, $primaryIndex);
         return $result
@@ -115,17 +125,30 @@ class ProductController
         $existingImages = array_map('intval', $existingImages);
 
         $colors = [];
+        $hasAnySize = false;
+
         foreach ($_POST['colors'] ?? [] as $c) {
             if (!empty($c['name'])) {
+                $sizes = $c['sizes'] ?? '';
+                if (is_array($sizes)) {
+                    $sizes = implode(',', $sizes);
+                }
+
                 $colors[] = [
-                    'name'  => $c['name'],
+                    'name'  => trim($c['name']),
                     'code'  => $c['code'] ?? '#000000',
-                    'sizes' => $c['sizes'] ?? ''
+                    'sizes' => $sizes
                 ];
+
+                if (!empty($sizes)) {
+                    $hasAnySize = true;
+                }
             }
         }
 
-        $primaryIndex = (int)($_POST['primary_image'] ?? 0);
+        if (empty($colors) && !$hasAnySize) {
+            return ["success" => false, "message" => "Phải có ít nhất một màu sắc hoặc một kích thước"];
+        }
 
         $uploadedFiles = [];
         if (isset($_FILES['images']['tmp_name'])) {
@@ -139,6 +162,8 @@ class ProductController
                 }
             }
         }
+
+        $primaryIndex = (int)($_POST['primary_image'] ?? 0);
 
         $result = $this->product->update($id, $data, $colors, $uploadedFiles, $primaryIndex, $existingImages);
         return $result

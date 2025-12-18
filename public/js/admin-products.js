@@ -1,7 +1,23 @@
 const BASE_URL = '/MayMacCTH';
-let colorIndex = 1;
-let imageIndex = 1;
 let currentEditId = null;
+
+let colorsList = [];     
+let sizesList = [];      
+let variantsList = [];    
+let colorCounter = 0;
+
+const PRESET_COLORS = [
+    { name: 'Đen', code: '#000000' },
+    { name: 'Trắng', code: '#FFFFFF' },
+    { name: 'Xanh dương', code: '#0000FF' },
+    { name: 'Đỏ', code: '#FF0000' },
+    { name: 'Hồng', code: '#FFC0CB' },
+    { name: 'Xanh lá', code: '#008000' },
+    { name: 'Xám', code: '#808080' }
+];
+const PRESET_SIZES = ['S', 'M', 'L', 'XL'];
+
+let imageIndex = 0; 
 
 document.addEventListener('DOMContentLoaded', () => {
     loadCategories();
@@ -11,8 +27,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btnSearch').onclick = loadProducts;
     document.getElementById('searchName').addEventListener('keypress', e => e.key === 'Enter' && loadProducts());
 
-    document.getElementById('addColor').onclick = addColorField;
-    document.getElementById('addImage').onclick = addImageField;
+    document.getElementById('addColorBtn').onclick = addCustomColor;
+    document.getElementById('addSizeBtn').onclick = addCustomSize;
+    document.getElementById('generateVariantsBtn').onclick = generateAllVariants;
+    document.getElementById('clearAllVariants').onclick = clearAllVariants;
+    document.getElementById('presetColors').onchange = handlePresetCheckbox;
+    document.getElementById('presetSizes').onchange = handlePresetCheckbox;
+
+    document.querySelectorAll('.preset-radio').forEach(radio => {
+        radio.onclick = handlePresetChange;
+    });
 
     document.getElementById('productForm').onsubmit = handleSubmit;
 });
@@ -111,7 +135,6 @@ function showToast(message, type = 'success') {
     const msg = document.getElementById('toastMessage');
 
     toast.classList.remove('success', 'error', 'show');
-
     msg.textContent = message;
 
     if (type === 'success') {
@@ -122,108 +145,8 @@ function showToast(message, type = 'success') {
         icon.className = 'bx bxs-error';
     }
 
-    // Hiển thị
     setTimeout(() => toast.classList.add('show'), 100);
     setTimeout(() => toast.classList.remove('show'), type === 'error' ? 5000 : 3000);
-}
-
-function openModal(product = null) {
-    currentEditId = product ? product.product_id : null;
-    const modal = new bootstrap.Modal(document.getElementById('productModal'));
-    const form = document.getElementById('productForm');
-    const title = document.getElementById('modalTitle');
-
-    form.reset();
-    document.getElementById('colorContainer').innerHTML = '';
-    document.getElementById('imageContainer').innerHTML = '';
-    colorIndex = 0;
-    imageIndex = 0;
-
-    if (product) {
-        title.textContent = 'Sửa sản phẩm';
-        form.name.value = product.name;
-        form.category_id.value = product.category_id;
-        form.price.value = product.price || 0;
-        form.description.value = product.description || '';
-        document.getElementById('isActiveCheckbox').checked = product.is_active == 1;
-
-        if (product.colors && product.colors.length > 0) {
-            product.colors.forEach(c => {
-                const sizesStr = c.sizes ? c.sizes.join(', ') : '';
-                addColorField(c.color_name || '', c.color_code || '#000000', sizesStr);
-            });
-        } else {
-            addColorField();
-        }
-
-        if (product.images && product.images.length > 0) {
-            product.images.forEach(img => {
-                addImageField(img.image || '', img.is_primary == 1, img.image_id);
-            });
-        } else {
-            addImageField();
-        }
-    } else {
-        title.textContent = 'Thêm sản phẩm mới';
-        form.price.value = 0;
-        document.getElementById('isActiveCheckbox').checked = true;
-        addColorField();
-        addImageField();
-    }
-
-    modal.show();
-}
-
-function addColorField(name = '', code = '#000000', sizes = '') {
-    const container = document.getElementById('colorContainer');
-    const div = document.createElement('div');
-    div.className = 'color-item mt-3';
-    div.innerHTML = `
-        <button type="button" class="btn btn-sm btn-danger remove-color position-absolute" style="top: -10px; right: -10px; z-index: 10;">×</button>
-        <div class="row g-3">
-            <div class="col-md-5">
-                <label>Tên màu</label>
-                <input type="text" class="form-control" name="colors[${colorIndex}][name]" value="${name}" placeholder="VD: Đen">
-            </div>
-            <div class="col-md-3">
-                <label>Mã màu</label>
-                <input type="color" class="form-control form-control-color" name="colors[${colorIndex}][code]" value="${code}">
-            </div>
-            <div class="col-md-4">
-                <label>Kích thước</label>
-                <input type="text" class="form-control" name="colors[${colorIndex}][sizes]" value="${sizes}" placeholder="S, M, L">
-            </div>
-        </div>
-    `;
-    container.appendChild(div);
-    div.querySelector('.remove-color').onclick = () => div.remove();
-    colorIndex++;
-}
-
-function addImageField(imageUrl = '', isPrimary = false, imageId = null) {
-    const container = document.getElementById('imageContainer');
-    const div = document.createElement('div');
-    div.className = 'image-item mt-3 position-relative';
-    div.innerHTML = `
-        <button type="button" class="btn btn-sm btn-danger remove-image position-absolute" style="top: -10px; right: -10px; z-index: 10;">×</button>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="primary_image" value="${imageIndex}" ${isPrimary ? 'checked' : ''}>
-            <label class="form-check-label">Ảnh chính</label>
-        </div>
-        <input type="file" class="form-control mt-2" name="images[]" accept="image/*">
-        ${imageId ? `<input type="hidden" name="existing_images[]" value="${imageId}">` : ''}
-        <img src="${imageUrl ? '../../assets/images/upload/' + imageUrl : ''}" 
-             class="img-thumbnail mt-2" style="max-height:150px; ${imageUrl ? '' : 'display:none;'}">
-    `;
-    container.appendChild(div);
-    div.querySelector('.remove-image').onclick = () => div.remove();
-    div.querySelector('input[type="file"]').onchange = function (e) {
-        if (e.target.files[0]) {
-            div.querySelector('img').src = URL.createObjectURL(e.target.files[0]);
-            div.querySelector('img').style.display = 'block';
-        }
-    };
-    imageIndex++;
 }
 
 async function editProduct(id) {
@@ -243,7 +166,6 @@ async function editProduct(id) {
 
 async function deleteProduct(id) {
     const confirmed = await showConfirm('Xóa sản phẩm?');
-
     if (!confirmed) return;
 
     try {
@@ -255,42 +177,6 @@ async function deleteProduct(id) {
             loadProducts();
         } else {
             showToast(data.message || 'Xóa sản phẩm thất bại!', 'error');
-        }
-    } catch (err) {
-        showToast('Lỗi kết nối server!', 'error');
-        console.error(err);
-    }
-}
-
-async function handleSubmit(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    const id = currentEditId;
-
-    const url = id
-        ? `${BASE_URL}/api/product/update_product.php?id=${id}`
-        : `${BASE_URL}/api/product/create_product.php`;
-
-    try {
-        const res = await fetch(url, {
-            method: 'POST',
-            body: formData
-        });
-        const text = await res.text();
-        let data;
-        try {
-            data = JSON.parse(text);
-        } catch (e) {
-            console.error("Server trả về lỗi:", text);
-            showToast('Lỗi server! Vui lòng thử lại.', 'error');
-            return;
-        }
-
-        showToast(data.message || (data.success ? 'Lưu sản phẩm thành công!' : 'Lưu thất bại!'), data.success ? 'success' : 'error');
-
-        if (data.success) {
-            bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
-            loadProducts();
         }
     } catch (err) {
         showToast('Lỗi kết nối server!', 'error');
@@ -319,4 +205,378 @@ function showConfirm(title = "Xác nhận", message = "Bạn có chắc chắn?"
         cancelBtn.onclick = () => { close(); resolve(false); };
         modal.onclick = (e) => { if (e.target === modal) { close(); resolve(false); } };
     });
+}
+
+function openModal(product = null) {
+    currentEditId = product ? product.product_id : null;
+    const modal = new bootstrap.Modal(document.getElementById('productModal'));
+    const form = document.getElementById('productForm');
+    const title = document.getElementById('modalTitle');
+
+    form.reset();
+    document.getElementById('imageContainer').innerHTML = '';
+    imageIndex = 0;
+
+    colorsList = [];
+    sizesList = [];
+    variantsList = [];
+    colorCounter = 0;
+
+    const presetColorsCb = document.getElementById('presetColors');
+    const presetSizesCb = document.getElementById('presetSizes');
+    presetColorsCb.checked = false;
+    presetSizesCb.checked = false;
+
+    if (product) {
+        title.textContent = 'Sửa sản phẩm';
+
+        form.name.value = product.name;
+        form.category_id.value = product.category_id;
+        form.price.value = product.price || 0;
+        form.description.value = product.description || '';
+        document.getElementById('isActiveCheckbox').checked = product.is_active == 1;
+
+        if (product.colors && product.colors.length > 0) {
+            product.colors.forEach(c => {
+                const tempId = colorCounter++;
+                colorsList.push({
+                    id: tempId,
+                    name: c.color_name || '',
+                    code: c.color_code || '#000000'
+                });
+
+                if (c.sizes && c.sizes.length > 0) {
+                    c.sizes.forEach(size => {
+                        const normalized = size.trim().toUpperCase();
+                        if (!sizesList.includes(normalized)) {
+                            sizesList.push(normalized);
+                        }
+                        variantsList.push({
+                            colorId: tempId,
+                            size: normalized
+                        });
+                    });
+                }
+            });
+        }
+
+        if (product.images && product.images.length > 0) {
+            product.images.forEach(img => {
+                addImageField(img.image || '', img.is_primary == 1, img.image_id);
+            });
+        } else {
+            addImageField();
+        }
+
+        const presetColorNames = PRESET_COLORS.map(p => p.name.toLowerCase());
+        const hasPresetColor = colorsList.some(color =>
+            presetColorNames.includes(color.name.toLowerCase())
+        );
+
+        const hasPresetSize = sizesList.some(size =>
+            PRESET_SIZES.includes(size)
+        );
+
+        if (hasPresetColor) {
+            presetColorsCb.checked = true;
+        }
+        if (hasPresetSize) {
+            presetSizesCb.checked = true;
+        }
+    } else {
+        title.textContent = 'Thêm sản phẩm mới';
+        form.price.value = 0;
+        document.getElementById('isActiveCheckbox').checked = true;
+        addImageField();
+    }
+    renderColors();
+    renderSizes();
+    renderVariants();
+
+    modal.show();
+}
+
+function addImageField(imageUrl = '', isPrimary = false, imageId = null) {
+    const container = document.getElementById('imageContainer');
+    const div = document.createElement('div');
+    div.className = 'image-item mt-3 position-relative';
+    div.innerHTML = `
+        <button type="button" class="btn btn-sm btn-danger remove-image position-absolute" style="top: -10px; right: -10px; z-index: 10;">×</button>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="primary_image" value="${imageIndex}" ${isPrimary ? 'checked' : ''}>
+            <label class="form-check-label">Ảnh chính</label>
+        </div>
+        <input type="file" class="form-control mt-2" name="images[]" accept="image/*">
+        ${imageId ? `<input type="hidden" name="existing_images[]" value="${imageId}">` : ''}
+        <img src="${imageUrl ? '../../assets/images/upload/' + imageUrl : ''}" 
+             class="img-thumbnail mt-2" style="max-height:150px; ${imageUrl ? '' : 'display:none;'}">
+    `;
+    container.appendChild(div);
+    div.querySelector('.remove-image').onclick = () => div.remove();
+    div.querySelector('input[type="file"]').onchange = function (e) {
+        if (e.target.files[0]) {
+            div.querySelector('img').src = URL.createObjectURL(e.target.files[0]);
+            div.querySelector('img').style.display = 'block';
+        }
+    };
+    imageIndex++;
+}
+
+function renderColors() {
+    const container = document.getElementById('colorList');
+    container.innerHTML = '';
+    colorsList.forEach(color => {
+        const div = document.createElement('div');
+        div.className = 'd-flex align-items-center justify-content-between p-3 mb-2 bg-light rounded border';
+        div.style.borderLeft = `5px solid ${color.code}`;
+        div.innerHTML = `
+            <div class="d-flex align-items-center gap-3">
+                <div class="color-swatch" style="background:${color.code}; width:32px; height:32px; border-radius:8px; border:2px solid #fff; box-shadow:0 2px 6px rgba(0,0,0,0.15);"></div>
+                <span class="fw-medium">${color.name}</span>
+            </div>
+            <button type="button" class="btn btn-sm btn-danger remove-color-btn" data-id="${color.id}">×</button>
+        `;
+        container.appendChild(div);
+    });
+
+    document.querySelectorAll('.remove-color-btn').forEach(btn => {
+        btn.onclick = () => {
+            const id = parseInt(btn.dataset.id);
+            colorsList = colorsList.filter(c => c.id !== id);
+            variantsList = variantsList.filter(v => v.colorId !== id);
+            renderColors();
+            renderVariants();
+        };
+    });
+}
+
+function renderSizes() {
+    const container = document.getElementById('sizeList');
+    container.innerHTML = '';
+    sizesList.forEach(size => {
+        const div = document.createElement('div');
+        div.className = 'd-flex align-items-center justify-content-between p-3 mb-2 bg-light rounded border';
+        div.style.borderLeft = '5px solid #174DAF';
+        div.innerHTML = `
+            <span class="fw-medium fs-5">${size}</span>
+            <button type="button" class="btn btn-sm btn-danger remove-size-btn">×</button>
+        `;
+        container.appendChild(div);
+    });
+
+    document.querySelectorAll('.remove-size-btn').forEach(btn => {
+        btn.onclick = () => {
+            const parent = btn.closest('div');
+            const sizeText = parent.querySelector('span').textContent.trim();
+            sizesList = sizesList.filter(s => s !== sizeText);
+            variantsList = variantsList.filter(v => v.size !== sizeText);
+            renderSizes();
+            renderVariants();
+        };
+    });
+}
+
+function renderVariants() {
+    const tbody = document.getElementById('variantsTable').querySelector('tbody');
+    tbody.innerHTML = '';
+    document.getElementById('variantCount').textContent = variantsList.length;
+
+    if (variantsList.length === 0) {
+        document.getElementById('variantsTableContainer').style.display = 'none';
+        return;
+    }
+    document.getElementById('variantsTableContainer').style.display = 'block';
+
+    variantsList.forEach((v, idx) => {
+        const color = colorsList.find(c => c.id === v.colorId);
+        if (!color) return;
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${color.name}</td>
+            <td><span style="background:${color.code}; width:20px; height:20px; border-radius:4px; display:inline-block; border:1px solid #ccc;"></span></td>
+            <td>${v.size}</td>
+            <td><button type="button" class="btn btn-sm btn-danger remove-variant-btn" data-idx="${idx}">×</button></td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    document.querySelectorAll('.remove-variant-btn').forEach(btn => {
+        btn.onclick = () => {
+            variantsList.splice(parseInt(btn.dataset.idx), 1);
+            renderVariants();
+        };
+    });
+}
+
+function addCustomColor() {
+    const nameInput = document.getElementById('newColorName');
+    const codeInput = document.getElementById('newColorCode');
+    const name = nameInput.value.trim();
+    if (!name) {
+        showToast('Vui lòng nhập tên màu!', 'error');
+        return;
+    }
+    colorsList.push({
+        id: colorCounter++,
+        name,
+        code: codeInput.value || '#000000'
+    });
+    nameInput.value = '';
+    renderColors();
+}
+
+function addCustomSize() {
+    const input = document.getElementById('newSize');
+    const size = input.value.trim().toUpperCase();
+    if (!size) {
+        showToast('Vui lòng nhập kích thước!', 'error');
+        return;
+    }
+    if (sizesList.includes(size)) {
+        showToast('Kích thước đã tồn tại!', 'error');
+        return;
+    }
+    sizesList.push(size);
+    input.value = '';
+    renderSizes();
+}
+
+function generateAllVariants() {
+    if (colorsList.length === 0 || sizesList.length === 0) {
+        showToast('Cần có ít nhất 1 màu và 1 kích thước!', 'error');
+        return;
+    }
+    variantsList = [];
+    colorsList.forEach(color => {
+        sizesList.forEach(size => {
+            variantsList.push({ colorId: color.id, size });
+        });
+    });
+    renderVariants();
+    showToast(`Đã tạo ${variantsList.length} biến thể!`, 'success');
+}
+
+function clearAllVariants() {
+    variantsList = [];
+    renderVariants();
+}
+
+function handlePresetCheckbox() {
+    const colorsChecked = document.getElementById('presetColors').checked;
+    const sizesChecked = document.getElementById('presetSizes').checked;
+
+    if (colorsChecked) {
+        PRESET_COLORS.forEach(p => {
+            if (!colorsList.some(c => c.name.toLowerCase() === p.name.toLowerCase())) {
+                colorsList.push({ id: colorCounter++, name: p.name, code: p.code });
+            }
+        });
+        renderColors();
+    } else {
+        const presetNames = PRESET_COLORS.map(p => p.name.toLowerCase());
+        const toRemoveIds = colorsList
+            .filter(c => presetNames.includes(c.name.toLowerCase()))
+            .map(c => c.id);
+        
+        colorsList = colorsList.filter(c => !presetNames.includes(c.name.toLowerCase()));
+        variantsList = variantsList.filter(v => !toRemoveIds.includes(v.colorId));
+        renderColors();
+        renderVariants();
+    }
+
+    if (sizesChecked) {
+        PRESET_SIZES.forEach(s => {
+            if (!sizesList.includes(s)) {
+                sizesList.push(s);
+            }
+        });
+        renderSizes();
+    } else {
+        sizesList = sizesList.filter(s => !PRESET_SIZES.includes(s));
+        variantsList = variantsList.filter(v => !PRESET_SIZES.includes(v.size));
+        renderSizes();
+        renderVariants();
+    }
+}
+
+async function handleSubmit(e) {
+    e.preventDefault();
+    const form = this;
+
+    if (colorsList.length === 0 && sizesList.length === 0) {
+        showToast('Vui lòng thêm ít nhất một màu sắc hoặc một kích thước!', 'error');
+        return;
+    }
+
+    document.querySelectorAll('input[name^="colors["]').forEach(el => el.remove());
+    if (colorsList.length > 0) {
+        colorsList.forEach((color, idx) => {
+            const nameInp = document.createElement('input');
+            nameInp.type = 'hidden';
+            nameInp.name = `colors[${idx}][name]`;
+            nameInp.value = color.name;
+            form.appendChild(nameInp);
+
+            const codeInp = document.createElement('input');
+            codeInp.type = 'hidden';
+            codeInp.name = `colors[${idx}][code]`;
+            codeInp.value = color.code;
+            form.appendChild(codeInp);
+
+            const sizesForThisColor = variantsList
+                .filter(v => v.colorId === color.id)
+                .map(v => v.size);
+
+            sizesForThisColor.forEach(size => {
+                const sizeInp = document.createElement('input');
+                sizeInp.type = 'hidden';
+                sizeInp.name = `colors[${idx}][sizes]`;
+                sizeInp.value = size;
+                form.appendChild(sizeInp);
+            });
+        });
+    } else {
+        const defaultColorIdx = 0;
+        const nameInp = document.createElement('input');
+        nameInp.type = 'hidden';
+        nameInp.name = `colors[${defaultColorIdx}][name]`;
+        nameInp.value = 'Default'; 
+        form.appendChild(nameInp);
+
+        const codeInp = document.createElement('input');
+        codeInp.type = 'hidden';
+        codeInp.name = `colors[${defaultColorIdx}][code]`;
+        codeInp.value = '#000000';
+        form.appendChild(codeInp);
+
+        sizesList.forEach(size => {
+            const sizeInp = document.createElement('input');
+            sizeInp.type = 'hidden';
+            sizeInp.name = `colors[${defaultColorIdx}][sizes]`;
+            sizeInp.value = size;
+            form.appendChild(sizeInp);
+        });
+    }
+
+    const formData = new FormData(form);
+    const url = currentEditId
+        ? `${BASE_URL}/api/product/update_product.php?id=${currentEditId}`
+        : `${BASE_URL}/api/product/create_product.php`;
+
+    try {
+        const res = await fetch(url, { method: 'POST', body: formData });
+        const text = await res.text();
+        let data;
+        try { data = JSON.parse(text); } 
+        catch { console.error(text); showToast('Lỗi server!', 'error'); return; }
+
+        showToast(data.message || (data.success ? 'Lưu thành công!' : 'Lưu thất bại!'), data.success ? 'success' : 'error');
+        if (data.success) {
+            bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
+            loadProducts();
+        }
+    } catch (err) {
+        showToast('Lỗi kết nối!', 'error');
+        console.error(err);
+    }
 }
