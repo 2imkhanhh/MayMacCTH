@@ -214,8 +214,6 @@ function openModal(product = null) {
     const title = document.getElementById('modalTitle');
 
     form.reset();
-    document.getElementById('imageContainer').innerHTML = '';
-    imageIndex = 0;
 
     colorsList = [];
     sizesList = [];
@@ -260,12 +258,40 @@ function openModal(product = null) {
             });
         }
 
-        if (product.images && product.images.length > 0) {
-            product.images.forEach(img => {
-                addImageField(img.image || '', img.is_primary == 1, img.image_id);
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        imagePreviewContainer.innerHTML = ''; 
+
+        if (product && product.images && product.images.length > 0) {
+            product.images.forEach((img, idx) => {
+                const div = document.createElement('div');
+                div.className = 'col-6 col-md-4 col-lg-3 position-relative';
+
+                const checked = img.is_primary == 1 ? 'checked' : '';
+
+                div.innerHTML = `
+                    <div class="image-preview-item border rounded overflow-hidden shadow-sm bg-light">
+                        <img src="../../assets/images/upload/${img.image}" class="w-100" style="height:200px; object-fit:cover;" onerror="this.src='../../assets/images/no-image.jpg'">
+                        <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 remove-image-btn">×</button>
+                        <input type="hidden" name="existing_images[]" value="${img.image_id}">
+                        <div class="p-2 bg-white border-top">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="primary_image" value="${idx}" ${checked}>
+                                <label class="form-check-label small">Ảnh chính</label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                imagePreviewContainer.appendChild(div);
+
+                div.querySelector('.remove-image-btn').onclick = () => {
+                    div.remove();
+                    if (!document.querySelector('input[name="primary_image"]:checked')) {
+                        const firstRadio = imagePreviewContainer.querySelector('input[name="primary_image"]');
+                        if (firstRadio) firstRadio.checked = true;
+                    }
+                };
             });
-        } else {
-            addImageField();
         }
 
         const presetColorNames = PRESET_COLORS.map(p => p.name.toLowerCase());
@@ -287,39 +313,18 @@ function openModal(product = null) {
         title.textContent = 'Thêm sản phẩm mới';
         form.price.value = 0;
         document.getElementById('isActiveCheckbox').checked = true;
-        addImageField();
+
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        if (imagePreviewContainer) {
+            imagePreviewContainer.innerHTML = '';
+        }
+        imageIndex = 0; 
     }
     renderColors();
     renderSizes();
     renderVariants();
 
     modal.show();
-}
-
-function addImageField(imageUrl = '', isPrimary = false, imageId = null) {
-    const container = document.getElementById('imageContainer');
-    const div = document.createElement('div');
-    div.className = 'image-item mt-3 position-relative';
-    div.innerHTML = `
-        <button type="button" class="btn btn-sm btn-danger remove-image position-absolute" style="top: -10px; right: -10px; z-index: 10;">×</button>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="primary_image" value="${imageIndex}" ${isPrimary ? 'checked' : ''}>
-            <label class="form-check-label">Ảnh chính</label>
-        </div>
-        <input type="file" class="form-control mt-2" name="images[]" accept="image/*">
-        ${imageId ? `<input type="hidden" name="existing_images[]" value="${imageId}">` : ''}
-        <img src="${imageUrl ? '../../assets/images/upload/' + imageUrl : ''}" 
-             class="img-thumbnail mt-2" style="max-height:150px; ${imageUrl ? '' : 'display:none;'}">
-    `;
-    container.appendChild(div);
-    div.querySelector('.remove-image').onclick = () => div.remove();
-    div.querySelector('input[type="file"]').onchange = function (e) {
-        if (e.target.files[0]) {
-            div.querySelector('img').src = URL.createObjectURL(e.target.files[0]);
-            div.querySelector('img').style.display = 'block';
-        }
-    };
-    imageIndex++;
 }
 
 function renderColors() {
@@ -580,3 +585,53 @@ async function handleSubmit(e) {
         console.error(err);
     }
 }
+
+document.getElementById('selectImagesBtn').onclick = () => {
+    document.getElementById('bulkImageInput').click();
+};
+
+document.getElementById('bulkImageInput').onchange = function(e) {
+    const files = e.target.files;
+    if (files.length === 0) return;
+
+    const container = document.getElementById('imagePreviewContainer');
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (!file.type.match('image.*')) continue;
+
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+            const div = document.createElement('div');
+            div.className = 'col-6 col-md-4 col-lg-3 position-relative';
+            const noPrimaryYet = !document.querySelector('input[name="primary_image"]:checked');
+            const checked = (container.children.length === 0 && i === 0 && noPrimaryYet) ? 'checked' : '';
+
+            div.innerHTML = `
+                <div class="image-preview-item border rounded overflow-hidden shadow-sm bg-light">
+                    <img src="${ev.target.result}" class="w-100" style="height:200px; object-fit:cover;">
+                    <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 remove-image-btn">×</button>
+                    <div class="p-2 bg-white border-top">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="primary_image" value="${imageIndex}" ${checked}>
+                            <label class="form-check-label small">Ảnh chính</label>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(div);
+            imageIndex++;
+
+            div.querySelector('.remove-image-btn').onclick = () => {
+                div.remove();
+                if (!document.querySelector('input[name="primary_image"]:checked')) {
+                    const firstRadio = container.querySelector('input[name="primary_image"]');
+                    if (firstRadio) firstRadio.checked = true;
+                }
+            };
+        };
+        reader.readAsDataURL(file);
+    }
+    e.target.value = '';
+};

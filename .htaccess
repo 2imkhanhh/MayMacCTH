@@ -1,0 +1,19 @@
+RewriteEngine On
+RewriteBase /
+
+RewriteRule ^(app|config)/ - [F,L]
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+RewriteRule ^api/(.*)$ api/$1 [L,QSA]
+
+RewriteRule ^admin/?$ public/views/admin/dashboard.php [L,QSA]
+RewriteRule ^admin/login/?$ public/views/admin/login.php [L,QSA]
+RewriteRule ^admin/([a-zA-Z0-9\-]+)/?$ public/views/admin/$1.php [L,QSA]
+
+RewriteRule ^$ public/views/client/index.html [L]
+RewriteRule ^([a-zA-Z0-9\-]+)/?$ public/views/client/$1.html [L,QSA]
+
+RewriteRule ^ index.php [L]

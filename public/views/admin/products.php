@@ -167,15 +167,13 @@ require_once 'auth_middleware.php';
                         </div>
                         <hr>
                         <h6>Ảnh sản phẩm</h6>
-                        <p class="text-muted small mb-3">Chọn nhiều ảnh cùng lúc. Ảnh đầu tiên sẽ mặc định là ảnh chính.</p>
                         <input type="file" id="bulkImageInput" name="images[]" accept="image/*" multiple style="display:none;">
-                        <div class="text-center mb-3">
+                        <div class="text-start mb-3">
                             <button type="button" class="btn btn-primary" id="selectImagesBtn">
                                 <i class="bi bi-images me-2"></i> Chọn ảnh sản phẩm
                             </button>
                         </div>
                         <div id="imagePreviewContainer" class="row g-3"></div>
-                        <button type="button" class="btn btn-outline-secondary btn-sm" id="addImage">+ Thêm ảnh</button>
 
                         <hr>
                         <div class="form-check">
