@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi tiết sản phẩm - May Mặc CTH</title>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
@@ -119,7 +120,6 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto align-items-center">
-                    <!-- Custom dropdown danh mục -->
                     <li class="nav-item dropdown-custom me-4">
                         <a href="#" class="nav-link text-warning d-flex align-items-center">
                             <i class="bx bx-menu me-2"></i> TẤT CẢ DANH MỤC
@@ -136,7 +136,6 @@
                         </ul>
                     </li>
 
-                    <!-- Các mục menu khác -->
                     <li class="nav-item"><a class="nav-link" href="../../views/client/index.html">Trang chủ</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/about-us.html">Về chúng tôi</a>
                     </li>
@@ -153,7 +152,6 @@
                     <li class="nav-item"><a class="nav-link" href="../../views/client/contact.html">Liên hệ</a></li>
                 </ul>
 
-                <!-- Icon -->
                 <ul class="navbar-nav ms-3">
                     <li class="nav-item" style="margin-right: 90px;">
                         <a class="nav-link" href="../../views/client/cart.html"
@@ -170,7 +168,6 @@
                                     <span class="visually-hidden">sản phẩm</span>
                                 </span>
                             </div>
-
                         </a>
                     </li>
                 </ul>
@@ -190,7 +187,6 @@
 
         <div class="container">
             <div class="row align-items-start">
-                <!-- Ảnh sản phẩm -->
                 <div class="col-12 col-md-6 mb-4 mb-md-0">
                     <div class="product-image">
                         <img src="" alt="Đang tải..." id="main-product-image" class="w-100"
@@ -200,7 +196,6 @@
                         </div>
                     </div>
 
-                    <!-- Accordion chi tiết -->
                     <div class="accordion product-info-accordion mt-4" id="productDetailsAccordion">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
@@ -218,7 +213,6 @@
                     </div>
                 </div>
 
-                <!-- Thông tin sản phẩm -->
                 <div class="col-12 col-md-6">
                     <div class="product-info">
                         <h1 class="product-title mb-0" id="productName">Đang tải sản phẩm...</h1>
@@ -232,13 +226,11 @@
                             <div><strong>Danh mục:</strong> <span id="productCategory">-</span></div>
                         </div>
 
-                        <!-- Màu sắc -->
                         <div class="color-options mb-4 text-start" id="colorOptions" style="display: none;">
                             <h6 class="fw-bold mb-2">Màu sắc</h6>
                             <div class="color-swatches d-flex gap-2" id="colorSwatches"></div>
                         </div>
 
-                        <!-- Kích thước -->
                         <div class="size-options mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <h6 class="fw-bold mb-0">Kích thước</h6>
@@ -246,11 +238,9 @@
                             </div>
                             <div class="size-buttons d-flex gap-2" id="sizeButtons">
                                 <button class="btn btn-outline-secondary btn-size active" data-size="M">M</button>
-                                <!-- JS sẽ fill nếu có size từ DB -->
                             </div>
                         </div>
 
-                        <!-- Số lượng + nút -->
                         <div class="quantity mb-4">
                             <h6 class="fw-bold mb-2">Số lượng</h6>
                             <div class="input-group w-50">
@@ -329,13 +319,10 @@
                         <label class="form-label fw-semibold">Số điện thoại</label>
                         <input type="text" class="form-control" id="reviewPhone" placeholder="Nhập số điện thoại">
                     </div>
-                    <!-- Tên khách -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Họ tên</label>
                         <input type="text" class="form-control" id="reviewName" placeholder="Họ tên" disabled>
                     </div>
-
-                    <!-- Số sao -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold d-block">Xếp hạng</label>
                         <div class="rating-stars-input" id="ratingStars">
@@ -346,8 +333,6 @@
                             <i class='bx bx-star' data-value="5"></i>
                         </div>
                     </div>
-
-                    <!-- Size -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Kích thước bạn đã mua</label>
                         <select class="form-select" id="reviewSize">
@@ -358,14 +343,10 @@
                             <option value="XL">XL</option>
                         </select>
                     </div>
-
-                    <!-- Màu -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Màu sắc</label>
                         <input type="text" class="form-control" id="reviewColor" placeholder="VD: Đen, Trắng, Đỏ,...">
                     </div>
-
-                    <!-- Nội dung -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Nội dung đánh giá</label>
                         <textarea class="form-control" rows="4" id="reviewContent"
@@ -381,15 +362,11 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Upload ảnh -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Thêm hình ảnh (tối đa 5)</label>
                         <input type="file" class="form-control" id="reviewImages" accept="image/*" multiple>
                         <div id="previewImages" class="d-flex gap-2 mt-2 flex-wrap"></div>
                     </div>
-
-                    <!-- Nút gửi + nút hủy -->
                     <div class="d-flex gap-2">
                         <button class="btn btn-primary px-4" id="submitReview">Gửi đánh giá</button>
                         <button class="btn btn-outline-secondary" data-bs-toggle="collapse"

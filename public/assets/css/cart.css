@@ -36,7 +36,7 @@
 }
 
 .page-title {
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Baloo 2';
     font-weight: 700;
     font-size: 1.5rem;
     color: #333;
@@ -64,6 +64,7 @@
 }
 
 .cart-title {
+    font-family: 'Baloo 2';
     font-family: 'Archivo', sans-serif;
     font-weight: 600;
     font-size: 1.5rem;
@@ -72,49 +73,36 @@
 
 .cart-items {
     background-color: #ffffff;
-    /* Thêm nền trắng cho khu vực sản phẩm */
     padding: 1.5rem;
-    /* Thêm padding */
     border-radius: 12px;
-    /* Bo góc */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    /* Bóng nhẹ */
 }
 
 .cart-item {
     background-color: #fff;
     border: 1px solid #e9ecef;
-    /* Viền nhẹ hơn */
     border-radius: 12px;
-    /* Bo góc mềm mại hơn */
     transition: all 0.3s ease;
     padding: 1.25rem;
-    /* Tăng padding bên trong */
 }
 
 .cart-item:hover {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-    /* Bóng đậm hơn khi hover */
     transform: translateY(-3px);
-    /* Nâng nhẹ khi hover */
 }
 
 .cart-item-img {
     width: 100px;
-    /* Tăng kích thước ảnh */
     height: 100px;
     object-fit: cover;
     border-radius: 10px;
-    /* Bo góc ảnh */
     border: 1px solid #dee2e6;
-    /* Viền nhẹ cho ảnh */
 }
 
 .cart-item-name {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     font-size: 1.1rem;
-    /* Tăng kích thước tên sản phẩm */
     color: #272D37;
     margin-bottom: 0.75rem;
     transition: color 0.3s ease;
@@ -122,54 +110,38 @@
 
 .cart-item-name:hover {
     color: #003087;
-    /* Đổi màu khi hover, khớp với navbar */
 }
 
 .cart-item-price {
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
-    /* Giá in đậm hơn */
     font-size: 1.1rem;
     color: #d9534f;
-    /* Màu đỏ nổi bật hơn */
 }
 
 .cart-item-quantity {
     max-width: 200px;
-    /* Tăng kích thước để phù hợp với w-50 */
 }
 
 .input-group {
     align-items: center;
-    /* Căn giữa các phần tử trong input-group */
 }
 
 .input-group .btn-outline-secondary {
     background-color: #f8f9fa;
-    /* Nền nhẹ */
     border-color: #ced4da;
-    /* Viền khớp với input */
     font-weight: 600;
-    /* Chữ đậm */
     font-size: 1rem;
-    /* Kích thước chữ */
     width: 40px;
-    /* Chiều rộng nút */
     height: 38px;
-    /* Chiều cao khớp với input */
     padding: 0;
-    /* Loại bỏ padding thừa */
     transition: all 0.3s ease;
-    /* Hiệu ứng mượt */
 }
 
 .input-group .btn-outline-secondary:hover {
     background-color: #003087;
-    /* Màu xanh khi hover */
     color: #fff;
-    /* Chữ trắng */
     border-color: #003087;
-    /* Viền khớp với hover */
 }
 
 .input-group.quantity-group {
@@ -178,10 +150,8 @@
 
 .quantity-input {
     width: auto;
-    /* Tự động điều chỉnh chiều rộng */
     text-align: center;
     border-radius: 0;
-    /* Loại bỏ bo góc riêng để khớp với input-group */
     border: 1px solid #ced4da;
     font-size: 0.95rem;
     height: 38px;
@@ -189,45 +159,33 @@
     -moz-appearance: textfield !important;
     appearance: none !important;
     font-weight: 700;
-    /* Giữ chữ đậm như fw-bold */
     padding: 0 0.5rem;
-    /* Thêm padding bên trong */
 }
 
 .cart-item-remove {
     border-radius: 8px;
     padding: 0.5rem 0.75rem;
-    /* Tăng kích thước nút xóa */
     background-color: #dc3545;
-    /* Màu đỏ đậm */
     border: none;
     transition: all 0.3s ease;
 }
 
 .cart-item-remove:hover {
     background-color: #c82333;
-    /* Màu đỏ tối hơn khi hover */
     transform: scale(1.05);
-    /* Phóng to nhẹ */
 }
 
 .cart-item-remove i {
     font-size: 1.2rem;
-    /* Tăng kích thước icon */
 }
 
 .cart-summary {
     background-color: #ffffff;
     padding: 2rem;
-    /* Tăng padding */
     border-radius: 12px;
-    /* Bo góc */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    /* Bóng nhẹ */
     position: sticky;
-    /* Giữ cố định khi cuộn */
     top: 190px;
-    /* Điều chỉnh dựa trên chiều cao title-section */
 }
 
 .cart-summary .cart-title {
@@ -240,54 +198,42 @@
     font-size: 1rem;
     color: #333;
     padding: 0.5rem 0;
-    /* Thêm padding cho các dòng */
 }
 
 .cart-summary .fw-bold {
     font-size: 1.2rem;
-    /* Tăng kích thước chữ tổng cộng */
     color: #272D37;
 }
 
 .cart-summary hr {
     margin: 1rem 0;
-    /* Tăng khoảng cách */
     border-color: #e9ecef;
-    /* Viền nhẹ */
 }
 
 .btn-checkout {
     background-color: #FFC107;
-    /* Màu vàng nổi bật */
     border: none;
     color: #212529;
     font-weight: 600;
     font-size: 1.1rem;
-    /* Tăng kích thước chữ */
     padding: 1rem;
-    /* Tăng padding */
     border-radius: 10px;
     transition: all 0.3s ease;
     text-transform: uppercase;
-    /* Chữ in hoa */
 }
 
 .btn-checkout:hover {
     background-color: #FFCA2C;
     transform: translateY(-3px);
-    /* Nâng nhẹ khi hover */
     box-shadow: 0 6px 12px rgba(255, 193, 7, 0.3);
-    /* Bóng đậm hơn */
 }
 
 .btn-outline-primary {
     border-color: #003087;
-    /* Khớp màu với navbar */
     color: #003087;
     font-weight: 600;
     border-radius: 8px;
     padding: 0.75rem 1.5rem;
-    /* Tăng kích thước nút */
     transition: all 0.3s ease;
 }
 
@@ -295,10 +241,8 @@
     background-color: #003087;
     color: #fff;
     transform: scale(1.05);
-    /* Phóng to nhẹ */
 }
 
-/* Pagination Styles */
 .pagination {
     margin-top: 2rem;
     display: flex;
@@ -344,13 +288,11 @@
 
 .pagination .page-item#prevPage .page-link::before {
     content: "\e900";
-    /* Icon mũi tên trái từ Boxicons */
     font-family: 'boxicons' !important;
 }
 
 .pagination .page-item#nextPage .page-link::after {
     content: "\e901";
-    /* Icon mũi tên phải từ Boxicons */
     font-family: 'boxicons' !important;
 }
 
@@ -425,20 +367,16 @@
     }
 }
 
-/* Responsive */
 @media (max-width: 991.98px) {
     .cart-summary {
         position: static;
-        /* Tắt sticky trên tablet */
         margin-top: 2rem;
-        /* Thêm khoảng cách */
     }
 }
 
 @media (max-width: 767.98px) {
     .cart-section {
         padding: 1rem 0;
-        /* Giảm padding trên mobile */
     }
 
     .title-section {
@@ -464,7 +402,6 @@
     .cart-item-img {
         width: 100%;
         height: 200px;
-        /* Tăng chiều cao ảnh trên mobile */
         border-radius: 8px;
     }
 
@@ -503,7 +440,6 @@
     .input-group.quantity-group {
         width: 100% !important;
         max-width: 200px;
-        /* Giúp input-group không quá to nhưng vẫn 1 hàng */
     }
 
     .quantity-input {
@@ -514,6 +450,5 @@
     .increase {
         width: 40px;
         flex-shrink: 0;
-        /* Ngăn nút bị ép nhỏ */
     }
 }

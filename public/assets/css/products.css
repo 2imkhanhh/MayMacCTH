@@ -38,7 +38,7 @@
 }
 
 .page-title {
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Baloo 2';
     font-weight: 700;
     font-size: 1.5rem;
     color: #333;
@@ -73,8 +73,8 @@
 }
 
 .sidebar-title {
-    font-family: 'Archivo', sans-serif;
-    font-weight: 600;
+    font-family: 'Baloo 2';
+    font-weight: 700;
     font-size: 1.2rem;
     margin-bottom: 1rem;
     color: #333;
@@ -83,7 +83,8 @@
 .filter-group h6 {
     font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-top: 20px;
+    margin-bottom: 0.2rem;
     color: #555;
 }
 
@@ -119,6 +120,8 @@
 }
 
 .sidebar .btn-primary {
+    font-family: 'Baloo 2';
+    font-weight: 700;
     background-color: #174DAF;
     border-color: #174DAF;
 }
@@ -501,7 +504,6 @@
     font-family: 'boxicons' !important;
 }
 
-/* Responsive Adjustments */
 @media (max-width: 991.98px) {
   .pagination {
     gap: 6px;
@@ -519,7 +521,6 @@
   }
 }
 
-/* Di động (max-width: 768px) */
 @media (max-width: 768px) {
   .pagination {
     flex-direction: row; 

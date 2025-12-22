@@ -34,7 +34,7 @@
 }
 
 .page-title {
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Baloo 2';
     font-weight: 700;
     font-size: 1.5rem;
     color: #333;
@@ -105,18 +105,17 @@
 }
 
 .pagination .page-item#prevPage .page-link::before {
-    content: "\e900"; /* Icon mũi tên trái từ Boxicons */
+    content: "\e900"; 
     font-family: 'boxicons' !important;
 }
 
 .pagination .page-item#nextPage .page-link::after {
-    content: "\e901"; /* Icon mũi tên phải từ Boxicons */
+    content: "\e901"; 
     font-family: 'boxicons' !important;
 }
 
 .news-card .card-img-top,
 .news-card img {
-    /* Khóa cứng kích thước và vị trí */
     transform: none !important;
     transition: none !important;
     scale: 1 !important;

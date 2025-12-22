@@ -13,7 +13,7 @@
 }
 
 .page-title {
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Baloo 2';
     font-weight: 700;
     font-size: 1.5rem;
     color: #333;
@@ -419,13 +419,15 @@
 }
 
 .action-buttons .btn {
+    font-family: 'Baloo 2';
+    font-weight: 700;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     height: 52px;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 20px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     padding: 0 20px;
@@ -492,7 +494,7 @@
 }
 
 .section-title {
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Baloo 2';
     font-size: 1.5rem;
     font-weight: 700;
     color: #333;
@@ -697,6 +699,8 @@
 }
 
 .btn-review {
+    font-family: 'Baloo 2';
+    font-weight: 600;
     background-color: #174DAF;
     color: #fff;
     transition: all 0.3s ease;
@@ -708,6 +712,7 @@
 }
 
 .reviews-main-title {
+    font-family: 'Baloo 2';
     font-size: 1.75rem;
     font-weight: 700;
     margin: 0;
@@ -748,8 +753,9 @@
 }
 
 .filter-title {
+    font-family: 'Baloo 2';
+    font-weight: 600 !important;
     font-size: 1.1rem;
-    font-weight: 600;
     margin-bottom: 1rem;
 }
 

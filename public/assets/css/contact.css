@@ -12,13 +12,12 @@
 }
 
 .page-title {
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Baloo 2';
     font-weight: 700;
     font-size: 1.5rem;
     color: #333;
     margin: 0;
 }
-
 .breadcrumb-nav {
     font-size: 1rem;
     color: #333;
@@ -62,8 +61,8 @@
 }
 
 .contact-info-box {
-    background-color: #FFFFFF; /* Màu vàng nhạt từ ảnh */
-    border: 1px solid #174DAF;    /* Viền mờ */
+    background-color: #FFFFFF; 
+    border: 1px solid #174DAF;  
     border-radius: 12px;
     padding: 2rem 1.5rem;
     text-align: center;
@@ -78,8 +77,8 @@
 }
 
 .contact-info-box i {
-    font-size: 2.5rem; /* Icon lớn */
-    color: #0d6efd;    /* Màu xanh primary của bạn */
+    font-size: 2.5rem; 
+    color: #0d6efd;    
     margin-bottom: 1rem;
     display: block;
 }
@@ -93,20 +92,19 @@
     line-height: 1.6;
 }
 
-/* Phần Form liên hệ */
 .contact-form-section {
     position: relative;
-    overflow: hidden; /* Ẩn phần thừa của icon nền */
+    overflow: hidden; 
 }
 
 .contact-title {
+    font-family: 'Baloo 2';
     font-weight: 600;
     font-size: 1.75rem;
     margin-bottom: 2rem;
     color: #333;
 }
 
-/* Tùy chỉnh Form */
 .contact-form-section .form-label {
     font-size: 0.85rem;
     font-weight: 600;
@@ -118,26 +116,26 @@
     border: 1px solid #E0E0E0;
     border-radius: 8px;
     padding: 0.75rem 1rem;
-    background-color: #FFFFFF; /* Màu vàng nhạt cho input */
+    background-color: #FFFFFF; 
     transition: all 0.3s ease;
 }
 
 .contact-form-section .form-control:focus {
-    background-color: #fff; /* Chuyển trắng khi focus */
-    border-color: #0d6efd; /* Highlight màu primary */
+    background-color: #fff; 
+    border-color: #0d6efd; 
     box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
 }
 
 .contact-form-section .form-control::placeholder {
-    color: #AAA; /* Màu placeholder mờ */
+    color: #AAA; 
 }
 
-/* Nút Gửi */
 .btn-submit-contact {
-    background-color: #FFC107; /* Màu vàng từ ảnh */
+    font-family: 'Baloo 2';
+    background-color: #FFC107; 
     border: none;
-    color: #212529; /* Chữ đen */
-    font-weight: 600;
+    color: #212529; 
+    font-weight: 700;
     padding: 0.75rem 2rem;
     border-radius: 8px;
     transition: all 0.3s ease;

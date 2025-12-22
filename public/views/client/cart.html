@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sản phẩm - May Mặc CTH</title>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/bootstrap/css/bootstrap.css">
     <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&family=Poppins:wght@400&display=swap"
         rel="stylesheet">
@@ -121,7 +122,6 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto align-items-center">
-                    <!-- Custom dropdown danh mục -->
                     <li class="nav-item dropdown-custom me-4">
                         <a href="#" class="nav-link text-warning d-flex align-items-center">
                             <i class="bx bx-menu me-2"></i> TẤT CẢ DANH MỤC
@@ -138,7 +138,6 @@
                         </ul>
                     </li>
 
-                    <!-- Các mục menu khác -->
                     <li class="nav-item"><a class="nav-link" href="../../views/client/index.html">Trang chủ</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/about-us.html">Về chúng tôi</a>
                     </li>
@@ -155,7 +154,6 @@
                     <li class="nav-item"><a class="nav-link" href="../../views/client/contact.html">Liên hệ</a></li>
                 </ul>
 
-                <!-- Icon -->
                 <ul class="navbar-nav ms-3">
                     <li class="nav-item" style="margin-right: 90px;">
                         <a class="nav-link" href="../../views/client/cart.html"
@@ -172,7 +170,6 @@
                                     <span class="visually-hidden">sản phẩm</span>
                                 </span>
                             </div>
-
                         </a>
                     </li>
                 </ul>
@@ -196,7 +193,6 @@
                     <div class="cart-items">
                         <h3 class="cart-title mb-4">Sản phẩm trong giỏ hàng</h3>
                         <div class="cart-list" id="cartList">
-                            <!-- JS sẽ tự render sản phẩm từ localStorage ở đây -->
                         </div>
                         <div id="emptyCart" class="text-center py-5" style="display:none;">
                             <img src="../../assets/images/empty-cart.png" alt="Giỏ hàng trống"
@@ -211,7 +207,6 @@
                     </div>
                 </div>
 
-                <!-- Cart Summary -->
                 <div class="col-lg-4">
                     <div class="cart-summary p-4 border rounded">
                         <h3 class="cart-title mb-4">Tóm tắt đơn hàng</h3>
@@ -380,7 +375,6 @@
             const itemsPerPage = 3;
             let currentPage = 1;
 
-            // RENDER CART 
             function renderCart() {
                 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
@@ -461,7 +455,6 @@
                 }
             }
 
-            // PHÂN TRANG 
             function renderPagination(totalPages) {
                 cartPagination.innerHTML = '';
                 if (totalPages <= 1) return;
@@ -765,7 +758,6 @@
                 const res = await fetch('/MayMacCTH/api/news/get_news_categories.php');
                 const result = await res.json();
 
-                // Xóa nội dung cũ
                 container.innerHTML = '';
 
                 if (result.success && result.data && result.data.length > 0) {
@@ -794,7 +786,6 @@
                 const res = await fetch('/MayMacCTH/api/category/get_category.php?t=' + Date.now());
                 const result = await res.json();
 
-                // Xóa nội dung cũ
                 container.innerHTML = '';
 
                 if (result.success && Array.isArray(result.data) && result.data.length > 0) {
@@ -831,7 +822,6 @@
                 const res = await fetch('/MayMacCTH/api/news/get_news_categories.php');
                 const result = await res.json();
 
-                // Xóa loading
                 dropdown.innerHTML = '';
 
                 if (result.success && result.data && result.data.length > 0) {
@@ -854,7 +844,6 @@
             }
         }
     </script>
-
 </body>
 
 </html>
