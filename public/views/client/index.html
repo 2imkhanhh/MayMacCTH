@@ -121,9 +121,9 @@
             <div class="d-lg-none ms-auto">
                 <a class="nav-link text-white pe-0 position-relative" href="../../views/client/cart.html">
                     <i class="bx bx-cart" style="font-size: 28px;"></i>
-                    <span class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle"
+                    <span id="cartCountMobile"
+                        class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle"
                         style="font-size: 10px; padding: 2px 5px; border: 2px solid #fff;">
-                        0
                     </span>
                 </a>
             </div>
@@ -152,8 +152,7 @@
                     </li>
 
                     <li class="nav-item"><a class="nav-link" href="../../views/client/index.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../../views/client/about-us.html">Về chúng tôi</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="../../views/client/about-us.html">Về chúng tôi</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/products.html">Sản phẩm</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/guide.html">Hướng dẫn</a></li>
 
@@ -163,7 +162,6 @@
                             Tin tức
                             <i class='bx bx-chevron-down' style="font-size: 20px;"></i>
                         </a>
-
                         <ul class="dropdown-menu-custom" id="newsCategoryDropdown">
                             <li class="text-center py-3"><small class="text-muted">Đang tải danh mục...</small></li>
                         </ul>
@@ -176,12 +174,10 @@
                     <li class="nav-item" style="margin-right: 90px;">
                         <a class="nav-link" href="../../views/client/cart.html"
                             style="display: flex; align-items: center; justify-content: center;">
-                            <div
-                                style="position: relative; width: 24px !important; height: 24px !important; line-height: 24px;">
-                                <i class="bx bx-cart" style="font-size: 24px; position: absolute; top: 0; left: 0;"></i>
-                                <span id="cartCountDesktop" class="badge rounded-pill bg-danger"
-                                    style="position: absolute; top: -6px; right: -8px; font-size: 9px; padding: 2px 4px; border: 2px solid #fff;">
-                                    0
+                            <div style="position: relative; width: 24px !important; height: 24px !important;">
+                                <i class="bx bx-cart" style="font-size: 28px; line-height: 1;"></i>
+                                <span id="cartCountDesktop"
+                                    class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle">
                                 </span>
                             </div>
                         </a>
@@ -193,7 +189,6 @@
 
     <!-- Banner -->
     <div class="banner-container position-relative text-center fade-element" id="bannerContainer">
-        <!-- Banner sẽ được load vào đây -->
         <div class="banner-dots" id="bannerDots"></div>
     </div>
 
@@ -207,7 +202,6 @@
         </div>
 
         <div class="row row-cols-1 row-cols-md-5 g-4" id="homeProductList">
-            <!-- Loading spinner đẹp -->
             <div class="col-12 text-center py-5">
                 <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Đang tải sản phẩm...</span>
@@ -750,10 +744,16 @@
             const cart = JSON.parse(localStorage.getItem('cart') || '[]');
             const totalItems = cart.length;
 
-            const el = document.getElementById('cartCount');
-            if (el) {
-                el.textContent = totalItems;
-                el.style.display = totalItems > 0 ? 'block' : 'none';
+            const elMobile = document.getElementById('cartCountMobile');
+            if (elMobile) {
+                elMobile.textContent = totalItems;
+                elMobile.style.display = totalItems > 0 ? 'block' : 'none';
+            }
+
+            const elDesktop = document.getElementById('cartCountDesktop');
+            if (elDesktop) {
+                elDesktop.textContent = totalItems;
+                elDesktop.style.display = totalItems > 0 ? 'block' : 'none';
             }
         }
 

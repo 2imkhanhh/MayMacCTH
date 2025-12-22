@@ -140,3 +140,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 });
+
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+  const totalItems = cart.length;
+
+  const elMobile = document.getElementById('cartCountMobile');
+  if (elMobile) {
+    elMobile.textContent = totalItems;
+    elMobile.style.display = totalItems > 0 ? 'block' : 'none';
+  }
+
+  const elDesktop = document.getElementById('cartCountDesktop');
+  if (elDesktop) {
+    elDesktop.textContent = totalItems;
+    elDesktop.style.display = totalItems > 0 ? 'block' : 'none';
+  }
+}

@@ -112,14 +112,30 @@
 
     <!-- Menu -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <div class="container-fluid d-flex align-items-center">
+            <button class="navbar-toggler border-0 ps-0" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
+            <div class="d-lg-none ms-auto">
+                <a class="nav-link text-white pe-0 position-relative" href="../../views/client/cart.html">
+                    <i class="bx bx-cart" style="font-size: 28px;"></i>
+                    <span id="cartCountMobile"
+                        class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle"
+                        style="font-size: 10px; padding: 2px 5px; border: 2px solid #fff;">
+                    </span>
+                </a>
+            </div>
+
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto align-items-center">
+                <button type="button" class="btn-close-menu d-lg-none" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav">
+                    &times;
+                </button>
+
+                <ul class="navbar-nav me-auto align-items-center w-100-mobile">
                     <li class="nav-item dropdown-custom me-4">
                         <a href="#" class="nav-link text-warning d-flex align-items-center">
                             <i class="bx bx-menu me-2"></i> TẤT CẢ DANH MỤC
@@ -137,38 +153,34 @@
                     </li>
 
                     <li class="nav-item"><a class="nav-link" href="../../views/client/index.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../../views/client/about-us.html">Về chúng tôi</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="../../views/client/about-us.html">Về chúng tôi</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/products.html">Sản phẩm</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/guide.html">Hướng dẫn</a></li>
+
                     <li class="nav-item dropdown-custom">
-                        <a href="/MayMacCTH/public/views/client/news.html" class="nav-link text-warning d-flex align-items-center">
-                            Tin tức <i class='bx bx-chevron-down' style="font-size: 20px;"></i>
+                        <a href="/MayMacCTH/public/views/client/news.html"
+                            class="nav-link text-warning d-flex align-items-center justify-content-between">
+                            Tin tức
+                            <i class='bx bx-chevron-down' style="font-size: 20px;"></i>
                         </a>
                         <ul class="dropdown-menu-custom" id="newsCategoryDropdown">
                             <li class="text-center py-3"><small class="text-muted">Đang tải danh mục...</small></li>
                         </ul>
                     </li>
+
                     <li class="nav-item"><a class="nav-link" href="../../views/client/contact.html">Liên hệ</a></li>
                 </ul>
 
-                <ul class="navbar-nav ms-3">
+                <ul class="navbar-nav ms-3 d-none d-lg-block">
                     <li class="nav-item" style="margin-right: 90px;">
                         <a class="nav-link" href="../../views/client/cart.html"
                             style="display: flex; align-items: center; justify-content: center;">
-
-                            <div
-                                style="position: relative; width: 24px !important; height: 24px !important; line-height: 24px;">
-
-                                <i class="bx bx-cart" style="font-size: 24px; position: absolute; top: 0; left: 0;"></i>
-
-                                <span id="cartCount" class="badge rounded-pill bg-danger"
-                                    style="position: absolute; top: -6px; right: -8px; font-size: 9px; padding: 2px 4px; border: 2px solid #fff; display: none;">
-                                    0
-                                    <span class="visually-hidden">sản phẩm</span>
+                            <div style="position: relative; width: 24px !important; height: 24px !important;">
+                                <i class="bx bx-cart" style="font-size: 28px; line-height: 1;"></i>
+                                <span id="cartCountDesktop"
+                                    class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle">
                                 </span>
                             </div>
-
                         </a>
                     </li>
                 </ul>
@@ -579,16 +591,16 @@
             }
         }
 
-        function updateCartCount() {
-            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-            const totalItems = cart.length;
+        // function updateCartCount() {
+        //     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        //     const totalItems = cart.length;
 
-            const el = document.getElementById('cartCount');
-            if (el) {
-                el.textContent = totalItems;
-                el.style.display = totalItems > 0 ? 'block' : 'none';
-            }
-        }
+        //     const el = document.getElementById('cartCount');
+        //     if (el) {
+        //         el.textContent = totalItems;
+        //         el.style.display = totalItems > 0 ? 'block' : 'none';
+        //     }
+        // }
 
         function getSlugFromURL() {
             const params = new URLSearchParams(window.location.search);

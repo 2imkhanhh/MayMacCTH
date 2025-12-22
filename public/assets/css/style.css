@@ -782,10 +782,16 @@ footer.footer .footer-links a:hover {
   transform: translateY(0);
 } */
 
-.cart-count-badge {
+#cartCountDesktop {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  min-width: 18px;
+  padding: 0 3px;
   font-size: 10px;
-  padding: 2px 5px;
   border: 2px solid #fff;
+  margin-top: 5px;
 }
 
 .btn-close-menu {
@@ -795,7 +801,7 @@ footer.footer .footer-links a:hover {
 @media (max-width: 991.98px) {
   .search-input {
     padding: 5px !important;
-    font-size: 10px !important;
+    font-size: 10px !;
   }
 
   .btn-close-menu {
@@ -945,6 +951,10 @@ footer.footer .footer-links a:hover {
 
   .search-container {
     width: 300px;
+  }
+
+  #cartCountMobile{
+    margin-top: 4px;
   }
 }
 
