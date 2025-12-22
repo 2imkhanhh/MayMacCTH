@@ -16,53 +16,53 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Breadcrumb
 document.addEventListener('DOMContentLoaded', async function () {
-    const breadcrumb = document.getElementById('breadcrumb');
-    if (!breadcrumb) return;
+  const breadcrumb = document.getElementById('breadcrumb');
+  if (!breadcrumb) return;
 
-    const currentPage = location.pathname.split('/').pop();
+  const currentPage = location.pathname.split('/').pop();
 
-    if (currentPage === 'product-detail.php') {
-        return; 
-    }
+  if (currentPage === 'product-detail.php') {
+    return;
+  }
 
-    if (currentPage === 'product-detail.html') {
-        const urlParams = new URLSearchParams(location.search);
-        const productName = urlParams.get('name') || 'Chi tiết sản phẩm';
+  if (currentPage === 'product-detail.html') {
+    const urlParams = new URLSearchParams(location.search);
+    const productName = urlParams.get('name') || 'Chi tiết sản phẩm';
 
-        breadcrumb.innerHTML = `
+    breadcrumb.innerHTML = `
             <a href="index.html">Trang chủ</a>
             <span class="sep">/</span>
             <a href="products.html">Sản phẩm</a>
             <span class="sep">/</span>
             <span class="current">${productName}</span>
         `;
-        return;
-    }
+    return;
+  }
 
-    const pageMap = {
-        'index.html'       : 'Trang chủ',
-        'about-us.html'    : 'Về chúng tôi',
-        'products.html'    : 'Sản phẩm',
-        'guide.html'       : 'Hướng dẫn',
-        'news.html'        : 'Tin tức',
-        'news-detail.html' : 'Tin tức',
-        'contact.html'     : 'Liên hệ',
-        'cart.html'        : 'Giỏ hàng',
-        'order.html'       : 'Đặt hàng',
-        'thankyou.html'    : 'Cảm ơn'
-    };
+  const pageMap = {
+    'index.html': 'Trang chủ',
+    'about-us.html': 'Về chúng tôi',
+    'products.html': 'Sản phẩm',
+    'guide.html': 'Hướng dẫn',
+    'news.html': 'Tin tức',
+    'news-detail.html': 'Tin tức',
+    'contact.html': 'Liên hệ',
+    'cart.html': 'Giỏ hàng',
+    'order.html': 'Đặt hàng',
+    'thankyou.html': 'Cảm ơn'
+  };
 
-    const pageName = pageMap[currentPage] || 'Trang chủ';
+  const pageName = pageMap[currentPage] || 'Trang chủ';
 
-    if (currentPage === 'index.html') {
-        breadcrumb.innerHTML = `<span class="current">${pageName}</span>`;
-    } else {
-        breadcrumb.innerHTML = `
+  if (currentPage === 'index.html') {
+    breadcrumb.innerHTML = `<span class="current">${pageName}</span>`;
+  } else {
+    breadcrumb.innerHTML = `
             <a href="index.html">Trang chủ</a>
             <span class="sep"> > </span>
             <span class="current">${pageName}</span>
         `;
-    }
+  }
 });
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -110,4 +110,33 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   loadFooterContact();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.innerWidth < 992) {
+    // Xử lý click menu cha
+    const dropdownLinks = document.querySelectorAll('.dropdown-custom > .nav-link');
+
+    dropdownLinks.forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const parent = this.closest('.dropdown-custom');
+        if (parent) {
+          parent.classList.toggle('show-dropdown');
+        }
+      });
+    });
+
+    // Xử lý nút đóng
+    const closeBtn = document.querySelector('.btn-close-menu');
+    const navbarCollapse = document.querySelector('.navbar-collapse');
+    if (closeBtn && navbarCollapse) {
+      closeBtn.addEventListener('click', function () {
+        navbarCollapse.classList.remove('show');
+        document.querySelectorAll('.dropdown-custom').forEach(el => {
+          el.classList.remove('show-dropdown');
+        });
+      });
+    }
+  }
 });
