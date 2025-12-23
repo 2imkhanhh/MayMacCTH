@@ -152,7 +152,8 @@
                     </li>
 
                     <li class="nav-item"><a class="nav-link" href="../../views/client/index.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../../views/client/about-us.html">Về chúng tôi</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../../views/client/about-us.html">Về chúng tôi</a>
+                    </li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/products.html">Sản phẩm</a></li>
                     <li class="nav-item"><a class="nav-link" href="../../views/client/guide.html">Hướng dẫn</a></li>
 
@@ -201,7 +202,7 @@
             </a>
         </div>
 
-        <div class="row row-cols-1 row-cols-md-5 g-4" id="homeProductList">
+        <div class="row row-cols-2 row-cols-md-5 g-2 g-md-4" id="homeProductList">
             <div class="col-12 text-center py-5">
                 <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Đang tải sản phẩm...</span>
@@ -569,7 +570,7 @@
                             : `/MayMacCTH/public/assets/images/no-image.jpg`;
 
                         const col = document.createElement('div');
-                        col.className = 'col';
+                        col.className = 'col-6';
 
                         col.innerHTML = `
                             <div class="card h-100 product-card border-0 shadow-sm overflow-hidden">
@@ -578,7 +579,6 @@
                                         <img src="${imageUrl}" 
                                             class="card-img-top" 
                                             alt="${product.name}"
-                                            style="object-fit: cover;"
                                             onerror="this.src='/MayMacCTH/public/assets/images/no-image.jpg'">
                                     </div>
                                 </a>
@@ -591,11 +591,10 @@
                                         ${price}<span class="currency-symbol">đ</span>
                                     </p>
                                     -->
-                                    <div class="price fw-bold fs-5 mb-2" style="color: #174DAF;">${price}đ</div>
+                                    <div class="price fw-bold mb-2" style="color: #174DAF;">${price}đ</div>
                                 </div>
                             </div>
                         `;
-
                         productList.appendChild(col);
                     });
 
