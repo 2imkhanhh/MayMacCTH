@@ -1,10 +1,11 @@
 const BASE_URL = '/MayMacCTH';
 let currentEditId = null;
 
-let colorsList = [];     
-let sizesList = [];      
-let variantsList = [];    
+let colorsList = [];
+let sizesList = [];
+let variantsList = [];
 let colorCounter = 0;
+let selectedImages = [];
 
 const PRESET_COLORS = [
     { name: 'Đen', code: '#000000' },
@@ -17,7 +18,7 @@ const PRESET_COLORS = [
 ];
 const PRESET_SIZES = ['S', 'M', 'L', 'XL'];
 
-let imageIndex = 0; 
+let imageIndex = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
     loadCategories();
@@ -219,6 +220,8 @@ function openModal(product = null) {
     sizesList = [];
     variantsList = [];
     colorCounter = 0;
+    selectedImages = [];
+    imageIndex = 0;
 
     const presetColorsCb = document.getElementById('presetColors');
     const presetSizesCb = document.getElementById('presetSizes');
@@ -259,12 +262,14 @@ function openModal(product = null) {
         }
 
         const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-        imagePreviewContainer.innerHTML = ''; 
+        imagePreviewContainer.innerHTML = '';
 
-        if (product && product.images && product.images.length > 0) {
+        if (product.images && product.images.length > 0) {
             product.images.forEach((img, idx) => {
                 const div = document.createElement('div');
                 div.className = 'col-6 col-md-4 col-lg-3 position-relative';
+                div.dataset.isExisting = 'true';
+                div.dataset.imageId = img.image_id;
 
                 const checked = img.is_primary == 1 ? 'checked' : '';
 
@@ -275,7 +280,12 @@ function openModal(product = null) {
                         <input type="hidden" name="existing_images[]" value="${img.image_id}">
                         <div class="p-2 bg-white border-top">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="primary_image" value="${idx}" ${checked}>
+                                <input class="form-check-input primary-radio" 
+                                    type="radio" 
+                                    name="primary_image" 
+                                    value="${img.image_id}" 
+                                    data-type="existing"
+                                    ${checked}>
                                 <label class="form-check-label small">Ảnh chính</label>
                             </div>
                         </div>
@@ -293,33 +303,15 @@ function openModal(product = null) {
                 };
             });
         }
-
-        const presetColorNames = PRESET_COLORS.map(p => p.name.toLowerCase());
-        const hasPresetColor = colorsList.some(color =>
-            presetColorNames.includes(color.name.toLowerCase())
-        );
-
-        const hasPresetSize = sizesList.some(size =>
-            PRESET_SIZES.includes(size)
-        );
-
-        if (hasPresetColor) {
-            presetColorsCb.checked = true;
-        }
-        if (hasPresetSize) {
-            presetSizesCb.checked = true;
-        }
     } else {
         title.textContent = 'Thêm sản phẩm mới';
         form.price.value = 0;
         document.getElementById('isActiveCheckbox').checked = true;
 
         const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-        if (imagePreviewContainer) {
-            imagePreviewContainer.innerHTML = '';
-        }
-        imageIndex = 0; 
+        imagePreviewContainer.innerHTML = '';
     }
+
     renderColors();
     renderSizes();
     renderVariants();
@@ -482,7 +474,7 @@ function handlePresetCheckbox() {
         const toRemoveIds = colorsList
             .filter(c => presetNames.includes(c.name.toLowerCase()))
             .map(c => c.id);
-        
+
         colorsList = colorsList.filter(c => !presetNames.includes(c.name.toLowerCase()));
         variantsList = variantsList.filter(v => !toRemoveIds.includes(v.colorId));
         renderColors();
@@ -513,76 +505,107 @@ async function handleSubmit(e) {
         return;
     }
 
-    document.querySelectorAll('input[name^="colors["]').forEach(el => el.remove());
+    const hasNewImages = selectedImages.length > 0;
+    const hasExisting = form.querySelectorAll('input[name="existing_images[]"]').length > 0;
+
+    if (!hasNewImages && !hasExisting) {
+        showToast('Phải có ít nhất 1 ảnh sản phẩm!', 'error');
+        return;
+    }
+
+    const formData = new FormData();
+
+    formData.append('name', form.querySelector('[name="name"]').value.trim());
+    formData.append('category_id', form.querySelector('[name="category_id"]').value);
+    formData.append('price', form.querySelector('[name="price"]').value);
+    formData.append('description', form.querySelector('[name="description"]').value.trim());
+    formData.append('is_active', form.querySelector('#isActiveCheckbox').checked ? '1' : '0');
+
+    const existingImageInputs = form.querySelectorAll('input[name="existing_images[]"]');
+    existingImageInputs.forEach(input => {
+        formData.append('existing_images[]', input.value);
+    });
+
+    selectedImages.forEach(file => {
+        formData.append('images[]', file);
+    });
+
+    const primaryRadio = form.querySelector('input[name="primary_image"]:checked');
+    if (primaryRadio) {
+        const value = primaryRadio.value;
+        const type = primaryRadio.dataset.type;
+
+        if (type === 'existing') {
+            formData.append('primary_image_id', value);
+        } else if (type === 'new') {
+            formData.append('primary_image_index', value);
+        }
+    } else {
+        const firstExisting = form.querySelector('input[name="existing_images[]"]');
+        if (firstExisting) {
+            formData.append('primary_image_id', firstExisting.value);
+        } else if (selectedImages.length > 0) {
+            formData.append('primary_image_index', '0');
+        }
+    }
+
     if (colorsList.length > 0) {
         colorsList.forEach((color, idx) => {
-            const nameInp = document.createElement('input');
-            nameInp.type = 'hidden';
-            nameInp.name = `colors[${idx}][name]`;
-            nameInp.value = color.name;
-            form.appendChild(nameInp);
-
-            const codeInp = document.createElement('input');
-            codeInp.type = 'hidden';
-            codeInp.name = `colors[${idx}][code]`;
-            codeInp.value = color.code;
-            form.appendChild(codeInp);
-
-            const sizesForThisColor = variantsList
+            formData.append(`colors[${idx}][name]`, color.name.trim());
+            formData.append(`colors[${idx}][code]`, color.code);
+            const sizesForColor = variantsList
                 .filter(v => v.colorId === color.id)
                 .map(v => v.size);
-
-            sizesForThisColor.forEach(size => {
-                const sizeInp = document.createElement('input');
-                sizeInp.type = 'hidden';
-                sizeInp.name = `colors[${idx}][sizes]`;
-                sizeInp.value = size;
-                form.appendChild(sizeInp);
+            sizesForColor.forEach(size => {
+                formData.append(`colors[${idx}][sizes][]`, size);
             });
         });
-    } else {
-        const defaultColorIdx = 0;
-        const nameInp = document.createElement('input');
-        nameInp.type = 'hidden';
-        nameInp.name = `colors[${defaultColorIdx}][name]`;
-        nameInp.value = 'Default'; 
-        form.appendChild(nameInp);
-
-        const codeInp = document.createElement('input');
-        codeInp.type = 'hidden';
-        codeInp.name = `colors[${defaultColorIdx}][code]`;
-        codeInp.value = '#000000';
-        form.appendChild(codeInp);
-
+    } else if (sizesList.length > 0) {
+        formData.append('colors[0][name]', 'Default');
+        formData.append('colors[0][code]', '#000000');
         sizesList.forEach(size => {
-            const sizeInp = document.createElement('input');
-            sizeInp.type = 'hidden';
-            sizeInp.name = `colors[${defaultColorIdx}][sizes]`;
-            sizeInp.value = size;
-            form.appendChild(sizeInp);
+            formData.append('colors[0][sizes][]', size);
         });
     }
 
-    const formData = new FormData(form);
     const url = currentEditId
         ? `${BASE_URL}/api/product/update_product.php?id=${currentEditId}`
         : `${BASE_URL}/api/product/create_product.php`;
 
     try {
-        const res = await fetch(url, { method: 'POST', body: formData });
-        const text = await res.text();
-        let data;
-        try { data = JSON.parse(text); } 
-        catch { console.error(text); showToast('Lỗi server!', 'error'); return; }
+        // Debug
+        // for (let [key, value] of formData.entries()) {
+        //     console.log(key, value);
+        // }
 
-        showToast(data.message || (data.success ? 'Lưu thành công!' : 'Lưu thất bại!'), data.success ? 'success' : 'error');
+        const res = await fetch(url, {
+            method: 'POST',
+            body: formData
+        });
+
+        const text = await res.text();
+        console.log('Raw server response:', text);  
+
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (parseErr) {
+            console.error('Lỗi parse JSON từ server:', parseErr);
+            showToast('Phản hồi từ server không đúng định dạng!', 'error');
+            return;
+        }
+
         if (data.success) {
+            showToast(data.message || 'Lưu sản phẩm thành công!', 'success');
             bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
             loadProducts();
+            selectedImages = [];  
+        } else {
+            showToast(data.message || 'Lưu sản phẩm thất bại!', 'error');
         }
     } catch (err) {
-        showToast('Lỗi kết nối!', 'error');
-        console.error(err);
+        console.error('Lỗi khi gửi request:', err);
+        showToast('Lỗi kết nối hoặc server không phản hồi!', 'error');
     }
 }
 
@@ -590,22 +613,26 @@ document.getElementById('selectImagesBtn').onclick = () => {
     document.getElementById('bulkImageInput').click();
 };
 
-document.getElementById('bulkImageInput').onchange = function(e) {
-    const files = e.target.files;
+document.getElementById('bulkImageInput').onchange = function (e) {
+    const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
     const container = document.getElementById('imagePreviewContainer');
 
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        if (!file.type.match('image.*')) continue;
+    files.forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+
+        const fileIndex = selectedImages.length;
+        selectedImages.push(file);
 
         const reader = new FileReader();
-        reader.onload = function(ev) {
+        reader.onload = function (ev) {
             const div = document.createElement('div');
             div.className = 'col-6 col-md-4 col-lg-3 position-relative';
-            const noPrimaryYet = !document.querySelector('input[name="primary_image"]:checked');
-            const checked = (container.children.length === 0 && i === 0 && noPrimaryYet) ? 'checked' : '';
+            div.dataset.fileIndex = fileIndex;
+
+            const isFirstNew = container.querySelectorAll('.image-preview-item').length === 0;
+            const checked = isFirstNew ? 'checked' : '';
 
             div.innerHTML = `
                 <div class="image-preview-item border rounded overflow-hidden shadow-sm bg-light">
@@ -613,7 +640,12 @@ document.getElementById('bulkImageInput').onchange = function(e) {
                     <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 remove-image-btn">×</button>
                     <div class="p-2 bg-white border-top">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="primary_image" value="${imageIndex}" ${checked}>
+                            <input class="form-check-input primary-radio" 
+                                type="radio" 
+                                name="primary_image" 
+                                value="${fileIndex}" 
+                                data-type="new"
+                                ${checked}>
                             <label class="form-check-label small">Ảnh chính</label>
                         </div>
                     </div>
@@ -621,17 +653,25 @@ document.getElementById('bulkImageInput').onchange = function(e) {
             `;
 
             container.appendChild(div);
-            imageIndex++;
 
             div.querySelector('.remove-image-btn').onclick = () => {
+                const idx = parseInt(div.dataset.fileIndex);
                 div.remove();
-                if (!document.querySelector('input[name="primary_image"]:checked')) {
-                    const firstRadio = container.querySelector('input[name="primary_image"]');
-                    if (firstRadio) firstRadio.checked = true;
+                if (!isNaN(idx)) selectedImages.splice(idx, 1);
+
+                const previews = container.querySelectorAll('[data-file-index]');
+                previews.forEach((p, newIdx) => {
+                    p.dataset.fileIndex = newIdx;
+                    p.querySelector('input[name="primary_image"]').value = newIdx;
+                });
+
+                if (!container.querySelector('input[name="primary_image"]:checked') && previews.length > 0) {
+                    previews[0].querySelector('input').checked = true;
                 }
             };
         };
         reader.readAsDataURL(file);
-    }
+    });
+
     e.target.value = '';
 };

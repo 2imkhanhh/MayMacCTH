@@ -65,8 +65,8 @@
 
 .product-image #main-product-image {
     padding: 0;
-    max-width: 50%;
-    height: auto;
+    max-width: 60%;
+    height: 100%;
     transition: all 0.3s ease;
     display: block;
     margin-left: 60px;
@@ -80,7 +80,7 @@
 /* thumbnail */
 .thumbnail-images {
     display: flex;
-    margin-left: 110px;
+    margin-left: 0;
     gap: 15px;
     margin-top: 20px;
 }
@@ -122,32 +122,6 @@
     font-size: 1rem;
     font-weight: 600;
     color: #003087;
-}
-
-.thumbnail-images {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.thumbnail {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    cursor: pointer;
-    border: 2px solid #ddd;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
-
-.thumbnail:hover {
-    border-color: #007bff;
-    transform: scale(1.1);
-}
-
-.thumbnail.active {
-    border-color: #007bff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .product-info {
@@ -293,42 +267,6 @@
     box-sizing: border-box;
 }
 
-.action-buttons .btn-add-cart {
-    background-color: #174DAF;
-    color: #fff;
-    border: none;
-}
-
-.action-buttons .btn-add-cart:hover {
-    background-color: #133f8c;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.action-buttons .btn-buy {
-    background-color: #fff;
-    color: #174DAF;
-    border: 2px solid #174DAF;
-}
-
-.action-buttons .btn-buy:hover {
-    background-color: #f1f1f1;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.action-buttons .btn-zalo {
-    background-color: #FFC107;
-    color: #333;
-    border: none;
-}
-
-.action-buttons .btn-zalo:hover {
-    background-color: #FFB300;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
 .action-buttons .btn-zalo .zalo-content {
     display: flex;
     flex-direction: row;
@@ -357,7 +295,6 @@
 }
 
 .btn-add-cart:hover {
-    background-color: #e6bf00 !important;
     color: #FFFBEA !important;
 }
 
@@ -368,7 +305,6 @@
 }
 
 .btn-buy:hover {
-    background-color: #e6bf00 !important;
     color: #FFFBEA !important;
 }
 
@@ -843,6 +779,10 @@
     margin-bottom: 0.5rem;
 }
 
+.custom-star {
+    font-size: 1.5rem;
+}
+
 .review-product-details {
     font-size: 0.85rem;
     color: #777;
@@ -1078,6 +1018,68 @@
     .action-buttons .zalo-icon {
         width: 20px;
         height: 20px;
+    }
+
+    .review-filters {
+        padding: 10px;
+    }
+
+    .custom-star {
+        font-size: 20px;
+    }
+
+    .rating-score {
+        font-size: 18px;
+    }
+
+    .reviews-main-title{
+        font-size: 18px;
+    }
+
+    .product-image {
+        border: none !important; 
+        background: transparent !important; 
+        padding: 0 !important; 
+        margin-bottom: 20px;
+    }
+
+    #main-product-image {
+        max-width: 100% !important;
+        width: 100% !important; 
+        height: auto !important; 
+        max-height: 500px; 
+        object-fit: contain !important; 
+        margin-left: 0 !important;
+        padding: 0 !important; 
+        display: block;
+        margin: 0 auto;
+    }
+
+    #thumbnailContainer {
+        display: flex !important;
+        justify-content: center !important; 
+        align-items: center !important;
+        flex-wrap: wrap !important; 
+        gap: 12px !important; 
+        width: 100% !important;
+        margin-top: 15px !important;
+    }
+
+    #thumbnailContainer > * {
+        margin: 0 !important;
+        flex: 0 0 auto !important;
+    }
+
+    #thumbnailContainer img {
+        width: 100px !important; 
+        height: 100px !important;
+        object-fit: cover !important;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+    
+    .action-buttons {
+        justify-content: center;
     }
 }
 

@@ -206,17 +206,17 @@ class Product
         }
     }
 
-    public function update($productId, $data, $colors, $images, $primaryIndex, $existingImages = [])
+    public function update($productId, $data, $colors, $images, $primaryImageIndex = -1, $existingImages = [], $primaryImageId = null)
     {
         $this->conn->beginTransaction();
         try {
             $query = "UPDATE products SET 
-                        name = :name,
-                        description = :description,
-                        price = :price,                         
-                        category_id = :category_id,
-                        is_active = :is_active
-                    WHERE product_id = :product_id";
+                    name = :name,
+                    description = :description,
+                    price = :price,                         
+                    category_id = :category_id,
+                    is_active = :is_active
+                WHERE product_id = :product_id";
             $stmt = $this->conn->prepare($query);
             $stmt->execute([
                 ':name' => $data['name'],
@@ -248,7 +248,6 @@ class Product
             }
 
             $uploadDir = __DIR__ . '/../../public/assets/images/upload/';
-
             $stmt = $this->conn->prepare("SELECT image_id, image FROM product_images WHERE product_id = ?");
             $stmt->execute([$productId]);
             $oldImages = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -261,6 +260,7 @@ class Product
                 }
             }
 
+            $newImageIds = []; 
             $sortOrder = 0;
             foreach ($images as $index => $file) {
                 if ($file['error'] !== 0) continue;
@@ -270,15 +270,35 @@ class Product
                 $path = $uploadDir . $filename;
 
                 if (move_uploaded_file($file['tmp_name'], $path)) {
-                    $isPrimary = ($index == $primaryIndex) ? 1 : 0;
-                    $this->conn->prepare("INSERT INTO product_images (product_id, image, is_primary, sort_order) VALUES (?, ?, ?, ?)")
-                        ->execute([$productId, $filename, $isPrimary, $sortOrder++]);
+                    $stmt = $this->conn->prepare("INSERT INTO product_images (product_id, image, is_primary, sort_order) VALUES (?, ?, 0, ?)");
+                    $stmt->execute([$productId, $filename, $sortOrder++]);
+                    $newImageId = $this->conn->lastInsertId();
+                    $newImageIds[$index] = $newImageId;
                 }
             }
 
-            if (empty($images) && $primaryIndex >= 0 && isset($existingImages[$primaryIndex])) {
-                $this->conn->prepare("UPDATE product_images SET is_primary = 0 WHERE product_id = ?")->execute([$productId]);
-                $this->conn->prepare("UPDATE product_images SET is_primary = 1 WHERE image_id = ?")->execute([$existingImages[$primaryIndex]]);
+            $this->conn->prepare("UPDATE product_images SET is_primary = 0 WHERE product_id = ?")->execute([$productId]);
+            $finalPrimaryId = null;
+
+            // primaryImageId 
+            if ($primaryImageId !== null && in_array($primaryImageId, $existingImages)) {
+                $finalPrimaryId = $primaryImageId;
+            }
+            // primaryImageIndex
+            elseif ($primaryImageIndex >= 0 && isset($newImageIds[$primaryImageIndex])) {
+                $finalPrimaryId = $newImageIds[$primaryImageIndex];
+            }
+            else {
+                if (!empty($existingImages)) {
+                    $finalPrimaryId = (int)$existingImages[0];
+                } elseif (!empty($newImageIds)) {
+                    $finalPrimaryId = (int)reset($newImageIds);
+                }
+            }
+
+            if ($finalPrimaryId !== null) {
+                $stmt = $this->conn->prepare("UPDATE product_images SET is_primary = 1 WHERE image_id = ? AND product_id = ?");
+                $stmt->execute([$finalPrimaryId, $productId]);
             }
 
             $this->conn->commit();
@@ -331,7 +351,7 @@ class Product
                   LEFT JOIN product_colors pc ON pc.product_id = p.product_id
                   LEFT JOIN product_variants pv ON pv.color_id = pc.color_id
                   LEFT JOIN product_images pi ON pi.product_id = p.product_id
-                  WHERE 1=1"; 
+                  WHERE 1=1";
 
         if ($category_id) $query .= " AND p.category_id = :category_id";
         if ($name) $query .= " AND p.name LIKE :name";

@@ -1,0 +1,83 @@
+async function handleSubmit(e) {
+    e.preventDefault();
+    const form = this;
+
+    if (colorsList.length === 0 && sizesList.length === 0) {
+        showToast('Vui lòng thêm ít nhất một màu sắc hoặc một kích thước!', 'error');
+        return;
+    }
+
+    const hasNewImages = selectedImages.length > 0;
+    const hasExisting = form.querySelectorAll('input[name="existing_images[]"]').length > 0;
+
+    if (!hasNewImages && !hasExisting) {
+        showToast('Phải có ít nhất 1 ảnh!', 'error');
+        return;
+    }
+
+    const formData = new FormData();
+
+    // Field text
+    formData.append('name', form.querySelector('[name="name"]').value.trim());
+    formData.append('category_id', form.querySelector('[name="category_id"]').value);
+    formData.append('price', form.querySelector('[name="price"]').value);
+    formData.append('description', form.querySelector('[name="description"]').value.trim());
+    formData.append('is_active', form.querySelector('#isActiveCheckbox').checked ? 'on' : '');
+
+    // primary_image
+    const primaryRadio = form.querySelector('input[name="primary_image"]:checked');
+    if (primaryRadio) {
+        const val = primaryRadio.value;
+        if (val.startsWith('existing_')) {
+            formData.append('primary_image', 'existing');
+            formData.append('primary_existing_index', val.replace('existing_', ''));
+        } else {
+            formData.append('primary_image', val);
+        }
+    } else {
+        formData.append('primary_image', '0');
+    }
+
+    // Colors
+    if (colorsList.length > 0) {
+        colorsList.forEach((color, idx) => {
+            formData.append(`colors[${idx}][name]`, color.name.trim());
+            formData.append(`colors[${idx}][code]`, color.code);
+            const sizesForColor = variantsList.filter(v => v.colorId === color.id).map(v => v.size);
+            sizesForColor.forEach(size => {
+                formData.append(`colors[${idx}][sizes][]`, size);
+            });
+        });
+    } else {
+        formData.append('colors[0][name]', 'Default');
+        formData.append('colors[0][code]', '#000000');
+        sizesList.forEach(size => formData.append('colors[0][sizes][]', size));
+    }
+
+    selectedImages.forEach(file => {
+        formData.append('images[]', file);
+    });
+
+    const url = currentEditId
+        ? `https://demo9.sibic.vn/api/product/update_product.php?id=${currentEditId}`
+        : `https://demo9.sibic.vn/api/product/create_product.php`;
+
+    try {
+        const res = await fetch(url, { method: 'POST', body: formData });
+        const text = await res.text();
+        console.log('Raw response:', text);
+        let data = JSON.parse(text);
+
+        showToast(data.message || (data.success ? 'Lưu thành công!' : 'Lưu thất bại!'), data.success ? 'success' : 'error');
+
+        if (data.success) {
+            bootstrap.Modal.getInstance(document.getElementById('productModal')).hide();
+            loadProducts();
+            selectedImages = [];
+            document.getElementById('imagePreviewContainer').innerHTML = '';
+        }
+    } catch (err) {
+        showToast('Lỗi kết nối!', 'error');
+        console.error(err);
+    }
+}

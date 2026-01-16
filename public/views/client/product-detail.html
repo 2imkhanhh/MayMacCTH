@@ -166,7 +166,7 @@
                     <li class="nav-item"><a class="nav-link" href="../../views/client/guide.html">Hướng dẫn</a></li>
 
                     <li class="nav-item dropdown-custom">
-                        <a href="/MayMacCTH/public/views/client/news.html"
+                        <a href="../../views/client/news.html"
                             class="nav-link text-warning d-flex align-items-center justify-content-between">
                             Tin tức
                             <i class='bx bx-chevron-down' style="font-size: 20px;"></i>
@@ -213,7 +213,7 @@
                         <img src="" alt="Đang tải..." id="main-product-image" class="w-100"
                             style="background:#f5f5f5; min-height:400px; object-fit:contain;">
 
-                        <div class="thumbnail-images mt-3 d-flex gap-2 flex-wrap" id="thumbnailContainer">
+                        <div class="thumbnail-images mt-3 d-flex gap-2 flex-wrap justify-content-center" id="thumbnailContainer">
                         </div>
                     </div>
 
@@ -611,7 +611,6 @@
             }
             await loadReviewTags();
 
-            //UPLOAD ẢNH + PREVIEW 
             const previewContainer = document.getElementById('previewImages');
             document.getElementById('reviewImages')?.addEventListener('change', e => {
                 const files = e.target.files;
@@ -619,7 +618,7 @@
                 previewContainer.innerHTML = '';
 
                 if (files.length > 5) {
-                    alert('Tối đa 5 ảnh thôi nhé!');
+                    alert('Tối đa 5 ảnh');
                     e.target.value = '';
                     return;
                 }
@@ -675,7 +674,6 @@
                 const p = result.data.find(item => item.product_id == productId);
                 if (!p) throw new Error('Sản phẩm không tồn tại');
 
-                // Cập nhật tiêu đề + breadcrumb
                 const categoryTitleEl = document.getElementById('categoryTitle');
                 const breadcrumbEl = document.getElementById('productNameBreadcrumb');
                 if (categoryTitleEl) categoryTitleEl.textContent = p.category_name || 'SẢN PHẨM';
@@ -685,19 +683,19 @@
                         <span class="sep"> > </span>
                         <a href="products.html">Sản phẩm</a>
                         <span class="sep"> > </span>
-                        <span class="current">${p.name}</span>
+                        <span class="current">${p.name  }</span>
                     `;
                 }
 
-                // Render 
                 contentContainer.innerHTML = `
                     <div class="row align-items-start">
                         <!-- Ảnh sản phẩm -->
-                        <div class="col-12 col-md-6 mb-4 mb-md-0">
+                        <div class="col-12 col-md-6 mb-4 mb-md-0">  
                             <div class="product-image">
                                 <img src="" alt="${p.name}" id="main-product-image" class="w-100"
                                     style="min-height:400px; object-fit:contain;">
-                                <div class="thumbnail-images mt-3 d-flex gap-2 flex-wrap" id="thumbnailContainer"></div>
+                                
+                                <div class="thumbnail-images mt-3 d-flex justify-content-center flex-wrap" id="thumbnailContainer"></div>
                             </div>
 
                             <div class="accordion product-info-accordion mt-4">
@@ -852,7 +850,7 @@
                     thumb.src = src;
                     thumb.alt = p.name;
                     thumb.className = 'thumbnail';
-                    thumb.style.cssText = 'width:80px;height:80px;object-fit:cover;cursor:pointer;border:2px solid #eee;border-radius:8px;';
+                    // thumb.style.cssText = 'width:80px;height:80px;object-fit:cover;cursor:pointer;border:2px solid #eee;border-radius:8px;';
                     if (i === 0) thumb.classList.add('active');
                     thumb.onclick = () => {
                         mainImg.src = src;
@@ -931,10 +929,10 @@
                         alert('Vui lòng chọn màu sắc!');
                         return;
                     }
-                    if (!selectedSizeBtn) {
-                        alert('Vui lòng chọn kích thước!');
-                        return;
-                    }
+                    // if (!selectedSizeBtn) {
+                    //     alert('Vui lòng chọn kích thước!');
+                    //     return;
+                    // }
 
                     const colorName = selectedColorBtn ? selectedColorBtn.title : 'Không có màu';
                     const size = selectedSizeBtn ? selectedSizeBtn.dataset.size || selectedSizeBtn.textContent : 'Freesize';
@@ -1336,11 +1334,9 @@
 
                 if (!scoreEl || !starsEl || !countEl) return;
 
-                // Điểm trung bình
                 scoreEl.textContent = Number(avg).toFixed(1);
-                starsEl.innerHTML = `<i class='bx bxs-star' style="font-size:1.5rem;"></i>`;
+                starsEl.innerHTML = `<i class='bx bxs-star custom-star'></i>`;
 
-                // Tổng số đánh giá
                 if (total > 0) {
                     countEl.textContent = `Dựa trên ${total} khách hàng`;
                 } else {
@@ -1348,7 +1344,6 @@
                 }
             }
 
-            // Hàm escape HTML tránh XSS
             function escapeHtml(text) {
                 const div = document.createElement('div');
                 div.textContent = text;

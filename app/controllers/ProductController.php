@@ -58,7 +58,7 @@ class ProductController
             if (!empty($c['name'])) {
                 $sizes = $c['sizes'] ?? '';
                 if (is_array($sizes)) {
-                    $sizes = implode(',', $sizes); 
+                    $sizes = implode(',', $sizes);
                 }
 
                 $colors[] = [
@@ -162,10 +162,26 @@ class ProductController
                 }
             }
         }
+        $primaryImageId = null;
+        $primaryImageIndex = null;
 
-        $primaryIndex = (int)($_POST['primary_image'] ?? 0);
+        if (isset($_POST['primary_image_id']) && is_numeric($_POST['primary_image_id']) && $_POST['primary_image_id'] > 0) {
+            $primaryImageId = (int)$_POST['primary_image_id'];
+        }
+        elseif (isset($_POST['primary_image_index']) && is_numeric($_POST['primary_image_index'])) {
+            $primaryImageIndex = (int)$_POST['primary_image_index'];
+        }
 
-        $result = $this->product->update($id, $data, $colors, $uploadedFiles, $primaryIndex, $existingImages);
+        $result = $this->product->update(
+            $id,
+            $data,
+            $colors,
+            $uploadedFiles,
+            $primaryImageIndex,   
+            $existingImages,
+            $primaryImageId     
+        );
+
         return $result
             ? ["success" => true, "message" => "Cập nhật thành công!"]
             : ["success" => false, "message" => "Cập nhật thất bại"];
