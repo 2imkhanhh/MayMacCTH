@@ -11,30 +11,45 @@ if ($id <= 0) {
     exit;
 }
 
-$sql = "SELECT p.*, c.name as category_name 
-        FROM products p 
-        LEFT JOIN categories c ON p.category_id = c.category_id 
-        WHERE p.product_id = ? AND p.is_active = 1";
+$database = new Database();
+$conn = $database->getConnection();
 
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $id);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows === 0) {
-    echo json_encode(['success' => false, 'message' => 'Sản phẩm không tồn tại']);
+if (!$conn) {
+    echo json_encode(['success' => false, 'message' => 'Lỗi kết nối cơ sở dữ liệu']);
     exit;
 }
 
-$product = $result->fetch_assoc();
+$sql = "SELECT p.*, c.name as category_name 
+        FROM products p 
+        LEFT JOIN categories c ON p.category_id = c.category_id 
+        WHERE p.product_id = :id AND p.is_active = 1"; 
 
-// Xử lý ảnh phụ
-$product['images_list'] = $product['images'] ? json_decode($product['images'], true) : [];
-if ($product['primary_image'] && !in_array($product['primary_image'], $product['images_list'])) {
-    array_unshift($product['images_list'], $product['primary_image']);
+try {
+    $stmt = $conn->prepare($sql);
+    
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    if ($stmt->rowCount() === 0) {
+        echo json_encode(['success' => false, 'message' => 'Sản phẩm không tồn tại']);
+        exit;
+    }
+
+    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $images_decoded = isset($product['images']) ? json_decode($product['images'], true) : [];
+    $product['images_list'] = is_array($images_decoded) ? $images_decoded : [];
+
+    if (!empty($product['primary_image']) && !in_array($product['primary_image'], $product['images_list'])) {
+        array_unshift($product['images_list'], $product['primary_image']);
+    }
+
+    echo json_encode([
+        'success' => true,
+        'data' => $product
+    ]);
+
+} catch (PDOException $e) {
+    echo json_encode(['success' => false, 'message' => 'Lỗi truy vấn: ' . $e->getMessage()]);
 }
-
-echo json_encode([
-    'success' => true,
-    'data' => $product
-]);
+?>
