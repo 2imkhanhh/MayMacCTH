@@ -51,6 +51,29 @@
     box-shadow: 0 4px 10px rgba(230, 57, 70, 0.3);
 }
 
+#btnApplyFilter{
+    background-color: #e7f1ff !important; 
+    color: #174DAF !important;
+}
+
+#btnApplyFilter:hover {
+    background-color: #174DAF !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(23, 77, 175, 0.3);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: none !important;         
+    box-shadow: none !important;   
+    outline: none !important;                
+}
+
+*:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 .btn-action i {
     font-size: 1.1em;
 }

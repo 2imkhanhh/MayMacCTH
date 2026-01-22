@@ -41,36 +41,133 @@ require_once 'auth_middleware.php';
     <?php include 'partials/sidebar.php'; ?>
 
     <div class="main-content flex-grow-1 p-4">
-        <div class="d-flex justify-content-between align-items-end mb-4 product-header">
-            <div>
-                <h2>Quản lý Sản phẩm</h2>
-                <button class="btn btn-primary mt-2" id="btnAdd">Thêm sản phẩm mới</button>
-            </div>
+        <div class="d-flex justify-content-between align-items-center mb-4 product-header">
+            <h2>Quản lý Sản phẩm & Kho hàng</h2>
         </div>
 
-        <div class="card mb-4 admin-search-card">
-            <div class="card-body">
-                <div class="row g-3 align-items-end">
-                    <div class="col-md-4">
-                        <label class="form-label small fw-bold text-muted">Lọc theo Danh mục</label>
-                        <select class="form-select admin-select" id="filterCategory">
-                            <option value="">Tất cả danh mục</option>
-                        </select>
+        <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab" aria-controls="products" aria-selected="true">
+                    <i class="bi bi-box"></i> Quản lý Sản phẩm
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="inventory-tab" data-bs-toggle="tab" data-bs-target="#inventory" type="button" role="tab" aria-controls="inventory" aria-selected="false">
+                    <i class="bi bi-box-seam"></i> Quản lý Kho
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="adminTabContent">
+            <div class="tab-pane fade show active" id="products" role="tabpanel" aria-labelledby="products-tab">
+                <div class="d-flex justify-content-between align-items-end mb-4">
+                    <div>
+                        <button class="btn btn-primary" id="btnAdd">Thêm sản phẩm mới</button>
                     </div>
-                    <div class="col-md-5">
-                        <label class="form-label small fw-bold text-muted">Tìm kiếm theo Tên</label>
-                        <input type="text" class="form-control admin-input-search" id="searchName" placeholder="Tìm theo tên...">
+                </div>
+
+                <div class="card mb-4 admin-search-card">
+                    <div class="card-body">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-muted">Lọc theo Danh mục</label>
+                                <select class="form-select admin-select" id="filterCategory">
+                                    <option value="">Tất cả danh mục</option>
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label small fw-bold text-muted">Tìm kiếm theo Tên</label>
+                                <input type="text" class="form-control admin-input-search" id="searchName" placeholder="Tìm theo tên...">
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary w-100 admin-search-btn" id="btnSearch">
+                                    <i class="bi bi-search"></i> Tìm kiếm
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <button class="btn btn-primary w-100 admin-search-btn" id="btnSearch">
-                            <i class="bi bi-search"></i> Tìm kiếm
-                        </button>
+                </div>
+
+                <div id="productList" class="row"></div>
+            </div>
+
+            <div class="tab-pane fade" id="inventory" role="tabpanel" aria-labelledby="inventory-tab">
+                <div class="card mb-4">
+                    <div class="card-header bg-light fw-bold">
+                        <i class="bi bi-funnel"></i> Bộ lọc tìm kiếm
                     </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label small fw-bold">Tên sản phẩm</label>
+                                <input type="text" class="form-control" id="filterName" placeholder="Nhập tên...">
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="form-label small fw-bold">Màu sắc</label>
+                                <input type="text" class="form-control" id="filterColor" placeholder="Vd: Đen, Đỏ...">
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="form-label small fw-bold">Kích thước</label>
+                                <input type="text" class="form-control" id="filterSize" placeholder="Vd: XL...">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label small fw-bold">Kho hàng</label>
+                                <select class="form-select" id="filterWarehouse">
+                                    <option value="">Tất cả kho</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2 d-flex align-items-end">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="filterLowStock">
+                                    <label class="form-check-label text-danger fw-bold" for="filterLowStock">
+                                        Sắp hết hàng
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-12 text-end border-top pt-3 mt-3">
+                                <button class="btn btn-secondary me-2" id="btnClearFilter">
+                                    <i class="bi bi-x-circle"></i> Xóa lọc
+                                </button>
+                                <button class="btn" id="btnApplyFilter">
+                                    <i class="bi bi-search"></i> Tìm kiếm
+                                </button>
+                                <button class="btn btn-success ms-2" id="btnAddToInventory">
+                                    <i class="bi bi-plus-circle"></i> Thêm hàng vào kho
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="mb-3">Danh sách tồn kho</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped table-bordered align-middle" id="inventoryTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Màu sắc</th>
+                                <th>Kích thước</th>
+                                <th>Kho hàng</th>
+                                <th class="text-center">Tồn kho</th>
+                                <th class="text-center">Cảnh báo</th>
+                                <th class="text-center">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="noInventoryMessage" class="text-center py-5 text-muted d-none">
+                    <i class="bi bi-inbox fs-1"></i>
+                    <h5 class="mt-3">Không tìm thấy dữ liệu phù hợp</h5>
                 </div>
             </div>
         </div>
-
-        <div id="productList" class="row"></div>
     </div>
 
     <div class="modal fade" id="productModal" tabindex="-1">
@@ -189,6 +286,105 @@ require_once 'auth_middleware.php';
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="adjustStockModal" tabindex="-1" aria-labelledby="adjustStockModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adjustStockModalLabel">Điều chỉnh tồn kho</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="fw-bold mb-1">Biến thể:</p>
+                    <p id="adjustVariantInfo" class="mb-3 text-muted"></p>
+
+                    <p class="fw-bold mb-1">Tồn kho hiện tại:</p>
+                    <p id="adjustCurrentQty" class="fs-4 fw-bold text-primary mb-3"></p>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Loại thao tác:</label>
+                        <div class="d-flex gap-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="adjustType" id="typeImport" value="import" checked>
+                                <label class="form-check-label text-success fw-bold" for="typeImport">
+                                    <i class="bi bi-box-arrow-in-down"></i> Nhập hàng
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="adjustType" id="typeExport" value="export">
+                                <label class="form-check-label text-danger fw-bold" for="typeExport">
+                                    <i class="bi bi-box-arrow-up"></i> Xuất hàng
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="adjustChangeQty" class="form-label fw-bold">Số lượng:</label>
+                        <input type="number" class="form-control" id="adjustChangeQty" placeholder="Nhập số lượng (Ví dụ: 10)" min="1" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="adjustNote" class="form-label">Ghi chú</label>
+                        <textarea class="form-control" id="adjustNote" rows="2" placeholder="Lý do nhập/xuất..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="confirmAdjustBtn">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addToInventoryModal" tabindex="-1" aria-labelledby="addToInventoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addToInventoryModalLabel">Thêm variant chưa có kho</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Kho hàng</label>
+                            <select class="form-select" id="addWarehouseSelect">
+                                <option value="1">Kho chính (mặc định)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Số lượng</label>
+                            <input type="number" class="form-control" id="addBulkInitialQty" min="0" value="0">
+                            <small class="text-muted">Số lượng chung cho tất cả variant được chọn.</small>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive mt-3" style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-hover table-bordered">
+                            <thead class="table-light sticky-top">
+                                <tr>
+                                    <th><input type="checkbox" id="selectAllMissing"> Chọn tất cả</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Màu sắc</th>
+                                    <th>Kích thước</th>
+                                </tr>
+                            </thead>
+                            <tbody id="missingVariantsTableBody"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="alert alert-info mt-3">
+                        <strong>Lưu ý:</strong> Chỉ các sản phẩm cùng với màu sắc, kích thước chưa có trong kho mới hiển thị ở đây.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-success" id="confirmAddBulkBtn">Thêm các variant đã chọn vào kho</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="globalToast" class="global-toast">
         <i id="toastIcon" class='bx'></i>
         <span id="toastMessage">Thông báo</span>
