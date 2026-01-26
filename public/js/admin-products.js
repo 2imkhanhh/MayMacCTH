@@ -675,6 +675,15 @@ async function loadInventory() {
                     <td><strong>${warehouseName}</strong>${warehouseAddress}</td>
                     <td class="text-center ${stockClass}">${item.quantity}</td>
                     <td class="text-center">${item.low_stock_threshold || 10}</td>
+                    
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-view-history" 
+                                data-id="${item.inventory_id}"
+                                data-title="${item.product_name} - ${variantText}">
+                            <i class="bi bi-clock-history"></i> Xem
+                        </button>
+                    </td>
+
                     <td class="text-center">
                         <button class="btn btn-sm btn-outline-primary adjust-stock-btn"
                                 data-inventory-id="${item.inventory_id}"
@@ -850,6 +859,13 @@ if (confirmAddBulkBtn) {
 const inventoryTableBody = document.getElementById('inventoryTableBody');
 if (inventoryTableBody) {
     inventoryTableBody.addEventListener('click', function (e) {
+        const btnHistory = e.target.closest('.btn-view-history');
+        if (btnHistory) {
+            const inventoryId = btnHistory.dataset.id;
+            const title = btnHistory.dataset.title;
+            
+            loadHistoryLogs(inventoryId, title);
+        }
         const btn = e.target.closest('.adjust-stock-btn');
         if (btn) {
             const inventoryId = btn.dataset.inventoryId;
@@ -870,6 +886,64 @@ if (inventoryTableBody) {
             modal.show();
         }
     });
+}
+
+async function loadHistoryLogs(inventoryId, title) {
+    const tbody = document.getElementById('historyTableBody');
+    const modalTitle = document.getElementById('historyTitle');
+    
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3"><div class="spinner-border text-primary" role="status"></div></td></tr>';
+    modalTitle.textContent = title;
+
+    const modal = new bootstrap.Modal(document.getElementById('historyModal'));
+    modal.show();
+
+    try {
+        const res = await fetch(`${BASE_URL}/api/inventory/get_history.php?inventory_id=${inventoryId}`);
+        const result = await res.json();
+
+        tbody.innerHTML = '';
+
+        if (result.success && result.data && result.data.length > 0) {
+            result.data.forEach(log => {
+                let typeBadge = '';
+                let changeClass = '';
+                
+                if (log.transaction_type === 'import') {
+                    typeBadge = '<span class="badge bg-success">Nhập hàng</span>';
+                    changeClass = 'text-success fw-bold';
+                } else if (log.transaction_type === 'export') {
+                    typeBadge = '<span class="badge bg-danger">Xuất hàng</span>';
+                    changeClass = 'text-danger fw-bold';
+                } else if (log.transaction_type === 'sale') {
+                    typeBadge = '<span class="badge bg-primary">Bán hàng</span>';
+                    changeClass = 'text-primary fw-bold';
+                } else {
+                    typeBadge = `<span class="badge bg-secondary">${log.transaction_type}</span>`;
+                }
+
+                const changeSign = parseInt(log.change_quantity) > 0 ? '+' : '';
+
+                const row = `
+                    <tr>
+                        <td class="small">${log.created_at}</td>
+                        <td>${typeBadge}</td>
+                        <td class="${changeClass}">${changeSign}${log.change_quantity}</td>
+                        <td>${log.previous_quantity}</td>
+                        <td class="fw-bold">${log.new_quantity}</td>
+                        <td class="text-start small">${log.note || '-'}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        } else {
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">Chưa có lịch sử</td></tr>';
+        }
+
+    } catch (err) {
+        console.error(err);
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Lỗi tải dữ liệu lịch sử</td></tr>';
+    }
 }
 
 const confirmAdjustBtn = document.getElementById('confirmAdjustBtn');

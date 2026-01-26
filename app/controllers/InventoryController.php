@@ -61,4 +61,16 @@ class InventoryController
         $data = $this->inventory->getAllWarehouses();
         return ["success" => true, "data" => $data];
     }
+
+    public function getHistory()
+    {
+        $inventory_id = isset($_GET['inventory_id']) ? (int)$_GET['inventory_id'] : 0;
+
+        if ($inventory_id <= 0) {
+            return ["success" => false, "message" => "Thiếu inventory_id"];
+        }
+
+        $data = $this->inventory->getLogs($inventory_id);
+        return ["success" => true, "data" => $data];
+    }
 }

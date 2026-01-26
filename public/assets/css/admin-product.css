@@ -542,6 +542,20 @@
     transform: translateX(3px);
     box-shadow: 0 2px 6px rgba(23, 77, 175, 0.08);
 }
+
+.btn-view-history {
+    color: #c16042 !important;          
+    border-color: #c16042 !important;   
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.btn-view-history:hover {
+    color: #ffffff;         
+    background-color: #6f42c1; 
+    border-color: #6f42c1;  
+    box-shadow: 0 4px 6px rgba(111, 66, 193, 0.3); 
+}
 @media (max-width: 768px) {
     .product-card .card-title {
         font-size: 1rem;

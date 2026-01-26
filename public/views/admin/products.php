@@ -53,7 +53,7 @@ require_once 'auth_middleware.php';
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="inventory-tab" data-bs-toggle="tab" data-bs-target="#inventory" type="button" role="tab">
-                    <i class="bi bi-box-seam"></i> Quản lý Tồn kho
+                    <i class="bi bi-box-seam"></i> Quản lý tồn kho
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -160,6 +160,7 @@ require_once 'auth_middleware.php';
                                 <th>Kho hàng</th>
                                 <th class="text-center">Tồn kho</th>
                                 <th class="text-center">Cảnh báo</th>
+                                <th class="text-center">Lịch sử</th>
                                 <th class="text-center">Thao tác</th>
                             </tr>
                         </thead>
@@ -441,6 +442,39 @@ require_once 'auth_middleware.php';
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                     <button type="button" class="btn btn-success" id="confirmAddBulkBtn">Thêm các variant đã chọn vào kho</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="historyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Lịch sử nhập/xuất kho</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 id="historyTitle" class="fw-bold mb-3"></h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered table-striped text-center align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Thời gian</th>
+                                    <th>Loại</th>
+                                    <th>Thay đổi</th>
+                                    <th>Tồn cũ</th>
+                                    <th>Tồn mới</th>
+                                    <th>Ghi chú</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>
