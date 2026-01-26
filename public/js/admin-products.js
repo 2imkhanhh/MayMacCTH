@@ -988,3 +988,151 @@ document.getElementById('bulkImageInput').onchange = function (e) {
 
     e.target.value = '';
 };
+
+const warehousesTab = document.getElementById('warehouses-tab');
+if (warehousesTab) {
+    warehousesTab.addEventListener('shown.bs.tab', function () {
+        loadWarehousesList();
+    });
+}
+
+async function loadWarehousesList() {
+    try {
+        const res = await fetch(`${BASE_URL}/api/warehouse/get_warehouse.php`);
+        const result = await res.json();
+        const tbody = document.getElementById('warehouseTableBody');
+        tbody.innerHTML = '';
+
+        if (result.success && result.data.length > 0) {
+            result.data.forEach(wh => {
+                const row = `
+                    <tr>
+                        <td>#${wh.warehouse_id}</td>
+                        <td class="fw-bold">${wh.name}</td>
+                        <td>${wh.phone || '-'}</td>
+                        <td>${wh.address || '-'}</td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-outline-primary me-2 btn-edit-wh" 
+                                data-id="${wh.warehouse_id}" 
+                                data-name="${wh.name}" 
+                                data-phone="${wh.phone}" 
+                                data-address="${wh.address}">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger btn-delete-wh" data-id="${wh.warehouse_id}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+
+            document.querySelectorAll('.btn-edit-wh').forEach(btn => {
+                btn.onclick = function() {
+                    openWarehouseModal({
+                        id: this.dataset.id,
+                        name: this.dataset.name,
+                        phone: this.dataset.phone,
+                        address: this.dataset.address
+                    });
+                };
+            });
+
+            document.querySelectorAll('.btn-delete-wh').forEach(btn => {
+                btn.onclick = function() {
+                    deleteWarehouse(this.dataset.id);
+                };
+            });
+
+        } else {
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">Chưa có nhà kho nào</td></tr>';
+        }
+    } catch (err) {
+        console.error(err);
+        showToast('Lỗi tải danh sách nhà kho', 'error');
+    }
+}
+
+const btnAddWarehouse = document.getElementById('btnAddWarehouse');
+if (btnAddWarehouse) {
+    btnAddWarehouse.onclick = function() {
+        openWarehouseModal();
+    };
+}
+
+function openWarehouseModal(data = null) {
+    const modalEl = document.getElementById('warehouseModal');
+    const modal = new bootstrap.Modal(modalEl);
+    const form = document.getElementById('warehouseForm');
+    const title = document.getElementById('warehouseModalTitle');
+
+    form.reset();
+
+    if (data) {
+        title.textContent = 'Cập nhật Nhà kho';
+        document.getElementById('warehouse_id').value = data.id;
+        document.getElementById('whName').value = data.name;
+        document.getElementById('whPhone').value = data.phone;
+        document.getElementById('whAddress').value = data.address;
+    } else {
+        title.textContent = 'Thêm Nhà kho mới';
+        document.getElementById('warehouse_id').value = '';
+    }
+
+    modal.show();
+}
+
+const warehouseForm = document.getElementById('warehouseForm');
+if (warehouseForm) {
+    warehouseForm.onsubmit = async function(e) {
+        e.preventDefault();
+        
+        const id = document.getElementById('warehouse_id').value;
+        const formData = new FormData(this);
+        
+        let url = `${BASE_URL}/api/warehouse/create_warehouse.php`;
+        if (id) {
+            url = `${BASE_URL}/api/warehouse/update_warehouse.php?id=${id}`;
+        }
+
+        try {
+            const res = await fetch(url, {
+                method: 'POST',
+                body: formData
+            });
+            const result = await res.json();
+
+            if (result.success) {
+                showToast(result.message, 'success');
+                bootstrap.Modal.getInstance(document.getElementById('warehouseModal')).hide();
+                loadWarehousesList(); 
+                
+            } else {
+                showToast(result.message, 'error');
+            }
+        } catch (err) {
+            console.error(err);
+            showToast('Lỗi kết nối server', 'error');
+        }
+    };
+}
+
+async function deleteWarehouse(id) {
+    if (!confirm('Bạn có chắc chắn muốn xóa nhà kho này?')) return;
+
+    try {
+        const res = await fetch(`${BASE_URL}/api/warehouse/delete_warehouse.php?id=${id}`);
+        const result = await res.json();
+
+        if (result.success) {
+            showToast(result.message, 'success');
+            loadWarehousesList();
+        } else {
+            showToast(result.message, 'error');
+        }
+    } catch (err) {
+        console.error(err);
+        showToast('Lỗi kết nối server', 'error');
+    }
+}

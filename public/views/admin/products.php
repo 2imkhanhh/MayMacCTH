@@ -47,13 +47,18 @@ require_once 'auth_middleware.php';
 
         <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab" aria-controls="products" aria-selected="true">
+                <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab">
                     <i class="bi bi-box"></i> Quản lý Sản phẩm
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="inventory-tab" data-bs-toggle="tab" data-bs-target="#inventory" type="button" role="tab" aria-controls="inventory" aria-selected="false">
-                    <i class="bi bi-box-seam"></i> Quản lý Kho
+                <button class="nav-link" id="inventory-tab" data-bs-toggle="tab" data-bs-target="#inventory" type="button" role="tab">
+                    <i class="bi bi-box-seam"></i> Quản lý Tồn kho
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="warehouses-tab" data-bs-toggle="tab" data-bs-target="#warehouses" type="button" role="tab">
+                    <i class="bi bi-building"></i> Danh sách Nhà kho
                 </button>
             </li>
         </ul>
@@ -165,6 +170,62 @@ require_once 'auth_middleware.php';
                 <div id="noInventoryMessage" class="text-center py-5 text-muted d-none">
                     <i class="bi bi-inbox fs-1"></i>
                     <h5 class="mt-3">Không tìm thấy dữ liệu phù hợp</h5>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="warehouses" role="tabpanel" aria-labelledby="warehouses-tab">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="mb-0">Danh sách Nhà kho</h5>
+                    <button class="btn btn-primary" id="btnAddWarehouse">
+                        <i class="bi bi-plus-lg"></i> Thêm Nhà kho mới
+                    </button>
+                </div>
+
+                <div class="table-responsive bg-white rounded shadow-sm p-3">
+                    <table class="table table-hover align-middle" id="warehouseTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên Nhà kho</th>
+                                <th>Số điện thoại</th>
+                                <th>Địa chỉ</th>
+                                <th class="text-end">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="warehouseTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="modal fade" id="warehouseModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="warehouseModalTitle">Thêm Nhà kho</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <form id="warehouseForm">
+                            <div class="modal-body">
+                                <input type="hidden" id="warehouse_id" name="warehouse_id">
+                                <div class="mb-3">
+                                    <label class="form-label">Tên Nhà kho <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="name" id="whName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Số điện thoại</label>
+                                    <input type="text" class="form-control" name="phone" id="whPhone">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Địa chỉ</label>
+                                    <textarea class="form-control" name="address" id="whAddress" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button type="submit" class="btn btn-primary">Lưu thông tin</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -299,7 +360,7 @@ require_once 'auth_middleware.php';
                     <p id="adjustVariantInfo" class="mb-3 text-muted"></p>
 
                     <p class="fw-bold mb-1">Tồn kho hiện tại:</p>
-                    <p id="adjustCurrentQty" class="fs-4 fw-bold text-primary mb-3"></p>
+                    <p id="adjustCurrentQty" class="fs-4 fw-bold mb-3"></p>
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">Loại thao tác:</label>

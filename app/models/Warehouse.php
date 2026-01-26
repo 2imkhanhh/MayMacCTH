@@ -8,7 +8,7 @@ class Warehouse {
     }
 
     public function read() {
-        $query = "SELECT * FROM " . $this->table . " ORDER BY warehouse_id DESC";
+        $query = "SELECT * FROM " . $this->table . " ORDER BY warehouse_id ASC";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
