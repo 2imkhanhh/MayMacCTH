@@ -822,14 +822,15 @@ if (confirmAddBulkBtn) {
         }
 
         const initialQty = parseInt(document.getElementById('addBulkInitialQty').value) || 0;
-        const warehouseId = parseInt(document.getElementById('addWarehouseSelect').value) || 1;
 
-        // if (!confirm(`Thêm ${selected.length} variant vào kho đã chọn với số lượng ban đầu ${initialQty}?`)) return;
+        const lowStock = parseInt(document.getElementById('addBulkLowStock').value) || 10;
+        const warehouseId = parseInt(document.getElementById('addWarehouseSelect').value) || 1;
 
         try {
             const formData = new FormData();
             formData.append('variant_ids', JSON.stringify(selected));
             formData.append('quantity', initialQty);
+            formData.append('low_stock_threshold', lowStock); 
             formData.append('warehouse_id', warehouseId);
 
             const res = await fetch(`${BASE_URL}/api/inventory/add_bulk_variants.php`, {
@@ -841,11 +842,12 @@ if (confirmAddBulkBtn) {
 
             if (result.success) {
                 showToast(`Đã thêm ${selected.length} variant thành công!`, 'success');
+                
                 const modalEl = document.getElementById('addToInventoryModal');
                 const modalInstance = bootstrap.Modal.getInstance(modalEl);
                 if (modalInstance) modalInstance.hide();
                 
-                loadInventory(); 
+                loadInventory();
             } else {
                 showToast(result.message || 'Thêm thất bại', 'error');
             }

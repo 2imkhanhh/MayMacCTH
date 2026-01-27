@@ -184,18 +184,18 @@ class Inventory
     public function getLogs($inventory_id)
     {
         $query = "
-            SELECT 
-                log_id, 
-                transaction_type, 
-                change_quantity, 
-                previous_quantity, 
-                new_quantity, 
-                note, 
-                created_at 
-            FROM {$this->table_logs} 
-            WHERE inventory_id = :id 
-            ORDER BY created_at DESC
-        ";
+                SELECT 
+                    log_id, 
+                    transaction_type, 
+                    change_quantity, 
+                    previous_quantity, 
+                    new_quantity, 
+                    note, 
+                    created_at 
+                FROM {$this->table_logs} 
+                WHERE inventory_id = :id 
+                ORDER BY created_at DESC
+            ";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $inventory_id, PDO::PARAM_INT);

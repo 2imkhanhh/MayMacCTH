@@ -10,6 +10,8 @@ $variant_ids = json_decode($_POST['variant_ids'] ?? '[]', true);
 $quantity = (int)($_POST['quantity'] ?? 0);
 $warehouse_id = (int)($_POST['warehouse_id'] ?? 1);
 
+$low_stock = (int)($_POST['low_stock_threshold'] ?? 10); 
+
 if (empty($variant_ids) || !is_array($variant_ids)) {
     echo json_encode(["success" => false, "message" => "Không có variant nào được chọn"]);
     exit;
@@ -22,9 +24,8 @@ foreach ($variant_ids as $variant_id) {
 
     $stmt = $db->prepare("SELECT inventory_id FROM product_inventory WHERE variant_id = ? AND warehouse_id = ?");
     $stmt->execute([$variant_id, $warehouse_id]);
-    if ($stmt->fetch()) continue; // đã có
-
-    $created = $inventory->createForVariant($variant_id, $warehouse_id, $quantity, 10);
+    if ($stmt->fetch()) continue; 
+    $created = $inventory->createForVariant($variant_id, $warehouse_id, $quantity, $low_stock);
     if ($created) $success_count++;
 }
 

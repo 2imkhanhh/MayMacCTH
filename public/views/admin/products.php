@@ -407,17 +407,24 @@ require_once 'auth_middleware.php';
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-4">
                             <label class="form-label fw-bold">Kho hàng</label>
                             <select class="form-select" id="addWarehouseSelect">
                                 <option value="1">Kho chính (mặc định)</option>
                             </select>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">Số lượng</label>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Số lượng ban đầu</label>
                             <input type="number" class="form-control" id="addBulkInitialQty" min="0" value="0">
-                            <small class="text-muted">Số lượng chung cho tất cả variant được chọn.</small>
+                            <!-- <small class="text-muted">Số lượng chung cho tất cả variant.</small> -->
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Ngưỡng cảnh báo</label>
+                            <input type="number" class="form-control" id="addBulkLowStock" min="0" value="10">
+                            <!-- <small class="text-muted">Báo động khi tồn kho dưới mức này.</small> -->
                         </div>
                     </div>
 
@@ -436,12 +443,12 @@ require_once 'auth_middleware.php';
                     </div>
 
                     <div class="alert alert-info mt-3">
-                        <strong>Lưu ý:</strong> Chỉ các sản phẩm cùng với màu sắc, kích thước chưa có trong kho mới hiển thị ở đây.
+                        <strong>Lưu ý:</strong> Chỉ các sản phẩm chưa có trong kho mới hiển thị ở đây.
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-success" id="confirmAddBulkBtn">Thêm các variant đã chọn vào kho</button>
+                    <button type="button" class="btn btn-success" id="confirmAddBulkBtn">Thêm vào kho</button>
                 </div>
             </div>
         </div>
