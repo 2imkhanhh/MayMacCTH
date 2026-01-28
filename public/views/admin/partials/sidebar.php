@@ -1,62 +1,58 @@
 <?php
 $currentPage = basename($_SERVER['PHP_SELF']);
 ?>
-    <div class="sidebar">
-        <div class="logo">
-            <img src="../../assets/images/logo2.png" alt="Logo">
-        </div>
-        <nav class="mt-4">
-            <a href="dashboard.php"
-                class="nav-link d-flex align-items-center <?php echo $currentPage == 'dashboard.php' ? 'active' : ''; ?>">
-                <i class="bi bi-speedometer2" style="margin-right: 5px;"></i><span>Dashboard</span>
-            </a>
-            <a href="banners.php"
-                class="nav-link d-flex align-items-center <?php echo $currentPage == 'banners.php' ? 'active' : ''; ?>">
-                <i class="bi bi-images" style="margin-right: 5px;"></i><span>Banner</span>
-            </a>
-            <a href="products.php"
-                class="nav-link d-flex align-items-center <?php echo $currentPage == 'products.php' ? 'active' : ''; ?>">
-                <i class="bi bi-images" style="margin-right: 5px;"></i><span>Sản phẩm</span>
-            </a>
-            <a href="categories.php"
-                class="nav-link d-flex align-items-center <?php echo $currentPage == 'categories.php' ? 'active' : ''; ?>">
-                <i class="bi bi-images" style="margin-right: 5px;"></i><span>Danh mục</span>
-            </a>
-            <a href="about-us.php"
-                class="nav-link d-flex align-items-center <?php echo $currentPage == 'about-us.php' ? 'active' : ''; ?>">
-                <i class="bi bi-images" style="margin-right: 5px;"></i><span>Về chúng tôi</span>
-            </a>
-            <a href="guides.php"
-                class="nav-link d-flex align-items-center <?php echo $currentPage == 'guides.php' ? 'active' : ''; ?>">
-                <i class="bi bi-book" style="margin-right: 5px;"></i><span>Hướng dẫn</span>
-            </a>
-            <a href="contacts.php"
-                class="nav-link d-flex align-items-center <?php echo $currentPage == 'contacts.php' ? 'active' : ''; ?>">
-                <i class="bi bi-book" style="margin-right: 5px;"></i><span>Liên hệ</span>
-            </a>
-            <a href="orders.php"
-                class="nav-link d-flex align-items-center <?php echo in_array($currentPage, ['orders.php', 'order-detail.php']) ? 'active' : ''; ?>">
-                <i class="bi bi-cart-check"></i><span>Đơn hàng</span>
-                <span class="badge bg-danger ms-auto" style="margin-right: 5px;" id="pendingOrderCount"></span>
-            </a>
-            <a href="review-tags.php"
-                class="nav-link d-flex align-items-center <?php echo $currentPage == 'review-tags.php' ? 'active' : ''; ?>">
-                <i class="bi bi-book" style="margin-right: 5px;" style="margin-right: 5px;"></i><span>Đánh giá</span>
-            </a>
-            <a href="news.php"
-                class="nav-link d-flex align-items-center <?php echo $currentPage == 'news.php' ? 'active' : ''; ?>">
-                <i class="bi bi-newspaper" style="margin-right: 5px;"></i><span>Tin tức</span>
-            </a>
-            <a href="customers.php"
-                class="nav-link d-flex align-items-center <?php echo $currentPage == 'customers.php' ? 'active' : ''; ?>">
-                <i class="bi bi-people"></i><span>Khách hàng</span>
-            </a>
-            <a href="login.php"
-                class="nav-link d-flex align-items-center <?php echo $currentPage == 'news.php' ? 'active' : ''; ?>">
-                <i class="bi bi-box-arrow-right"></i><span>Đăng xuất</span>
-            </a>
-        </nav>
+<div class="sidebar">
+    <div class="logo">
+        <img src="../../assets/images/logo2.png" alt="Logo">
     </div>
+    <nav class="mt-4">
+        <a href="dashboard.php"
+            class="nav-link d-flex align-items-center <?php echo $currentPage == 'dashboard.php' ? 'active' : ''; ?>">
+            <i class="bi bi-speedometer2" style="margin-right: 5px;"></i><span>Dashboard</span>
+        </a>
+        <a href="banners.php"
+            class="nav-link d-flex align-items-center <?php echo $currentPage == 'banners.php' ? 'active' : ''; ?>">
+            <i class="bi bi-images" style="margin-right: 5px;"></i><span>Banner</span>
+        </a>
+        <a href="products.php"
+            class="nav-link d-flex align-items-center <?php echo $currentPage == 'products.php' ? 'active' : ''; ?>">
+            <i class="bi bi-box" style="margin-right: 5px;"></i><span>Sản phẩm</span>
+        </a>
+        <a href="categories.php"
+            class="nav-link d-flex align-items-center <?php echo $currentPage == 'categories.php' ? 'active' : ''; ?>">
+            <i class="bi bi-tags" style="margin-right: 5px;"></i><span>Danh mục</span>
+        </a>
+        <a href="about-us.php"
+            class="nav-link d-flex align-items-center <?php echo $currentPage == 'about-us.php' ? 'active' : ''; ?>">
+            <i class="bi bi-info-circle" style="margin-right: 5px;"></i><span>Về chúng tôi</span>
+        </a>
+        <a href="guides.php"
+            class="nav-link d-flex align-items-center <?php echo $currentPage == 'guides.php' ? 'active' : ''; ?>">
+            <i class="bi bi-book" style="margin-right: 5px;"></i><span>Hướng dẫn</span>
+        </a>
+        <a href="contacts.php"
+            class="nav-link d-flex align-items-center <?php echo $currentPage == 'contacts.php' ? 'active' : ''; ?>">
+            <i class="bi bi-envelope" style="margin-right: 5px;"></i><span>Liên hệ</span>
+        </a>
+        <a href="orders.php"
+            class="nav-link d-flex align-items-center <?php echo in_array($currentPage, ['orders.php', 'order-detail.php']) ? 'active' : ''; ?>">
+            <i class="bi bi-cart-check" style="margin-right: 5px;"></i><span>Đơn hàng</span>
+            <span class="badge bg-danger ms-auto" style="margin-right: 5px;" id="pendingOrderCount"></span>
+        </a>
+        <a href="review-tags.php"
+            class="nav-link d-flex align-items-center <?php echo $currentPage == 'review-tags.php' ? 'active' : ''; ?>">
+            <i class="bi bi-star" style="margin-right: 5px;"></i><span>Đánh giá</span>
+        </a>
+        <a href="news.php"
+            class="nav-link d-flex align-items-center <?php echo $currentPage == 'news.php' ? 'active' : ''; ?>">
+            <i class="bi bi-newspaper" style="margin-right: 5px;"></i><span>Tin tức</span>
+        </a>
+        <a href="inventory.php"
+            class="nav-link d-flex align-items-center <?php echo $currentPage == 'inventory.php' ? 'active' : ''; ?>">
+            <i class="bi bi-box-seam" style="margin-right: 5px;"></i><span>Kho hàng</span>
+        </a>
+    </nav>
+</div>
 
 <script>
     function updatePendingOrderCount() {
