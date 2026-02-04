@@ -33,7 +33,6 @@ require_once 'auth_middleware.php';
 
         <!-- Tab Content -->
         <div class="tab-content">
-            <!-- TAGS -->
             <div class="tab-pane fade show active" id="tab-tags">
                 <div class="mb-3 d-flex justify-content-end">
                     <button class="btn btn-success" id="btnAdd">Thêm Tag mới</button>
@@ -41,7 +40,6 @@ require_once 'auth_middleware.php';
                 <div id="tagList" class="row g-3"></div>
             </div>
 
-            <!-- REVIEWS -->
             <div class="tab-pane fade" id="tab-reviews">
                 <div class="review-filter mb-3">
                     <label for="filterRating">Lọc theo số sao:</label>
@@ -79,7 +77,6 @@ require_once 'auth_middleware.php';
         </div>
     </div>
 
-    <!-- Modal Thêm/Sửa Tag -->
     <div class="modal fade" id="tagModal" tabindex="-1">
         <div class="modal-dialog modal-md">
             <div class="modal-content">

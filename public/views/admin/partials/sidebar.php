@@ -2,6 +2,9 @@
 $currentPage = basename($_SERVER['PHP_SELF']);
 ?>
 <div class="sidebar">
+    <div class="sidebar-toggle" id="sidebarToggle">
+        <i class="bi bi-chevron-left"></i>
+    </div>
     <div class="logo">
         <img src="../../assets/images/logo2.png" alt="Logo">
     </div>
@@ -75,4 +78,21 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
     updatePendingOrderCount();
     setInterval(updatePendingOrderCount, 15000);
+
+    const toggleBtn = document.getElementById('sidebarToggle');
+
+    if (localStorage.getItem('sidebar') === 'collapsed') {
+        document.body.classList.add('sidebar-collapsed');
+    }
+
+    toggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('sidebar-collapsed');
+
+        localStorage.setItem(
+            'sidebar',
+            document.body.classList.contains('sidebar-collapsed')
+                ? 'collapsed'
+                : 'expanded'
+        );
+    });
 </script>

@@ -44,7 +44,7 @@ class ProductController
             'description' => $_POST['description'] ?? '',
             'price'       => (int)($_POST['price'] ?? 0),
             'category_id' => (int)($_POST['category_id'] ?? 0),
-            'is_active'   => isset($_POST['is_active']) ? 1 : 0
+            'is_active'   => (int) ($_POST['is_active'] ?? 0)
         ];
 
         if (empty($data['name']) || empty($data['category_id'])) {
@@ -113,7 +113,7 @@ class ProductController
             'description' => $_POST['description'] ?? '',
             'price'       => (int)($_POST['price'] ?? 0),
             'category_id' => (int)($_POST['category_id'] ?? 0),
-            'is_active'   => isset($_POST['is_active']) ? 1 : 0
+            'is_active'   => (int) ($_POST['is_active'] ?? 0)
         ];
 
         if (empty($data['name']) || empty($data['category_id'])) {
