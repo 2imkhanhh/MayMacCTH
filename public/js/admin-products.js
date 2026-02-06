@@ -20,6 +20,12 @@ const PRESET_COLORS = [
     { name: 'Xanh lá', code: '#008000' },
     { name: 'Xám', code: '#808080' }
 ];
+
+const editableColumns = [
+    { field: 'initialQty', label: 'Số lượng ban đầu', type: 'number', min: 0, default: 0 },
+    { field: 'lowStockThreshold', label: 'Ngưỡng cảnh báo', type: 'number', min: 0, default: 10 }
+    // add new field
+];
 const PRESET_SIZES = ['S', 'M', 'L', 'XL'];
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -58,21 +64,77 @@ document.addEventListener('DOMContentLoaded', () => {
         handleImageSelect(e);
     };
 
-    document.addEventListener('click', function (e) {
-        if (e.target.id === 'applyBulkBtn') {
-            const bulkQty = parseInt(document.getElementById('bulkInitialQty')?.value) || 0;
-            const bulkThreshold = parseInt(document.getElementById('bulkLowStock')?.value) || 10;
-
-            variantsList.forEach(v => {
-                v.initialQty = bulkQty;
-                v.lowStockThreshold = bulkThreshold;
-            });
-
-            renderVariants();  // render lại bảng để hiển thị giá trị mới
-            showToast(`Đã áp dụng số lượng ${bulkQty} và ngưỡng ${bulkThreshold} cho tất cả biến thể!`, 'success');
+    document.getElementById('bulkFillCheckbox').addEventListener('change', function () {
+        if (this.checked) {
+            createBulkFillModal();  
+        } else {
+          
         }
     });
 });
+
+function createBulkFillModal() {
+    const modalId = 'bulkFillModal';
+    let modalEl = document.getElementById(modalId);
+
+    if (!modalEl) {
+        modalEl = document.createElement('div');
+        modalEl.id = modalId;
+        modalEl.className = 'modal fade';
+        modalEl.innerHTML = `
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Điền giá trị cho tất cả</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" id="bulkFormBody">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-primary" id="confirmBulkFill">Áp dụng</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modalEl);
+    }
+
+    const formBody = document.getElementById('bulkFormBody');
+    formBody.innerHTML = '';  
+
+    editableColumns.forEach(col => {
+        formBody.innerHTML += `
+            <div class="mb-3">
+                <label class="form-label fw-bold">${col.label}</label>
+                <input type="${col.type}" class="form-control" id="bulk_${col.field}" min="${col.min}" value="${col.default}">
+            </div>
+        `;
+    });
+
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+
+    document.getElementById('confirmBulkFill').onclick = () => {
+        editableColumns.forEach(col => {
+            const inputValue = parseInt(document.getElementById(`bulk_${col.field}`).value) || col.default;
+            variantsList.forEach(v => {
+                v[col.field] = inputValue;  
+            });
+        });
+
+        renderVariants();  
+        showToast('Đã áp dụng giá trị cho tất cả', 'success');
+        modal.hide();
+
+        document.getElementById('bulkFillCheckbox').checked = false;
+    };
+
+    modalEl.addEventListener('hidden.bs.modal', () => {
+        document.getElementById('bulkFillCheckbox').checked = false;
+    }, { once: true });
+}
 
 function showToast(message, type = 'success') {
     const toast = document.getElementById('globalToast');
@@ -241,6 +303,11 @@ async function deleteProduct(id) {
 }
 
 function openModal(product = null) {
+    const bulkCheckboxSection = document.getElementById('bulkCheckboxSection');
+    if (bulkCheckboxSection) {
+        bulkCheckboxSection.style.display = isEditMode ? 'none' : 'block';
+        document.getElementById('bulkFillCheckbox').checked = false;  // reset checkbox
+    }
     currentEditId = product ? product.product_id : null;
     isEditMode = !!product;
 

@@ -158,13 +158,19 @@ require_once 'auth_middleware.php';
 
                         <div id="variantsTableContainer" style="display:none;">
                             <h6>Tổ hợp đã tạo (<span id="variantCount">0</span>)</h6>
+
+                            <div class="form-check mb-3" id="bulkCheckboxSection" style="display: none;">
+                                <input class="form-check-input" type="checkbox" id="bulkFillCheckbox">
+                                <label class="form-check-label fw-bold" for="bulkFillCheckbox">Điền cho tất cả</label>
+                            </div>
+
                             <table class="table table-sm table-bordered" id="variantsTable">
                                 <thead class="table-light">
                                     <tr>
                                         <th>Màu</th>
                                         <th>Mã màu</th>
                                         <th>Kích thước</th>
-                                        <th id="initialQtyHeader">Số lượng ban đầu</th> 
+                                        <th id="initialQtyHeader">Số lượng ban đầu</th>
                                         <th>Ngưỡng cảnh báo</th>
                                         <th>
                                             <button type="button" class="btn btn-sm btn-danger" id="clearAllVariants">Xóa tất cả</button>
