@@ -40,17 +40,22 @@ class Product
 
     public function getById($id)
     {
-        $query = "SELECT 
-                    p.*, c.name as category_name,
-                    pc.color_id, pc.color_name, pc.color_code,
-                    pv.variant_id, pv.size,
-                    pi.image_id, pi.image, pi.is_primary, pi.sort_order
-                  FROM products p
-                  LEFT JOIN categories c ON p.category_id = c.category_id
-                  LEFT JOIN product_colors pc ON pc.product_id = p.product_id
-                  LEFT JOIN product_variants pv ON pv.color_id = pc.color_id
-                  LEFT JOIN product_images pi ON pi.product_id = p.product_id
-                  WHERE p.product_id = :id";
+        $query = "
+            SELECT 
+                p.*, c.name as category_name,
+                pc.color_id, pc.color_name, pc.color_code,
+                pv.variant_id, pv.size,
+                pi.image_id, pi.image, pi.is_primary, pi.sort_order,
+                i.quantity, i.low_stock_threshold, i.warehouse_id   -- ← thêm các trường tồn kho
+            FROM products p
+            LEFT JOIN categories c ON p.category_id = c.category_id
+            LEFT JOIN product_colors pc ON pc.product_id = p.product_id
+            LEFT JOIN product_variants pv ON pv.color_id = pc.color_id
+            LEFT JOIN product_images pi ON pi.product_id = p.product_id
+            LEFT JOIN product_inventory i ON i.variant_id = pv.variant_id   -- ← join inventory
+            WHERE p.product_id = :id
+            ORDER BY pc.color_name, pv.size
+        ";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -131,6 +136,29 @@ class Product
                     }
                 }
             }
+
+            if (!empty($row['variant_id'])) {
+                $colorId = $row['color_id'];
+                $size = trim(strtoupper($row['size']));
+
+                if (!isset($products[$pid]['colors'][$colorId])) {
+                    $products[$pid]['colors'][$colorId] = [
+                        'color_id'   => $colorId,
+                        'color_name' => $row['color_name'],
+                        'color_code' => $row['color_code'] ?? '#000000',
+                        'sizes'      => []
+                    ];
+                }
+
+                $variant = [
+                    'variant_id'          => $row['variant_id'],
+                    'size'                => $size,
+                    'quantity'            => (int)($row['quantity'] ?? 0),
+                    'low_stock_threshold' => (int)($row['low_stock_threshold'] ?? 10)
+                ];
+
+                $products[$pid]['colors'][$colorId]['variants'][$size] = $variant;
+            }
         }
 
         foreach ($products as &$p) {
@@ -148,36 +176,79 @@ class Product
         $this->conn->beginTransaction();
         try {
             $query = "INSERT INTO products SET 
-                        name = :name, 
-                        description = :description,
-                        price = :price,                    
-                        category_id = :category_id, 
-                        star = 5, 
-                        review_count = 0, 
-                        is_active = :is_active";
+                    name = :name, 
+                    description = :description,
+                    price = :price,                    
+                    category_id = :category_id, 
+                    star = 5, 
+                    review_count = 0, 
+                    is_active = :is_active";
             $stmt = $this->conn->prepare($query);
             $stmt->execute([
-                ':name' => $data['name'],
+                ':name'        => $data['name'],
                 ':description' => $data['description'] ?? '',
                 ':price'       => $data['price'] ?? 0,
                 ':category_id' => $data['category_id'],
-                ':is_active' => $data['is_active'] ?? 1
+                ':is_active'   => $data['is_active'] ?? 1
             ]);
             $productId = $this->conn->lastInsertId();
 
             foreach ($colors as $c) {
                 if (empty($c['name'])) continue;
-                $stmt = $this->conn->prepare("INSERT INTO product_colors (product_id, color_name, color_code) VALUES (?, ?, ?)");
+
+                $stmt = $this->conn->prepare("
+                    INSERT INTO product_colors (product_id, color_name, color_code) 
+                    VALUES (?, ?, ?)
+                ");
                 $stmt->execute([$productId, $c['name'], $c['code'] ?? '#000000']);
                 $colorId = $this->conn->lastInsertId();
 
-                if (!empty($c['sizes'])) {
+                if (!empty($c['variants']) && is_array($c['variants'])) {
+                    foreach ($c['variants'] as $v) {
+                        $size = trim(strtoupper($v['size'] ?? ''));
+                        if (empty($size)) continue;
+
+                        $stmt = $this->conn->prepare("
+                            INSERT INTO product_variants (product_id, color_id, size) 
+                            VALUES (?, ?, ?)
+                        ");
+                        $stmt->execute([$productId, $colorId, $size]);
+                        $variantId = $this->conn->lastInsertId();
+
+                        $initialQty = (int)($v['initial_qty'] ?? 0);
+                        $lowThreshold = (int)($v['low_stock_threshold'] ?? 10);
+                        $warehouseId = 1;
+
+                        $invStmt = $this->conn->prepare("
+                            INSERT INTO product_inventory 
+                            (variant_id, warehouse_id, quantity, low_stock_threshold, created_at, updated_at) 
+                            VALUES (?, ?, ?, ?, NOW(), NOW())
+                            ON DUPLICATE KEY UPDATE 
+                                quantity = VALUES(quantity),
+                                low_stock_threshold = VALUES(low_stock_threshold),
+                                updated_at = NOW()
+                        ");
+                        $invStmt->execute([$variantId, $warehouseId, $initialQty, $lowThreshold]);
+                    }
+                } elseif (!empty($c['sizes'])) {
                     $sizes = array_map('trim', explode(',', $c['sizes']));
                     foreach ($sizes as $size) {
-                        if ($size) {
-                            $stmt = $this->conn->prepare("INSERT INTO product_variants (product_id, color_id, size) VALUES (?, ?, ?)");
-                            $stmt->execute([$productId, $colorId, strtoupper($size)]);
-                        }
+                        if (empty($size)) continue;
+
+                        $stmt = $this->conn->prepare("
+                            INSERT INTO product_variants (product_id, color_id, size) 
+                            VALUES (?, ?, ?)
+                        ");
+                        $stmt->execute([$productId, $colorId, strtoupper($size)]);
+                        $variantId = $this->conn->lastInsertId();
+
+                        $invStmt = $this->conn->prepare("
+                            INSERT INTO product_inventory 
+                            (variant_id, warehouse_id, quantity, low_stock_threshold, created_at, updated_at) 
+                            VALUES (?, ?, 0, 10, NOW(), NOW())
+                            ON DUPLICATE KEY UPDATE quantity = 0, low_stock_threshold = 10
+                        ");
+                        $invStmt->execute([$variantId, 1]);
                     }
                 }
             }
@@ -192,7 +263,10 @@ class Product
 
                 if (move_uploaded_file($file['tmp_name'], $path)) {
                     $isPrimary = ($index == $primaryIndex) ? 1 : 0;
-                    $stmt = $this->conn->prepare("INSERT INTO product_images (product_id, image, is_primary, sort_order) VALUES (?, ?, ?, ?)");
+                    $stmt = $this->conn->prepare("
+                    INSERT INTO product_images (product_id, image, is_primary, sort_order) 
+                    VALUES (?, ?, ?, ?)
+                ");
                     $stmt->execute([$productId, $filename, $isPrimary, $index]);
                 }
             }
@@ -216,33 +290,60 @@ class Product
                     price = :price,                         
                     category_id = :category_id,
                     is_active = :is_active
-                WHERE product_id = :product_id";
+                  WHERE product_id = :product_id";
             $stmt = $this->conn->prepare($query);
             $stmt->execute([
-                ':name' => $data['name'],
+                ':name'        => $data['name'],
                 ':description' => $data['description'] ?? '',
                 ':price'       => $data['price'] ?? 0,
                 ':category_id' => $data['category_id'],
-                ':is_active' => $data['is_active'] ?? 1,
-                ':product_id' => $productId
+                ':is_active'   => $data['is_active'] ?? 1,
+                ':product_id'  => $productId
             ]);
+
+            $this->conn->prepare("DELETE FROM product_inventory WHERE variant_id IN (
+                                SELECT variant_id FROM product_variants WHERE product_id = ?
+                                )")->execute([$productId]);
 
             $this->conn->prepare("DELETE FROM product_variants WHERE product_id = ?")->execute([$productId]);
             $this->conn->prepare("DELETE FROM product_colors WHERE product_id = ?")->execute([$productId]);
 
             foreach ($colors as $c) {
                 if (empty($c['name'])) continue;
-                $stmt = $this->conn->prepare("INSERT INTO product_colors (product_id, color_name, color_code) VALUES (?, ?, ?)");
+
+                $stmt = $this->conn->prepare("
+                    INSERT INTO product_colors (product_id, color_name, color_code) 
+                    VALUES (?, ?, ?)
+                ");
                 $stmt->execute([$productId, $c['name'], $c['code'] ?? '#000000']);
                 $colorId = $this->conn->lastInsertId();
 
-                if (!empty($c['sizes'])) {
-                    $sizes = array_map('trim', explode(',', $c['sizes']));
-                    foreach ($sizes as $size) {
-                        if ($size) {
-                            $this->conn->prepare("INSERT INTO product_variants (product_id, color_id, size) VALUES (?, ?, ?)")
-                                ->execute([$productId, $colorId, strtoupper($size)]);
-                        }
+                if (!empty($c['variants']) && is_array($c['variants'])) {
+                    foreach ($c['variants'] as $v) {
+                        $size = trim(strtoupper($v['size'] ?? ''));
+                        if (empty($size)) continue;
+
+                        $stmt = $this->conn->prepare("
+                            INSERT INTO product_variants (product_id, color_id, size) 
+                            VALUES (?, ?, ?)
+                        ");
+                        $stmt->execute([$productId, $colorId, $size]);
+                        $variantId = $this->conn->lastInsertId();
+
+                        $initialQty = (int)($v['initial_qty'] ?? 0);
+                        $lowThreshold = (int)($v['low_stock_threshold'] ?? 10);
+                        $warehouseId = 1;
+
+                        $invStmt = $this->conn->prepare("
+                            INSERT INTO product_inventory 
+                            (variant_id, warehouse_id, quantity, low_stock_threshold, created_at, updated_at) 
+                            VALUES (?, ?, ?, ?, NOW(), NOW())
+                            ON DUPLICATE KEY UPDATE 
+                                quantity = VALUES(quantity),
+                                low_stock_threshold = VALUES(low_stock_threshold),
+                                updated_at = NOW()
+                        ");
+                        $invStmt->execute([$variantId, $warehouseId, $initialQty, $lowThreshold]);
                     }
                 }
             }
@@ -260,7 +361,7 @@ class Product
                 }
             }
 
-            $newImageIds = []; 
+            $newImageIds = [];
             $sortOrder = 0;
             foreach ($images as $index => $file) {
                 if ($file['error'] !== 0) continue;
@@ -270,7 +371,10 @@ class Product
                 $path = $uploadDir . $filename;
 
                 if (move_uploaded_file($file['tmp_name'], $path)) {
-                    $stmt = $this->conn->prepare("INSERT INTO product_images (product_id, image, is_primary, sort_order) VALUES (?, ?, 0, ?)");
+                    $stmt = $this->conn->prepare("
+                    INSERT INTO product_images (product_id, image, is_primary, sort_order) 
+                    VALUES (?, ?, 0, ?)
+                ");
                     $stmt->execute([$productId, $filename, $sortOrder++]);
                     $newImageId = $this->conn->lastInsertId();
                     $newImageIds[$index] = $newImageId;
@@ -280,15 +384,11 @@ class Product
             $this->conn->prepare("UPDATE product_images SET is_primary = 0 WHERE product_id = ?")->execute([$productId]);
             $finalPrimaryId = null;
 
-            // primaryImageId 
             if ($primaryImageId !== null && in_array($primaryImageId, $existingImages)) {
                 $finalPrimaryId = $primaryImageId;
-            }
-            // primaryImageIndex
-            elseif ($primaryImageIndex >= 0 && isset($newImageIds[$primaryImageIndex])) {
+            } elseif ($primaryImageIndex >= 0 && isset($newImageIds[$primaryImageIndex])) {
                 $finalPrimaryId = $newImageIds[$primaryImageIndex];
-            }
-            else {
+            } else {
                 if (!empty($existingImages)) {
                     $finalPrimaryId = (int)$existingImages[0];
                 } elseif (!empty($newImageIds)) {
@@ -297,7 +397,10 @@ class Product
             }
 
             if ($finalPrimaryId !== null) {
-                $stmt = $this->conn->prepare("UPDATE product_images SET is_primary = 1 WHERE image_id = ? AND product_id = ?");
+                $stmt = $this->conn->prepare("
+                UPDATE product_images SET is_primary = 1 
+                WHERE image_id = ? AND product_id = ?
+            ");
                 $stmt->execute([$finalPrimaryId, $productId]);
             }
 

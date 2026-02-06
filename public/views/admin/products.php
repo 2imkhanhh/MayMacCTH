@@ -164,7 +164,11 @@ require_once 'auth_middleware.php';
                                         <th>Màu</th>
                                         <th>Mã màu</th>
                                         <th>Kích thước</th>
-                                        <th><button type="button" class="btn btn-sm btn-danger" id="clearAllVariants">Xóa tất cả</button></th>
+                                        <th id="initialQtyHeader">Số lượng ban đầu</th> 
+                                        <th>Ngưỡng cảnh báo</th>
+                                        <th>
+                                            <button type="button" class="btn btn-sm btn-danger" id="clearAllVariants">Xóa tất cả</button>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -206,7 +210,7 @@ require_once 'auth_middleware.php';
             </div>
         </div>
     </div>
-    
+
     <div id="globalToast" class="global-toast">
         <i id="toastIcon" class='bx'></i>
         <span id="toastMessage">Thông báo</span>

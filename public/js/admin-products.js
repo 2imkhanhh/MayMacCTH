@@ -7,6 +7,9 @@ let variantsList = [];
 let colorCounter = 0;
 let selectedImages = [];
 let imageIndex = 0;
+let defaultInitialQty = 0;
+let defaultLowStockThreshold = 10;
+let isEditMode = false;
 
 const PRESET_COLORS = [
     { name: 'Đen', code: '#000000' },
@@ -38,12 +41,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('addSizeBtn').onclick = addCustomSize;
     document.getElementById('generateVariantsBtn').onclick = generateAllVariants;
     document.getElementById('clearAllVariants').onclick = clearAllVariants;
-    
+
     const presetColors = document.getElementById('presetColors');
-    if(presetColors) presetColors.onchange = handlePresetCheckbox;
-    
+    if (presetColors) presetColors.onchange = handlePresetCheckbox;
+
     const presetSizes = document.getElementById('presetSizes');
-    if(presetSizes) presetSizes.onchange = handlePresetCheckbox;
+    if (presetSizes) presetSizes.onchange = handlePresetCheckbox;
 
     document.getElementById('productForm').onsubmit = handleSubmit;
 
@@ -54,6 +57,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('bulkImageInput').onchange = function (e) {
         handleImageSelect(e);
     };
+
+    document.addEventListener('click', function (e) {
+        if (e.target.id === 'applyBulkBtn') {
+            const bulkQty = parseInt(document.getElementById('bulkInitialQty')?.value) || 0;
+            const bulkThreshold = parseInt(document.getElementById('bulkLowStock')?.value) || 10;
+
+            variantsList.forEach(v => {
+                v.initialQty = bulkQty;
+                v.lowStockThreshold = bulkThreshold;
+            });
+
+            renderVariants();  // render lại bảng để hiển thị giá trị mới
+            showToast(`Đã áp dụng số lượng ${bulkQty} và ngưỡng ${bulkThreshold} cho tất cả biến thể!`, 'success');
+        }
+    });
 });
 
 function showToast(message, type = 'success') {
@@ -224,9 +242,16 @@ async function deleteProduct(id) {
 
 function openModal(product = null) {
     currentEditId = product ? product.product_id : null;
+    isEditMode = !!product;
+
     const modal = new bootstrap.Modal(document.getElementById('productModal'));
     const form = document.getElementById('productForm');
     const title = document.getElementById('modalTitle');
+
+    const qtyHeader = document.getElementById('initialQtyHeader');
+    if (qtyHeader) {
+        qtyHeader.textContent = isEditMode ? 'Tồn kho hiện tại' : 'Số lượng ban đầu';
+    }
 
     form.reset();
 
@@ -242,8 +267,8 @@ function openModal(product = null) {
 
     if (product) {
         title.textContent = 'Sửa sản phẩm';
-        form.name.value = product.name;
-        form.category_id.value = product.category_id;
+        form.name.value = product.name || '';
+        form.category_id.value = product.category_id || '';
         form.price.value = product.price || 0;
         form.description.value = product.description || '';
         document.getElementById('isActiveCheckbox').checked = product.is_active == 1;
@@ -256,11 +281,37 @@ function openModal(product = null) {
                     name: c.color_name || '',
                     code: c.color_code || '#000000'
                 });
-                if (c.sizes && c.sizes.length > 0) {
+
+                if (c.variants && typeof c.variants === 'object' && !Array.isArray(c.variants)) {
+                    Object.values(c.variants).forEach(v => {
+                        const normalizedSize = (v.size || '').trim().toUpperCase();
+                        if (normalizedSize) {
+                            if (!sizesList.includes(normalizedSize)) {
+                                sizesList.push(normalizedSize);
+                            }
+
+                            variantsList.push({
+                                colorId: tempId,
+                                size: normalizedSize,
+                                initialQty: v.quantity !== undefined ? parseInt(v.quantity) : 0,
+                                lowStockThreshold: v.low_stock_threshold !== undefined ? parseInt(v.low_stock_threshold) : 10
+                            });
+                        }
+                    });
+                }
+
+                else if (c.sizes && c.sizes.length > 0) {
                     c.sizes.forEach(size => {
                         const normalized = size.trim().toUpperCase();
-                        if (!sizesList.includes(normalized)) sizesList.push(normalized);
-                        variantsList.push({ colorId: tempId, size: normalized });
+                        if (normalized && !sizesList.includes(normalized)) {
+                            sizesList.push(normalized);
+                        }
+                        variantsList.push({
+                            colorId: tempId,
+                            size: normalized,
+                            initialQty: 0,
+                            lowStockThreshold: 10
+                        });
                     });
                 }
             });
@@ -377,18 +428,61 @@ function renderVariants() {
     variantsList.forEach((v, idx) => {
         const color = colorsList.find(c => c.id === v.colorId);
         if (!color) return;
+
+        const initialQty = v.initialQty !== undefined ? v.initialQty : defaultInitialQty;
+        const lowThreshold = v.lowStockThreshold !== undefined ? v.lowStockThreshold : defaultLowStockThreshold;
+
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${color.name}</td>
-            <td><span style="background:${color.code}; width:20px; height:20px; border-radius:4px; display:inline-block; border:1px solid #ccc;"></span></td>
+            <td>
+                <span style="background:${color.code}; width:20px; height:20px; border-radius:4px; display:inline-block; border:1px solid #ccc;"></span>
+            </td>
             <td>${v.size}</td>
-            <td><button type="button" class="btn btn-sm btn-danger remove-variant-btn" data-idx="${idx}">×</button></td>
+            <td>
+                <input type="number" class="form-control form-control-sm qty-input" 
+                       value="${initialQty}" min="0" 
+                       data-idx="${idx}" data-field="initialQty"
+                       ${isEditMode ? 'disabled' : ''}>
+            </td>
+            <td>
+                <input type="number" class="form-control form-control-sm threshold-input" 
+                       value="${lowThreshold}" min="0" 
+                       data-idx="${idx}" data-field="lowStockThreshold">
+            </td>
+            <td>
+                <button type="button" class="btn btn-sm btn-danger remove-variant-btn" data-idx="${idx}">×</button>
+            </td>
         `;
         tbody.appendChild(row);
     });
-    document.querySelectorAll('.remove-variant-btn').forEach(btn => {
+
+    if (!isEditMode) {
+        tbody.querySelectorAll('input[data-field="initialQty"]').forEach(input => {
+            input.addEventListener('input', function () {
+                const idx = parseInt(this.dataset.idx);
+                const value = parseInt(this.value) || 0;
+                if (variantsList[idx]) {
+                    variantsList[idx].initialQty = value;
+                }
+            });
+        });
+    }
+
+    tbody.querySelectorAll('input[data-field="lowStockThreshold"]').forEach(input => {
+        input.addEventListener('input', function () {
+            const idx = parseInt(this.dataset.idx);
+            const value = parseInt(this.value) || 0;
+            if (variantsList[idx]) {
+                variantsList[idx].lowStockThreshold = value;
+            }
+        });
+    });
+
+    tbody.querySelectorAll('.remove-variant-btn').forEach(btn => {
         btn.onclick = () => {
-            variantsList.splice(parseInt(btn.dataset.idx), 1);
+            const idx = parseInt(btn.dataset.idx);
+            variantsList.splice(idx, 1);
             renderVariants();
         };
     });
@@ -430,10 +524,17 @@ function generateAllVariants() {
     }
     variantsList = [];
     colorsList.forEach(color => {
-        sizesList.forEach(size => variantsList.push({ colorId: color.id, size }));
+        sizesList.forEach(size => {
+            variantsList.push({
+                colorId: color.id,
+                size,
+                initialQty: defaultInitialQty,
+                lowStockThreshold: defaultLowStockThreshold
+            });
+        });
     });
     renderVariants();
-    showToast(`Đã tạo ${variantsList.length} biến thể!`, 'success');
+    showToast(`Đã tạo ${variantsList.length}`, 'success');
 }
 
 function clearAllVariants() {
@@ -561,16 +662,31 @@ async function handleSubmit(e) {
     }
 
     if (colorsList.length > 0) {
-        colorsList.forEach((color, idx) => {
-            formData.append(`colors[${idx}][name]`, color.name.trim());
-            formData.append(`colors[${idx}][code]`, color.code);
-            const sizesForColor = variantsList.filter(v => v.colorId === color.id).map(v => v.size);
-            sizesForColor.forEach(size => formData.append(`colors[${idx}][sizes][]`, size));
+        colorsList.forEach(function (color, cIdx) {
+            const colorName = color.name ? color.name.trim() : '';
+            if (!colorName) return;
+
+            formData.append(`colors[${cIdx}][name]`, colorName);
+            formData.append(`colors[${cIdx}][code]`, color.code || '#000000');
+
+            const colorVariants = variantsList.filter(v => v.colorId === color.id);
+
+            colorVariants.forEach((v, vIdx) => {
+                formData.append(`colors[${cIdx}][variants][${vIdx}][size]`, v.size || '');
+                formData.append(`colors[${cIdx}][variants][${vIdx}][initial_qty]`, v.initialQty ?? 0);
+                formData.append(`colors[${cIdx}][variants][${vIdx}][low_stock_threshold]`, v.lowStockThreshold ?? 10);
+            });
         });
     } else if (sizesList.length > 0) {
         formData.append('colors[0][name]', 'Default');
         formData.append('colors[0][code]', '#000000');
-        sizesList.forEach(size => formData.append('colors[0][sizes][]', size));
+
+        sizesList.forEach((size, idx) => {
+            const variant = variantsList.find(v => v.size === size) || {};
+            formData.append(`colors[0][variants][${idx}][size]`, size);
+            formData.append(`colors[0][variants][${idx}][initial_qty]`, variant.initialQty ?? 0);
+            formData.append(`colors[0][variants][${idx}][low_stock_threshold]`, variant.lowStockThreshold ?? 10);
+        });
     }
 
     const url = currentEditId

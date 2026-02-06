@@ -44,7 +44,7 @@ class ProductController
             'description' => $_POST['description'] ?? '',
             'price'       => (int)($_POST['price'] ?? 0),
             'category_id' => (int)($_POST['category_id'] ?? 0),
-            'is_active'   => (int) ($_POST['is_active'] ?? 0)
+            'is_active'   => (int)($_POST['is_active'] ?? 0)
         ];
 
         if (empty($data['name']) || empty($data['category_id'])) {
@@ -54,21 +54,44 @@ class ProductController
         $colors = [];
         $hasAnySize = false;
 
-        foreach ($_POST['colors'] ?? [] as $c) {
+        foreach ($_POST['colors'] ?? [] as $cIdx => $c) {
             if (!empty($c['name'])) {
-                $sizes = $c['sizes'] ?? '';
-                if (is_array($sizes)) {
-                    $sizes = implode(',', $sizes);
-                }
-
-                $colors[] = [
-                    'name'  => trim($c['name']),
-                    'code'  => $c['code'] ?? '#000000',
-                    'sizes' => $sizes
+                $colorEntry = [
+                    'name'     => trim($c['name']),
+                    'code'     => $c['code'] ?? '#000000',
+                    'variants' => []
                 ];
 
-                if (!empty($sizes)) {
-                    $hasAnySize = true;
+                if (!empty($c['variants']) && is_array($c['variants'])) {
+                    foreach ($c['variants'] as $v) {
+                        if (!empty($v['size'])) {
+                            $colorEntry['variants'][] = [
+                                'size'                => trim(strtoupper($v['size'])),
+                                'initial_qty'         => (int)($v['initial_qty'] ?? 0),
+                                'low_stock_threshold' => (int)($v['low_stock_threshold'] ?? 10)
+                            ];
+                            $hasAnySize = true;
+                        }
+                    }
+                }
+
+                elseif (!empty($c['sizes'])) {
+                    $sizes = is_array($c['sizes']) ? $c['sizes'] : explode(',', $c['sizes']);
+                    foreach ($sizes as $size) {
+                        $trimmed = trim(strtoupper($size));
+                        if ($trimmed) {
+                            $colorEntry['variants'][] = [
+                                'size'                => $trimmed,
+                                'initial_qty'         => 0,
+                                'low_stock_threshold' => 10
+                            ];
+                            $hasAnySize = true;
+                        }
+                    }
+                }
+
+                if (!empty($colorEntry['variants'])) {
+                    $colors[] = $colorEntry;
                 }
             }
         }
@@ -113,7 +136,7 @@ class ProductController
             'description' => $_POST['description'] ?? '',
             'price'       => (int)($_POST['price'] ?? 0),
             'category_id' => (int)($_POST['category_id'] ?? 0),
-            'is_active'   => (int) ($_POST['is_active'] ?? 0)
+            'is_active'   => (int)($_POST['is_active'] ?? 0)
         ];
 
         if (empty($data['name']) || empty($data['category_id'])) {
@@ -127,20 +150,31 @@ class ProductController
         $colors = [];
         $hasAnySize = false;
 
-        foreach ($_POST['colors'] ?? [] as $c) {
+        foreach ($_POST['colors'] ?? [] as $cIdx => $c) {
             if (!empty($c['name'])) {
-                $sizes = $c['sizes'] ?? '';
-                if (is_array($sizes)) {
-                    $sizes = implode(',', $sizes);
-                }
+                $variants = $c['variants'] ?? [];
+                $hasVariants = !empty($variants) && is_array($variants);
 
-                $colors[] = [
-                    'name'  => trim($c['name']),
-                    'code'  => $c['code'] ?? '#000000',
-                    'sizes' => $sizes
+                $colorEntry = [
+                    'name'     => trim($c['name']),
+                    'code'     => $c['code'] ?? '#000000',
+                    'variants' => $hasVariants ? $variants : []
                 ];
 
-                if (!empty($sizes)) {
+                if (!$hasVariants && !empty($c['sizes'])) {
+                    $sizes = is_array($c['sizes']) ? $c['sizes'] : explode(',', $c['sizes']);
+                    foreach ($sizes as $size) {
+                        $colorEntry['variants'][] = [
+                            'size'                => trim($size),
+                            'initial_qty'         => 0,
+                            'low_stock_threshold' => 10
+                        ];
+                    }
+                }
+
+                $colors[] = $colorEntry;
+
+                if ($hasVariants || !empty($c['sizes'])) {
                     $hasAnySize = true;
                 }
             }
@@ -162,13 +196,13 @@ class ProductController
                 }
             }
         }
+
         $primaryImageId = null;
         $primaryImageIndex = null;
 
         if (isset($_POST['primary_image_id']) && is_numeric($_POST['primary_image_id']) && $_POST['primary_image_id'] > 0) {
             $primaryImageId = (int)$_POST['primary_image_id'];
-        }
-        elseif (isset($_POST['primary_image_index']) && is_numeric($_POST['primary_image_index'])) {
+        } elseif (isset($_POST['primary_image_index']) && is_numeric($_POST['primary_image_index'])) {
             $primaryImageIndex = (int)$_POST['primary_image_index'];
         }
 
@@ -177,9 +211,9 @@ class ProductController
             $data,
             $colors,
             $uploadedFiles,
-            $primaryImageIndex,   
+            $primaryImageIndex,
             $existingImages,
-            $primaryImageId     
+            $primaryImageId
         );
 
         return $result
