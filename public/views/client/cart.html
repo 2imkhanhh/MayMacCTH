@@ -396,8 +396,64 @@
             const cartPagination = document.getElementById('cartPagination');
             const itemsPerPage = 3;
             let currentPage = 1;
+            const BASE_URL = '/MayMacCTH';
 
-            function renderCart() {
+            async function validateCartItems() {
+                let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+                if (cart.length === 0) return;
+
+                const itemsToCheck = cart.map(item => ({
+                    product_id: item.id,          
+                    color_name: item.color || '', 
+                    size: item.size || 'FREESIZE',
+                    uniqueKey: item.uniqueKey    
+                }));
+
+                try {
+                    const res = await fetch(`${BASE_URL}/api/product/check_variants.php`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ items: itemsToCheck })
+                    });
+
+                    if (!res.ok) throw new Error('Lỗi gọi API kiểm tra giỏ hàng');
+
+                    const result = await res.json();
+
+                    if (!result.success) {
+                        console.warn('API check variants thất bại:', result.message);
+                        return; 
+                    }
+
+                    let updatedCart = [...cart];
+                    let removedItems = [];
+
+                    result.data.forEach(check => {
+                        if (!check.exists) {
+                            const index = updatedCart.findIndex(item => item.uniqueKey === check.uniqueKey);
+                            if (index !== -1) {
+                                removedItems.push(updatedCart[index].name || 'Sản phẩm');
+                                updatedCart.splice(index, 1);
+                            }
+                        }
+                    });
+
+                    if (removedItems.length > 0) {
+                        localStorage.setItem('cart', JSON.stringify(updatedCart));
+                        showToast(
+                            `Một số sản phẩm đã bị xóa. Giỏ hàng đã được cập nhật.`,
+                            'warning'
+                        );
+                    }
+
+                } catch (err) {
+                    console.error('Lỗi khi kiểm tra giỏ hàng:', err);
+                }
+            }
+
+            async function renderCart() {
+                await validateCartItems();
+
                 let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
                 if (cart.length === 0) {
@@ -412,6 +468,7 @@
                     document.getElementById('shipping').textContent = '30.000 VNĐ';
                     document.getElementById('total').textContent = '30.000 VNĐ';
                     cartPagination.innerHTML = '';
+                    updateCartCount(); 
                     return;
                 }
 
@@ -811,7 +868,7 @@
                 container.innerHTML = '';
 
                 if (result.success && Array.isArray(result.data) && result.data.length > 0) {
-                    
+
                     let categories = result.data;
                     categories.sort((a, b) => a.name.localeCompare(b.name));
 

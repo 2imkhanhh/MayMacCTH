@@ -73,9 +73,7 @@ class ProductController
                             $hasAnySize = true;
                         }
                     }
-                }
-
-                elseif (!empty($c['sizes'])) {
+                } elseif (!empty($c['sizes'])) {
                     $sizes = is_array($c['sizes']) ? $c['sizes'] : explode(',', $c['sizes']);
                     foreach ($sizes as $size) {
                         $trimmed = trim(strtoupper($size));
@@ -240,6 +238,27 @@ class ProductController
             "success" => true,
             "message" => "Danh sách tất cả sản phẩm",
             "data" => $products
+        ];
+    }
+
+    public function checkVariants()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return ["success" => false, "message" => "Chỉ hỗ trợ phương thức POST"];
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        $items = $input['items'] ?? [];
+
+        if (empty($items) || !is_array($items)) {
+            return ["success" => false, "message" => "Dữ liệu items không hợp lệ hoặc trống"];
+        }
+
+        $checkResults = $this->product->checkVariantsExist($items);
+
+        return [
+            "success" => true,
+            "data"    => $checkResults
         ];
     }
 }

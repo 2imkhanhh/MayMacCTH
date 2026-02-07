@@ -46,13 +46,13 @@ class Product
                 pc.color_id, pc.color_name, pc.color_code,
                 pv.variant_id, pv.size,
                 pi.image_id, pi.image, pi.is_primary, pi.sort_order,
-                i.quantity, i.low_stock_threshold, i.warehouse_id   -- ← thêm các trường tồn kho
+                i.quantity, i.low_stock_threshold, i.warehouse_id   
             FROM products p
             LEFT JOIN categories c ON p.category_id = c.category_id
             LEFT JOIN product_colors pc ON pc.product_id = p.product_id
             LEFT JOIN product_variants pv ON pv.color_id = pc.color_id
             LEFT JOIN product_images pi ON pi.product_id = p.product_id
-            LEFT JOIN product_inventory i ON i.variant_id = pv.variant_id   -- ← join inventory
+            LEFT JOIN product_inventory i ON i.variant_id = pv.variant_id   
             WHERE p.product_id = :id
             ORDER BY pc.color_name, pv.size
         ";
@@ -468,5 +468,68 @@ class Product
 
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $this->groupProductData($results);
+    }
+
+    public function checkVariantsExist(array $items): array
+    {
+        $results = [];
+
+        foreach ($items as $item) {
+            $productId   = (int)($item['product_id'] ?? 0);
+            $colorName   = trim($item['color_name'] ?? '');
+            $size        = trim(strtoupper($item['size'] ?? 'FREESIZE'));
+            $uniqueKey   = $item['uniqueKey'] ?? '';
+
+            if ($productId <= 0) {
+                $results[] = [
+                    'uniqueKey' => $uniqueKey,
+                    'exists'    => false,
+                    'stock'     => 0,
+                    'name'      => 'Không xác định'
+                ];
+                continue;
+            }
+
+            $productData = $this->getById($productId);
+            if (!$productData) {
+                $results[] = [
+                    'uniqueKey' => $uniqueKey,
+                    'exists'    => false,
+                    'stock'     => 0,
+                    'name'      => 'Sản phẩm không tồn tại'
+                ];
+                continue;
+            }
+
+            $p = $productData; 
+
+            $found = false;
+            $stock = 0;
+            $productName = $p['name'] ?? 'Sản phẩm';
+
+            if (!empty($p['colors'])) {
+                foreach ($p['colors'] as $color) {
+                    if (strtolower($color['color_name']) === strtolower($colorName)) {
+                        if (isset($color['variants'][$size])) {
+                            $found = true;
+                            $stock = (int)($color['variants'][$size]['quantity'] ?? 0);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                $found = true; // tạm coi là còn nếu không có variant
+                $stock = 99;  // fallback, hoặc lấy từ trường khác nếu có
+            }
+
+            $results[] = [
+                'uniqueKey' => $uniqueKey,
+                'exists'    => $found,
+                'stock'     => $stock,
+                'name'      => $productName
+            ];
+        }
+
+        return $results;
     }
 }
