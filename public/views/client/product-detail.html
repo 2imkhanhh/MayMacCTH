@@ -213,7 +213,8 @@
                         <img src="" alt="Đang tải..." id="main-product-image" class="w-100"
                             style="background:#f5f5f5; min-height:400px; object-fit:contain;">
 
-                        <div class="thumbnail-images mt-3 d-flex gap-2 flex-wrap justify-content-center" id="thumbnailContainer">
+                        <div class="thumbnail-images mt-3 d-flex gap-2 flex-wrap justify-content-center"
+                            id="thumbnailContainer">
                         </div>
                     </div>
 
@@ -263,12 +264,17 @@
                         </div>
 
                         <div class="quantity mb-4">
-                            <h6 class="fw-bold mb-2">Số lượng</h6>
-                            <div class="input-group w-50">
-                                <button class="btn btn-outline-secondary" type="button" id="decrease">-</button>
-                                <input type="text" class="form-control text-center fw-bold" value="1" readonly
-                                    id="quantityInput">
-                                <button class="btn btn-outline-secondary" type="button" id="increase">+</button>
+                            <h6 class="fw-bold mb-2 text-start">Số lượng</h6>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="input-group quantity-group">
+                                    <button class="btn btn-outline-secondary" type="button" id="decrease">-</button>
+                                    <input type="text" class="form-control fw-bold text-center" value="1" readonly
+                                        id="quantityInput">
+                                    <button class="btn btn-outline-secondary" type="button" id="increase">+</button>
+                                </div>
+                                <div class="stock-info text-muted small">
+                                    Có thể mua <strong id="stockDisplay"></strong>
+                                </div>
                             </div>
                         </div>
 
@@ -322,7 +328,7 @@
                 <div class="overall-rating">
                     <span class="rating-score" id="avgRating">0.0</span>
                     <div class="rating-stars text-warning" id="avgStars">
-                        <i class='bx bx-star'></i> 
+                        <i class='bx bx-star'></i>
                     </div>
                     <span class="review-count-text" id="reviewCountText">Dựa trên 0 khách hàng</span>
                 </div>
@@ -581,6 +587,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const BASE_URL = '/MayMacCTH';
+            let currentMaxStock = 0;
             let uploadedImageNames = [];
             async function loadReviewTags() {
                 const container = document.getElementById('reviewTagContainer');
@@ -653,7 +660,7 @@
                     reader.readAsDataURL(file);
                 });
             });
-            
+
             const urlParams = new URLSearchParams(window.location.search);
             const productId = urlParams.get('id');
             const contentContainer = document.querySelector('.product-detail > .container');
@@ -666,12 +673,16 @@
             }
 
             try {
-                const res = await fetch(`${BASE_URL}/api/product/get_all_product.php`);
-                if (!res.ok) throw new Error('Lỗi server');
-                const result = await res.json();
-                if (!result.success || !result.data?.length) throw new Error('Không có sản phẩm');
+                const res = await fetch(`${BASE_URL}/api/product/get_product_by_id.php?id=${productId}`);
+                if (!res.ok) throw new Error('Lỗi server: ' + res.status);
 
-                const p = result.data.find(item => item.product_id == productId);
+                const result = await res.json();
+
+                if (!result.success || !result.data || result.data.length === 0) {
+                    throw new Error('Không tìm thấy sản phẩm');
+                }
+
+                const p = result.data[0];
                 if (!p) throw new Error('Sản phẩm không tồn tại');
 
                 const categoryTitleEl = document.getElementById('categoryTitle');
@@ -683,7 +694,7 @@
                         <span class="sep"> > </span>
                         <a href="products.html">Sản phẩm</a>
                         <span class="sep"> > </span>
-                        <span class="current">${p.name  }</span>
+                        <span class="current">${p.name}</span>
                     `;
                 }
 
@@ -741,7 +752,7 @@
                                             style="background-color: #fffaf0;">
                                             </div>
                                     </div>` : ''
-                                }
+                    }
                                 <!-- KÍCH THƯỚC -->
                                 <div class="size-options mb-4">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -753,10 +764,15 @@
 
                                 <div class="quantity mb-4">
                                     <h6 class="fw-bold mb-2 text-start">Số lượng</h6>
-                                    <div class="input-group quantity-group">
-                                        <button class="btn btn-outline-secondary" type="button" id="decrease">-</button>
-                                        <input type="text" class="form-control fw-bold" value="1" readonly id="quantityInput">
-                                        <button class="btn btn-outline-secondary" type="button" id="increase">+</button>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="input-group quantity-group">
+                                            <button class="btn btn-outline-secondary" type="button" id="decrease">-</button>
+                                            <input type="text" class="form-control fw-bold text-center" value="1" readonly id="quantityInput">
+                                            <button class="btn btn-outline-secondary" type="button" id="increase">+</button>
+                                        </div>
+                                        <div class="stock-info text-muted small">
+                                            Có thể mua <strong id="stockDisplay"></strong>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -864,15 +880,15 @@
                 if (p.colors && p.colors.length) {
                     document.getElementById('colorOptions').style.display = 'block';
                     const colorSwatches = document.getElementById('colorSwatches');
-                    colorSwatches.innerHTML = ''; 
+                    colorSwatches.innerHTML = '';
 
                     p.colors.forEach((color, idx) => {
                         const btn = document.createElement('button');
                         btn.type = 'button';
-                        btn.className = 'btn btn-color-circle position-relative'; 
-                        
+                        btn.className = 'btn btn-color-circle position-relative';
+
                         btn.style.backgroundColor = color.color_code || '#ccc';
-                        btn.title = color.color_name; 
+                        btn.title = color.color_name;
 
                         if (idx === 0) btn.classList.add('active');
 
@@ -880,14 +896,68 @@
                             colorSwatches.querySelectorAll('button').forEach(b => b.classList.remove('active'));
                             btn.classList.add('active');
                             updateSizes(color.sizes || []);
+                            updateStockDisplay();
                         };
                         colorSwatches.appendChild(btn);
                     });
-                    
+
                     updateSizes(p.colors[0].sizes || []);
+                    updateStockDisplay();
                 } else {
                     document.getElementById('colorOptions').style.display = 'none';
                     document.getElementById('sizeButtons').innerHTML = '<span class="text-muted">Không có size</span>';
+                }
+
+                function updateStockDisplay() {
+                    const stockDisplay = document.getElementById('stockDisplay');
+                    const increaseBtn = document.getElementById('increase');
+                    const decreaseBtn = document.getElementById('decrease');
+                    const quantityInput = document.getElementById('quantityInput');
+
+                    if (!stockDisplay) return;
+
+                    const selectedColorBtn = document.querySelector('#colorSwatches .btn.active');
+                    const selectedSizeBtn = document.querySelector('#sizeButtons .btn-size.active');
+
+                    let stock = 0;
+
+                    if (selectedColorBtn && selectedSizeBtn) {
+                        const colorName = selectedColorBtn.title.trim();
+                        const size = selectedSizeBtn.textContent.trim().toUpperCase();
+
+                        const color = p.colors.find(c => c.color_name.trim() === colorName);
+                        if (color && color.variants && color.variants[size]) {
+                            stock = color.variants[size].quantity || 0;
+                        }
+                    } else if (p.colors && p.colors.length > 0) {
+                        // Tổng tồn kho nếu chưa chọn đầy đủ
+                        stock = p.colors.reduce((total, c) => {
+                            return total + Object.values(c.variants || {}).reduce((sum, v) => sum + (v.quantity || 0), 0);
+                        }, 0);
+                    }
+
+                    // Luôn hiển thị số lượng (kể cả 0), KHÔNG đổi màu
+                    stockDisplay.textContent = stock;
+                    currentMaxStock = stock;
+
+                    const currentQty = parseInt(quantityInput.value) || 0;
+
+                    // Nếu tồn kho = 0 → set số lượng về 0 và disable cả hai nút
+                    if (stock <= 0) {
+                        quantityInput.value = 0;
+                        if (increaseBtn) increaseBtn.disabled = true;
+                        if (decreaseBtn) decreaseBtn.disabled = true;
+                        // Không set màu đỏ nữa → giữ màu mặc định (text-muted small)
+                    } else {
+                        // Enable nút + nếu chưa đạt max
+                        if (increaseBtn) {
+                            increaseBtn.disabled = (currentQty >= currentMaxStock);
+                        }
+                        // Enable nút - nếu > 0
+                        if (decreaseBtn) {
+                            decreaseBtn.disabled = (currentQty <= 0);
+                        }
+                    }
                 }
 
                 function updateSizes(sizes) {
@@ -906,6 +976,7 @@
                         btn.onclick = () => {
                             sizeButtons.querySelectorAll('button').forEach(b => b.classList.remove('active'));
                             btn.classList.add('active');
+                            updateStockDisplay();
                         };
                         sizeButtons.appendChild(btn);
                     });
@@ -914,11 +985,28 @@
                 // Nút chức năng
                 document.getElementById('increase')?.addEventListener('click', () => {
                     const input = document.getElementById('quantityInput');
-                    input.value = parseInt(input.value) + 1;
+                    const current = parseInt(input.value) || 0;
+
+                    if (current < currentMaxStock) {
+                        input.value = current + 1;
+                        document.getElementById('decrease').disabled = false;  // enable nút -
+                    }
+
+                    // Disable nút + nếu đạt max
+                    document.getElementById('increase').disabled = (parseInt(input.value) >= currentMaxStock);
                 });
+
                 document.getElementById('decrease')?.addEventListener('click', () => {
                     const input = document.getElementById('quantityInput');
-                    if (parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+                    const current = parseInt(input.value) || 0;
+
+                    if (current > 0) {
+                        input.value = current - 1;
+                        document.getElementById('increase').disabled = false;  // enable nút + nếu còn dưới max
+                    }
+
+                    // Disable nút - nếu đã về 0
+                    document.getElementById('decrease').disabled = (parseInt(input.value) <= 0);
                 });
                 document.getElementById('addToCartBtn')?.addEventListener('click', function () {
                     const selectedColorBtn = document.querySelector('#colorSwatches .btn.active');
@@ -1011,39 +1099,40 @@
                 contentContainer.innerHTML = `<div class="text-center py-5"><h1 class="text-danger">Lỗi tải sản phẩm</h1><p>${err.message}</p><button class="btn btn-primary" onclick="location.reload()">Tải lại</button></div>`;
             }
 
-            const addressEl = document.getElementById('footerAddress');
-            const websiteEl = document.getElementById('footerWebsite');
-            const phoneEl = document.getElementById('footerPhone');
+            // const addressEl = document.getElementById('footerAddress');
+            // const websiteEl = document.getElementById('footerWebsite');
+            // const phoneEl = document.getElementById('footerPhone');
 
-            if (!addressEl && !websiteEl && !phoneEl) return;
+            // if (!addressEl && !websiteEl && !phoneEl) return;
 
-            try {
-                const res = await fetch(`${BASE_URL}/api/contact/get_contact.php?t=${Date.now()}`);
-                const data = await res.json();
+            // try {
+            //     const res = await fetch(`${BASE_URL}/api/contact/get_contact.php?t=${Date.now()}`);
+            //     const data = await res.json();
 
-                if (data.success && data.data && data.data.length > 0) {
-                    const c = data.data[0];
+            //     if (data.success && data.data && data.data.length > 0) {
+            //         const c = data.data[0];
 
-                    if (addressEl) {
-                        addressEl.textContent = c.address || 'Chưa cập nhật địa chỉ';
-                    }
+            //         if (addressEl) {
+            //             addressEl.textContent = c.address || 'Chưa cập nhật địa chỉ';
+            //         }
 
-                    if (websiteEl) {
-                        if (c.website && c.website.trim()) {
-                            const url = c.website.match(/^https?:\/\//i) ? c.website : 'https://' + c.website;
-                            websiteEl.outerHTML = `<a href="${url}" target="_blank" class="text-white text-decoration-none">${c.website}</a>`;
-                        } else {
-                            websiteEl.textContent = 'Chưa có website';
-                        }
-                    }
+            //         if (websiteEl) {
+            //             if (c.website && c.website.trim()) {
+            //                 const url = c.website.match(/^https?:\/\//i) ? c.website : 'https://' + c.website;
 
-                    if (phoneEl) {
-                        phoneEl.textContent = c.phone_number || 'Chưa cập nhật số điện thoại';
-                    }
-                }
-            } catch (err) {
-                console.error('Lỗi load footer contact:', err);
-            }
+            //                 websiteEl.innerHTML = `<a href="${url}" target="_blank" class="text-white text-decoration-none">${c.website}</a>`;
+            //             } else {
+            //                 websiteEl.textContent = 'Chưa có website';
+            //             }
+            //         }
+
+            //         if (phoneEl) {
+            //             phoneEl.textContent = c.phone_number || 'Chưa cập nhật số điện thoại';
+            //         }
+            //     }
+            // } catch (err) {
+            //     console.error('Lỗi load footer contact:', err);
+            // }
 
             document.getElementById('writeReviewCollapse')?.addEventListener('shown.bs.collapse', function () {
                 const stars = document.querySelectorAll('#ratingStars i');
@@ -1699,7 +1788,7 @@
                 container.innerHTML = '';
 
                 if (result.success && Array.isArray(result.data) && result.data.length > 0) {
-                    
+
                     let categories = result.data;
                     categories.sort((a, b) => a.name.localeCompare(b.name));
 
