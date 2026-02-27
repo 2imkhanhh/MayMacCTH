@@ -66,7 +66,7 @@ require_once 'auth_middleware.php';
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body" id="modalBody">
-                    <!-- JS sẽ fill -->
+
                 </div>
             </div>
         </div>

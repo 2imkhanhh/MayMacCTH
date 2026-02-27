@@ -1,6 +1,6 @@
 const BASE_URL = '/MayMacCTH';
 let currentOrderId = null;
-let allOrders = []; 
+let allOrders = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     loadOrders();
@@ -86,11 +86,11 @@ function filterAndSearch() {
         filtered = filtered.filter(order => {
             const code = order.order_code.toLowerCase();
             const name = order.name.toLowerCase();
-            const phone = order.phone.replace(/\s/g, ''); 
+            const phone = order.phone.replace(/\s/g, '');
 
             return code.includes(searchTerm) ||
-                   name.includes(searchTerm) ||
-                   phone.includes(searchTerm.replace(/\s/g, ''));
+                name.includes(searchTerm) ||
+                phone.includes(searchTerm.replace(/\s/g, ''));
         });
     }
 
@@ -124,9 +124,15 @@ async function showOrderDetail(orderId) {
 
         document.getElementById('modalOrderCode').textContent = o.order_code;
 
-        const getAutoPaymentStatus = (status) => {
-            return (status === 'completed' || status === 'cancelled') ? 'paid' : 'unpaid';
-        };
+        function getAutoPaymentStatus(orderStatus) {
+            if (orderStatus === 'completed') {
+                return 'paid';
+            }
+            if (orderStatus === 'cancelled') {
+                return 'unpaid';
+            }
+            return 'unpaid';
+        }
 
         document.getElementById('modalBody').innerHTML = `
             <!-- Thông tin khách hàng -->
@@ -227,7 +233,14 @@ async function updateOrderStatus() {
     if (!currentOrderId) return;
 
     const order_status = document.getElementById('statusSelect').value;
-    const payment_status = (order_status === 'completed' || order_status === 'cancelled') ? 'paid' : 'unpaid';
+    let payment_status;
+    if (order_status === 'completed') {
+        payment_status = 'paid';
+    } else if (order_status === 'cancelled') {
+        payment_status = 'unpaid';
+    } else {
+        payment_status = 'unpaid';
+    }
 
     try {
         const res = await fetch(`${BASE_URL}/api/order/update_status.php`, {
@@ -245,7 +258,7 @@ async function updateOrderStatus() {
         if (data.success) {
             alert('Cập nhật trạng thái thành công!');
             bootstrap.Modal.getInstance(document.getElementById('orderDetailModal')).hide();
-            loadOrders(); 
+            loadOrders();
         } else {
             alert(data.message || 'Cập nhật thất bại');
         }
