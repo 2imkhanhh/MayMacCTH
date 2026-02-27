@@ -171,10 +171,11 @@ class Product
         return array_values($products);
     }
 
-    public function create($data, $colors, $images, $primaryIndex)
+    public function create($data, $colors, $images, $primaryIndex, $selected_warehouses = [])
     {
         $this->conn->beginTransaction();
         try {
+            // Insert vào bảng products
             $query = "INSERT INTO products SET 
                     name = :name, 
                     description = :description,
@@ -193,66 +194,90 @@ class Product
             ]);
             $productId = $this->conn->lastInsertId();
 
-            foreach ($colors as $c) {
+            // Xử lý colors và variants
+            foreach ($colors as $cIdx => $c) {
                 if (empty($c['name'])) continue;
 
+                // Insert product_colors
                 $stmt = $this->conn->prepare("
-                    INSERT INTO product_colors (product_id, color_name, color_code) 
-                    VALUES (?, ?, ?)
-                ");
+                INSERT INTO product_colors (product_id, color_name, color_code) 
+                VALUES (?, ?, ?)
+            ");
                 $stmt->execute([$productId, $c['name'], $c['code'] ?? '#000000']);
                 $colorId = $this->conn->lastInsertId();
 
                 if (!empty($c['variants']) && is_array($c['variants'])) {
-                    foreach ($c['variants'] as $v) {
+                    foreach ($c['variants'] as $vIdx => $v) {
                         $size = trim(strtoupper($v['size'] ?? ''));
                         if (empty($size)) continue;
 
+                        // Insert product_variants
                         $stmt = $this->conn->prepare("
-                            INSERT INTO product_variants (product_id, color_id, size) 
-                            VALUES (?, ?, ?)
-                        ");
+                        INSERT INTO product_variants (product_id, color_id, size) 
+                        VALUES (?, ?, ?)
+                    ");
                         $stmt->execute([$productId, $colorId, $size]);
                         $variantId = $this->conn->lastInsertId();
 
                         $initialQty = (int)($v['initial_qty'] ?? 0);
                         $lowThreshold = (int)($v['low_stock_threshold'] ?? 10);
-                        $warehouseId = 1;
 
-                        $invStmt = $this->conn->prepare("
-                            INSERT INTO product_inventory 
-                            (variant_id, warehouse_id, quantity, low_stock_threshold, created_at, updated_at) 
-                            VALUES (?, ?, ?, ?, NOW(), NOW())
-                            ON DUPLICATE KEY UPDATE 
-                                quantity = VALUES(quantity),
-                                low_stock_threshold = VALUES(low_stock_threshold),
-                                updated_at = NOW()
-                        ");
-                        $invStmt->execute([$variantId, $warehouseId, $initialQty, $lowThreshold]);
+                        // Nếu frontend gửi danh sách kho được chọn → tạo inventory cho từng kho
+                        if (!empty($selected_warehouses)) {
+                            foreach ($selected_warehouses as $wh_id) {
+                                $wh_id = (int)$wh_id;
+
+                                $invStmt = $this->conn->prepare("
+                                INSERT INTO product_inventory 
+                                (variant_id, warehouse_id, quantity, low_stock_threshold, created_at, updated_at) 
+                                VALUES (?, ?, ?, ?, NOW(), NOW())
+                                ON DUPLICATE KEY UPDATE 
+                                    quantity = VALUES(quantity),
+                                    low_stock_threshold = VALUES(low_stock_threshold),
+                                    updated_at = NOW()
+                            ");
+                                $invStmt->execute([$variantId, $wh_id, $initialQty, $lowThreshold]);
+                            }
+                        }
+                        // Nếu không có kho nào được chọn → không insert inventory (tồn kho mặc định = 0)
                     }
-                } elseif (!empty($c['sizes'])) {
-                    $sizes = array_map('trim', explode(',', $c['sizes']));
+                }
+                // Xử lý trường hợp chỉ có sizes (không có variants chi tiết)
+                elseif (!empty($c['sizes'])) {
+                    $sizes = is_array($c['sizes']) ? $c['sizes'] : explode(',', $c['sizes']);
                     foreach ($sizes as $size) {
-                        if (empty($size)) continue;
+                        $trimmed = trim(strtoupper($size));
+                        if (empty($trimmed)) continue;
 
                         $stmt = $this->conn->prepare("
-                            INSERT INTO product_variants (product_id, color_id, size) 
-                            VALUES (?, ?, ?)
-                        ");
-                        $stmt->execute([$productId, $colorId, strtoupper($size)]);
+                        INSERT INTO product_variants (product_id, color_id, size) 
+                        VALUES (?, ?, ?)
+                    ");
+                        $stmt->execute([$productId, $colorId, $trimmed]);
                         $variantId = $this->conn->lastInsertId();
 
-                        $invStmt = $this->conn->prepare("
-                            INSERT INTO product_inventory 
-                            (variant_id, warehouse_id, quantity, low_stock_threshold, created_at, updated_at) 
-                            VALUES (?, ?, 0, 10, NOW(), NOW())
-                            ON DUPLICATE KEY UPDATE quantity = 0, low_stock_threshold = 10
-                        ");
-                        $invStmt->execute([$variantId, 1]);
+                        // Tương tự: tạo inventory nếu có kho được chọn
+                        if (!empty($selected_warehouses)) {
+                            foreach ($selected_warehouses as $wh_id) {
+                                $wh_id = (int)$wh_id;
+
+                                $invStmt = $this->conn->prepare("
+                                INSERT INTO product_inventory 
+                                (variant_id, warehouse_id, quantity, low_stock_threshold, created_at, updated_at) 
+                                VALUES (?, ?, 0, 10, NOW(), NOW())
+                                ON DUPLICATE KEY UPDATE 
+                                    quantity = 0, 
+                                    low_stock_threshold = 10,
+                                    updated_at = NOW()
+                            ");
+                                $invStmt->execute([$variantId, $wh_id]);
+                            }
+                        }
                     }
                 }
             }
 
+            // Upload ảnh
             $uploadDir = __DIR__ . '/../../public/assets/images/upload/';
             foreach ($images as $index => $file) {
                 if ($file['error'] !== 0) continue;
@@ -280,10 +305,11 @@ class Product
         }
     }
 
-    public function update($productId, $data, $colors, $images, $primaryImageIndex = -1, $existingImages = [], $primaryImageId = null)
+    public function update($productId, $data, $colors, $images, $primaryImageIndex = -1, $existingImages = [], $primaryImageId = null, $selected_warehouses = [])
     {
         $this->conn->beginTransaction();
         try {
+            // Update products
             $query = "UPDATE products SET 
                     name = :name,
                     description = :description,
@@ -301,53 +327,63 @@ class Product
                 ':product_id'  => $productId
             ]);
 
-            $this->conn->prepare("DELETE FROM product_inventory WHERE variant_id IN (
-                                SELECT variant_id FROM product_variants WHERE product_id = ?
-                                )")->execute([$productId]);
+            // Xóa inventory cũ của toàn bộ variants của sản phẩm
+            $this->conn->prepare("
+            DELETE FROM product_inventory 
+            WHERE variant_id IN (SELECT variant_id FROM product_variants WHERE product_id = ?)
+        ")->execute([$productId]);
 
+            // Xóa variants và colors cũ
             $this->conn->prepare("DELETE FROM product_variants WHERE product_id = ?")->execute([$productId]);
             $this->conn->prepare("DELETE FROM product_colors WHERE product_id = ?")->execute([$productId]);
 
-            foreach ($colors as $c) {
+            // Tương tự create: insert lại colors, variants, inventory
+            foreach ($colors as $cIdx => $c) {
                 if (empty($c['name'])) continue;
 
                 $stmt = $this->conn->prepare("
-                    INSERT INTO product_colors (product_id, color_name, color_code) 
-                    VALUES (?, ?, ?)
-                ");
+                INSERT INTO product_colors (product_id, color_name, color_code) 
+                VALUES (?, ?, ?)
+            ");
                 $stmt->execute([$productId, $c['name'], $c['code'] ?? '#000000']);
                 $colorId = $this->conn->lastInsertId();
 
                 if (!empty($c['variants']) && is_array($c['variants'])) {
-                    foreach ($c['variants'] as $v) {
+                    foreach ($c['variants'] as $vIdx => $v) {
                         $size = trim(strtoupper($v['size'] ?? ''));
                         if (empty($size)) continue;
 
                         $stmt = $this->conn->prepare("
-                            INSERT INTO product_variants (product_id, color_id, size) 
-                            VALUES (?, ?, ?)
-                        ");
+                        INSERT INTO product_variants (product_id, color_id, size) 
+                        VALUES (?, ?, ?)
+                    ");
                         $stmt->execute([$productId, $colorId, $size]);
                         $variantId = $this->conn->lastInsertId();
 
                         $initialQty = (int)($v['initial_qty'] ?? 0);
                         $lowThreshold = (int)($v['low_stock_threshold'] ?? 10);
-                        $warehouseId = 1;
 
-                        $invStmt = $this->conn->prepare("
-                            INSERT INTO product_inventory 
-                            (variant_id, warehouse_id, quantity, low_stock_threshold, created_at, updated_at) 
-                            VALUES (?, ?, ?, ?, NOW(), NOW())
-                            ON DUPLICATE KEY UPDATE 
-                                quantity = VALUES(quantity),
-                                low_stock_threshold = VALUES(low_stock_threshold),
-                                updated_at = NOW()
-                        ");
-                        $invStmt->execute([$variantId, $warehouseId, $initialQty, $lowThreshold]);
+                        if (!empty($selected_warehouses)) {
+                            foreach ($selected_warehouses as $wh_id) {
+                                $wh_id = (int)$wh_id;
+
+                                $invStmt = $this->conn->prepare("
+                                INSERT INTO product_inventory 
+                                (variant_id, warehouse_id, quantity, low_stock_threshold, created_at, updated_at) 
+                                VALUES (?, ?, ?, ?, NOW(), NOW())
+                                ON DUPLICATE KEY UPDATE 
+                                    quantity = VALUES(quantity),
+                                    low_stock_threshold = VALUES(low_stock_threshold),
+                                    updated_at = NOW()
+                            ");
+                                $invStmt->execute([$variantId, $wh_id, $initialQty, $lowThreshold]);
+                            }
+                        }
                     }
                 }
             }
 
+            // Xử lý ảnh: xóa ảnh cũ không còn trong existingImages
             $uploadDir = __DIR__ . '/../../public/assets/images/upload/';
             $stmt = $this->conn->prepare("SELECT image_id, image FROM product_images WHERE product_id = ?");
             $stmt->execute([$productId]);
@@ -361,6 +397,7 @@ class Product
                 }
             }
 
+            // Thêm ảnh mới
             $newImageIds = [];
             $sortOrder = 0;
             foreach ($images as $index => $file) {
@@ -381,6 +418,7 @@ class Product
                 }
             }
 
+            // Cập nhật primary image
             $this->conn->prepare("UPDATE product_images SET is_primary = 0 WHERE product_id = ?")->execute([$productId]);
             $finalPrimaryId = null;
 
@@ -501,7 +539,7 @@ class Product
                 continue;
             }
 
-            $p = $productData; 
+            $p = $productData;
 
             $found = false;
             $stock = 0;

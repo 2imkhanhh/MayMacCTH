@@ -115,12 +115,23 @@ class ProductController
             return ["success" => false, "message" => "Phải có ít nhất 1 ảnh"];
         }
 
-        $primaryIndex = (int)($_POST['primary_image'] ?? 0);
+        $primaryIndex = (int)($_POST['primary_image_index'] ?? -1);
+        $primaryImageId = null; // không dùng ở create
 
-        $result = $this->product->create($data, $colors, $uploadedFiles, $primaryIndex);
+        // Lấy mảng kho được chọn từ frontend
+        $selected_warehouses = [];
+        if (isset($_POST['selected_warehouses']) && is_array($_POST['selected_warehouses'])) {
+            $selected_warehouses = array_map('intval', $_POST['selected_warehouses']);
+        } elseif (isset($_POST['selected_warehouses'])) {
+            // trường hợp gửi string (dù ít xảy ra)
+            $selected_warehouses = array_map('intval', explode(',', $_POST['selected_warehouses']));
+        }
+
+        $result = $this->product->create($data, $colors, $uploadedFiles, $primaryIndex, $selected_warehouses);
+
         return $result
             ? ["success" => true, "message" => "Thêm sản phẩm thành công!"]
-            : ["success" => false, "message" => "Thêm thất bại!"];
+            : ["success" => false, "message" => "Thêm sản phẩm thất bại!"];
     }
 
     public function update($id)
@@ -204,6 +215,14 @@ class ProductController
             $primaryImageIndex = (int)$_POST['primary_image_index'];
         }
 
+        // Lấy mảng kho được chọn
+        $selected_warehouses = [];
+        if (isset($_POST['selected_warehouses']) && is_array($_POST['selected_warehouses'])) {
+            $selected_warehouses = array_map('intval', $_POST['selected_warehouses']);
+        } elseif (isset($_POST['selected_warehouses'])) {
+            $selected_warehouses = array_map('intval', explode(',', $_POST['selected_warehouses']));
+        }
+
         $result = $this->product->update(
             $id,
             $data,
@@ -211,7 +230,8 @@ class ProductController
             $uploadedFiles,
             $primaryImageIndex,
             $existingImages,
-            $primaryImageId
+            $primaryImageId,
+            $selected_warehouses
         );
 
         return $result

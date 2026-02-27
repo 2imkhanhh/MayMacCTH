@@ -10,6 +10,8 @@ let imageIndex = 0;
 let defaultInitialQty = 0;
 let defaultLowStockThreshold = 10;
 let isEditMode = false;
+let warehouses = [];                  
+let selectedWarehouseIds = new Set();
 
 const PRESET_COLORS = [
     { name: 'Đen', code: '#000000' },
@@ -66,9 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('bulkFillCheckbox').addEventListener('change', function () {
         if (this.checked) {
-            createBulkFillModal();  
+            createBulkFillModal();
         } else {
-          
+
         }
     });
 });
@@ -102,7 +104,7 @@ function createBulkFillModal() {
     }
 
     const formBody = document.getElementById('bulkFormBody');
-    formBody.innerHTML = '';  
+    formBody.innerHTML = '';
 
     editableColumns.forEach(col => {
         formBody.innerHTML += `
@@ -120,11 +122,11 @@ function createBulkFillModal() {
         editableColumns.forEach(col => {
             const inputValue = parseInt(document.getElementById(`bulk_${col.field}`).value) || col.default;
             variantsList.forEach(v => {
-                v[col.field] = inputValue;  
+                v[col.field] = inputValue;
             });
         });
 
-        renderVariants();  
+        renderVariants();
         showToast('Đã áp dụng giá trị cho tất cả', 'success');
         modal.hide();
 
@@ -425,6 +427,8 @@ function openModal(product = null) {
     renderColors();
     renderSizes();
     renderVariants();
+    selectedWarehouseIds.clear();
+    loadWarehouses();
     modal.show();
 }
 
@@ -552,6 +556,67 @@ function renderVariants() {
             variantsList.splice(idx, 1);
             renderVariants();
         };
+    });
+}
+
+async function loadWarehouses() {
+    try {
+        const res = await fetch(`${BASE_URL}/api/warehouse/get_warehouse.php`);
+        const data = await res.json();
+
+        if (data.success && Array.isArray(data.data)) {
+            warehouses = data.data;
+            renderWarehouseCheckboxes();
+        } else {
+            showToast('Không tải được danh sách kho', 'error');
+            console.warn('API warehouses lỗi:', data);
+        }
+    } catch (err) {
+        showToast('Lỗi kết nối khi tải kho', 'error');
+        console.error(err);
+    }
+}
+
+// Render checkbox cho từng kho
+function renderWarehouseCheckboxes() {
+    const container = document.getElementById('warehouseCheckboxes');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    if (warehouses.length === 0) {
+        container.innerHTML = '<p class="text-muted small">Chưa có kho hàng nào trong hệ thống</p>';
+        return;
+    }
+
+    warehouses.forEach(wh => {
+        const div = document.createElement('div');
+        div.className = 'col-auto';
+        div.innerHTML = `
+            <div class="form-check">
+                <input class="form-check-input warehouse-checkbox" 
+                       type="checkbox" 
+                       value="${wh.warehouse_id}" 
+                       id="warehouse_${wh.warehouse_id}"
+                       ${selectedWarehouseIds.has(wh.warehouse_id) ? 'checked' : ''}>
+                <label class="form-check-label" for="warehouse_${wh.warehouse_id}">
+                    ${wh.name} ${wh.location ? `<small class="text-muted">(${wh.location})</small>` : ''}
+                </label>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+
+    // Lắng nghe tick/untick
+    document.querySelectorAll('.warehouse-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const warehouseId = parseInt(this.value);
+            if (this.checked) {
+                selectedWarehouseIds.add(warehouseId);
+            } else {
+                selectedWarehouseIds.delete(warehouseId);
+            }
+        });
     });
 }
 
@@ -755,6 +820,10 @@ async function handleSubmit(e) {
             formData.append(`colors[0][variants][${idx}][low_stock_threshold]`, variant.lowStockThreshold ?? 10);
         });
     }
+
+    selectedWarehouseIds.forEach(warehouseId => {
+        formData.append('selected_warehouses[]', warehouseId);
+    });
 
     const url = currentEditId
         ? `${BASE_URL}/api/product/update_product.php?id=${currentEditId}`

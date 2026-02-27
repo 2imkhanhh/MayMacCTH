@@ -180,6 +180,16 @@ require_once 'auth_middleware.php';
                                 <tbody></tbody>
                             </table>
                         </div>
+                        <div class="mt-4" id="warehouseSection">
+                            <h6>Phân bổ tồn kho ban đầu vào các kho</h6>
+                            <p class="text-muted small mb-3">
+                                Tick vào kho bạn muốn nhập số lượng ban đầu cho sản phẩm này.
+                                Nếu không tick kho nào, tồn kho sẽ là 0 ở mọi kho (có thể bổ sung sau).
+                            </p>
+                            <div id="warehouseCheckboxes" class="row g-3">
+
+                            </div>
+                        </div>
                         <hr>
                         <h6>Ảnh sản phẩm</h6>
                         <input type="file" id="bulkImageInput" name="images[]" accept="image/*" multiple style="display:none;">
